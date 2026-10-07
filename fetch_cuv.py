@@ -72,6 +72,18 @@ def fetch_url(url):
         return r.read().decode("utf-8")
 
 
+def fetch_url_retry(url, retries=4):
+    """CI 网络偶发抖动：失败自动重试，全部失败才抛出（由上层亮红灯）。"""
+    last = None
+    for i in range(retries):
+        try:
+            return fetch_url(url)
+        except Exception as e:  # noqa: BLE001 - 网络抖动重试
+            last = e
+            print(f"  [retry {i + 1}/{retries}] {url}: {e}")
+    raise last
+
+
 def parse_cuv(text):
     """解析 CUV JSON 为 {(book_id, chapter, verse): text} 字典。
 
@@ -135,7 +147,7 @@ def main():
             text = f.read()
     else:
         print(f"[info] downloading CUV: {args.url}")
-        text = fetch_url(args.url)
+        text = fetch_url_retry(args.url)
 
     cuv, book_count, id_warnings = parse_cuv(text)
     if not cuv:

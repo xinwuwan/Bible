@@ -82,13 +82,19 @@ jobs:
       # ---------------------------------------------------------------------
 
       - name: Inject full KJV + CUV (CI has network)
-        # 从公共领域源抓取全本 KJV 与和合本(CUV)，写入 app_data.json；
-        # 若抓取失败（网络异常），保留已提交的样本数据，构建仍可进行。
+        # 从公共领域源抓取全本 KJV 与和合本(CUV)，写入 app_data.json。
+        # 两步都带重试；失败不再静默降级——由下一步的完整性验证直接亮红灯。
         # KJV 为权威底本；CUV 仅作参照展示。
         working-directory: ${{ github.workspace }}
         run: |
-          python3 fetch_kjv.py || echo "KJV fetch failed; using committed sample data"
-          python3 fetch_cuv.py || echo "CUV fetch failed; CUV column left empty"
+          python3 fetch_kjv.py
+          python3 fetch_cuv.py
+
+      - name: Verify injected data (hard gate)
+        # 注入后验证：66 卷 / >=30000 节 / GEN 1:1 双语非空 / 模块 C 数据保留。
+        # 不合格直接构建失败，杜绝"静默发布坏数据站点"。
+        working-directory: ${{ github.workspace }}
+        run: python3 verify_injected_data.py
 
       - name: Pub get
         run: flutter pub get
