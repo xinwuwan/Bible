@@ -31,7 +31,11 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT_FILE = os.path.join(ROOT, "flutter_app", "assets", "web", "app_data.json")
-DEFAULT_CUV_URL = "https://raw.githubusercontent.com/MaatheusGois/bible/main/versions/zh/cuv.json"
+# 同一文件的多条分发线路：raw 直连 + jsDelivr CDN 镜像，依次回退。
+DEFAULT_CUV_URLS = [
+    "https://raw.githubusercontent.com/MaatheusGois/bible/main/versions/zh/cuv.json",
+    "https://cdn.jsdelivr.net/gh/MaatheusGois/bible@main/versions/zh/cuv.json",
+]
 
 # 66 卷标准顺序（与 fetch_kjv.py 的 BOOKS 完全一致），索引 i => book_id = i+1
 CODES = [
@@ -72,15 +76,16 @@ def fetch_url(url):
         return r.read().decode("utf-8")
 
 
-def fetch_url_retry(url, retries=4):
-    """CI 网络偶发抖动：失败自动重试，全部失败才抛出（由上层亮红灯）。"""
+def fetch_urls_retry(urls, retries=4):
+    """多线路 + 重试：依次尝试每条线路，每条重试 retries 次，全败才抛出。"""
     last = None
-    for i in range(retries):
-        try:
-            return fetch_url(url)
-        except Exception as e:  # noqa: BLE001 - 网络抖动重试
-            last = e
-            print(f"  [retry {i + 1}/{retries}] {url}: {e}")
+    for url in urls:
+        for i in range(retries):
+            try:
+                return fetch_url(url)
+            except Exception as e:  # noqa: BLE001 - 网络抖动换线路/重试
+                last = e
+                print(f"  [retry {i + 1}/{retries}] {url}: {e}")
     raise last
 
 
@@ -139,15 +144,20 @@ def merge(out_file, cuv):
 def main():
     ap = argparse.ArgumentParser(description="下载和合本(CUV)并合并进 app_data.json")
     ap.add_argument("--input", help="本地 CUV JSON（离线模式，跳过下载）")
-    ap.add_argument("--url", default=DEFAULT_CUV_URL, help="CUV 源 URL")
+    ap.add_argument(
+        "--urls",
+        default=",".join(DEFAULT_CUV_URLS),
+        help="CUV 源 URL 列表(逗号分隔，依次回退)",
+    )
     args = ap.parse_args()
 
     if args.input:
         with open(args.input, encoding="utf-8") as f:
             text = f.read()
     else:
-        print(f"[info] downloading CUV: {args.url}")
-        text = fetch_url_retry(args.url)
+        urls = [u.strip() for u in args.urls.split(",") if u.strip()]
+        print(f"[info] downloading CUV from {len(urls)} mirrors")
+        text = fetch_urls_retry(urls)
 
     cuv, book_count, id_warnings = parse_cuv(text)
     if not cuv:

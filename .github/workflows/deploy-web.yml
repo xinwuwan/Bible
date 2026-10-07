@@ -81,14 +81,27 @@ jobs:
           python3 backend/tests/test_api.py
       # ---------------------------------------------------------------------
 
-      - name: Inject full KJV + CUV (CI has network)
+      - name: Inject full KJV + CUV (CI has network, 3 attempts)
         # 从公共领域源抓取全本 KJV 与和合本(CUV)，写入 app_data.json。
-        # 两步都带重试；失败不再静默降级——由下一步的完整性验证直接亮红灯。
-        # KJV 为权威底本；CUV 仅作参照展示。
+        # 脚本内部带多镜像回退 + 重试；这里再对整个注入做 3 次整体重试，
+        # 全部失败才亮红灯（由下一步完整性验证兜底，绝不静默发布坏数据）。
         working-directory: ${{ github.workspace }}
         run: |
-          python3 fetch_kjv.py
-          python3 fetch_cuv.py
+          set -e
+          ok=0
+          for i in 1 2 3; do
+            echo "=== Inject attempt $i of 3 ==="
+            if python3 fetch_kjv.py && python3 fetch_cuv.py; then
+              ok=1
+              break
+            fi
+            echo "inject attempt $i failed; waiting 20s before retry..."
+            sleep 20
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::Data injection failed after 3 attempts"
+            exit 1
+          fi
 
       - name: Verify injected data (hard gate)
         # 注入后验证：66 卷 / >=30000 节 / GEN 1:1 双语非空 / 模块 C 数据保留。

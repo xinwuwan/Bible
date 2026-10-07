@@ -38,7 +38,11 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT_FILE = os.path.join(ROOT, "flutter_app", "assets", "web", "app_data.json")
-DEFAULT_KJV_BASE = "https://raw.githubusercontent.com/aruljohn/Bible-kjv/master/"
+# 同一仓库的多条分发线路：raw 直连偶尔在 CI 上抖动，jsDelivr CDN 作镜像回退。
+DEFAULT_KJV_BASES = [
+    "https://raw.githubusercontent.com/aruljohn/Bible-kjv/master/",
+    "https://cdn.jsdelivr.net/gh/aruljohn/Bible-kjv@master/",
+]
 
 # (code, name_en, name_zh, testament, chapter_count) - 公共领域事实清单
 BOOKS = [
@@ -166,8 +170,12 @@ def fetch_url_retry(url, retries=3):
     raise last
 
 
-def collect_verses(base_url, code_to_id, offline_dir=None):
-    """返回 (verses, failed_list)。offline_dir 非空时走本地文件。"""
+def collect_verses(bases, code_to_id, offline_dir=None):
+    """返回 (verses, failed_list)。offline_dir 非空时走本地文件。
+
+    每卷书依次尝试 bases 里的多条线路，任一线路成功即用之；
+    全部线路都失败才记入 failed（由调用方按总量阈值决定是否报错）。
+    """
     verses = []
     failed = []
     for code, en, zh, test, chaps in BOOKS:
@@ -180,11 +188,16 @@ def collect_verses(base_url, code_to_id, offline_dir=None):
             with open(fp, encoding="utf-8") as f:
                 text = f.read()
         else:
-            url = base_url + fn
-            try:
-                text = fetch_url_retry(url)
-            except Exception as e:
-                failed.append((en, str(e)))
+            text = None
+            errs = []
+            for base in bases:
+                try:
+                    text = fetch_url_retry(base + fn)
+                    break
+                except Exception as e:  # noqa: BLE001 - 换下一条线路
+                    errs.append(f"{base}: {e}")
+            if text is None:
+                failed.append((en, "; ".join(errs)[:200]))
                 continue
         verses.extend(parse_book_json(text, code, code_to_id[code]))
     return verses, failed
@@ -194,13 +207,18 @@ def main():
     ap = argparse.ArgumentParser(description="下载全本 KJV 并生成 app_data.json")
     ap.add_argument("--input-dir", help="本地含 66 个 aruljohn JSON 的目录(离线)")
     ap.add_argument("--cuv", help="和合本 JSON(MaatheusGois 格式)，合并进 cuv_ref_text")
-    ap.add_argument("--url-base", default=DEFAULT_KJV_BASE, help="KJV 源 base URL")
+    ap.add_argument(
+        "--url-bases",
+        default=",".join(DEFAULT_KJV_BASES),
+        help="KJV 源 base URL 列表(逗号分隔，依次回退)",
+    )
     args = ap.parse_args()
 
     books = build_books()
     code_to_id = {b["book_code"]: b["book_id"] for b in books}
 
-    verses, failed = collect_verses(args.url_base, code_to_id, args.input_dir)
+    bases = [u.strip().rstrip("/") + "/" for u in args.url_bases.split(",") if u.strip()]
+    verses, failed = collect_verses(bases, code_to_id, args.input_dir)
     if failed:
         print(f"[warn] {len(failed)} 卷未能获取: {failed[:6]}")
 
