@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_models.dart';
+import 'app_theme.dart';
 import 'comparison_page.dart';
 import 'health_page.dart';
 import 'health_repository.dart';
@@ -90,10 +91,7 @@ class FaithApp extends StatelessWidget {
     return MaterialApp(
       title: '真理对照',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3F51B5)),
-      ),
+      theme: AppTheme.light(),
       home: const AppRoot(),
     );
   }
@@ -380,6 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('真理对照'),
+        centerTitle: false,
         actions: [
           IconButton(
             tooltip: _unsupported ? '网页端暂不支持' : '搜索经文',
@@ -390,27 +389,80 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // 权威层级说明（合规：始终让用户知道什么是权威、什么是参照）
-          Container(
-            width: double.infinity,
-            color: const Color(0xFFE8EAF6),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            child: const Text(
-              '权威依据：KJV 英文原文（唯一底本）。本应用中文为独立产出，'
-              '和合本仅作参照展示，不作为权威来源。',
-              style: TextStyle(fontSize: 12, color: Color(0xFF283593), height: 1.4),
+          // 搜索入口（点按进入经文搜索页）
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(14),
+              onTap: _unsupported ? null : _openSearch,
+              child: Container(
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppTheme.line),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.search, size: 20, color: AppTheme.inkSoft),
+                    const SizedBox(width: 10),
+                    Text(
+                      '搜索经文、章节…',
+                      style: TextStyle(fontSize: 14, color: AppTheme.inkSoft),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Expanded(
             child: _books.isEmpty
-                ? const Center(child: Text('离线库暂无书卷数据'))
+                ? Center(
+                    child: Text(
+                      '离线库暂无书卷数据',
+                      style: TextStyle(color: AppTheme.inkSoft, fontSize: 14),
+                    ),
+                  )
                 : ListView(
+                    padding: const EdgeInsets.only(bottom: 24),
                     children: [
-                      _SectionTitle('旧约'),
+                      _SectionTitle('旧约 · Old Testament', count: ot.length),
                       _BookGrid(books: ot, onTap: (b) => widget.onOpenBook(context, b, 1)),
-                      _SectionTitle('新约'),
+                      _SectionTitle('新约 · New Testament', count: nt.length),
                       _BookGrid(books: nt, onTap: (b) => widget.onOpenBook(context, b, 1)),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 8),
+                      // 权威层级说明（合规：始终让用户知道什么是权威、什么是参照）
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppTheme.line),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.verified_user_outlined,
+                                  size: 16, color: AppTheme.gold),
+                              const SizedBox(width: 8),
+                              const Expanded(
+                                child: Text(
+                                  '权威依据：KJV 英文原文（唯一底本）。本应用中文为独立产出，'
+                                  '和合本仅作参照展示，不作为权威来源。',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.inkSoft,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
           ),
@@ -462,16 +514,42 @@ class HealthTab extends StatelessWidget {
 
 class _SectionTitle extends StatelessWidget {
   final String text;
+  final int count;
 
-  const _SectionTitle(this.text);
+  const _SectionTitle(this.text, {this.count = 0});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black54),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 14,
+            decoration: BoxDecoration(
+              color: AppTheme.gold,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: AppTheme.ink,
+              letterSpacing: 0.3,
+            ),
+          ),
+          if (count > 0) ...[
+            const SizedBox(width: 6),
+            Text(
+              '$count 卷',
+              style: const TextStyle(fontSize: 12, color: AppTheme.inkSoft),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -487,17 +565,83 @@ class _BookGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: books
-            .map(
-              (b) => ActionChip(
-                label: Text(b.nameZh),
-                onPressed: () => onTap(b),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 168,
+          mainAxisExtent: 64,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemCount: books.length,
+        itemBuilder: (context, i) => _BookCard(book: books[i], onTap: onTap),
+      ),
+    );
+  }
+}
+
+/// 书卷卡片：中文名（衬线）+ 英文名 + 章数，白底细描边，安静书卷气
+class _BookCard extends StatelessWidget {
+  final BookMeta book;
+  final ValueChanged<BookMeta> onTap;
+
+  const _BookCard({required this.book, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => onTap(book),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppTheme.line),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                book.nameZh,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.ink,
+                ),
               ),
-            )
-            .toList(),
+              const SizedBox(height: 2),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        book.chapterCount > 0
+                            ? '${book.chapterCount} 章'
+                            : '',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AppTheme.inkSoft,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 14,
+                      color: AppTheme.line,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

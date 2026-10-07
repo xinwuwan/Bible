@@ -12,6 +12,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_models.dart';
+import 'app_theme.dart';
 import 'comparison_note_sheet.dart';
 import 'note_repository.dart';
 import 'offline_db_helper.dart';
@@ -121,54 +122,75 @@ class _ComparisonPageState extends State<ComparisonPage> {
         actions: [
           IconButton(
             tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
-            icon: Icon(_showCuv ? Icons.visibility : Icons.visibility_off),
+            icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
             onPressed: () => setState(() => _showCuv = !_showCuv),
           ),
         ],
       ),
       body: Column(
         children: [
-          // 章节导航
+          // 章节导航（胶囊容器）
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.chevron_left),
-                  onPressed: _chapter > 1 ? () => _goto(_chapter - 1) : null,
-                ),
-                Expanded(
-                  child: DropdownButton<int>(
-                    value: _chapter,
-                    isExpanded: true,
-                    underline: const SizedBox.shrink(),
-                    items: List.generate(
-                      widget.chapterCount,
-                      (i) => DropdownMenuItem<int>(
-                        value: i + 1,
-                        child: Text('第 ${i + 1} 章'),
+            padding: const EdgeInsets.fromLTRB(14, 6, 14, 4),
+            child: Container(
+              height: 46,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppTheme.line),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left, size: 22),
+                    onPressed: _chapter > 1 ? () => _goto(_chapter - 1) : null,
+                  ),
+                  Expanded(
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<int>(
+                        value: _chapter,
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        items: List.generate(
+                          widget.chapterCount,
+                          (i) => DropdownMenuItem<int>(
+                            value: i + 1,
+                            child: Text(
+                              '第 ${i + 1} 章 / 共 ${widget.chapterCount} 章',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.ink,
+                              ),
+                            ),
+                          ),
+                        ),
+                        onChanged: (v) => _goto(v ?? 1),
                       ),
                     ),
-                    onChanged: (v) => _goto(v ?? 1),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right),
-                  onPressed: _chapter < widget.chapterCount ? () => _goto(_chapter + 1) : null,
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right, size: 22),
+                    onPressed: _chapter < widget.chapterCount
+                        ? () => _goto(_chapter + 1)
+                        : null,
+                  ),
+                ],
+              ),
             ),
           ),
           // 权威层级图例
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
             child: Row(
               children: [
-                _LegendDot(color: const Color(0xFF3F51B5), text: 'KJV 权威'),
+                _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威'),
                 const SizedBox(width: 10),
-                _LegendDot(color: const Color(0xFF00838F), text: '本应用译文'),
+                _LegendDot(color: AppTheme.zhTeal, text: '本应用译文'),
                 const SizedBox(width: 10),
-                if (_showCuv) _LegendDot(color: const Color(0xFF9E9E9E), text: '和合本仅参照'),
+                if (_showCuv)
+                  _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
                 const Spacer(),
                 if (_loadingNotes)
                   const SizedBox(

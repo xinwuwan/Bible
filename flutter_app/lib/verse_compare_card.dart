@@ -11,6 +11,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_models.dart';
+import 'app_theme.dart';
 
 class VerseCompareCard extends StatelessWidget {
   final VerseView verse;
@@ -30,26 +31,30 @@ class VerseCompareCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 节号 + 引用
             Row(
               children: [
-                CircleAvatar(
-                  radius: 14,
-                  backgroundColor: cs.primaryContainer,
+                Container(
+                  width: 26,
+                  height: 26,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary.withOpacity(0.10),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: Text(
                     '${verse.verse}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 12,
-                      color: cs.onPrimaryContainer,
-                      fontWeight: FontWeight.bold,
+                      color: AppTheme.primary,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -57,9 +62,9 @@ class VerseCompareCard extends StatelessWidget {
                 Text(
                   verse.ref,
                   style: TextStyle(
-                    fontSize: 12,
-                    color: cs.outline,
-                    letterSpacing: 0.5,
+                    fontSize: 11.5,
+                    color: AppTheme.inkSoft,
+                    letterSpacing: 0.6,
                   ),
                 ),
                 const Spacer(),
@@ -75,14 +80,14 @@ class VerseCompareCard extends StatelessWidget {
                     label: 'KJV（权威来源）',
                     badge: '权威',
                     text: verse.kjvText,
-                    color: const Color(0xFF3F51B5),
+                    color: AppTheme.scriptureBlue,
                     emphasis: true,
                   ),
                   _Block(
                     label: '本应用中文译文',
                     badge: '本应用产出',
                     text: verse.ourZh ?? '（译文待补充）',
-                    color: const Color(0xFF00838F),
+                    color: AppTheme.zhTeal,
                     emphasis: true,
                     pending: verse.ourZh == null,
                   ),
@@ -91,7 +96,7 @@ class VerseCompareCard extends StatelessWidget {
                       label: '和合本（仅参照）',
                       badge: '仅参照·非权威',
                       text: verse.cuvRefText ?? '（无参照文本）',
-                      color: const Color(0xFF9E9E9E),
+                      color: AppTheme.cuvGrey,
                       emphasis: false,
                       muted: true,
                     ),
@@ -175,13 +180,17 @@ class _Block extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         border: Border(left: BorderSide(color: color, width: 3)),
-        color: muted ? const Color(0xFFFAFAFA) : color.withOpacity(0.04),
+        color: muted
+            ? const Color(0xFFF7F5F0)
+            : color.withOpacity(0.035),
         borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(6),
-          bottomRight: Radius.circular(6),
+          topLeft: Radius.circular(2),
+          topRight: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+          bottomLeft: Radius.circular(2),
         ),
       ),
       child: Column(
@@ -190,34 +199,44 @@ class _Block extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(4),
+                  color: color.withOpacity(muted ? 0.08 : 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: color.withOpacity(0.25)),
                 ),
                 child: Text(
                   badge,
-                  style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: 9.5,
+                    color: color,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.3,
+                  ),
                 ),
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   label,
-                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppTheme.inkSoft,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 7),
           Text(
             text,
-            style: TextStyle(
-              fontSize: 15,
-              height: 1.5,
-              color: muted ? Colors.grey.shade600 : Colors.black87,
-              fontWeight: emphasis ? FontWeight.w500 : FontWeight.normal,
+            style: AppTheme.scripture(
+              size: muted ? 13.5 : 15,
+              color: muted ? AppTheme.inkSoft : AppTheme.ink,
+              weight: emphasis ? FontWeight.w500 : FontWeight.w400,
+              height: muted ? 1.55 : 1.65,
+            ).copyWith(
               fontStyle: pending ? FontStyle.italic : FontStyle.normal,
             ),
           ),
