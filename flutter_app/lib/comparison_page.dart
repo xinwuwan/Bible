@@ -1,12 +1,12 @@
 // comparison_page.dart
-// 模块 A 主页面：对照阅读（KJV / 本应用译文 / 和合本参照 + 释经注记）
+// 模块 A 主页面：对照阅读（KJV / 中文译文·和合本 + 释经注记）
 //
 // 数据流:
 //   经文  ← 本地离线 SQLite（OfflineDbHelper.getChapter，离线可用）
 //   注记  ← NoteRepository（远端优先，可降级为资产/内存实现）
 //
 // 合规:
-//   - 和合本栏默认可开，但始终标注「仅参照·非权威」；
+//   - 中文译文采用公共领域和合本(1919)，标注出处；KJV 为唯一权威底本；
 //   - 注记默认只显示 approved；draftMode 仅供联调，发布构建必须 false。
 
 import 'package:flutter/material.dart';
@@ -44,7 +44,6 @@ class _ComparisonPageState extends State<ComparisonPage> {
   late int _chapter;
   List<VerseView> _verses = [];
   final Map<String, ComparisonNote> _noteMap = {};
-  bool _showCuv = true;
   bool _loadingNotes = false;
   String? _error;
 
@@ -119,13 +118,6 @@ class _ComparisonPageState extends State<ComparisonPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.bookName} 第 $_chapter 章'),
-        actions: [
-          IconButton(
-            tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
-            icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-            onPressed: () => setState(() => _showCuv = !_showCuv),
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -185,12 +177,9 @@ class _ComparisonPageState extends State<ComparisonPage> {
             padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
             child: Row(
               children: [
-                _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威'),
+                _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威底本'),
                 const SizedBox(width: 10),
-                _LegendDot(color: AppTheme.zhTeal, text: '本应用译文'),
-                const SizedBox(width: 10),
-                if (_showCuv)
-                  _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
+                _LegendDot(color: AppTheme.zhTeal, text: '中文译文·和合本'),
                 const Spacer(),
                 if (_loadingNotes)
                   const SizedBox(
@@ -222,7 +211,6 @@ class _ComparisonPageState extends State<ComparisonPage> {
                       return VerseCompareCard(
                         verse: v,
                         note: note,
-                        showCuv: _showCuv,
                         draftMode: widget.draftMode,
                         onTapNote: note == null ? null : () => _openNote(note),
                       );

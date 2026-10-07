@@ -1,12 +1,11 @@
 // verse_compare_card.dart
-// 模块 A 核心展示组件：单节「三栏对照」卡片。
+// 模块 A 核心展示组件：单节「两栏对照」卡片。
 //
-// 三栏定位（视觉上必须层级分明，防止用户把和合本误当权威）:
-//   ① KJV 英文        —— 权威来源（唯一底本）
-//   ② 本应用中文译文  —— 本应用独立产出
-//   ③ 和合本          —— 仅参照，灰色弱化，标注「不作为权威来源」
+// 两栏定位（视觉上必须层级分明）:
+//   ① KJV 英文            —— 权威来源（唯一底本）
+//   ② 中文译文（和合本）  —— 采用公共领域和合本(1919)，完整覆盖全本
 //
-// 跨平台：宽度 >= 720 时三栏并排（平板/桌面），否则纵向堆叠（手机）。
+// 跨平台：宽度 >= 720 时两栏并排（平板/桌面），否则纵向堆叠（手机）。
 
 import 'package:flutter/material.dart';
 
@@ -16,7 +15,6 @@ import 'app_theme.dart';
 class VerseCompareCard extends StatelessWidget {
   final VerseView verse;
   final ComparisonNote? note;
-  final bool showCuv;      // 是否显示和合本参照栏
   final bool draftMode;    // 开发联调：允许展示 draft 注记（发布必须 false）
   final VoidCallback? onTapNote;
 
@@ -24,7 +22,6 @@ class VerseCompareCard extends StatelessWidget {
     super.key,
     required this.verse,
     this.note,
-    this.showCuv = true,
     this.draftMode = false,
     this.onTapNote,
   });
@@ -77,29 +74,20 @@ class VerseCompareCard extends StatelessWidget {
                 final wide = c.maxWidth >= 720;
                 final blocks = <Widget>[
                   _Block(
-                    label: 'KJV（权威来源）',
+                    label: 'KJV（权威底本）',
                     badge: '权威',
                     text: verse.kjvText,
                     color: AppTheme.scriptureBlue,
                     emphasis: true,
                   ),
                   _Block(
-                    label: '本应用中文译文',
-                    badge: '本应用产出',
-                    text: verse.ourZh ?? '（译文待补充）',
+                    label: '中文译文（和合本）',
+                    badge: '译文',
+                    text: verse.ourZh ?? verse.cuvRefText ?? '（译文待补充）',
                     color: AppTheme.zhTeal,
                     emphasis: true,
-                    pending: verse.ourZh == null,
+                    pending: verse.ourZh == null && verse.cuvRefText == null,
                   ),
-                  if (showCuv)
-                    _Block(
-                      label: '和合本（仅参照）',
-                      badge: '仅参照·非权威',
-                      text: verse.cuvRefText ?? '（无参照文本）',
-                      color: AppTheme.cuvGrey,
-                      emphasis: false,
-                      muted: true,
-                    ),
                 ];
                 if (wide) {
                   return Row(
@@ -163,7 +151,6 @@ class _Block extends StatelessWidget {
   final String text;
   final Color color;
   final bool emphasis;
-  final bool muted;
   final bool pending;
 
   const _Block({
@@ -172,7 +159,6 @@ class _Block extends StatelessWidget {
     required this.text,
     required this.color,
     required this.emphasis,
-    this.muted = false,
     this.pending = false,
   });
 
@@ -183,9 +169,7 @@ class _Block extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         border: Border(left: BorderSide(color: color, width: 3)),
-        color: muted
-            ? const Color(0xFFF7F5F0)
-            : color.withOpacity(0.035),
+        color: color.withOpacity(0.035),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(2),
           topRight: Radius.circular(10),
@@ -201,7 +185,7 @@ class _Block extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(muted ? 0.08 : 0.12),
+                  color: color.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: color.withOpacity(0.25)),
                 ),
@@ -232,10 +216,10 @@ class _Block extends StatelessWidget {
           Text(
             text,
             style: AppTheme.scripture(
-              size: muted ? 13.5 : 15,
-              color: muted ? AppTheme.inkSoft : AppTheme.ink,
+              size: 15,
+              color: AppTheme.ink,
               weight: emphasis ? FontWeight.w500 : FontWeight.w400,
-              height: muted ? 1.55 : 1.65,
+              height: 1.65,
             ).copyWith(
               fontStyle: pending ? FontStyle.italic : FontStyle.normal,
             ),

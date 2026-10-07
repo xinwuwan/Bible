@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-fetch_cuv.py - 下载和合本(CUV)并合并进 app_data.json 的 cuv_ref_text
+fetch_cuv.py - 下载和合本(CUV)并合并进 app_data.json 的 cuv_ref_text / our_zh
 =========================================================================
-权威定位 : 和合本(1919 官话和合本, 公共领域) 仅作为「参照展示」，绝不作为
-           本应用的权威译文（权威底本为 KJV 英文原版）。
-落库目标 : flutter_app/assets/web/app_data.json 中每节经文的 cuv_ref_text 栏。
+权威定位 : KJV 英文原文为唯一权威底本。和合本(1919 官话和合本, 公共领域)
+           作为应用的中文译文展示（our_zh），同时保留 cuv_ref_text 参照栏。
+落库目标 : flutter_app/assets/web/app_data.json
+           - 每节经文的 cuv_ref_text 栏（参照）
+           - 每节经文的 our_zh 栏（中文译文，仅当为空时填充）
 
 数据来源 : MaatheusGois/bible 仓库的 versions/zh/cuv.json
            结构: [ { "id": "gn", "chapters": [ ["v1","v2",...], ... ] }, ... ]
@@ -125,7 +127,14 @@ def parse_cuv(text):
 
 
 def merge(out_file, cuv):
-    """把 cuv 合并进已有 app_data.json 的 cuv_ref_text 栏。"""
+    """把 cuv 合并进已有 app_data.json。
+
+    同时填充两栏:
+      - cuv_ref_text: 和合本参照栏（保留，向后兼容）
+      - our_zh      : 中文译文栏。和合本为公共领域(1919)，作为应用的
+                      中文译文展示；仅当 our_zh 为空时填充，不覆盖
+                      将来人工审核的独立译文。
+    """
     if not os.path.exists(out_file):
         print("[error] 未找到 app_data.json，请先运行 fetch_kjv.py 生成", file=sys.stderr)
         return None
@@ -133,14 +142,18 @@ def merge(out_file, cuv):
         data = json.load(f)
     verses = data.get("verse", [])
     cnt = 0
+    zh_cnt = 0
     for v in verses:
         key = (v.get("book_id"), v.get("chapter"), v.get("verse"))
         if key in cuv:
             v["cuv_ref_text"] = cuv[key]
             cnt += 1
+            if not (v.get("our_zh") or "").strip():
+                v["our_zh"] = cuv[key]
+                zh_cnt += 1
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
-    return cnt, len(verses), len(cuv)
+    return cnt, len(verses), len(cuv), zh_cnt
 
 
 def main():
@@ -172,9 +185,9 @@ def main():
     res = merge(OUT_FILE, cuv)
     if res is None:
         return 2
-    cnt, total, cuv_total = res
+    cnt, total, cuv_total, zh_cnt = res
     size_kb = os.path.getsize(OUT_FILE) / 1024
-    print(f"[done] merged CUV for {cnt}/{total} verses (cuv source had {cuv_total}) -> {OUT_FILE} ({size_kb:.1f} KB)")
+    print(f"[done] merged CUV for {cnt}/{total} verses (cuv source had {cuv_total}, zh filled {zh_cnt}) -> {OUT_FILE} ({size_kb:.1f} KB)")
     return 0
 
 

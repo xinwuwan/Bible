@@ -124,7 +124,7 @@ class OfflineQaLogic {
           : '（中文译文待补充）';
       final ans = QaAnswer(
         answerId: 'qa_offline_${ref.replaceAll(' ', '')}',
-        answerZh: '【$ref】KJV 英文底本（本应用中文为独立产出，非权威来源）\n\n$zh',
+        answerZh: '【$ref】KJV 英文底本（中文译文采用公共领域和合本，供对照阅读）\n\n$zh',
         citations: [
           QaCitation(
             sourceType: QaSourceType.bible,

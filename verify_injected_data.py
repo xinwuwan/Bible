@@ -10,8 +10,8 @@ verify_injected_data.py - CI 注入后的数据完整性硬闸门
   1. book 数组恰好 66 卷
   2. verse >= 30000 节（全本 KJV 约 31100 节）
   3. GEN 1:1 的 kjv_text 非空（KJV 注入成功）
-  4. GEN 1:1 的 cuv_ref_text 非空（和合本注入成功）
-  5. 抽查 3 个末卷经文（REV 22:21 等）kjv_text 非空
+  4. GEN 1:1 的 cuv_ref_text / our_zh 非空（和合本注入 + 中文译文已填充）
+  5. 抽查 3 个末卷经文（REV 22:21 等）kjv_text / our_zh 非空
   6. health_topic / doctrine 等模块 C、教义数据仍在（未被注入覆盖丢失）
 
 用法:
@@ -65,12 +65,22 @@ def main():
         bool((gen11.get("cuv_ref_text") or "").strip()),
         repr((gen11.get("cuv_ref_text") or "")[:20]),
     )
+    check(
+        "GEN 1:1 our_zh 非空（中文译文已填充）",
+        bool((gen11.get("our_zh") or "").strip()),
+        repr((gen11.get("our_zh") or "")[:20]),
+    )
 
     rev = idx.get((66, 22, 21), {})
     check(
         "REV 22:21 kjv_text 非空（末卷抽查）",
         bool((rev.get("kjv_text") or "").strip()),
         repr((rev.get("kjv_text") or "")[:40]),
+    )
+    check(
+        "REV 22:21 our_zh 非空（中文译文末卷抽查）",
+        bool((rev.get("our_zh") or "").strip()),
+        repr((rev.get("our_zh") or "")[:20]),
     )
     mal = idx.get((39, 4, 6), {})
     check(
