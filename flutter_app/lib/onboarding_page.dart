@@ -160,7 +160,7 @@ class OnboardingPage extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 8),
-                        Text('· 中文译文采用公共领域的和合本（1919），一切以英文权威原文（KJV）为准。',
+                        Text('· 本应用中文译文为独立产出（非任何现有中文译本），和合本仅作参照；一切以英文权威原文（KJV）为准。',
                             style: _noticeStyle),
                         SizedBox(height: 4),
                         Text('· 健康内容不替代专业医疗诊断，如有健康问题请咨询医生。',

@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-fetch_cuv.py - 下载和合本(CUV)并合并进 app_data.json 的 cuv_ref_text / our_zh
+fetch_cuv.py - 下载和合本(CUV)并合并进 app_data.json 的 cuv_ref_text
 =========================================================================
 权威定位 : KJV 英文原文为唯一权威底本。和合本(1919 官话和合本, 公共领域)
-           作为应用的中文译文展示（our_zh），同时保留 cuv_ref_text 参照栏。
+           仅作为「参照展示」（cuv_ref_text 栏），绝不充当本应用译文。
 落库目标 : flutter_app/assets/web/app_data.json
-           - 每节经文的 cuv_ref_text 栏（参照）
-           - 每节经文的 our_zh 栏（中文译文，仅当为空时填充）
+           - 每节经文的 cuv_ref_text 栏（参照展示，灰化、标注仅参照）
 
 数据来源 : MaatheusGois/bible 仓库的 versions/zh/cuv.json
            结构: [ { "id": "gn", "chapters": [ ["v1","v2",...], ... ] }, ... ]
@@ -17,6 +16,8 @@ fetch_cuv.py - 下载和合本(CUV)并合并进 app_data.json 的 cuv_ref_text /
   - 书卷按 id 映射到本应用 book_id（与 fetch_kjv.py 的 66 卷顺序一致）；
     id 无法识别时回退到数组位置，并打印告警，不静默错配。
   - 仅填 cuv_ref_text，不改动 kjv_text / our_zh / health_* / doctrine。
+  - ⚠️ our_zh（本应用译文）一律不由此脚本填充——译文须由应用独立产出，
+    绝不采用和合本等现有中文译本作为译文内容（合规铁律）。
   - 依赖已存在的 app_data.json（先跑 fetch_kjv.py 生成）；若缺失则报错提示。
   - 纯标准库、无第三方依赖；CI 与用户本机均可直接 python3 fetch_cuv.py 运行。
 
@@ -142,18 +143,16 @@ def merge(out_file, cuv):
         data = json.load(f)
     verses = data.get("verse", [])
     cnt = 0
-    zh_cnt = 0
     for v in verses:
         key = (v.get("book_id"), v.get("chapter"), v.get("verse"))
         if key in cuv:
+            # 和合本仅作为「参照展示」落库 cuv_ref_text；
+            # 绝不写入 our_zh（本应用译文栏），译文须由应用独立产出。
             v["cuv_ref_text"] = cuv[key]
             cnt += 1
-            if not (v.get("our_zh") or "").strip():
-                v["our_zh"] = cuv[key]
-                zh_cnt += 1
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
-    return cnt, len(verses), len(cuv), zh_cnt
+    return cnt, len(verses), len(cuv)
 
 
 def main():

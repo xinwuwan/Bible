@@ -22,7 +22,7 @@ class AppTheme {
   static const Color line = Color(0xFFE9E4DA); // 细描边
   static const Color cardBg = Colors.white;
 
-  // 两栏语义色（对照页 KJV 权威底本 / 中文译文·和合本）
+  // 三栏语义色（对照页 KJV 权威底本 / 本应用译文 / 和合本仅参照）
   static const Color scriptureBlue = Color(0xFF3F51B5);
   static const Color zhTeal = Color(0xFF007781);
   static const Color cuvGrey = Color(0xFF8D8D8D);

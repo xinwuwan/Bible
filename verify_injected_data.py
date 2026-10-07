@@ -10,9 +10,11 @@ verify_injected_data.py - CI 注入后的数据完整性硬闸门
   1. book 数组恰好 66 卷
   2. verse >= 30000 节（全本 KJV 约 31100 节）
   3. GEN 1:1 的 kjv_text 非空（KJV 注入成功）
-  4. GEN 1:1 的 cuv_ref_text / our_zh 非空（和合本注入 + 中文译文已填充）
-  5. 抽查 3 个末卷经文（REV 22:21 等）kjv_text / our_zh 非空
-  6. health_topic / doctrine 等模块 C、教义数据仍在（未被注入覆盖丢失）
+  4. GEN 1:1 的 cuv_ref_text 非空（和合本参照列已注入）
+  5. 和合本参照列覆盖率 >= 99%（全本可参照）
+  6. 抽查 REV 22:21 / MAL 4:6 的 kjv_text 非空（末卷抽查）
+  7. our_zh 不被脚本误填（合规：译文须由应用独立产出，CI 不得用和合本灌入）
+  8. health_topic / doctrine 等模块 C、教义数据仍在（未被注入覆盖丢失）
 
 用法:
   python3 verify_injected_data.py                     # 检查默认文件
@@ -61,14 +63,25 @@ def main():
         repr((gen11.get("kjv_text") or "")[:40]),
     )
     check(
-        "GEN 1:1 cuv_ref_text 非空（和合本已注入）",
+        "GEN 1:1 cuv_ref_text 非空（和合本参照已注入）",
         bool((gen11.get("cuv_ref_text") or "").strip()),
         repr((gen11.get("cuv_ref_text") or "")[:20]),
     )
+
+    # 和合本参照列覆盖率（全本应能参照）
+    cuv_filled = sum(1 for v in verses if (v.get("cuv_ref_text") or "").strip())
     check(
-        "GEN 1:1 our_zh 非空（中文译文已填充）",
-        bool((gen11.get("our_zh") or "").strip()),
-        repr((gen11.get("our_zh") or "")[:20]),
+        "和合本参照列覆盖率 >= 99%",
+        len(verses) > 0 and cuv_filled / len(verses) >= 0.99,
+        f"{cuv_filled}/{len(verses)} = {cuv_filled / max(len(verses), 1):.1%}",
+    )
+
+    # 合规：our_zh 绝不应由 CUV 注入脚本填充
+    zh_filled = sum(1 for v in verses if (v.get("our_zh") or "").strip())
+    check(
+        "our_zh 未被注入脚本填充（译文须应用独立产出）",
+        zh_filled == 0,
+        f"our_zh 非空节数 = {zh_filled}",
     )
 
     rev = idx.get((66, 22, 21), {})
@@ -76,11 +89,6 @@ def main():
         "REV 22:21 kjv_text 非空（末卷抽查）",
         bool((rev.get("kjv_text") or "").strip()),
         repr((rev.get("kjv_text") or "")[:40]),
-    )
-    check(
-        "REV 22:21 our_zh 非空（中文译文末卷抽查）",
-        bool((rev.get("our_zh") or "").strip()),
-        repr((rev.get("our_zh") or "")[:20]),
     )
     mal = idx.get((39, 4, 6), {})
     check(

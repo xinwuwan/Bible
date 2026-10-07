@@ -1,6 +1,6 @@
 // test/verse_compare_card_test.dart
-// 模块 A 两栏对照卡片的 widget 测试。
-// 覆盖: 两栏徽标/文本、译文回退链(our_zh → cuv_ref_text → 占位)、注记 chip 显示与点击回调。
+// 模块 A 三栏对照卡片的 widget 测试。
+// 覆盖: 三栏徽标/文本、和合本可隐藏、our_zh 缺失占位、注记 chip 显示与点击回调。
 // 运行: flutter test test/verse_compare_card_test.dart
 
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ VerseView sampleVerse() => const VerseView(
 Future<void> pumpCard(
   WidgetTester tester, {
   ComparisonNote? note,
+  bool showCuv = true,
   VoidCallback? onTapNote,
   double width = 800,
 }) async {
@@ -32,6 +33,7 @@ Future<void> pumpCard(
             child: VerseCompareCard(
               verse: sampleVerse(),
               note: note,
+              showCuv: showCuv,
               onTapNote: onTapNote,
             ),
           ),
@@ -42,16 +44,25 @@ Future<void> pumpCard(
 }
 
 void main() {
-  testWidgets('两栏都渲染：权威 KJV / 中文译文（和合本）', (tester) async {
+  testWidgets('三栏都渲染：权威 / 本应用产出 / 仅参照', (tester) async {
     await pumpCard(tester);
     expect(find.text('权威'), findsOneWidget);
-    expect(find.text('译文'), findsOneWidget);
+    expect(find.text('本应用产出'), findsOneWidget);
+    expect(find.text('仅参照·非权威'), findsOneWidget);
     expect(find.text('JHN 3:16'), findsOneWidget);
     expect(find.textContaining('For God so loved'), findsOneWidget);
+    // 神爱世人 同时出现在 our_zh 与 cuv 两栏
     expect(find.textContaining('神爱世人'), findsWidgets);
   });
 
-  testWidgets('our_zh 缺失时回退到 cuv_ref_text', (tester) async {
+  testWidgets('showCuv=false 时隐藏和合本栏', (tester) async {
+    await pumpCard(tester, showCuv: false);
+    expect(find.text('仅参照·非权威'), findsNothing);
+    expect(find.text('权威'), findsOneWidget);
+    expect(find.text('本应用产出'), findsOneWidget);
+  });
+
+  testWidgets('our_zh 缺失且 cuv 缺失时显示待补充占位', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
@@ -63,15 +74,13 @@ void main() {
                 ref: 'GEN 1:1',
                 kjvText: 'In the beginning God created the heaven and the earth.',
                 ourZh: null,
-                cuvRefText: '起初，神创造天地。',
               ),
             ),
           ),
         ),
       ),
     );
-    expect(find.textContaining('起初，神创造天地'), findsOneWidget);
-    expect(find.text('（译文待补充）'), findsNothing);
+    expect(find.text('（译文待补充）'), findsOneWidget);
   });
 
   testWidgets('无注记时不显示注记 chip', (tester) async {
@@ -110,26 +119,5 @@ void main() {
     await pumpCard(tester, note: note);
     expect(find.text('待规范化'), findsOneWidget);
     expect(find.text('实质一致'), findsNothing);
-  });
-
-  testWidgets('our_zh 与 cuv_ref_text 均缺失时显示待补充占位', (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SizedBox(
-            width: 800,
-            child: VerseCompareCard(
-              verse: const VerseView(
-                verse: 1,
-                ref: 'GEN 1:1',
-                kjvText: 'In the beginning God created the heaven and the earth.',
-                ourZh: null,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    expect(find.text('（译文待补充）'), findsOneWidget);
   });
 }

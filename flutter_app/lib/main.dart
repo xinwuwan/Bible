@@ -450,7 +450,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               const SizedBox(width: 8),
                               const Expanded(
                                 child: Text(
-                                  '权威依据：KJV 英文原文（唯一底本）。中文译文采用公共领域的和合本（1919），供对照阅读。',
+                                  '权威依据：KJV 英文原文（唯一底本）。本应用中文译文为独立产出（非任何现有中文译本）；和合本仅作参照展示。',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: AppTheme.inkSoft,
