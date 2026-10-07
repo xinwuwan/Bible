@@ -73,7 +73,8 @@ for _i, _code in enumerate(CODES):
 def fetch_url(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=120) as r:
-        return r.read().decode("utf-8")
+        # utf-8-sig: 自动剥离部分源文件自带的 UTF-8 BOM，否则 json.loads 会报错
+        return r.read().decode("utf-8-sig")
 
 
 def fetch_urls_retry(urls, retries=4):
@@ -96,7 +97,8 @@ def parse_cuv(text):
     不依赖猜测各书卷的 id 命名；id 仅作非致命的交叉校验。
     返回 (cuv_dict, book_count, id_warnings)。
     """
-    arr = json.loads(text)
+    # 防御：源文件可能带 UTF-8 BOM（\ufeff），先剥离再解析
+    arr = json.loads(text.lstrip("\ufeff"))
     if not isinstance(arr, list):
         raise ValueError("CUV 源根节点不是数组")
 
@@ -152,7 +154,7 @@ def main():
     args = ap.parse_args()
 
     if args.input:
-        with open(args.input, encoding="utf-8") as f:
+        with open(args.input, encoding="utf-8-sig") as f:
             text = f.read()
     else:
         urls = [u.strip() for u in args.urls.split(",") if u.strip()]
