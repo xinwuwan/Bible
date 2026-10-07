@@ -109,6 +109,18 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: python3 verify_injected_data.py
 
+      - name: Apply LLM translations (from our_zh.json if present)
+        # 把已提交的 our_zh.json（由 translate_kjv.py 从 KJV 直译生成）合并进 app_data.json。
+        # 若 our_zh.json 不存在，则译文栏保持空（UI 显示「译文待补充」）。
+        working-directory: ${{ github.workspace }}
+        run: |
+          if [ -f flutter_app/assets/web/our_zh.json ]; then
+            python3 translate_kjv.py --apply
+            echo "::notice::已合并 our_zh.json 中的 LLM 直译译文"
+          else
+            echo "::notice::未找到 our_zh.json，译文栏将留空。可在本机运行 translate_kjv.py（需 LLM_API_KEY）生成后提交。"
+          fi
+
       - name: Pub get
         run: flutter pub get
 

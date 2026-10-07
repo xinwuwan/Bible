@@ -1,0 +1,57 @@
+# Translate KJV -> Chinese (our_zh) via LLM
+#
+# 用途：用 LLM 从 KJV 英文**直译**生成「本应用中文译文」(our_zh.json)。
+#       译文为应用独立产出，绝不复制和合本等现有中文译本（合规铁律）。
+# 触发：仓库 Actions 页 -> Translate KJV to Chinese -> Run workflow
+# 前置：在 仓库 Settings > Secrets and variables > Actions 中添加：
+#        LLM_API_KEY  （必填，你的 OpenAI / DeepSeek / Qwen 等兼容接口密钥）
+#        LLM_BASE_URL （可选，默认 https://api.openai.com/v1）
+#        LLM_MODEL    （可选，默认 gpt-4o-mini）
+# 效果：翻译断点续译（our_zh.json 已译章节自动跳过），完成后自动合并并重新部署。
+
+name: Translate KJV to Chinese
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Translate pending chapters (resume from our_zh.json)
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: python3 translate_kjv.py
+
+      - name: Commit our_zh.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flutter_app/assets/web/our_zh.json
+          if git diff --cached --quiet; then
+            echo "no new translations this run"
+          else
+            git commit -m "chore: translate more KJV chapters via LLM"
+            git push
+          fi
+
+      - name: Trigger deploy
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-web.yml

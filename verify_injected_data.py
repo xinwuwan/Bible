@@ -13,7 +13,7 @@ verify_injected_data.py - CI 注入后的数据完整性硬闸门
   4. GEN 1:1 的 cuv_ref_text 非空（和合本参照列已注入）
   5. 和合本参照列覆盖率 >= 99%（全本可参照）
   6. 抽查 REV 22:21 / MAL 4:6 的 kjv_text 非空（末卷抽查）
-  7. our_zh 不被脚本误填（合规：译文须由应用独立产出，CI 不得用和合本灌入）
+  7. our_zh 若存在，不得与和合本(cuv_ref_text)逐字相同（合规：译文须由应用独立产出，不得复制现有中文译本）
   8. health_topic / doctrine 等模块 C、教义数据仍在（未被注入覆盖丢失）
 
 用法:
@@ -76,12 +76,19 @@ def main():
         f"{cuv_filled}/{len(verses)} = {cuv_filled / max(len(verses), 1):.1%}",
     )
 
-    # 合规：our_zh 绝不应由 CUV 注入脚本填充
+    # 合规：our_zh 可由 LLM 从 KJV 直译填充，但绝不能与和合本逐字相同
+    # （不得复制现有中文译本）。
     zh_filled = sum(1 for v in verses if (v.get("our_zh") or "").strip())
+    copy_violations = sum(
+        1
+        for v in verses
+        if (v.get("our_zh") or "").strip()
+        and (v.get("our_zh") or "").strip() == (v.get("cuv_ref_text") or "").strip()
+    )
     check(
-        "our_zh 未被注入脚本填充（译文须应用独立产出）",
-        zh_filled == 0,
-        f"our_zh 非空节数 = {zh_filled}",
+        "our_zh 未复制和合本（逐字相同计数=0，合规）",
+        copy_violations == 0,
+        f"our_zh 已填充 {zh_filled} 节；与和合本雷同 {copy_violations} 节",
     )
 
     rev = idx.get((66, 22, 21), {})

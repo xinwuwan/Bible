@@ -128,13 +128,10 @@ def parse_cuv(text):
 
 
 def merge(out_file, cuv):
-    """把 cuv 合并进已有 app_data.json。
+    """把 cuv 合并进已有 app_data.json 的 cuv_ref_text 栏（和合本参照）。
 
-    同时填充两栏:
-      - cuv_ref_text: 和合本参照栏（保留，向后兼容）
-      - our_zh      : 中文译文栏。和合本为公共领域(1919)，作为应用的
-                      中文译文展示；仅当 our_zh 为空时填充，不覆盖
-                      将来人工审核的独立译文。
+    合规铁律：仅填充 cuv_ref_text（参照展示），绝不写入 our_zh（本应用译文栏）。
+    译文须由 LLM 从 KJV 直译生成（translate_kjv.py），不得采用和合本等现有中文译本。
     """
     if not os.path.exists(out_file):
         print("[error] 未找到 app_data.json，请先运行 fetch_kjv.py 生成", file=sys.stderr)
@@ -184,9 +181,9 @@ def main():
     res = merge(OUT_FILE, cuv)
     if res is None:
         return 2
-    cnt, total, cuv_total, zh_cnt = res
+    cnt, total, cuv_total = res
     size_kb = os.path.getsize(OUT_FILE) / 1024
-    print(f"[done] merged CUV for {cnt}/{total} verses (cuv source had {cuv_total}, zh filled {zh_cnt}) -> {OUT_FILE} ({size_kb:.1f} KB)")
+    print(f"[done] merged CUV for {cnt}/{total} verses (cuv source had {cuv_total}) -> {OUT_FILE} ({size_kb:.1f} KB)")
     return 0
 
 
