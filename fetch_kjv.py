@@ -106,7 +106,8 @@ def book_filename(name_en):
 
 def parse_book_json(text, code, book_id):
     """解析单卷 aruljohn JSON 为 verse 行列表（列名对齐 UI 契约）。"""
-    obj = json.loads(text)
+    # 防御：源文件可能带 UTF-8 BOM（\ufeff），先剥离再解析
+    obj = json.loads(text.lstrip("\ufeff"))
     out = []
     if not isinstance(obj, dict):
         return out
@@ -156,7 +157,8 @@ def load_passthrough():
 def fetch_url(url):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=60) as r:
-        return r.read().decode("utf-8")
+        # utf-8-sig: 自动剥离部分源文件自带的 UTF-8 BOM，否则 json.loads 会报错
+        return r.read().decode("utf-8-sig")
 
 
 def fetch_url_retry(url, retries=3):
