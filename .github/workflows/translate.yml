@@ -12,14 +12,21 @@
 name: Translate KJV to Chinese
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      books:
+        description: "只译指定书卷 id（逗号分隔，如 1,2,3；留空 = 全本）"
+        required: false
+        default: ""
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   translate:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,12 +38,22 @@ jobs:
         with:
           python-version: "3.12"
 
+      # 关键：仓库里提交的 app_data.json 只有种子数据，
+      # 全本 KJV 由本步骤临时抓取生成（不提交），供翻译脚本使用。
+      - name: Fetch full KJV into app_data.json
+        run: python3 fetch_kjv.py
+
       - name: Translate pending chapters (resume from our_zh.json)
         env:
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
           LLM_MODEL: ${{ secrets.LLM_MODEL }}
-        run: python3 translate_kjv.py
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.books }}" ]; then
+            ARGS="--books ${{ github.event.inputs.books }}"
+          fi
+          python3 translate_kjv.py $ARGS
 
       - name: Commit our_zh.json
         run: |
