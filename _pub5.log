@@ -1,0 +1,4 @@
+Resolving dependencies...
+Because pubtest depends on path any which doesn't exist (could not find package path in cache), version solving failed.
+
+Try again without --offline!

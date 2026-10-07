@@ -1,0 +1,8 @@
+# Flutter/Win32 build artifacts
+flutter/
+**/flutter/.plugin_symlinks/
+**/flutter/ephemeral/
+**/flutter/generated_plugin_registrant.*
+**/flutter/generated_plugins.cmake
+**/flutter/windows_build_files.*
+x64/

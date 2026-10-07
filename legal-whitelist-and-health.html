@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法务可用英文原版白名单 + 健康模块 NEWSTART 表结构</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1f2733; --muted:#5b6776;
+    --line:#e4e8ee; --accent:#2f6df0; --accent2:#0f9d7a; --warn:#c9621a; --danger:#c0392b;
+    --soft:#eef3fd; --soft2:#eafaf3; --soft3:#fff6ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65;font-size:14.5px}
+  .wrap{max-width:1000px;margin:0 auto;padding:30px 22px 70px}
+  header.hero{background:linear-gradient(135deg,#2f6df0,#0f9d7a);color:#fff;border-radius:16px;padding:28px 28px;margin-bottom:24px}
+  header.hero h1{margin:0 0 6px;font-size:22px}
+  header.hero p{margin:0;opacity:.92;font-size:13.5px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px}
+  section h2{margin:0 0 12px;font-size:19px;border-left:4px solid var(--accent);padding-left:11px}
+  section h3{font-size:15.5px;margin:18px 0 7px;color:var(--accent)}
+  p{margin:7px 0}
+  .code{background:#0f1c2e;color:#d6e2f5;padding:14px 16px;border-radius:10px;font-family:"SF Mono",Consolas,monospace;font-size:12.5px;overflow:auto;white-space:pre}
+  .note{background:var(--soft);border-left:4px solid var(--accent);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .warn{background:var(--soft3);border-left:4px solid var(--warn);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .danger{background:#fdecea;border-left:4px solid var(--danger);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .box{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .box h4{margin:0 0 5px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.5px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600}
+  .p-ok{background:var(--soft2);color:var(--accent2)}
+  .p-warn{background:var(--soft3);color:var(--warn)}
+  .p-danger{background:#fdecea;color:var(--danger)}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>法务可用英文原版白名单 · 健康模块 NEWSTART 表结构</h1>
+  <p>给法务的「可作底本的英文原版」分级清单 + 模块 C 健康指导数据表设计</p>
+</header>
+
+<!-- ============ 法务白名单 ============ -->
+<section id="legal">
+  <h2>一、给法务的可用英文原版白名单</h2>
+  <div class="danger"><strong>性质声明：</strong>本清单为<strong>工程与产品侧的版权风险初判</strong>，<u>不构成法律意见</u>。最终可用性必须由具备相关司法辖区资格的知识产权律师裁定，尤其在美、中（含港澳台）、东南亚（马来西亚 / 新加坡）等目标市场。</div>
+
+  <h3>1.1 分级原则</h3>
+  <div class="grid">
+    <div class="box"><h4><span class="pill p-ok"> Tier 1 可直接用</span></h4><p class="muted">英文原版、作者逝世超 70 年、且非身后汇编 / 非译本。抓取前仍做单本确认。</p></div>
+    <div class="box"><h4><span class="pill p-warn"> Tier 2 需逐本核实</span></h4><p class="muted">身后由 White Estate 编纂的汇编本 / 现代带版权版本，版权状态随本、随法域而异。</p></div>
+    <div class="box"><h4><span class="pill p-danger"> Tier 3 绝对禁止</span></h4><p class="muted">任何语言译本（含和合本及 EGW 中文版）、第三方研读本、带新版权的现代编辑本。</p></div>
+    <div class="box"><h4><span class="pill p-warn"> 区域特例</span></h4><p class="muted">KJV 在英国 / 英联邦受 Crown copyright 约束，全球分发需单独评估。</p></div>
+  </div>
+
+  <h3>1.2 Tier 1 · KJV 圣经（权威底本）</h3>
+  <table>
+    <tr><th>材料</th><th>类型</th><th>出版</th><th>预计版权</th><th>可用区域</th><th>法务动作</th></tr>
+    <tr>
+      <td><strong>KJV (1611) 经文文本</strong></td>
+      <td>圣经原文（英文）</td>
+      <td>1611</td>
+      <td><span class="pill p-ok">公共领域</span></td>
+      <td>美国及多数法域 PD</td>
+      <td>美区可直接用；<strong>英国 / 英联邦注意 Crown copyright（至 2039）</strong>，对英联邦用户分发需单独许可或规避</td>
+    </tr>
+  </table>
+  <div class="warn"><strong>KJV 区域坑：</strong>在英国与部分英联邦国家，KJV 文本受英国王室版权（Royal Letters Patent）保护，Cambridge / Oxford UP 为授权印厂，保护期至 2039 年。一个"全球"应用若向英国用户推送 KJV 全文，可能触发该权利。建议：英美分别处理，或对英联邦用户改用同样 PD 的英文译本（如 ASV / WEB）作为底本，并在法务确认后统一。</div>
+
+  <h3>1.3 Tier 1 · 怀爱伦生前原版英文著作（卒于 1915）</h3>
+  <table>
+    <tr><th>著作</th><th>原版出版年</th><th>预计版权（美区）</th><th>风险</th></tr>
+    <tr><td>Steps to Christ《服务真诠》</td><td>1892</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>The Great Controversy《善恶之争》</td><td>1888 / 1911</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>The Desire of Ages《历代愿望》</td><td>1898</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Patriarchs and Prophets《先祖与先知》</td><td>1890</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Prophets and Kings《先知与君王》</td><td>1917</td><td><span class="pill p-ok">PD（1917&lt;1929）</span></td><td>低</td></tr>
+    <tr><td>Acts of the Apostles《使徒行述》</td><td>1911</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Education《教育论》</td><td>1903</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Christ's Object Lessons《基督比喻实训》</td><td>1900</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Thoughts from the Mount of Blessing《山边宝训》</td><td>1896</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>The Ministry of Healing《服务圣言/疗养》*</td><td>1905</td><td><span class="pill p-ok">原版 PD</span></td><td>低（见注）</td></tr>
+    <tr><td>Testimonies for the Church（9 卷）</td><td>1855–1909</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+    <tr><td>Selected Messages（部分生前文稿）</td><td>生前</td><td><span class="pill p-ok">PD</span></td><td>低</td></tr>
+  </table>
+  <p class="muted">*《The Ministry of Healing》1905 原版为 PD；但市面上常见的是 Estate 后续编辑 / 重排本，须取<strong>1905 原版文本</strong>，而非现代编辑版。</p>
+
+  <h3>1.4 Tier 2 · 身后汇编本（需逐本核实）</h3>
+  <p>以下由 White Estate 在 EGW 逝世后编纂，版权状态随本、随法域而异，<strong>未经法务确认前不得入库</strong>：</p>
+  <table>
+    <tr><th>汇编本</th><th>编纂/出版年</th><th>风险</th><th>法务动作</th></tr>
+    <tr><td>Counsels on Diet and Foods《饮食证言》</td><td>1938</td><td><span class="pill p-warn">中</span></td><td>核查美区是否 renewal；优先改用其中 PD 单篇来源</td></tr>
+    <tr><td>Counsels on Health</td><td>1923</td><td><span class="pill p-warn">中</span></td><td>同上；或拆回生前 PD 短文</td></tr>
+    <tr><td>Temperance《节制》</td><td>1949</td><td><span class="pill p-warn">中高</span></td><td>多为身后汇编，需确认</td></tr>
+    <tr><td>Evangelism</td><td>1946</td><td><span class="pill p-warn">中高</span></td><td>身后汇编，需确认</td></tr>
+    <tr><td>The Adventist Home</td><td>1952</td><td><span class="pill p-warn">高</span></td><td>身后汇编，需确认</td></tr>
+    <tr><td>Child Guidance</td><td>1954</td><td><span class="pill p-warn">高</span></td><td>身后汇编，需确认</td></tr>
+    <tr><td>Messages to Young People</td><td>1930</td><td><span class="pill p-warn">中</span></td><td>临界年，需确认</td></tr>
+  </table>
+  <div class="note">实操建议：Tier 2 的健康类汇编（如《Counsels on Diet and Foods》）是模块 C 的重要素材，但其整本版权存疑。<strong>更稳妥的做法</strong>是：溯源到 EGW 生前已发表、可确认 PD 的单篇讲章 / 证言 / 期刊文章（这些原始文本本身 PD），由神学 + 医学顾问重新按主题汇编，避免直接搬运 Estate 汇编本。</div>
+
+  <h3>1.5 Tier 3 · 绝对禁止直接使用</h3>
+  <div class="danger">
+    <ul style="margin:6px 0">
+      <li><strong>任何中文译本</strong>：和合本、新译本、吕振中、思高本，以及 EGW 任何语言译本——既受版权约束，也违反"不以中文译本为来源"的核心原则。</li>
+      <li><strong>现代带版权版本</strong>：White Estate 的现代编辑本、带导言 / 注释的研究版、出版社重排本。</li>
+      <li><strong>第三方研读本 / 串珠本</strong>：含他人注释、 cross-reference 的版本。</li>
+      <li><strong>未授权抓取</strong>：任何未获明确授权的网站全文。</li>
+    </ul>
+  </div>
+
+  <h3>1.6 教义来源（SDA 官方）</h3>
+  <table>
+    <tr><th>材料</th><th>形态</th><th>可用性</th><th>法务动作</th></tr>
+    <tr><td>28 Fundamental Beliefs《28 条基本信仰》</td><td>教会官方英文公布</td><td><span class="pill p-ok">可引用</span></td><td>取官方英文原版并注明出处；翻译须经审核</td></tr>
+    <tr><td>官方年鉴 / 立场声明（英文）</td><td>官方发布</td><td><span class="pill p-ok">可引用</span></td><td>同上，注明版本与日期</td></tr>
+  </table>
+
+  <h3>1.7 给法务的确认清单（可直接转发）</h3>
+  <div class="code">□ 目标发行法域清单确认：美 / 中(含港澳台) / 马 / 新 / 其他
+□ KJV：美国用 1611 文本；英联邦用户分发方案（Crown copyright 至 2039）
+□ EGW 生前原版（Tier 1）逐本确认 PD 状态与所取文本为"原版非现代编辑版"
+□ EGW 身后汇编（Tier 2）是否需要授权；或改用 PD 单篇重汇编策略
+□ 中文译本 / 现代版权版一律排除，写入抓取白名单过滤规则
+□ 教义文件取官方英文原版并标注版本日期
+□ 建立"来源白名单 + 黑名单"双表，入库脚本强制校验来源 ID 是否在白名单</div>
+</section>
+
+<!-- ============ NEWSTART 表结构 ============ -->
+<section id="health">
+  <h2>二、健康模块 NEWSTART 内容表结构</h2>
+  <p>NEWSTART 八大支柱：<strong>N</strong>utrition 营养 · <strong>E</strong>xercise 运动 · <strong>W</strong>ater 水 · <strong>S</strong>unlight 阳光 · <strong>T</strong>emperance 节制 · <strong>A</strong>ir 空气 · <strong>R</strong>est 休息 · <strong>T</strong>rust 信靠。每条都须绑定权威来源（圣经 + EGW + 教义），且经医学顾问审核，附医疗免责。</p>
+
+  <h3>2.1 健康主题（八大支柱）</h3>
+  <div class="code">CREATE TABLE health_topic (
+  topic_code     VARCHAR(8) PRIMARY KEY,    -- NUT/EXE/WAT/SUN/TEM/AIR/RES/TRU
+  topic_name_en  VARCHAR(32) NOT NULL,
+  topic_name_zh  VARCHAR(32) NOT NULL,
+  summary_zh     TEXT,
+  order_no       SMALLINT
+);</div>
+
+  <h3>2.2 主题权威来源绑定（溯源到 bible/egw/doctrine）</h3>
+  <div class="code">CREATE TABLE health_topic_source (
+  topic_code   VARCHAR(8) NOT NULL REFERENCES health_topic(topic_code),
+  source_type  VARCHAR(12) NOT NULL,        -- bible / egw / doctrine
+  source_id    VARCHAR(32) NOT NULL,        -- verse_id / para_id / belief_no
+  relevance_zh TEXT,                        -- 该来源与主题的关联说明
+  PRIMARY KEY (topic_code, source_type, source_id)
+);</div>
+
+  <h3>2.3 结构化健康指导条目（医学顾问审核）</h3>
+  <div class="code">CREATE TABLE health_guidance (
+  guidance_id      BIGSERIAL PRIMARY KEY,
+  topic_code       VARCHAR(8) NOT NULL REFERENCES health_topic(topic_code),
+  title_zh         VARCHAR(120) NOT NULL,
+  body_zh          TEXT NOT NULL,
+  evidence_level   VARCHAR(12),             -- strong/moderate/traditional
+  medical_reviewed BOOLEAN DEFAULT false,   -- 医学顾问放行闸
+  disclaimer_zh    TEXT,                    -- “非专业医疗诊断”声明
+  status           VARCHAR(12) DEFAULT 'pending'
+);</div>
+
+  <h3>2.4 可追踪指标定义（对应打卡）</h3>
+  <div class="code">CREATE TABLE health_metric (
+  metric_code VARCHAR(12) PRIMARY KEY,      -- water_ml/sleep_min/exercise_min/sunlight_min/mood
+  topic_code  VARCHAR(8) REFERENCES health_topic(topic_code),
+  unit        VARCHAR(8),
+  target_daily VARCHAR(32),                 -- 建议目标，如 "1500-2000ml"
+  note_zh     TEXT
+);</div>
+
+  <h3>2.5 用户打卡（细化自 health_log）</h3>
+  <div class="code">CREATE TABLE health_log_entry (
+  entry_id   BIGSERIAL PRIMARY KEY,
+  user_id    VARCHAR(32) REFERENCES app_user(user_id),
+  log_date   DATE NOT NULL,
+  metric_code VARCHAR(12) REFERENCES health_metric(metric_code),
+  value      NUMERIC,
+  note_zh    TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (user_id, log_date, metric_code)   -- 同日同指标仅一条
+);</div>
+
+  <h3>2.6 八支柱与指标 / 来源映射示例</h3>
+  <table>
+    <tr><th>支柱</th><th>code</th><th>建议打卡指标</th><th>典型权威来源（示例）</th></tr>
+    <tr><td>Nutrition 营养</td><td>NUT</td><td>—（饮食记录 note）</td><td>EGW《Ministry of Healing》ch.食物; 创 1:29; 但 1:12</td></tr>
+    <tr><td>Exercise 运动</td><td>EXE</td><td>exercise_min（目标≥30）</td><td>EGW 关于劳作与运动的教导; 提前 4:8</td></tr>
+    <tr><td>Water 水</td><td>WAT</td><td>water_ml（1500–2000）</td><td>EGW 水疗论述; 约 4:14（象征）</td></tr>
+    <tr><td>Sunlight 阳光</td><td>SUN</td><td>sunlight_min</td><td>EGW 自然与阳光; 玛 4:2</td></tr>
+    <tr><td>Temperance 节制</td><td>TEM</td><td>—（习惯记录）</td><td>EGW《Temperance》PD 单篇; 林前 9:25</td></tr>
+    <tr><td>Air 空气</td><td>AIR</td><td>—（通风记录）</td><td>EGW 新鲜空气论述; 创 2:7</td></tr>
+    <tr><td>Rest 休息</td><td>RES</td><td>sleep_min（≥420）</td><td>第四诫安息; 可 6:31; 出 20:8-11</td></tr>
+    <tr><td>Trust 信靠</td><td>TRU</td><td>mood（情绪评分）</td><td>腓 4:6-7; 诗 23:1; EGW 信心论述</td></tr>
+  </table>
+  <div class="warn"><strong>医学边界：</strong><code>health_guidance</code> 一律带 <code>medical_reviewed=false</code> 不可发布；<code>disclaimer_zh</code> 必须含"本内容为指导性建议，不构成专业医疗诊断，疾病请及时就医"。指标目标值（如饮水、睡眠）仅作温和建议，不得给出诊断性或治疗性结论。</div>
+
+  <h3>2.7 与既有表的关系</h3>
+  <div class="grid">
+    <div class="box"><h4>溯源一致</h4><p class="muted"><code>health_topic_source</code> 复用 <code>bible_verse_kjv / egw_paragraph / doctrine_belief</code> 的主键，与模块 A/B 共用同一权威库，保证"健康建议也能一键展开原文出处"。</p></div>
+    <div class="box"><h4>审核一致</h4><p class="muted"><code>health_guidance.status</code> 与 <code>medical_reviewed</code> 复用模块 A 的审核 / 版本机制，进入同一 <code>review_queue</code>。</p></div>
+  </div>
+</section>
+
+<footer>法务白名单 + NEWSTART 表结构 · 配套 app-design.html / schema-and-rag.html · 本清单非法律意见，须由合格 IP 律师裁定</footer>
+
+</div>
+</body>
+</html>

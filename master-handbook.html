@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球华人信仰应用 · 系统设计总册</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1f2733; --muted:#5b6776;
+    --line:#e4e8ee; --accent:#2f6df0; --accent2:#0f9d7a; --warn:#c9621a; --danger:#c0392b;
+    --soft:#eef3fd; --soft2:#eafaf3; --soft3:#fff6ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65;font-size:14.5px}
+  .wrap{max-width:1040px;margin:0 auto;padding:30px 22px 80px}
+  header.hero{background:linear-gradient(135deg,#2f6df0,#0f9d7a);color:#fff;border-radius:16px;padding:30px 30px;margin-bottom:22px}
+  header.hero h1{margin:0 0 6px;font-size:25px}
+  header.hero p{margin:0;opacity:.92;font-size:14px}
+  .badges{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 11px;border-radius:999px;font-size:12px}
+  nav.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 26px;margin-bottom:22px;column-count:2;column-gap:30px}
+  @media(max-width:760px){nav.toc{column-count:1}}
+  nav.toc h3{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  nav.toc a{color:var(--accent);text-decoration:none;display:block;padding:3px 0;font-size:13.5px;break-inside:avoid}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-bottom:20px;break-inside:avoid}
+  section h2{margin:0 0 12px;font-size:20px;border-left:4px solid var(--accent);padding-left:11px}
+  section h3{font-size:16px;margin:18px 0 7px;color:var(--accent)}
+  p{margin:7px 0}
+  .code{background:#0f1c2e;color:#d6e2f5;padding:14px 16px;border-radius:10px;font-family:"SF Mono",Consolas,monospace;font-size:12.3px;overflow:auto;white-space:pre}
+  .note{background:var(--soft);border-left:4px solid var(--accent);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .warn{background:var(--soft3);border-left:4px solid var(--warn);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .danger{background:#fdecea;border-left:4px solid var(--danger);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12.8px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600}
+  .p-ok{background:var(--soft2);color:var(--accent2)} .p-warn{background:var(--soft3);color:var(--warn)} .p-danger{background:#fdecea;color:var(--danger)}
+  svg{width:100%;height:auto}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .box{border:1px solid var(--line);border-radius:10px;padding:12px 14px} .box h4{margin:0 0 5px;font-size:14px}
+  .sample{border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:8px;padding:12px 16px;margin:12px 0;background:var(--soft2)}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>全球华人跨平台信仰应用 · 系统设计总册</h1>
+  <p>以 KJV 圣经 · 怀爱伦原版英文著作 · 复临安息日会官方教义为唯一权威来源 · 严禁依赖任何中文译本</p>
+  <div class="badges">
+    <span class="badge">架构</span><span class="badge">落库</span><span class="badge">RAG</span>
+    <span class="badge">法务</span><span class="badge">健康 NEWSTART</span><span class="badge">提示词工程</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h3>总目录</h3>
+  <a href="#s1">一、总体架构（含架构图）</a>
+  <a href="#s2">二、落库设计（Postgres + pgvector）</a>
+  <a href="#s3">三、牧师问答 RAG 时序（含时序图）</a>
+  <a href="#s4">四、法务可用英文原版白名单</a>
+  <a href="#s5">五、健康模块 NEWSTART 表结构</a>
+  <a href="#s6">六、pgvector 检索示例</a>
+  <a href="#s7">七、对照注释撰写规范</a>
+  <a href="#s8">八、模块 B · LLM 提示词工程（新增）</a>
+  <a href="#app">附录：交付文件清单</a>
+</nav>
+
+<!-- ============ 1 架构 ============ -->
+<section id="s1">
+  <h2>一、总体架构</h2>
+  <p><strong>权威来源：</strong>KJV 英文圣经（唯一圣经底本）· 怀爱伦原版英文著作 · SDA 官方教义（英文）。<strong>核心约束：</strong>所有中文是"产出物"而非"来源"；和合本仅作被观察的参照对象。</p>
+  <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+    <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#6b7787"/></marker></defs>
+    <rect x="0" y="0" width="720" height="320" fill="#fbfcfe"/>
+    <rect x="24" y="20" width="180" height="110" rx="12" fill="#eef3fd" stroke="#2f6df0" stroke-width="1.5"/>
+    <text x="114" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#2f6df0">客户端（Flutter 一套代码）</text>
+    <text x="34" y="62" font-size="10.5" fill="#33414f">iOS/Android/桌面/Web</text>
+    <text x="34" y="80" font-size="10.5" fill="#33414f">本地 SQLite+FTS 离线</text>
+    <rect x="262" y="20" width="170" height="48" rx="12" fill="#fff" stroke="#0f9d7a" stroke-width="1.5"/>
+    <text x="347" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#0f9d7a">API 网关/鉴权</text>
+    <text x="347" y="58" text-anchor="middle" font-size="10" fill="#5b6776">REST/GraphQL</text>
+    <rect x="262" y="84" width="170" height="110" rx="12" fill="#fff" stroke="#33414f" stroke-width="1.2"/>
+    <text x="347" y="104" text-anchor="middle" font-size="12" font-weight="700" fill="#22303f">应用服务层</text>
+    <text x="272" y="126" font-size="10.5" fill="#33414f">翻译对照/问答/健康/同步</text>
+    <rect x="24" y="158" width="180" height="140" rx="12" fill="#f3fbf7" stroke="#0f9d7a" stroke-width="1.5"/>
+    <text x="114" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#0f9d7a">权威内容库</text>
+    <text x="34" y="198" font-size="10.5" fill="#33414f">KJV/EGW/教义</text>
+    <text x="34" y="214" font-size="10.5" fill="#33414f">已审中文/注释</text>
+    <text x="34" y="230" font-size="10.5" fill="#33414f">向量索引 pgvector</text>
+    <rect x="470" y="84" width="226" height="110" rx="12" fill="#fff7ee" stroke="#c9621a" stroke-width="1.5"/>
+    <text x="583" y="104" text-anchor="middle" font-size="12" font-weight="700" fill="#c9621a">AI 推理层（RAG）</text>
+    <text x="480" y="126" font-size="10.5" fill="#33414f">检索+生成+引文锚定</text>
+    <text x="480" y="142" font-size="10.5" fill="#33414f">低置信→转人工</text>
+    <rect x="470" y="20" width="226" height="48" rx="12" fill="#fff" stroke="#33414f" stroke-width="1.2"/>
+    <text x="583" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#22303f">内容审核发布台</text>
+    <text x="583" y="58" text-anchor="middle" font-size="10" fill="#5b6776">专家在环·版本化</text>
+    <line x1="204" y1="75" x2="260" y2="44" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="347" y1="68" x2="347" y2="82" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="432" y1="75" x2="468" y2="75" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="347" y1="194" x2="204" y2="228" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="470" y1="139" x2="432" y2="139" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+  </svg>
+  <h3>六大设计原则</h3>
+  <div class="grid">
+    <div class="box"><h4>① 原文溯源</h4><p class="muted">每句中文追溯到具体 KJV 节 / EGW 段 / 教义条款。</p></div>
+    <div class="box"><h4>② 可追溯翻译</h4><p class="muted">中文由"原文→中文"生成并审核，非从译本回译。</p></div>
+    <div class="box"><h4>③ RAG 增强</h4><p class="muted">问答锚定权威片段，答案必引出处。</p></div>
+    <div class="box"><h4>④ 专家在环</h4><p class="muted">上线前经神学/医学顾问审核放行。</p></div>
+    <div class="box"><h4>⑤ 离线优先</h4><p class="muted">核心内容预置本地，无网可读。</p></div>
+    <div class="box"><h4>⑥ 表述克制</h4><p class="muted">对照以释经观察呈现，非论战。</p></div>
+  </div>
+</section>
+
+<!-- ============ 2 落库 ============ -->
+<section id="s2">
+  <h2>二、落库设计（Postgres + pgvector）</h2>
+  <p>机制化防止"中文当来源"：所有 <code>*_zh</code> 表主键是来源表外键；和合本隔离在 <code>bible_verse_cuv_ref</code> 仅作参照；检索与问答只从 <code>content_chunk</code> 取权威片段，引用回写 <code>qa_citation</code>。</p>
+  <div class="code">-- 权威底本（英文）
+CREATE TABLE bible_verse_kjv (verse_id BIGSERIAL PRIMARY KEY, book_id SMALLINT, chapter SMALLINT, verse SMALLINT, text_kjv TEXT, UNIQUE(book_id,chapter,verse));
+CREATE TABLE egw_paragraph (para_id BIGSERIAL PRIMARY KEY, work_id VARCHAR(16), chapter_no SMALLINT, section_no SMALLINT, para_no SMALLINT, text_en TEXT);
+CREATE TABLE doctrine_belief (belief_no SMALLINT PRIMARY KEY, title_en VARCHAR(128), text_en TEXT);
+
+-- 中文产出（外键绑定原文）
+CREATE TABLE bible_verse_zh (verse_id BIGINT PRIMARY KEY REFERENCES bible_verse_kjv(verse_id), text_zh TEXT, status VARCHAR(12) DEFAULT 'pending', approved_by VARCHAR(64));
+CREATE TABLE egw_paragraph_zh (para_id BIGINT PRIMARY KEY REFERENCES egw_paragraph(para_id), text_zh TEXT, status VARCHAR(12));
+
+-- 和合本：仅参照，不参与推理
+CREATE TABLE bible_verse_cuv_ref (verse_id BIGINT PRIMARY KEY REFERENCES bible_verse_kjv(verse_id), text_cuv TEXT, ref_note TEXT);
+
+-- 对照注释 / 术语 / 审核
+CREATE TABLE comparison_note (note_id BIGSERIAL PRIMARY KEY, verse_id BIGINT, note_zh TEXT, diff_type VARCHAR(16), status VARCHAR(12) DEFAULT 'pending');
+CREATE TABLE glossary (term_id SERIAL PRIMARY KEY, term_en VARCHAR(64) UNIQUE, term_zh VARCHAR(64), domain VARCHAR(24));
+CREATE TABLE content_version (version_id BIGSERIAL PRIMARY KEY, entity_type VARCHAR(16), entity_id VARCHAR(32), content_before TEXT, content_after TEXT, changed_by VARCHAR(64));
+CREATE TABLE review_queue (task_id BIGSERIAL PRIMARY KEY, entity_type VARCHAR(16), entity_id VARCHAR(32), status VARCHAR(12) DEFAULT 'open', assigned_to VARCHAR(64));
+
+-- RAG 核心向量
+CREATE TABLE content_chunk (chunk_id BIGSERIAL PRIMARY KEY, source_type VARCHAR(12), source_id VARCHAR(32), lang VARCHAR(4), content TEXT, embedding VECTOR(1536));
+CREATE INDEX idx_chunk_vec ON content_chunk USING ivfflat (embedding vector_cosine_ops) WITH (lists=100);
+
+-- 问答 + 强制引用 + 反馈
+CREATE TABLE qa_session (qa_id BIGSERIAL PRIMARY KEY, user_id VARCHAR(32), question_zh TEXT, answer_zh TEXT, confidence NUMERIC(3,2), needs_human BOOLEAN DEFAULT false);
+CREATE TABLE qa_citation (qa_id BIGINT REFERENCES qa_session(qa_id), source_type VARCHAR(12), source_id VARCHAR(32), snippet TEXT, PRIMARY KEY(qa_id,source_type,source_id));
+CREATE TABLE qa_feedback (feedback_id BIGSERIAL PRIMARY KEY, qa_id BIGINT, feedback_type VARCHAR(16), comment_zh TEXT, routed_to VARCHAR(64));</div>
+</section>
+
+<!-- ============ 3 RAG 时序 ============ -->
+<section id="s3">
+  <h2>三、牧师问答 RAG 时序</h2>
+  <p>端到端 13 步：提问 → 混合检索 → 重排阈值 → 受控 LLM 生成（强制引用）→ <strong>校验闸门</strong>（引用必填+置信阈值）→ 达标返回 / 不达标转人工 → 用户纠错闭环。</p>
+  <svg viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+    <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#5b6776"/></marker><marker id="b" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L9,4 L0,8 Z" fill="#c9621a"/></marker></defs>
+    <rect x="0" y="0" width="780" height="420" fill="#fbfcfe"/>
+    <g font-size="11.5" font-weight="700" text-anchor="middle">
+      <rect x="22" y="14" width="80" height="24" rx="8" fill="#eef3fd" stroke="#2f6df0"/><text x="62" y="30" fill="#2f6df0">客户端</text>
+      <rect x="146" y="14" width="92" height="24" rx="8" fill="#eafaf3" stroke="#0f9d7a"/><text x="192" y="30" fill="#0f9d7a">问答服务</text>
+      <rect x="280" y="14" width="92" height="24" rx="8" fill="#fff" stroke="#33414f"/><text x="326" y="30" fill="#22303f">检索服务</text>
+      <rect x="418" y="14" width="80" height="24" rx="8" fill="#fff" stroke="#33414f"/><text x="458" y="30" fill="#22303f">向量库</text>
+      <rect x="544" y="14" width="64" height="24" rx="8" fill="#fff7ee" stroke="#c9621a"/><text x="576" y="30" fill="#c9621a">LLM</text>
+      <rect x="650" y="14" width="100" height="24" rx="8" fill="#fff" stroke="#33414f"/><text x="700" y="30" fill="#22303f">顾问队列</text>
+    </g>
+    <g stroke="#c2cad6" stroke-width="1.3" stroke-dasharray="4 4">
+      <line x1="62" y1="38" x2="62" y2="400"/><line x1="192" y1="38" x2="192" y2="400"/><line x1="326" y1="38" x2="326" y2="400"/>
+      <line x1="458" y1="38" x2="458" y2="400"/><line x1="576" y1="38" x2="576" y2="400"/><line x1="700" y1="38" x2="700" y2="400"/>
+    </g>
+    <g font-size="10" fill="#22303f">
+      <line x1="64" y1="64" x2="190" y2="64" stroke="#5b6776" marker-end="url(#a)"/><text x="127" y="58" text-anchor="middle">1 提交问题</text>
+      <line x1="194" y1="90" x2="324" y2="90" stroke="#5b6776" marker-end="url(#a)"/><text x="259" y="84" text-anchor="middle">2 检索</text>
+      <line x1="328" y1="116" x2="456" y2="116" stroke="#5b6776" marker-end="url(#a)"/><text x="392" y="110" text-anchor="middle">3 混合检索</text>
+      <line x1="456" y1="142" x2="328" y2="142" stroke="#5b6776" marker-end="url(#a)"/><text x="392" y="136" text-anchor="middle">4 候选片段</text>
+      <line x1="324" y1="168" x2="194" y2="168" stroke="#5b6776" marker-end="url(#a)"/><text x="259" y="162" text-anchor="middle">5 重排过滤</text>
+      <line x1="194" y1="196" x2="574" y2="196" stroke="#5b6776" marker-end="url(#a)"/><text x="384" y="190" text-anchor="middle">6 牧师提示+片段+引用约束</text>
+      <line x1="574" y1="222" x2="194" y2="222" stroke="#5b6776" marker-end="url(#a)"/><text x="384" y="216" text-anchor="middle">7 生成(含引用)</text>
+    </g>
+    <rect x="146" y="240" width="92" height="34" rx="8" fill="#fff" stroke="#2f6df0" stroke-dasharray="3 3"/>
+    <text x="192" y="256" text-anchor="middle" font-size="10" fill="#2f6df0">8 校验闸门</text>
+    <text x="192" y="270" text-anchor="middle" font-size="8.5" fill="#5b6776">引用必填? 置信≥阈值?</text>
+    <rect x="40" y="290" width="700" height="96" rx="10" fill="none" stroke="#0f9d7a" stroke-width="1.3"/>
+    <text x="52" y="306" font-size="10.5" font-weight="700" fill="#0f9d7a">alt 达标</text>
+    <rect x="556" y="290" width="184" height="96" rx="10" fill="none" stroke="#c9621a" stroke-width="1.3"/>
+    <text x="568" y="306" font-size="10" font-weight="700" fill="#c9621a">else 不达标</text>
+    <line x1="192" y1="330" x2="64" y2="330" stroke="#0f9d7a" marker-end="url(#a)"/><text x="130" y="324" text-anchor="middle" font-size="9.5" fill="#0f9d7a">9a 返回回答+出处</text>
+    <line x1="192" y1="330" x2="698" y2="330" stroke="#c9621a" marker-end="url(#b)"/><text x="450" y="324" text-anchor="middle" font-size="9.5" fill="#c9621a">9b 转人工(needs_human)</text>
+    <line x1="64" y1="360" x2="190" y2="360" stroke="#5b6776" marker-end="url(#a)"/><text x="127" y="354" text-anchor="middle" font-size="9.5" fill="#22303f">12 纠错/上报</text>
+    <line x1="190" y1="380" x2="698" y2="380" stroke="#5b6776" marker-end="url(#a)"/><text x="445" y="374" text-anchor="middle" font-size="9.5" fill="#22303f">13 进复核队列</text>
+  </svg>
+  <div class="code">def answer(question_zh):
+    hits = retrieval.hybrid_search(question_zh, top_k=8)   # 向量+关键词
+    hits = rerank(hits, threshold=0.72)
+    prompt = build_pastor_prompt(question_zh, hits)
+    ans, cites, conf = llm.generate(prompt)
+    if not cites or conf &lt; 0.70:                         # 引用必填+置信不足
+        qa.needs_human = True; review_queue.route(ans, hits)
+        return "建议咨询本地面牧者，问题已转交顾问复核"
+    qa_citation.bulk_insert(qa_id, cites)                 # 强制溯源
+    return ans</div>
+</section>
+
+<!-- ============ 4 法务 ============ -->
+<section id="s4">
+  <h2>四、法务可用英文原版白名单</h2>
+  <div class="danger"><strong>非法律意见：</strong>以下为版权风险初判，最终须由目标法域（美/中港澳台/马/新等）合格 IP 律师裁定。</div>
+  <table>
+    <tr><th>分级</th><th>范围</th><th>示例</th><th>动作</th></tr>
+    <tr><td><span class="pill p-ok">Tier1 可直接</span></td><td>英文原版·作者逝&gt;70年·非汇编非译本</td><td>KJV 1611；EGW 生前著作（Steps to Christ 1892, Great Controversy 1888, Desire of Ages 1898, Ministry of Healing 1905原版…）</td><td>美区可直接；取原版非现代编辑版</td></tr>
+    <tr><td><span class="pill p-warn">Tier2 需核实</span></td><td>EGW 身后汇编本</td><td>Counsels on Diet and Foods 1938, Temperance 1949, Evangelism 1946, Adventist Home 1952…</td><td>逐本确认；或溯源 PD 单篇重汇编</td></tr>
+    <tr><td><span class="pill p-danger">Tier3 禁止</span></td><td>任何译本/现代版权版/研读本</td><td>和合本、新译本、EGW 任何语言译本、White Estate 现代编辑版</td><td>一律排除，写入抓取黑名单</td></tr>
+  </table>
+  <div class="warn"><strong>KJV 区域坑：</strong>英国/英联邦受 Crown copyright 约束至 2039，对英联邦用户分发须单独处理（可考虑改用同 PD 的 ASV/WEB 作底本）。教义取 SDA 官方英文原版并标注版本日期。</div>
+</section>
+
+<!-- ============ 5 健康 ============ -->
+<section id="s5">
+  <h2>五、健康模块 NEWSTART 表结构</h2>
+  <p>八支柱：Nutrition/Exercise/Water/Sunlight/Temperance/Air/Rest/Trust。每条绑定权威来源，经医学顾问审核，附医疗免责。</p>
+  <div class="code">CREATE TABLE health_topic (topic_code VARCHAR(8) PRIMARY KEY, topic_name_en VARCHAR(32), topic_name_zh VARCHAR(32), summary_zh TEXT, order_no SMALLINT);
+CREATE TABLE health_topic_source (topic_code VARCHAR(8) REFERENCES health_topic(topic_code), source_type VARCHAR(12), source_id VARCHAR(32), relevance_zh TEXT, PRIMARY KEY(topic_code,source_type,source_id));
+CREATE TABLE health_guidance (guidance_id BIGSERIAL PRIMARY KEY, topic_code VARCHAR(8) REFERENCES health_topic(topic_code), title_zh VARCHAR(120), body_zh TEXT, evidence_level VARCHAR(12), medical_reviewed BOOLEAN DEFAULT false, disclaimer_zh TEXT, status VARCHAR(12) DEFAULT 'pending');
+CREATE TABLE health_metric (metric_code VARCHAR(12) PRIMARY KEY, topic_code VARCHAR(8) REFERENCES health_topic(topic_code), unit VARCHAR(8), target_daily VARCHAR(32), note_zh TEXT);
+CREATE TABLE health_log_entry (entry_id BIGSERIAL PRIMARY KEY, user_id VARCHAR(32), log_date DATE, metric_code VARCHAR(12) REFERENCES health_metric(metric_code), value NUMERIC, note_zh TEXT, UNIQUE(user_id,log_date,metric_code));</div>
+  <table>
+    <tr><th>支柱</th><th>code</th><th>打卡指标</th><th>典型权威来源</th></tr>
+    <tr><td>Nutrition</td><td>NUT</td><td>饮食记录</td><td>EGW MH; 创1:29; 但1:12</td></tr>
+    <tr><td>Exercise</td><td>EXE</td><td>exercise_min≥30</td><td>提前4:8</td></tr>
+    <tr><td>Water</td><td>WAT</td><td>water_ml 1500-2000</td><td>EGW 水疗; 约4:14</td></tr>
+    <tr><td>Sunlight</td><td>SUN</td><td>sunlight_min</td><td>玛4:2</td></tr>
+    <tr><td>Temperance</td><td>TEM</td><td>习惯记录</td><td>林前9:25</td></tr>
+    <tr><td>Air</td><td>AIR</td><td>通风记录</td><td>创2:7</td></tr>
+    <tr><td>Rest</td><td>RES</td><td>sleep_min≥420</td><td>出20:8-11; 可6:31</td></tr>
+    <tr><td>Trust</td><td>TRU</td><td>mood 评分</td><td>腓4:6-7; 诗23:1</td></tr>
+  </table>
+  <div class="warn"><strong>医学边界：</strong><code>medical_reviewed=false</code> 不可发布；<code>disclaimer_zh</code> 必须含"非专业医疗诊断，疾病请就医"；指标目标仅温和建议。</div>
+</section>
+
+<!-- ============ 6 检索示例 ============ -->
+<section id="s6">
+  <h2>六、pgvector 检索示例（Python）</h2>
+  <div class="warn">向量维度须与模型一致（本例 512）；只索引权威原文；混合检索+重排阈值；结果回写 <code>qa_citation</code>。</div>
+  <div class="code">import psycopg2
+from pgvector.psycopg2 import register_vector
+from sentence_transformers import SentenceTransformer
+conn = psycopg2.connect(host="localhost", dbname="faith_app", user="app", password="CHANGE_ME")
+cur = conn.cursor(); register_vector(conn)
+cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+cur.execute("""CREATE TABLE IF NOT EXISTS content_chunk (
+  chunk_id BIGSERIAL PRIMARY KEY, source_type VARCHAR(12), source_id VARCHAR(32),
+  lang VARCHAR(4), content TEXT, embedding VECTOR(512));""")
+conn.commit()
+model = SentenceTransformer("BAAI/bge-small-zh-v1.5")
+def embed(t): return model.encode(t, normalize_embeddings=True).tolist()
+samples = [("bible","GEN.1.29","en","And God said...every herb bearing seed..."),
+           ("bible","GEN.1.29","zh","神说...一切结种子的菜蔬...作食物。"),
+           ("egw","MH.1.3","en","Pure water is one of heaven's best gifts.")]
+for st,sid,lang,txt in samples:
+    cur.execute("INSERT INTO content_chunk(source_type,source_id,lang,content,embedding) VALUES(%s,%s,%s,%s,%s)",(st,sid,lang,txt,embed(txt)))
+conn.commit()
+def search(q, top_k=5, kw=None):
+    qv = embed(q)
+    cur.execute("""SELECT source_type,source_id,lang,content,1-(embedding &lt;=&gt; %s::vector) AS score
+      FROM content_chunk WHERE (%s IS NULL OR content ILIKE %s)
+      ORDER BY embedding &lt;=&gt; %s::vector LIMIT %s""",(qv,kw,f"%{kw}%" if kw else None,qv,top_k))
+    return cur.fetchall()
+for r in search("饮食与健康有什么教导", top_k=3): print(r)
+cur.close(); conn.close()</div>
+</section>
+
+<!-- ============ 7 注释规范 ============ -->
+<section id="s7">
+  <h2>七、对照注释撰写规范</h2>
+  <p>定位为<strong>客观释经观察</strong>，非论战。必填：verse_ref / kjv_text / our_zh / cuv_text(参照) / diff_type / observation / basis / conclusion / 审核状态。</p>
+  <div class="warn">语气红线：✅ 写"X 译作 A，Y 译作 B，差异在于…"；✅ 同样标注 KJV 自身古旧词（双向诚实）；✅ 结论须有原文词形/语法依据。❌ 禁止"和合本错了/异端"等绝对化词；❌ 禁止把立场分歧包装成误译。</div>
+  <div class="sample">
+    <h4>样例（双向诚实）· 1CO.13.13</h4>
+    <p><strong>kjv：</strong>"…faith, hope, charity…the greatest…is charity."　<strong>our_zh：</strong>"…有信、有望、有爱…最大的是爱。"　<strong>cuv(参照)：</strong>"…有爱…最大的是爱。"</p>
+    <p><strong>observation：</strong>KJV 用 charity 译 ἀγάπη（1611 时含"神圣之爱"义）；和合本与本应用均译"爱"。</p>
+    <p><strong>conclusion：</strong>和合本此处准确；差异源于 KJV 古词，三方在"爱"上实质一致。</p>
+  </div>
+</section>
+
+<!-- ============ 8 提示词工程（新增） ============ -->
+<section id="s8">
+  <h2>八、模块 B · LLM 提示词工程（新增）</h2>
+  <p>让"资深牧师问答"可控、可溯源、不臆测。设计四层：<strong>系统人格 → 检索上下文 → 引用强制 → 路由/安全</strong>。所有回答必须基于下方 <code>[检索片段]</code>，不得调用模型自身神学记忆。</p>
+
+  <h3>8.1 系统提示（System Prompt）</h3>
+  <div class="code">你是一位持守复临安息日会信仰的资深牧师，面向全球华人教会成员作答。
+你的权威依据 ONLY 是以下三类，按优先级：
+  1) KJV 英文圣经（唯一圣经底本）
+  2) 怀爱伦（Ellen G. White）原版英文著作
+  3) 复临安息日会官方教义（28 条基本信仰等英文原版）
+规则：
+  R1 只依据 [检索片段] 作答；若片段不足，明确说"现有权威材料不足以回答"，不得编造。
+  R2 每条实质断言后必须以【来源: 类型|编号】标注（如【来源: KJV|JHN.3.16】【来源: EGW|MH.7.2】【来源: DOCTRINE|19】）。
+  R3 中文须准确、通俗、有同理心；纠正偏差时"对事不对人"，只指出某表述与权威原文不符，不下人格判断。
+  R4 不得称任何中文译本（含和合本）为权威；提及差异时以释经观察呈现。
+  R5 健康/医疗问题须附"非专业医疗诊断，请就医"提示；不做诊断或开药。
+  R6 涉及争议或低把握时，建议"咨询本地面牧者"，并在输出置 needs_human=true。</div>
+
+  <h3>8.2 检索上下文格式（注入 user turn）</h3>
+  <div class="code">[用户问题] {question_zh}
+
+[检索片段]（仅以下片段可作依据，score≥0.72）
+[1] 类型=bible 编号=JHN.3.16 语言=en
+    "For God so loved the world, that he gave his only begotten Son..."
+[2] 类型=egw 编号=SC.4.1 语言=en
+    "The love of God is broader than the measure of man's mind..."
+[3] 类型=doctrine 编号=10 语言=en
+    "Salvation is wholly of grace through faith..."
+
+[输出要求] 返回 JSON：
+{
+ "answer_zh": "含【来源:...】标注的通俗回答",
+ "citations": [{"type":"bible","id":"JHN.3.16","snippet":"..."}],
+ "confidence": 0.0-1.0,
+ "needs_human": true/false
+}</div>
+
+  <h3>8.3 少样本示例（Few-shot，固化风格）</h3>
+  <div class="code">用户：怎样理解"因信得救"？
+助手：
+{
+ "answer_zh":"因信得救是基督教的核心理心。圣经明言'神的救恩藉着信临到我们'，怀爱伦也强调'救恩全出于恩典，藉着信'【来源: KJV|EPH.2.8】【来源: EGW|SC.4.1】。这并非靠行为赚取，而是领受的礼物【来源: DOCTRINE|10】。",
+ "citations":[{"type":"bible","id":"EPH.2.8","snippet":"For by grace are ye saved through faith..."},
+             {"type":"egw","id":"SC.4.1","snippet":"..."},
+             {"type":"doctrine","id":"10","snippet":"Salvation is wholly of grace..."}],
+ "confidence":0.91, "needs_human":false
+}</div>
+
+  <h3>8.4 后处理校验（与闸门联动）</h3>
+  <ul>
+    <li><strong>引用必填：</strong>解析 <code>citations</code>，若为空或与 <code>answer_zh</code> 中【来源】不匹配 → 判定不达标，转人工。</li>
+    <li><strong>置信阈值：</strong><code>confidence &lt; 0.70</code> 或 <code>needs_human=true</code> → 转顾问队列，返回"建议咨询本地面牧者"。</li>
+    <li><strong>来源合法性：</strong><code>citations</code> 的 id 必须存在于 <code>content_chunk</code>；出现和合本/译本 id 直接拦截。</li>
+    <li><strong>敏感词：</strong>输出含诊断性/律法主义/人身攻击表述 → 触发人工复核。</li>
+  </ul>
+
+  <h3>8.5 评估与持续校准</h3>
+  <div class="grid">
+    <div class="box"><h4>神学准确性</h4><p class="muted">由神学顾问按"是否忠实于 KJV/EGW/教义、引用是否真实存在、有无臆测"评分。</p></div>
+    <div class="box"><h4>表述分寸</h4><p class="muted">是否对事不对人、是否误把立场当误译、是否含绝对化词。</p></div>
+    <div class="box"><h4>可追溯性</h4><p class="muted">每条断言是否都可回链到权威片段；缺失即扣分。</p></div>
+    <div class="box"><h4>闭环</h4><p class="muted">用户纠错/上报进入 review_queue，顾问修正后回流为 few-shot 正例。</p></div>
+  </div>
+  <div class="note">实现建议：系统提示与 few-shot 模板版本化（与 <code>content_version</code> 同机制）；模型优先选可自托管的中文 LLM（如 Qwen 系列）以保障隐私与可控；生产环境在网关层做引用/敏感词二次校验，LLM 输出不可直接触达用户。</div>
+</section>
+
+<!-- ============ 附录 ============ -->
+<section id="app">
+  <h2>附录：交付文件清单</h2>
+  <table>
+    <tr><th>文件</th><th>内容</th></tr>
+    <tr><td>master-handbook.html（本文件）</td><td>总册：架构/落库/RAG/法务/健康/检索/注释/提示词工程</td></tr>
+    <tr><td>app-design.html</td><td>总体设计方案（含架构图）</td></tr>
+    <tr><td>schema-and-rag.html</td><td>落库 DDL + RAG 时序图</td></tr>
+    <tr><td>legal-whitelist-and-health.html</td><td>法务白名单 + NEWSTART 表结构</td></tr>
+    <tr><td>rag-example-and-note-spec.html</td><td>pgvector 检索示例 + 对照注释规范</td></tr>
+  </table>
+  <div class="danger">⚠️ 法务白名单为版权风险初判，非法律意见；正式发行前须由目标法域合格 IP 律师裁定。所有"指出和合本差异"的内容须经神学顾问审核，并以释经观察、对事不对人的方式呈现。</div>
+</section>
+
+<footer>系统设计总册 · 权威来源：KJV · Ellen G. White 原版英文著作 · SDA 官方教义 · 严禁依赖任何中文译本</footer>
+
+</div>
+</body>
+</html>

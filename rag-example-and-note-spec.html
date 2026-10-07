@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG 检索示例 + 对照注释撰写规范</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1f2733; --muted:#5b6776;
+    --line:#e4e8ee; --accent:#2f6df0; --accent2:#0f9d7a; --warn:#c9621a;
+    --soft:#eef3fd; --soft2:#eafaf3; --soft3:#fff6ec;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65;font-size:14.5px}
+  .wrap{max-width:1000px;margin:0 auto;padding:30px 22px 70px}
+  header.hero{background:linear-gradient(135deg,#2f6df0,#0f9d7a);color:#fff;border-radius:16px;padding:28px 28px;margin-bottom:24px}
+  header.hero h1{margin:0 0 6px;font-size:22px}
+  header.hero p{margin:0;opacity:.92;font-size:13.5px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px}
+  section h2{margin:0 0 12px;font-size:19px;border-left:4px solid var(--accent);padding-left:11px}
+  section h3{font-size:15.5px;margin:18px 0 7px;color:var(--accent)}
+  p{margin:7px 0}
+  .code{background:#0f1c2e;color:#d6e2f5;padding:14px 16px;border-radius:10px;font-family:"SF Mono",Consolas,monospace;font-size:12.5px;overflow:auto;white-space:pre}
+  .note{background:var(--soft);border-left:4px solid var(--accent);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .warn{background:var(--soft3);border-left:4px solid var(--warn);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600}
+  .p-ok{background:var(--soft2);color:var(--accent2)}
+  .p-warn{background:var(--soft3);color:var(--warn)}
+  .sample{border:1px solid var(--line);border-left:4px solid var(--accent2);border-radius:8px;padding:12px 16px;margin:12px 0;background:var(--soft2)}
+  .sample h4{margin:0 0 6px;font-size:14px;color:var(--accent2)}
+  ol,ul{margin:8px 0;padding-left:22px}
+  li{margin:4px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>RAG 检索示例 + 对照注释撰写规范</h1>
+  <p>最小可运行的 pgvector 召回代码（Python）· comparison_note 对照注释的撰写模板与样例</p>
+</header>
+
+<!-- ============ RAG 示例 ============ -->
+<section id="rag">
+  <h2>一、最小可运行的 pgvector 检索示例（Python）</h2>
+  <p>这是 RAG「召回阶段」的端到端最小实现：建表 → 写入权威片段+向量 → 混合检索（向量相似度 + 关键词过滤）。与 <code>schema-and-rag.html</code> 中的 <code>content_chunk</code> 表对齐。</p>
+
+  <div class="warn"><strong>维度必须一致：</strong>向量列维度（本例 512）须与所用嵌入模型输出维度完全一致，否则建表/插入会报错。生产环境可换用自托管中文模型或 OpenAI 兼容接口，<code>VECTOR(n)</code> 的 n 同步调整即可。</div>
+
+  <div class="code">"""
+最小可运行：基于 pgvector 的权威内容检索（RAG 召回阶段）
+依赖: pip install psycopg2-binary pgvector sentence-transformers
+说明: 向量维度须与所用嵌入模型一致；此处用多语模型 512 维。
+"""
+import psycopg2
+from pgvector.psycopg2 import register_vector
+from sentence_transformers import SentenceTransformer
+
+# 1) 连接（改为你的数据库；密码勿硬编码到生产）
+conn = psycopg2.connect(
+    host="localhost", port=5432, dbname="faith_app",
+    user="app", password="CHANGE_ME"
+)
+cur = conn.cursor()
+register_vector(conn)
+
+# 2) 建表（与 schema 对齐；维度按模型调整）
+cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+cur.execute("""
+CREATE TABLE IF NOT EXISTS content_chunk (
+  chunk_id    BIGSERIAL PRIMARY KEY,
+  source_type VARCHAR(12) NOT NULL,        -- bible / egw / doctrine
+  source_id   VARCHAR(32) NOT NULL,
+  lang        VARCHAR(4)  NOT NULL,        -- en / zh
+  content     TEXT NOT NULL,
+  embedding   VECTOR(512)
+);
+""")
+conn.commit()
+
+# 3) 嵌入模型（多语，含中文；可换自托管模型）
+model = SentenceTransformer("BAAI/bge-small-zh-v1.5")   # 输出 512 维
+
+def embed(text: str) -&gt; list:
+    return model.encode(text, normalize_embeddings=True).tolist()
+
+# 4) 写入样例（真实项目由内容管线批量导入，且只来自权威原文）
+samples = [
+    ("bible", "GEN.1.29", "en", "And God said, Behold, I have given you every herb bearing seed..."),
+    ("bible", "GEN.1.29", "zh", "神说，看哪，我将遍地上一切结种子的菜蔬……都赐给你们作食物。"),
+    ("egw",   "MH.1.3",   "en", "Pure water is one of heaven's best gifts to man."),
+]
+for st, sid, lang, txt in samples:
+    cur.execute(
+        "INSERT INTO content_chunk(source_type,source_id,lang,content,embedding) "
+        "VALUES (%s,%s,%s,%s,%s)",
+        (st, sid, lang, txt, embed(txt)),
+    )
+conn.commit()
+
+# 5) 混合检索：向量召回 + 关键词过滤（ILIKE 占位，生产可换 tsvector）
+def search(query: str, top_k: int = 5, kw: str = None):
+    q_vec = embed(query)
+    sql = """
+      SELECT source_type, source_id, lang, content,
+             1 - (embedding &lt;=&gt; %s::vector) AS score
+      FROM content_chunk
+      WHERE (%s IS NULL OR content ILIKE %s)
+      ORDER BY embedding &lt;=&gt; %s::vector
+      LIMIT %s
+    """
+    cur.execute(sql, (q_vec, kw, f"%{kw}%" if kw else None, q_vec, top_k))
+    return cur.fetchall()
+
+# 6) 调用示例
+for row in search("饮食与健康有什么教导", top_k=3):
+    print(f"[{row[0]}:{row[1]}/{row[2]}] score={row[4]:.3f}  {row[3][:40]}")
+
+cur.close(); conn.close()</div>
+
+  <h3>上线前要点</h3>
+  <ul>
+    <li><strong>只索引权威原文</strong>：<code>content_chunk</code> 的 <code>content</code> 来源只能是 KJV / EGW 原版 / 教义英文（或本应用已审中文），绝不混入和合本或译本。</li>
+    <li><strong>混合检索</strong>：向量负责语义召回，关键词（建议升级为 <code>tsvector</code> 全文）负责精确命中专有名词（Sabbath、sanctification 等）。</li>
+    <li><strong>重排 + 阈值</strong>：召回后按 score 阈值（如 0.72）过滤，低于则判定"无足够权威依据"，转人工（见 RAG 时序图闸门）。</li>
+    <li><strong>结果回写引用</strong>：检索命中的 <code>source_type+source_id</code> 即作为 <code>qa_citation</code> 的溯源锚点，前端可一键展开原文。</li>
+  </ul>
+</section>
+
+<!-- ============ 对照注释规范 ============ -->
+<section id="note">
+  <h2>二、对照注释（comparison_note）撰写规范</h2>
+  <p><code>comparison_note</code> 是模块 A "指出差异" 的落地产物。其定位是<strong>客观释经观察</strong>，不是论战。规范强制"对事不对人、引用原文依据、结论中性"。</p>
+
+  <h3>2.1 必填字段（与表结构对应）</h3>
+  <table>
+    <tr><th>字段</th><th>含义</th><th>要求</th></tr>
+    <tr><td>verse_ref</td><td>KJV 书卷 章:节</td><td>如 GEN.1.29</td></tr>
+    <tr><td>kjv_text</td><td>KJV 英文原句</td><td>逐字引用，不得改写</td></tr>
+    <tr><td>our_zh</td><td>本应用译法</td><td>来自 bible_verse_zh（已审）</td></tr>
+    <tr><td>cuv_text</td><td>和合本译法</td><td>仅作参照对象展示</td></tr>
+    <tr><td>diff_type</td><td>差异类型</td><td>wording / structure / theology / archaism</td></tr>
+    <tr><td>observation</td><td>差异客观描述</td><td>只陈述"X 译作 A，Y 译作 B"</td></tr>
+    <tr><td>basis</td><td>原文依据</td><td>词形 / 语法 / 上下文，须注明</td></tr>
+    <tr><td>implication</td><td>理解影响（可选）</td><td>中性陈述，不升级为指责</td></tr>
+    <tr><td>conclusion</td><td>一句话归纳</td><td>对事不对人</td></tr>
+    <tr><td>author / status</td><td>作者 / 状态</td><td>须 theologian 审核 approved 才发布</td></tr>
+  </table>
+
+  <h3>2.2 语气红线（撰写守则）</h3>
+  <div class="warn">
+    <ul style="margin:6px 0">
+      <li>✅ 写"KJV 此处用词 X，和合本作 Y，差异在于……"，<strong>不写</strong>"和合本错了 / 翻译失败"。</li>
+      <li>✅ 同样要标注 <strong>KJV 自身的古旧用法</strong>（如 charity=爱、conversation=为人），体现学术诚实，不单向批评。</li>
+      <li>✅ 任何差异结论须有 <strong>原文词形 / 语法 / 语境</strong> 支撑，可核查。</li>
+      <li>❌ 禁止人身化、禁止教派攻击、禁止"唯有本应用正确"之类绝对化表述。</li>
+      <li>❌ 禁止把神学立场分歧包装成"翻译错误"（立场 ≠ 误译）。</li>
+    </ul>
+  </div>
+
+  <h3>2.3 样例（撰写范式演示，非发布内容，须经神学顾问审）</h3>
+
+  <div class="sample">
+    <h4>样例 A · 用词差异（展示双向诚实）</h4>
+    <p><strong>verse_ref：</strong>1CO.13.13（KJV）</p>
+    <p><strong>kjv_text：</strong>"And now abideth faith, hope, charity, these three; but the greatest of these is charity."</p>
+    <p><strong>our_zh：</strong>"如今常存的有信、有望、有爱，这三样；其中最大的是爱。"</p>
+    <p><strong>cuv_text（参照）：</strong>"如今常存的有信，有望，有爱；这三样，其中最大的是爱。"</p>
+    <p><strong>diff_type：</strong>archaism（KJV 古旧词）+ wording</p>
+    <p><strong>observation：</strong>KJV 用 "charity" 译 ἀγάπη；和合本用"爱"。本应用依 1611 语境（charity 当时即"基督教之爱"）译作"爱"，与和合本一致。</p>
+    <p><strong>basis：</strong>ἀγάπη 在 KJV 时代 "charity" 含"神圣之爱"义；现代英语该义已窄化，故重译。</p>
+    <p><strong>conclusion：</strong>此处和合本译法准确；差异源于 KJV 古词，本应用据语境重译，三方在"爱"上实质一致。</p>
+  </div>
+
+  <div class="sample">
+    <h4>样例 B · 结构 / 措辞差异（中性指出）</h4>
+    <p><strong>verse_ref：</strong>PHI.3.20（KJV）</p>
+    <p><strong>kjv_text：</strong>"For our conversation is in heaven; from whence also we look for the Saviour..."</p>
+    <p><strong>our_zh：</strong>"我们却是天上的国民；并且等候救主……"</p>
+    <p><strong>cuv_text（参照）：</strong>"我们却是天上的国民；并且等候救主……"</p>
+    <p><strong>diff_type：</strong>archaism（KJV "conversation"= citizenship/behavior）</p>
+    <p><strong>observation：</strong>KJV "conversation" 在 1611 指"公民身份 / 行事"，现代已变为"交谈"；和合本与本项目均据原意译作"国民 / 天上的国籍"。</p>
+    <p><strong>basis：</strong>πολίτευμα（politeuma）本义" citizenship / 政体"，KJV 借古英语 conversation 表"居留与身份"。</p>
+    <p><strong>conclusion：</strong>和合本此处准确把握原意；本应用译文与之相同，差异仅存在于 KJV 古词与现代理解之间。</p>
+  </div>
+
+  <div class="note">说明：上面两例刻意选取"<strong>和合本译法准确、差异在 KJV 古词</strong>"的情形，用以示范规范的"双向诚实"原则——避免把对照功能变成单向批评。真正需要标注"和合本偏离"的条目，须由神学顾问基于 <code>basis</code> 提供可核查的原文依据后撰写，绝不由模型自由生成。</div>
+
+  <h3>2.4 与校验机制衔接</h3>
+  <ul>
+    <li>每条 <code>comparison_note</code> 入库即进入 <code>review_queue</code>，状态 <code>pending</code>，<strong>approved</strong> 前不展示。</li>
+    <li>自动化检查：<code>observation</code> 不得含黑名单词（"错误/失败/异端"等绝对化词触发人工复核）；<code>basis</code> 必填。</li>
+    <li>版本化：修改即写 <code>content_version</code>，可回滚。</li>
+  </ul>
+</section>
+
+<footer>RAG 检索示例 + 对照注释规范 · 配套 app-design.html / schema-and-rag.html / legal-whitelist-and-health.html</footer>
+
+</div>
+</body>
+</html>

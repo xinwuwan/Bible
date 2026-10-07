@@ -1,0 +1,5 @@
+Error on line 4, column 7 of pubspec.yaml: Mapping values are not allowed here. Did you miss a colon earlier?
+  ╷
+4 │   path: ^1.9.0
+  │       ^
+  ╵

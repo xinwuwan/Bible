@@ -1,0 +1,106 @@
+{
+  "_health_note": [
+    "模块 C 种子数据（NEWSTART 八支柱）。",
+    "⚠ 全部条目 medical_reviewed=false —— 未经医学顾问审核，禁止随正式发布包分发。",
+    "⚠ EGW 来源目前仅锚定到「著作级」(如 EGW-MH=Ministry of Healing 1905)；",
+    "   段落级 source_id (EGW-MH-p123) 必须由编辑按 ingest_egw.py 产出逐条补齐后方可发布。",
+    "⚠ BIBLE 来源为章节级引用，可核对；EGW 著作均为怀爱伦生前(1915年前)出版的美区公共领域作品。",
+    "打包：正式包用 build_offline_db.py（默认过滤未审核条目）；内部预览加 --allow-unreviewed-health。"
+  ],
+  "books": [
+    {"book_id": 1,  "book_code": "GEN", "name_en": "Genesis", "name_zh": "创世记", "testament": "OT", "chapter_count": 50},
+    {"book_id": 43, "book_code": "JHN", "name_en": "John",    "name_zh": "约翰福音", "testament": "NT", "chapter_count": 21}
+  ],
+  "verses": [
+    {"verse_id": 1, "book_id": 1,  "chapter": 1, "verse": 1, "ref": "GEN 1:1",
+     "kjv_text": "In the beginning God created the heaven and the earth.",
+     "our_zh": "起初，神创造天地。", "cuv_ref_text": "起初，神创造天地。"},
+    {"verse_id": 2, "book_id": 1,  "chapter": 1, "verse": 2, "ref": "GEN 1:2",
+     "kjv_text": "And the earth was without form, and void; and darkness was upon the face of the deep.",
+     "our_zh": "地是空虚混沌，渊面黑暗。", "cuv_ref_text": "地是空虚混沌，渊面黑暗。"},
+    {"verse_id": 3, "book_id": 43, "chapter": 3, "verse": 16, "ref": "JHN 3:16",
+     "kjv_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+     "our_zh": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。",
+     "cuv_ref_text": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。"}
+  ],
+  "doctrines": [
+    {"belief_id": 1, "code": "SCRIPTURE", "title_en": "The Holy Scriptures", "title_zh": "圣经",
+     "en_text": "The Holy Scriptures...", "zh_text": "圣经是上帝旨意的启示，本应用以 KJV 英文为权威底本。"}
+  ],
+  "health": {
+    "topics": [
+      {"topic_id": 1, "code": "NUT", "name_zh": "营养",   "summary": "以圣经所记原始饮食为原则，选择单纯、少加工的食物，使身体得着合宜的滋养。"},
+      {"topic_id": 2, "code": "EXE", "name_zh": "运动",   "summary": "有规律的身体活动是维持健康的必要条件，与节制相配合效果最佳。"},
+      {"topic_id": 3, "code": "WAT", "name_zh": "水",     "summary": "充足的水分摄取是身体代谢与清洁的基础，内用外用皆有其益。"},
+      {"topic_id": 4, "code": "SUN", "name_zh": "阳光",   "summary": "适度的日光有助身体机能，惟当避免过度曝晒。"},
+      {"topic_id": 5, "code": "TEM", "name_zh": "节制",   "summary": "凡有益之物当适度使用，凡有害之物当全然戒绝。"},
+      {"topic_id": 6, "code": "AIR", "name_zh": "空气",   "summary": "清新的空气与良好通风是生命之本，应尽量避免久处污浊密闭之地。"},
+      {"topic_id": 7, "code": "RES", "name_zh": "休息",   "summary": "规律作息与安息日的歇息，使身心重新得力。"},
+      {"topic_id": 8, "code": "TRU", "name_zh": "信靠",   "summary": "心灵的健康根植于对上帝的信靠；身体的健康亦受心境影响。"}
+    ],
+    "sources": [
+      {"id":  1, "topic_id": 1, "source_type": "BIBLE", "source_id": "GEN 1:29"},
+      {"id":  2, "topic_id": 1, "source_type": "BIBLE", "source_id": "DAN 1:12"},
+      {"id":  3, "topic_id": 1, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id":  4, "topic_id": 2, "source_type": "BIBLE", "source_id": "1TI 4:8"},
+      {"id":  5, "topic_id": 2, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id":  6, "topic_id": 3, "source_type": "BIBLE", "source_id": "JHN 4:14"},
+      {"id":  7, "topic_id": 3, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id":  8, "topic_id": 4, "source_type": "BIBLE", "source_id": "MAL 4:2"},
+      {"id":  9, "topic_id": 4, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id": 10, "topic_id": 5, "source_type": "BIBLE", "source_id": "1CO 9:25"},
+      {"id": 11, "topic_id": 5, "source_type": "BIBLE", "source_id": "1CO 6:19-20"},
+      {"id": 12, "topic_id": 5, "source_type": "EGW",   "source_id": "EGW-TEM"},
+      {"id": 13, "topic_id": 6, "source_type": "BIBLE", "source_id": "GEN 2:7"},
+      {"id": 14, "topic_id": 6, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id": 15, "topic_id": 7, "source_type": "BIBLE", "source_id": "EXO 20:8-11"},
+      {"id": 16, "topic_id": 7, "source_type": "BIBLE", "source_id": "MRK 6:31"},
+      {"id": 17, "topic_id": 7, "source_type": "EGW",   "source_id": "EGW-MH"},
+      {"id": 18, "topic_id": 8, "source_type": "BIBLE", "source_id": "PHP 4:6-7"},
+      {"id": 19, "topic_id": 8, "source_type": "BIBLE", "source_id": "PSA 23:1"},
+      {"id": 20, "topic_id": 8, "source_type": "BIBLE", "source_id": "1TH 5:23"}
+    ],
+    "guidance": [
+      {"guidance_id": 1, "topic_id": 1, "title": "以植物性食物为日常饮食基础",
+       "body_zh": "创世记 1:29 所记的原始饮食以粮食、蔬果与坚果为主；但以理 1:12 亦记载以素淡饮食十日之后的对照。原则上是：多选谷物、蔬果、豆类与坚果，少取精制与重加工之物。具体膳食安排与个人营养需求，请咨询专业医师或注册营养师。",
+       "evidence_level": "B", "medical_reviewed": false},
+      {"guidance_id": 2, "topic_id": 1, "title": "规律进食，避免过饱",
+       "body_zh": "饮食当定时定量，避免暴饮暴食与深夜进食。此为一般性的生活原则，非针对特定疾病的建议。",
+       "evidence_level": "C", "medical_reviewed": false},
+      {"guidance_id": 3, "topic_id": 2, "title": "每日保持适度体力活动",
+       "body_zh": "提摩太前书 4:8 指出操练身体「益处还少」而敬虔凡事都有益处——身体操练有其价值，惟不及属灵操练。实践上建议每日进行约 30 分钟的中等强度活动（如步行、园艺、劳作）。若有慢性病或身体不适，请先征询医生意见再开始新的运动计划。",
+       "evidence_level": "B", "medical_reviewed": false},
+      {"guidance_id": 4, "topic_id": 3, "title": "充足饮水",
+       "body_zh": "水参与身体各项代谢与废物排出。一般成人每日饮水量常在 1500–2000 毫升的区间，但实际需量随体重、气候、活动量与身体状况而变；心肾功能异常者须遵医嘱调整。约翰福音 4:14 以「活水」为属灵象征，此处不作饮水量的经文依据。",
+       "evidence_level": "B", "medical_reviewed": false},
+      {"guidance_id": 5, "topic_id": 4, "title": "适度接受日光",
+       "body_zh": "玛拉基书 4:2 以「公义的日头」出现、其光线有医治之能作喻。日常可安排适度的户外活动；同时应避免过度曝晒与强烈时段长时间日晒，必要时采取防晒措施。",
+       "evidence_level": "C", "medical_reviewed": false},
+      {"guidance_id": 6, "topic_id": 5, "title": "节制：戒绝有害之物，适度使用有益之物",
+       "body_zh": "哥林多前书 9:25 以「诸事都有节制」论竞赛者的自律；6:19-20 更指出身体是圣灵的殿。凡明确有害之物当全然戒除，凡有益之物亦不当过量。若涉及成瘾问题，请寻求专业协助，勿仅依赖意志力。",
+       "evidence_level": "B", "medical_reviewed": false},
+      {"guidance_id": 7, "topic_id": 6, "title": "保持空气清新与环境通风",
+       "body_zh": "创世记 2:7 记上帝将生气吹入鼻孔，人就成为有灵的活人——气息与生命紧密相连。起居与工作场所应保持通风，尽量避免久处密闭、污浊或有烟害的环境。",
+       "evidence_level": "C", "medical_reviewed": false},
+      {"guidance_id": 8, "topic_id": 7, "title": "规律作息与守安息日",
+       "body_zh": "出埃及记 20:8-11 第四诫设立安息日；马可福音 6:31 记耶稣对门徒说「你们来，同我暗暗地到旷野地方去歇一歇」。建议保持规律睡眠，并每周保留一段歇息与敬拜的时间。长期失眠或睡眠障碍应就医评估。",
+       "evidence_level": "B", "medical_reviewed": false},
+      {"guidance_id": 9, "topic_id": 8, "title": "以祷告交托，保守心怀",
+       "body_zh": "腓立比书 4:6-7 应许：将所要的告诉上帝，上帝所赐出人意外的平安必保守心怀意念；诗篇 23:1 与帖撒罗尼迦前书 5:23 亦指向全人（灵、魂、体）的保守。可每日留出安静祷告与默想的时间。若持续情绪低落、影响生活功能，请寻求专业心理或医疗协助——这与信靠并不冲突。",
+       "evidence_level": "C", "medical_reviewed": false},
+      {"guidance_id": 10, "topic_id": 8, "title": "心理健康不是信心的对立面",
+       "body_zh": "属灵的信靠与专业的心理／医学照护可以同时并行。把心理困扰简单归因为「信心不足」，既不合圣经全人观，也可能延误必要的治疗。",
+       "evidence_level": "C", "medical_reviewed": false}
+    ],
+    "metrics": [
+      {"metric_id": 1, "topic_code": "NUT", "name_zh": "蔬果份数",   "unit": "份/日", "target_value": "≥5"},
+      {"metric_id": 2, "topic_code": "EXE", "name_zh": "运动时长",   "unit": "分钟",  "target_value": "≥30"},
+      {"metric_id": 3, "topic_code": "WAT", "name_zh": "饮水量",     "unit": "毫升",  "target_value": "1500–2000"},
+      {"metric_id": 4, "topic_code": "SUN", "name_zh": "户外日照",   "unit": "分钟",  "target_value": "15–30"},
+      {"metric_id": 5, "topic_code": "TEM", "name_zh": "刺激性饮品", "unit": "杯",    "target_value": "0"},
+      {"metric_id": 6, "topic_code": "AIR", "name_zh": "通风时长",   "unit": "分钟",  "target_value": "≥30"},
+      {"metric_id": 7, "topic_code": "RES", "name_zh": "睡眠时长",   "unit": "分钟",  "target_value": "≥420"},
+      {"metric_id": 8, "topic_code": "TRU", "name_zh": "心情评分",   "unit": "1–5",   "target_value": "≥3"}
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+# M1 数据层 / 采集依赖
+# 安装: pip install -r requirements.txt
+psycopg[binary]>=3.1      # PostgreSQL 驱动（异步不依赖，这里用同步客户端）
+pgvector>=0.2.5           # 向量类型适配（如用异步/ORM 可一并引入适配器）
+sentence-transformers>=2.7  # embedding 模型加载（bge-small-zh-v1.5）

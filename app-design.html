@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球华人跨平台信仰应用 · 系统设计方案</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1f2733; --muted:#5b6776;
+    --line:#e4e8ee; --accent:#2f6df0; --accent2:#0f9d7a; --warn:#c9621a;
+    --soft:#eef3fd; --soft2:#eafaf3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 80px}
+  header.hero{background:linear-gradient(135deg,#2f6df0,#0f9d7a);color:#fff;border-radius:18px;padding:34px 30px;margin-bottom:26px}
+  header.hero h1{margin:0 0 8px;font-size:26px;letter-spacing:.5px}
+  header.hero p{margin:0;opacity:.92;font-size:14px}
+  .badges{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+  .badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:4px 11px;border-radius:999px;font-size:12px}
+  nav.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:26px}
+  nav.toc h3{margin:0 0 10px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  nav.toc a{color:var(--accent);text-decoration:none;display:block;padding:3px 0;font-size:14px}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px 26px;margin-bottom:22px}
+  section h2{margin:0 0 14px;font-size:20px;border-left:4px solid var(--accent);padding-left:12px}
+  section h3{font-size:16px;margin:20px 0 8px;color:var(--accent)}
+  p{margin:8px 0}
+  ul,ol{margin:8px 0;padding-left:22px}
+  li{margin:5px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--soft);color:var(--ink);font-weight:600}
+  .code{background:#0f1c2e;color:#d6e2f5;padding:14px 16px;border-radius:10px;font-family:"SF Mono",Consolas,monospace;font-size:13px;overflow:auto}
+  .note{background:var(--soft);border-left:4px solid var(--accent);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:14px}
+  .warn{background:#fff6ec;border-left:4px solid var(--warn);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:14px}
+  .ok{background:var(--soft2);border-left:4px solid var(--accent2);padding:12px 16px;border-radius:8px;margin:14px 0;font-size:14px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .box{border:1px solid var(--line);border-radius:10px;padding:14px}
+  .box h4{margin:0 0 6px;font-size:15px}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--soft);color:var(--accent);margin-right:6px}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
+  svg{width:100%;height:auto}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>全球华人跨平台信仰应用 · 系统设计方案</h1>
+  <p>以 KJV 英文圣经 · 怀爱伦原版英文著作 · 复临安息日会官方教义为唯一权威来源</p>
+  <div class="badges">
+    <span class="badge">手机 iOS / Android</span>
+    <span class="badge">电脑 Windows / macOS / Linux</span>
+    <span class="badge">Web 端</span>
+    <span class="badge">离线优先</span>
+    <span class="badge">RAG 溯源架构</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h3>目录</h3>
+  <a href="#s1">一、项目定位与设计原则</a>
+  <a href="#s2">二、整体架构（含架构图）</a>
+  <a href="#s3">三、核心模块划分</a>
+  <a href="#s4">四、数据与内容来源（全部基于英文原版权威材料）</a>
+  <a href="#s5">五、内容准确性校验机制</a>
+  <a href="#s6">六、跨平台实现方式</a>
+  <a href="#s7">七、风险与合规提示（版权 / 表述）</a>
+  <a href="#s8">八、落地路线建议</a>
+</nav>
+
+<section id="s1">
+  <h2>一、项目定位与设计原则</h2>
+  <p>本应用面向全球华人（含中国港澳台、东南亚、北美、欧洲等地华语群体），目标是在<strong>单一权威来源</strong>之上，提供可信赖的中文信仰内容与健康生活指导。其根本约束是：<strong>所有源内容必须以英文原版为准，严禁以任何现有中文译本作为翻译或教义的凭据</strong>。</p>
+
+  <h3>权威来源（Source of Truth）</h3>
+  <ul>
+    <li><strong>KJV 英文圣经</strong>（King James Version, 1611）—— 圣经文本的唯一权威底本。</li>
+    <li><strong>怀爱伦（Ellen G. White）全部原版英文著作</strong> —— 教义阐释与健康教导的权威补充，须取原文。</li>
+    <li><strong>复临安息日会官方教义</strong> —— 以教会正式公布的《28 条基本信仰》等官方英文文献为准。</li>
+  </ul>
+
+  <h3>六大设计原则</h3>
+  <div class="grid">
+    <div class="box"><h4>① 原文溯源</h4><p class="muted">每一句中文都必须能追溯到具体的 KJV 经文 / EGW 段落 / 教义条款编号。</p></div>
+    <div class="box"><h4>② 可追溯翻译</h4><p class="muted">中文由"原文→中文"的管线生成并经审核，而非从和合本等既有译本回译。</p></div>
+    <div class="box"><h4>③ RAG 增强</h4><p class="muted">问答与讲解基于检索增强生成，答案必须引用权威段落，避免模型臆测。</p></div>
+    <div class="box"><h4>④ 专家在环</h4><p class="muted">所有对外内容上线前需经合格神学 / 医学顾问审核放行。</p></div>
+    <div class="box"><h4>⑤ 离线优先</h4><p class="muted">核心圣经、译本、教义预置本地，无网络也能读；EGW 文库可下载。</p></div>
+    <div class="box"><h4>⑥ 表述克制</h4><p class="muted">对照标注以"释经观察"呈现差异，保持学术与牧养分寸，而非论战口吻。</p></div>
+  </div>
+
+  <div class="note">关于"和合本"的对照：应用<strong>自身的中文译本是独立从原文生成</strong>的；仅在"对照 / 注释"功能里，将和合本作为<strong>被观察的参照对象</strong>展示差异，但绝不作为真理来源。这一区分对版权与神学可信度都至关重要。</div>
+</section>
+
+<section id="s2">
+  <h2>二、整体架构</h2>
+  <p>采用<strong>分层 + 客户端 / 服务端分离</strong>的架构。客户端统一用一套代码覆盖全平台；服务端负责内容管理、检索与受控的 AI 推理；AI 推理层以"检索增强（RAG）"为核心，确保一切生成内容都锚定在权威原文之上。</p>
+
+  <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,sans-serif">
+    <defs>
+      <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 Z" fill="#6b7787"/>
+      </marker>
+    </defs>
+    <rect x="0" y="0" width="720" height="360" fill="#fbfcfe"/>
+    <!-- Client layer -->
+    <rect x="24" y="24" width="190" height="120" rx="12" fill="#eef3fd" stroke="#2f6df0" stroke-width="1.5"/>
+    <text x="119" y="46" text-anchor="middle" font-size="13" font-weight="700" fill="#2f6df0">客户端层（Flutter 一套代码）</text>
+    <text x="34" y="70" font-size="11" fill="#33414f">iOS / Android</text>
+    <text x="34" y="88" font-size="11" fill="#33414f">Windows / macOS / Linux</text>
+    <text x="34" y="106" font-size="11" fill="#33414f">Web 端（同一代码编译）</text>
+    <text x="34" y="124" font-size="11" fill="#33414f">本地 SQLite + FTS（离线）</text>
+
+    <!-- API gateway -->
+    <rect x="265" y="24" width="180" height="52" rx="12" fill="#fff" stroke="#0f9d7a" stroke-width="1.5"/>
+    <text x="355" y="44" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f9d7a">API 网关 / 鉴权</text>
+    <text x="355" y="62" text-anchor="middle" font-size="10.5" fill="#5b6776">REST / GraphQL · 限流</text>
+
+    <!-- App services -->
+    <rect x="265" y="92" width="180" height="120" rx="12" fill="#fff" stroke="#33414f" stroke-width="1.2"/>
+    <text x="355" y="112" text-anchor="middle" font-size="12.5" font-weight="700" fill="#22303f">应用服务层</text>
+    <text x="276" y="134" font-size="11" fill="#33414f">· 翻译与对照服务</text>
+    <text x="276" y="152" font-size="11" fill="#33414f">· 牧师问答（RAG）</text>
+    <text x="276" y="170" font-size="11" fill="#33414f">· 健康指导服务</text>
+    <text x="276" y="188" font-size="11" fill="#33414f">· 用户 / 同步服务</text>
+
+    <!-- Data layer -->
+    <rect x="24" y="172" width="190" height="160" rx="12" fill="#f3fbf7" stroke="#0f9d7a" stroke-width="1.5"/>
+    <text x="119" y="194" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0f9d7a">数据层（权威内容库）</text>
+    <text x="34" y="216" font-size="11" fill="#33414f">· KJV 圣经（按节结构化）</text>
+    <text x="34" y="234" font-size="11" fill="#33414f">· EGW 原版文库（按段）</text>
+    <text x="34" y="252" font-size="11" fill="#33414f">· SDA 教义条款</text>
+    <text x="34" y="270" font-size="11" fill="#33414f">· 中文译本（已审）</text>
+    <text x="34" y="288" font-size="11" fill="#33414f">· 对照注释（专家写）</text>
+    <text x="34" y="306" font-size="11" fill="#33414f">· 向量索引（pgvector）</text>
+
+    <!-- AI layer -->
+    <rect x="475" y="92" width="221" height="120" rx="12" fill="#fff7ee" stroke="#c9621a" stroke-width="1.5"/>
+    <text x="585" y="112" text-anchor="middle" font-size="12.5" font-weight="700" fill="#c9621a">AI 推理层（RAG）</text>
+    <text x="486" y="134" font-size="11" fill="#33414f">· 检索：向量 + 关键词</text>
+    <text x="486" y="152" font-size="11" fill="#33414f">· 生成：受控 LLM</text>
+    <text x="486" y="170" font-size="11" fill="#33414f">· 引文锚定 / 置信度</text>
+    <text x="486" y="188" font-size="11" fill="#33414f">· 低置信 → 转人工</text>
+
+    <!-- Review layer -->
+    <rect x="475" y="24" width="221" height="52" rx="12" fill="#fff" stroke="#33414f" stroke-width="1.2"/>
+    <text x="585" y="44" text-anchor="middle" font-size="12" font-weight="700" fill="#22303f">内容审核与发布台</text>
+    <text x="585" y="62" text-anchor="middle" font-size="10.5" fill="#5b6776">专家在环 · 版本化</text>
+
+    <!-- arrows -->
+    <line x1="214" y1="84" x2="263" y2="50" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="355" y1="76" x2="355" y2="90" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="445" y1="84" x2="473" y2="84" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="355" y1="212" x2="214" y2="250" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="475" y1="152" x2="263" y2="152" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+    <line x1="585" y1="120" x2="585" y2="98" stroke="#6b7787" stroke-width="1.5" marker-end="url(#ar)"/>
+  </svg>
+
+  <h3>技术选型</h3>
+  <table>
+    <tr><th>层级</th><th>推荐技术</th><th>理由</th></tr>
+    <tr><td>客户端</td><td><strong>Flutter 3.x（Dart）</strong></td><td>一套代码编译到 iOS/Android/Windows/macOS/Linux/Web，原生体验，桌面支持成熟。</td></tr>
+    <tr><td>后端服务</td><td><strong>Python FastAPI</strong> + PostgreSQL</td><td>AI/RAG 生态最完善；异步高性能；便于与向量库、模型服务集成。</td></tr>
+    <tr><td>向量检索</td><td><strong>pgvector</strong>（或 Qdrant/Milvus）</td><td>与 Postgres 同库，运维简单；支持语义 + 混合检索。</td></tr>
+    <tr><td>本地存储</td><td><strong>SQLite + FTS5</strong></td><td>移动/桌面离线全文检索；小体积、零配置。</td></tr>
+    <tr><td>生成模型</td><td>可自托管中文 LLM（如 Qwen 系列）+ RAG</td><td>内容敏感，自托管保障隐私与可控；中文能力强。</td></tr>
+    <tr><td>内容管理</td><td>内部审核台（Web 管理后台）</td><td>专家提交、比对、审批、版本发布。</td></tr>
+  </table>
+</section>
+
+<section id="s3">
+  <h2>三、核心模块划分</h2>
+
+  <h3>模块 A · 圣经中文翻译与对照</h3>
+  <ul>
+    <li><strong>独立译本库</strong>：从 KJV 原文逐节生成中文，译文与原文逐节绑定，形成"本应用官方中文译本"。</li>
+    <li><strong>对照阅读</strong>：并排显示 KJV 英文、本应用中文、以及（仅作参照的）和合本，供用户直观比较。</li>
+    <li><strong>差异注释</strong>：由神学顾问撰写"释经注记"，说明某节在 KJV 与和合本之间的关键用词 / 句式差异及其原文依据。<em>注记以客观释经语言书写，不采用攻击性措辞。</em></li>
+    <li><strong>术语词典</strong>：统一关键神学词汇（如 justification、sanctification、sabbath 等）的译法，全库一致。</li>
+  </ul>
+
+  <h3>模块 B · 牧师问答（信仰与教义）</h3>
+  <ul>
+    <li><strong>资深牧师人格</strong>：以"资深牧者"语气作答——准确、通俗、有同理心，引用 KJV/EGW/教义原文。</li>
+    <li><strong>教义问答</strong>：基于《28 条基本信仰》与 EGW 著作回答安息日、救恩、预言、教会治理等问题。</li>
+    <li><strong>偏差纠正</strong>：当问题涉及个别牧者 / 传道人的常见误解时，系统据权威原文澄清正确立场，<em>对事不对人</em>，只指出"某观点与权威来源不符"，不下人格判断。</li>
+    <li><strong>引用强制</strong>：每条回答必须附权威段落出处（书卷/章节/节，或 EGW 著作+段落，或教义条款编号）。</li>
+  </ul>
+
+  <h3>模块 C · 健康生活指导</h3>
+  <ul>
+    <li><strong>饮食指导</strong>：依据 EGW《服务真诠》《饮食证言》《节制》等及圣经，倡导以植物性饮食为主的均衡营养；说明原理而非绝对律法。</li>
+    <li><strong>心理健康</strong>：基于 EGW 关于休息、自然、信心、社群、节制等教导，提供压力管理、情绪调节、灵修节律建议。</li>
+    <li><strong>全人健康（NEWSTART 框架）</strong>：Nutrition（营养）、Exercise（运动）、Water（水）、Sunlight（阳光）、Temperance（节制）、Air（空气）、Rest（休息）、Trust（信靠）——每条对应权威出处与可执行建议。</li>
+    <li><strong>个人追踪（可选）</strong>：饮水、睡眠、运动打卡与提醒；附<strong>医疗免责声明</strong>，明确"非专业医疗建议，疾病请就医"。</li>
+  </ul>
+</section>
+
+<section id="s4">
+  <h2>四、数据与内容来源（全部基于英文原版权威材料）</h2>
+  <p>所有内容管线的"源头"均为英文原版。中文是<strong>产出物</strong>，不是来源。下表明确每条数据的权威出处与获取方式。</p>
+
+  <table>
+    <tr><th>数据类别</th><th>权威来源（英文原版）</th><th>版权状态（需法务复核）</th><th>结构化方式</th></tr>
+    <tr>
+      <td>圣经文本</td>
+      <td><strong>KJV (1611)</strong>，公共领域。可从标准公开文本库获取逐节结构化数据。</td>
+      <td>公共领域，可自由使用</td>
+      <td>书→章→节三级 ID，附原文、分词、词形</td>
+    </tr>
+    <tr>
+      <td>怀爱伦著作</td>
+      <td><strong>EGW 原版英文著作</strong>：如 <em>Steps to Christ, The Great Controversy, Desire of Ages, Ministry of Healing, Counsels on Diet and Foods, The Ministry of Healing, Temperance</em> 等。</td>
+      <td>EGW 卒于 1915 年，原版文本在多数司法辖区已进入公共领域；但<strong>现代汇编版 / 译本 / 排版</strong>可能仍受 White Estate 版权保护 → 须法务界定可用范围。</td>
+      <td>著作→章节→段落三级 ID，保留原始出版元数据</td>
+    </tr>
+    <tr>
+      <td>教会教义</td>
+      <td><strong>SDA 官方英文文献</strong>：《28 Fundamental Beliefs》、官方年鉴与立场声明（英文原版）。</td>
+      <td>教会公开发布，宜以官方英文原版为准并注明出处</td>
+      <td>条款编号 + 标题 + 正文段落</td>
+    </tr>
+    <tr>
+      <td>中文译本（产出）</td>
+      <td>由"原文→中文"管线生成，<strong>不依赖任何中文译本</strong></td>
+      <td>本应用自有内容（需记录生成与审核日志）</td>
+      <td>与原文逐节/逐段绑定</td>
+    </tr>
+    <tr>
+      <td>对照注释</td>
+      <td>神学顾问依据 KJV 与和合本<strong>表面文本差异</strong>撰写释经注记</td>
+      <td>本应用自有内容</td>
+      <td>关联经文 ID + 注记正文 + 审核状态</td>
+    </tr>
+  </table>
+
+  <div class="warn"><strong>版权红线：</strong>严禁将和合本（及其版权方授权文本）的译文作为本应用的翻译来源或训练依据。EGW 现代汇编本与官方中文材料同样不可直接抓取使用。任何进入内容库的材料都须经法务确认"可作原文底本使用"。</div>
+
+  <h3>内容处理管线</h3>
+  <div class="code">英文原版权威文本（KJV / EGW / 教义）
+   ↓ 结构化（切分 + 编号 + 元数据）
+   ↓ 中文翻译（翻译模型 + 术语词典约束）
+   ↓ 神学顾问审核（溯源核对、术语一致、无增删）
+   ↓ 向量化（embedding）+ 入库
+   ↓ 发布（版本号 + 变更日志）
+   ↓ 客户端差分同步 / 离线包</div>
+</section>
+
+<section id="s5">
+  <h2>五、内容准确性校验机制</h2>
+  <p>准确性是本项目生命线。采用"<strong>技术校验 + 专家在环 + 全程溯源</strong>"三重保险。</p>
+
+  <h3>1. 溯源绑定（每句可追）</h3>
+  <ul>
+    <li>每条中文译文在数据库中记录 <code>source_id</code>（KJV 节 ID / EGW 段落 ID / 教义条款 ID）。</li>
+    <li>前端展示译文时，可一键展开"原文出处"，做到透明可查。</li>
+  </ul>
+
+  <h3>2. 自动化校验（上线前拦截）</h3>
+  <ul>
+    <li><strong>反向语义一致性</strong>：将中文译文回嵌为向量，与原文向量比对，相似度低于阈值即告警（防漏译 / 跑题）。</li>
+    <li><strong>术语一致性</strong>：术语词典强制统一译法，自动扫描违例。</li>
+    <li><strong>无增删检测</strong>：译文不得引入原文没有的神学断言；与原文事实性陈述做对齐检查。</li>
+    <li><strong>引用必填</strong>：问答输出若无有效 <code>source_id</code> 锚定，系统拒绝直接发布，转人工。</li>
+  </ul>
+
+  <h3>3. 专家在环（人工终审）</h3>
+  <ul>
+    <li>设立<strong>神学顾问组</strong>（合格 SDA 神职 / 学者）与<strong>医学顾问组</strong>（注册营养师 / 医师）分别把关信仰内容与健康内容。</li>
+    <li>审核台提供"原文 + 机译 + 专家建议译"三栏对照，审批后打版本号发布。</li>
+    <li>健康模块所有建议须经医学顾问确认，避免越界成"医疗诊断"。</li>
+  </ul>
+
+  <h3>4. 运行时防护（问答 RAG）</h3>
+  <ul>
+    <li>问答只在<strong>检索到的权威片段</strong>内作答；禁止脱离上下文的自由发挥。</li>
+    <li>输出附<strong>置信度</strong>与<strong>引用片段</strong>；低置信 / 无引用时提示"建议咨询本地面牧者"。</li>
+    <li>用户可对回答"纠错 / 上报"，进入顾问复核队列，形成闭环。</li>
+  </ul>
+
+  <h3>5. 版本与审计</h3>
+  <ul>
+    <li>内容库全程版本化（类似 Git），每次变更留痕：谁、何时、基于哪版原文、改了什么。</li>
+    <li>出现偏差可一键回滚到已审版本。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <h2>六、跨平台实现方式</h2>
+  <p>核心策略：<strong>一套 Flutter 代码 + 本地离线库 + 轻量云端同步</strong>，让手机与电脑体验一致、数据贯通。</p>
+
+  <h3>统一客户端（Flutter）</h3>
+  <ul>
+    <li>同一 Dart 代码库编译为：iOS App、Android App、Windows/macOS/Linux 桌面应用、以及 Web 应用。</li>
+    <li>响应式布局：手机单列、桌面多栏（如左侧圣经导航 + 中间经文 + 右侧注释）。</li>
+    <li>共享业务逻辑（翻译对照、RAG 问答、健康打卡），避免各端重复实现。</li>
+  </ul>
+
+  <h3>离线优先</h3>
+  <ul>
+    <li>首次安装预置 <strong>SQLite + FTS5</strong>：KJV 原文、本应用中文译本、教义条款，开箱即读。</li>
+    <li>EGW 文库较大，提供"<strong>按需下载</strong>"整本或分卷包。</li>
+    <li>无网络时：阅读、检索、已缓存的健康内容全部可用；问答仅限离线缓存的 FAQ。</li>
+  </ul>
+
+  <h3>云端同步（有网时）</h3>
+  <ul>
+    <li>账号体系（邮箱 / 第三方）同步：书签、笔记、健康打卡、个性化设置。</li>
+    <li>内容更新以<strong>差分包</strong>下发，减少流量；版本号对齐服务端。</li>
+    <li>问答等高算力任务走服务端 RAG；端侧仅做展示与缓存。</li>
+  </ul>
+
+  <h3>桌面端特别处理</h3>
+  <ul>
+    <li>Windows/macOS 支持窗口缩放、键盘快捷翻节、打印 / 导出经文与笔记为 PDF。</li>
+    <li>Linux 提供 AppImage / deb 包，便于海外华人社区分发。</li>
+  </ul>
+</section>
+
+<section id="s7">
+  <h2>七、风险与合规提示</h2>
+  <div class="warn">
+    <strong>① 版权风险（最高优先级）：</strong>EGW 著作的现代汇编版、官方译本、以及和合本均可能受版权保护。务必在法务确认"哪些英文原版文本可自由作为底本"后再抓取入库。<strong>绝不可把既有中文译本的文本 / 译文作为本应用来源。</strong>
+  </div>
+  <div class="warn">
+    <strong>② 表述分寸：</strong>"指出和合本偏差"与"纠正个别牧者"功能，建议以<strong>释经观察 + 对事不对人</strong>的方式呈现，只陈述"某表述与 KJV/EGW/教义原文的差异及依据"，避免论战化、人身化表述，以保障可信度与跨地区合规。
+  </div>
+  <div class="warn">
+    <strong>③ 医疗边界：</strong>健康模块是"生活指导"而非"医疗诊断"。须明确免责声明，并建议用户重大健康问题咨询专业医师。
+  </div>
+  <div class="ok">
+    <strong>④ AI 幻觉：</strong>通过 RAG 溯源 + 引用必填 + 低置信转人工，将模型臆测风险降到最低；但人工终审仍是不可替代的一道闸。
+  </div>
+</section>
+
+<section id="s8">
+  <h2>八、落地路线建议</h2>
+  <ol>
+    <li><strong>阶段 0 · 法务与授权（2–4 周）：</strong>界定可合法使用的英文原版范围，签署必要授权，建立"白名单来源库"。</li>
+    <li><strong>阶段 1 · 内容中台（6–8 周）：</strong>搭建结构化内容库 + 翻译审核台 + 向量索引，先完成 KJV 全本与《28 条信仰》入库。</li>
+    <li><strong>阶段 2 · 客户端 MVP（8–10 周）：</strong>Flutter 实现模块 A（翻译对照）+ 离线阅读，双端（Android/iOS）内测。</li>
+    <li><strong>阶段 3 · 牧师问答（6–8 周）：</strong>接入 RAG 管线 + 顾问终审，灰度发布模块 B。</li>
+    <li><strong>阶段 4 · 健康模块（6 周）：</strong>医学顾问审核后上线模块 C，含 NEWSTART 框架与个人追踪。</li>
+    <li><strong>阶段 5 · 全平台与分发（4 周）：</strong>补齐桌面端 / Web，上线应用商店与教会社区分发渠道。</li>
+  </ol>
+
+  <div class="note">本方案将"以英文原版为唯一权威"作为架构级约束（溯源绑定 + 不依赖中文译本），并通过 RAG 与专家在环保障准确性。下一步若你确认，我可以：① 把阶段 1 的内容库 schema 设计成可落地的数据表；② 画出模块 B 的 RAG 问答时序图；③ 起草一份给法务的"可用英文原版白名单"清单。</div>
+</section>
+
+<footer>系统设计方案 · 供产品 / 技术 / 神学团队评审使用 · 内容权威来源：KJV · Ellen G. White 原版英文著作 · SDA 官方教义</footer>
+
+</div>
+</body>
+</html>

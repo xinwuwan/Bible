@@ -1,0 +1,8 @@
+Analyzing flutter_app...
+
+warning - test\health_page_test.dart:7:8 - Unused import: 'package:faith_compare_app/health_models.dart'. Try removing the import directive. - unused_import
+   info - lib\comparison_page.dart:57:14 - The declaration '_chapterKey' isn't referenced. Try removing the declaration of '_chapterKey'. - unused_element
+   info - lib\health_page.dart:182:19 - 'surfaceVariant' is deprecated and shouldn't be used. Use surfaceContainerHighest instead. This feature was deprecated after v3.18.0-0.1.pre. Try replacing the use of the deprecated member with the replacement. - deprecated_member_use
+   info - lib\main.dart:120:8 - Unnecessary cast. Try removing the cast. - unnecessary_cast
+
+4 issues found.

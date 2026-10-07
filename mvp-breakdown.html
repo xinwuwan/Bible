@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MVP 任务拆解与接口契约 · 全球华人跨平台信仰应用</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#ffffff; --ink:#1f2430; --sub:#5b6472;
+    --line:#e3e7ee; --brand:#2f5ed8; --brand2:#7a52d6; --gold:#b8860b;
+    --ok:#1f9d55; --warn:#d98324; --bad:#d64545; --soft:#eef2fb;
+    --code:#0f172a; --codebg:#f3f4f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei",-apple-system,Segoe UI,system-ui,sans-serif;
+    line-height:1.7;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  header.cover{background:linear-gradient(135deg,#2f5ed8,#7a52d6);color:#fff;
+    border-radius:18px;padding:30px 32px;box-shadow:0 8px 30px rgba(47,94,216,.25)}
+  header.cover h1{margin:0 0 6px;font-size:25px;letter-spacing:.5px}
+  header.cover p{margin:4px 0;opacity:.94;font-size:14px}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:2px 10px;border-radius:999px;font-size:12px;margin:8px 6px 0 0}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 22px;margin:22px 0}
+  .toc h3{margin:.2em 0 .6em;font-size:14px;color:var(--sub)}
+  .toc a{display:inline-block;margin:3px 12px 3px 0;color:var(--brand);text-decoration:none;font-size:13.5px}
+  .toc a:hover{text-decoration:underline}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;margin:18px 0;scroll-margin-top:16px}
+  h2{font-size:20px;margin:.1em 0 .6em;padding-bottom:8px;border-bottom:2px solid var(--soft)}
+  h3{font-size:16px;margin:1.2em 0 .5em;color:var(--brand2)}
+  h4{font-size:14px;margin:1em 0 .4em;color:var(--sub)}
+  p{margin:.55em 0}
+  ul,ol{margin:.4em 0 .8em;padding-left:1.4em}
+  li{margin:.3em 0}
+  code{background:var(--codebg);color:var(--code);padding:1px 6px;border-radius:5px;
+    font-family:"SF Mono",Consolas,Menlo,monospace;font-size:13px}
+  pre{background:#0f172a;color:#e6edf3;border-radius:10px;padding:14px 16px;overflow:auto;
+    font-family:"SF Mono",Consolas,Menlo,monospace;font-size:12.5px;line-height:1.55}
+  pre .k{color:#7ee787}.pre .s{color:#a5d6ff}.pre .c{color:#8b949e}
+  table{border-collapse:collapse;width:100%;margin:.6em 0 1em;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600;color:var(--ink)}
+  tr:nth-child(even) td{background:#fbfcfe}
+  .pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:11.5px;font-weight:600}
+  .p-ok{background:#e4f6ec;color:var(--ok)}
+  .p-warn{background:#fcefdd;color:var(--warn)}
+  .p-bad{background:#fbe3e3;color:var(--bad)}
+  .p-brand{background:#e7edfd;color:var(--brand)}
+  .p-purple{background:#efe9fb;color:var(--brand2)}
+  .note{background:var(--soft);border-left:4px solid var(--brand);padding:12px 16px;
+    border-radius:0 10px 10px 0;margin:1em 0;font-size:13.5px}
+  .warnbox{background:#fdf3e7;border-left:4px solid var(--warn);padding:12px 16px;
+    border-radius:0 10px 10px 0;margin:1em 0;font-size:13.5px}
+  .danger{background:#fdecec;border-left:4px solid var(--bad);padding:12px 16px;
+    border-radius:0 10px 10px 0;margin:1em 0;font-size:13.5px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .kv{font-size:13.5px}
+  .kv b{display:inline-block;min-width:120px;color:var(--sub)}
+  svg{display:block;max-width:100%;height:auto;margin:.5em 0}
+  .foot{color:var(--sub);font-size:12.5px;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <h1>全球华人跨平台信仰应用 · MVP 任务拆解与接口契约</h1>
+  <p>面向开发团队的交付蓝图：把《系统设计总册》的六份设计翻译成可排期、可对接口、可验收的工程任务。</p>
+  <p style="opacity:.85;font-size:12.5px">本文档衔接：app-design / schema-and-rag / legal-whitelist-and-health / rag-example-and-note-spec / master-handbook / comparison-note-pilot</p>
+  <div>
+    <span class="tag">Flutter 跨平台</span>
+    <span class="tag">Postgres + pgvector</span>
+    <span class="tag">RAG 检索增强</span>
+    <span class="tag">专家在环审核</span>
+    <span class="tag">6 阶段 / 24 周</span>
+  </div>
+</header>
+
+<div class="toc">
+  <h3>总目录</h3>
+  <a href="#s1">一、MVP 范围与切片</a>
+  <a href="#s2">二、技术栈与基础设施</a>
+  <a href="#s3">三、阶段排期甘特图</a>
+  <a href="#s4">四、分阶段任务拆解</a>
+  <a href="#s5">五、后端 API 接口契约</a>
+  <a href="#s6">六、数据契约（DTO）</a>
+  <a href="#s7">七、角色权限与鉴权</a>
+  <a href="#s8">八、验收质量门禁</a>
+  <a href="#s9">九、依赖与风险</a>
+</div>
+
+<!-- ============ 一、范围 ============ -->
+<section id="s1">
+  <h2>一、MVP 范围与切片</h2>
+  <p>本 MVP 目标：交付一个<strong>离线可用、内容可信、三核心模块均有最小可用切片</strong>的跨平台应用，验证「英文权威 → 独立中文产出 → 多端一致体验」这条主链路，而非一次做全。所有中文内容一律来自本应用自产，<b>不依赖任何既有中文译本作为来源</b>。</p>
+
+  <h3>1.1 三大模块的最小可用定义（MVP 切面）</h3>
+  <table>
+    <thead><tr><th>模块</th><th>MVP 做到</th><th>暂不做（Out of Scope）</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>A 翻译与对照</b></td>
+        <td>KJV 全本 + 新约（或全本）逐节独立中文译本；并排展示 KJV / 本应用中文 / 和合本（仅参照）；释经注记（comparison_note）含 pilot 30 条 + 持续扩充</td>
+        <td>全本 66 卷一次性精校；音频朗读；多译本切换引擎</td>
+      </tr>
+      <tr>
+        <td><b>B 牧师问答</b></td>
+        <td>RAG 问答：检索 KJV+EGW+教义；结构化输出 answer_zh / citations / confidence / needs_human；校验闸门（引用必填 + 置信阈值）；低把握转人工</td>
+        <td>多轮深度对话记忆；个性化释经辅导；实时语音问答</td>
+      </tr>
+      <tr>
+        <td><b>C 健康指导</b></td>
+        <td>NEWSTART 八支柱内容 + 权威来源绑定；结构化指导条目；每日打卡（health_log_entry）；医疗免责强制展示</td>
+        <td>接入穿戴设备；营养计算卡路里；与医生系统互联</td>
+      </tr>
+      <tr>
+        <td><b>平台</b></td>
+        <td>Flutter 一套代码覆盖 iOS / Android / Windows / macOS / Web；离线优先（预置 SQLite 圣经+译本+教义）；轻量云同步（书签/笔记/打卡）</td>
+        <td>Linux 发行包、电视端、小程序</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>1.2 非功能硬性约束（贯穿全程）</h3>
+  <ul>
+    <li><span class="pill p-bad">红线</span> 任何对外中文内容必须可溯源到权威英文原文（source_id），<b>禁止把和合本或任何中文译本当来源</b>。</li>
+    <li><span class="pill p-warn">版权</span> 上线前须由法务完成 Tier 1 白名单裁定（见 legal-whitelist-and-health 文档）；Tier 2 健康汇编改用 EGW 生前 PD 单篇重汇编。</li>
+    <li><span class="pill p-brand">离线</span> 首屏与圣经阅读零网络依赖；EGW 文库按需下载；RAG 问答需联网（可降级为本地索引检索）。</li>
+    <li><span class="pill p-purple">可信</span> 医疗/教义内容未过医学/神学审核不可发布；所有发布内容版本化、可回滚。</li>
+  </ul>
+</section>
+
+<!-- ============ 二、技术栈 ============ -->
+<section id="s2">
+  <h2>二、技术栈与基础设施约定</h2>
+  <div class="grid2">
+    <div>
+      <h3>后端</h3>
+      <ul class="kv">
+        <li><b>API 服务</b>FastAPI（Python 3.11+）或 NestJS；推荐 FastAPI（与 pgvector / transformers 生态一致）</li>
+        <li><b>数据库</b>PostgreSQL 15+ + pgvector 0.5+</li>
+        <li><b>向量模型</b>BAAI/bge-small-zh-v1.5（512 维，与 rag-example 对齐）；仅索引权威原文</li>
+        <li><b>LLM 网关</b>优先自托管中文模型（Qwen2.5 / ChatGLM3 7B+）；外网兜底可选合规云 API</li>
+        <li><b>缓存</b>Redis（会话/限流/检索缓存）</li>
+        <li><b>对象存储</b>EGW 文库按需分片、离线包分发</li>
+      </ul>
+    </div>
+    <div>
+      <h3>前端</h3>
+      <ul class="kv">
+        <li><b>框架</b>Flutter 3.22+（Dart 3）</li>
+        <li><b>本地库</b>SQLite + FTS5（离线圣经/译本/教义全文检索）；drift 或 sqlite3 包</li>
+        <li><b>状态</b>Riverpod（Provider 家族，适合多页共享书签/会话）</li>
+        <li><b>网络</b>dio + retrofit（类型化 API 客户端）</li>
+        <li><b>同步</b>差量同步：本地 last_seq 游标 + 云端 versioned patch</li>
+      </ul>
+      <h3>工程化</h3>
+      <ul class="kv">
+        <li><b>CI</b>GitHub Actions：lint + 单测 + 多端 build 冒烟</li>
+        <li><b>Schema</b>Alembic（Python）或 Flyway 做 DB 迁移，与 schema-and-rag DDL 对齐</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">环境约定：开发/预发/生产三环境隔离；<code>DATABASE_URL</code>、<code>LLM_GATEWAY_URL</code>、<code>EMBEDDING_MODEL</code> 一律走环境变量，禁止硬编码；密钥不入仓库。客户端与 API 的契约以本文档第五节为单一事实来源（single source of truth）。</div>
+</section>
+
+<!-- ============ 三、甘特图 ============ -->
+<section id="s3">
+  <h2>三、阶段排期甘特图（24 周）</h2>
+  <p>排期从 <b>2026 年 11 月初</b> 起算（前置法务/内容冻结 P0 与 M1 并行启动）。每个阶段标注里程碑产出与验收要点。</p>
+  <svg viewBox="0 0 1000 360" role="img" aria-label="MVP 排期甘特图">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f5ed8"/><stop offset="1" stop-color="#4a78e8"/></linearGradient>
+      <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a52d6"/><stop offset="1" stop-color="#9a78e8"/></linearGradient>
+      <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1f9d55"/><stop offset="1" stop-color="#46c27d"/></linearGradient>
+      <linearGradient id="g4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d98324"/><stop offset="1" stop-color="#e8a85a"/></linearGradient>
+      <linearGradient id="g5" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b8860b"/><stop offset="1" stop-color="#d4af37"/></linearGradient>
+      <linearGradient id="g6" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d64545"/><stop offset="1" stop-color="#e87373"/></linearGradient>
+    </defs>
+    <!-- 轴 -->
+    <line x1="150" y1="40" x2="960" y2="40" stroke="#c9d2e0" stroke-width="1"/>
+    <!-- 周刻度 -->
+    <g font-size="11" fill="#5b6472" text-anchor="middle">
+      <line x1="150" y1="34" x2="150" y2="44" stroke="#c9d2e0"/>
+      <line x1="290" y1="34" x2="290" y2="44" stroke="#c9d2e0"/>
+      <line x1="430" y1="34" x2="430" y2="44" stroke="#c9d2e0"/>
+      <line x1="570" y1="34" x2="570" y2="44" stroke="#c9d2e0"/>
+      <line x1="710" y1="34" x2="710" y2="44" stroke="#c9d2e0"/>
+      <line x1="850" y1="34" x2="850" y2="44" stroke="#c9d2e0"/>
+      <line x1="960" y1="34" x2="960" y2="44" stroke="#c9d2e0"/>
+      <text x="150" y="26">W1</text><text x="290" y="26">W5</text><text x="430" y="26">W9</text>
+      <text x="570" y="26">W13</text><text x="710" y="26">W17</text><text x="850" y="26">W21</text><text x="960" y="26">W24</text>
+    </g>
+    <!-- 行标签 + 条 -->
+    <!-- P0 -->
+    <text x="144" y="76" text-anchor="end" font-size="12.5" fill="#1f2430">P0 法务/内容冻结</text>
+    <rect x="150" y="64" width="120" height="22" rx="6" fill="url(#g1)" opacity=".9"/>
+    <text x="210" y="79" font-size="11" fill="#fff" text-anchor="middle">前置 W0–3</text>
+    <!-- M1 -->
+    <text x="144" y="116" text-anchor="end" font-size="12.5" fill="#1f2430">M1 数据层</text>
+    <rect x="150" y="104" width="160" height="22" rx="6" fill="url(#g1)"/>
+    <text x="230" y="119" font-size="11" fill="#fff" text-anchor="middle">W1–5</text>
+    <!-- M2 -->
+    <text x="144" y="156" text-anchor="end" font-size="12.5" fill="#1f2430">M2 客户端骨架</text>
+    <rect x="270" y="144" width="220" height="22" rx="6" fill="url(#g2)"/>
+    <text x="380" y="159" font-size="11" fill="#fff" text-anchor="middle">W3–9</text>
+    <!-- M3 -->
+    <text x="144" y="196" text-anchor="end" font-size="12.5" fill="#1f2430">M3 模块A 对照</text>
+    <rect x="420" y="184" width="220" height="22" rx="6" fill="url(#g3)"/>
+    <text x="530" y="199" font-size="11" fill="#fff" text-anchor="middle">W6–13</text>
+    <!-- M4 -->
+    <text x="144" y="236" text-anchor="end" font-size="12.5" fill="#1f2430">M4 模块B RAG</text>
+    <rect x="600" y="224" width="260" height="22" rx="6" fill="url(#g4)"/>
+    <text x="730" y="239" font-size="11" fill="#fff" text-anchor="middle">W10–19</text>
+    <!-- M5 -->
+    <text x="144" y="276" text-anchor="end" font-size="12.5" fill="#1f2430">M5 模块C 健康</text>
+    <rect x="760" y="264" width="200" height="22" rx="6" fill="url(#g5)"/>
+    <text x="860" y="279" font-size="11" fill="#fff" text-anchor="middle">W14–21</text>
+    <!-- M6 -->
+    <text x="144" y="316" text-anchor="end" font-size="12.5" fill="#1f2430">M6 审核/公测</text>
+    <rect x="870" y="304" width="90" height="22" rx="6" fill="url(#g6)"/>
+    <text x="915" y="319" font-size="11" fill="#fff" text-anchor="middle">W19–24</text>
+    <!-- 里程碑竖线 -->
+    <line x1="420" y1="50" x2="420" y2="340" stroke="#9a78e8" stroke-dasharray="4 4" opacity=".5"/>
+    <line x1="600" y1="50" x2="600" y2="340" stroke="#e8a85a" stroke-dasharray="4 4" opacity=".5"/>
+    <line x1="870" y1="50" x2="870" y2="340" stroke="#d64545" stroke-dasharray="4 4" opacity=".5"/>
+    <g font-size="10.5" fill="#5b6472">
+      <text x="424" y="356">M3 起</text><text x="604" y="356">M4 起</text><text x="836" y="356">上线窗口</text>
+    </g>
+  </svg>
+  <div class="note">关键依赖链：<b>M1 数据层</b>必须先于 M3/M4 完成（权威库 + 中文产出 + 向量索引就绪）；<b>M2 客户端骨架</b>与 M1 并行；M3 完成后模块 A 即可灰度；M4 依赖 M1 的 <code>content_chunk</code> 向量表；M5 与 M4 部分重叠；M6 收口审核与公测。</div>
+</section>
+
+<!-- ============ 四、任务拆解 ============ -->
+<section id="s4">
+  <h2>四、分阶段任务拆解</h2>
+
+  <h3>P0 · 法务与内容冻结（W0–3，前置）</h3>
+  <ul>
+    <li><b>法务裁定</b>：依白名单文档确认 Tier 1 可用清单（KJV 1611 + EGW 生前 PD 原版）；Tier 2 健康汇编改用生前 PD 单篇重汇编；出具英联邦 KJV 区域处理方案。</li>
+    <li><b>权威文本采集</b>：编写采集脚本抓取/导入 KJV 逐节、EGW 生前原版逐段、28 条教义英文原版；生成 <code>content_chunk</code> 切片与向量（bge-small-zh-v1.5, 512 维）。</li>
+    <li><b>验收</b>：白名单通过法务签字；权威库条数核对（KJV ≈ 31,102 节；EGW 段落按书）；向量维度一致。</li>
+  </ul>
+
+  <h3>M1 · 数据层与基础设施（W1–5）</h3>
+  <ul>
+    <li>执行 schema-and-rag 文档的全部 DDL（8 组表）；建立 Alembic 迁移基线。</li>
+    <li>落地「中文产出外键回源」约束（所有 <code>*_zh</code> 表外键指向英文来源表）；和合本写入独立 <code>bible_verse_cuv_ref</code>，不参与推理。</li>
+    <li>搭建 FastAPI 骨架、Redis、对象存储；API 鉴权中间件（JWT 设备登录）。</li>
+    <li><b>验收</b>：DB 约束测试通过（尝试以中文反推来源被拒）；内容发布走 <code>content_version</code> 版本化。</li>
+  </ul>
+
+  <h3>M2 · 客户端骨架 + 离线圣经阅读（W3–9）</h3>
+  <ul>
+    <li>Flutter 工程初始化（多端 target）；Riverpod 状态层；dio 类型化客户端。</li>
+    <li>构建离线 SQLite 包（预置 KJV + 本应用中文 + 教义），含 FTS5 全文检索；首版阅读器（书卷/章/节导航、夜间模式、字号）。</li>
+    <li>书签、笔记本地存储；差量同步骨架（last_seq 游标）。</li>
+    <li><b>验收</b>：断网状态下完整阅读圣经 + 全文检索可用；书签本地持久化。</li>
+  </ul>
+
+  <h3>M3 · 模块 A 翻译对照（W6–13）</h3>
+  <ul>
+    <li>后端：<code>GET /bible/...</code> 与 <code>GET /compare/verses</code>，并排返回 KJV / our_zh / cuv_ref / comparison_note。</li>
+    <li>前端：对照阅读页（三栏/可切换）、comparison_note 卡片展示。</li>
+    <li>接入 pilot 30 条对照注记（comparison-note-pilot 文档），走 review_queue 审核流；其余章节标记「注记待补充」。</li>
+    <li><b>验收</b>：对照页离线可用；注记必须含 basis 字段且来源 id 有效；和合本仅展示不参与推理。</li>
+  </ul>
+
+  <h3>M4 · 模块 B 牧师问答 RAG（W10–19）</h3>
+  <ul>
+    <li>检索服务：混合检索（向量 + 关键词）→ 重排 → 阈值过滤（对齐 schema-and-rag 时序图）。</li>
+    <li>LLM 网关：注入 master-handbook 第八章的「系统人格 + 检索上下文 + few-shot」，输出结构化 JSON。</li>
+    <li><b>校验闸门</b>：引用必填、置信 &lt; 0.70 或 needs_human 转人工、来源 id 必须存在于 content_chunk、出现和合本 id 直接拦截、敏感词触发复核。</li>
+    <li>前端：问答页 + 引用锚点跳转 + 「转人工/纠错反馈」入口（写 review_queue + qa_feedback）。</li>
+    <li><b>验收</b>：100 条探针问题，引用缺失率 = 0；误答（无来源臆测）拦截率 100%；转人工链路联通顾问台。</li>
+  </ul>
+
+  <h3>M5 · 模块 C 健康指导（W14–21）</h3>
+  <ul>
+    <li>落 NEWSTART 5 张表；八支柱内容与权威来源绑定（复用模块 A/B 同一权威库）。</li>
+    <li><code>health_guidance</code> 条目带 evidence_level + medical_reviewed 闸门；每条强制医疗免责。</li>
+    <li>前端：健康首页（八支柱）、指导详情、每日打卡（health_log_entry）、趋势。</li>
+    <li><b>验收</b>：未过 medical_reviewed 的条目不可见；免责文案 100% 展示；打卡数据同步。</li>
+  </ul>
+
+  <h3>M6 · 审核发布台 + 公测上线（W19–24）</h3>
+  <ul>
+    <li>顾问台：review_queue 审批流（comparison_note / 问答纠错 / 健康条目）；content_version 可回滚。</li>
+    <li>灰度发布（小范围华人团契）+ 反馈收集；性能/崩溃监控。</li>
+    <li>英联邦区域 KJV 替代方案（ASV/WEB）开关；多语言 UI 占位（粤语/繁体）。</li>
+    <li><b>验收</b>：审核台全流程跑通；崩溃率 &lt; 1%；法务合规复查通过。</li>
+  </ul>
+</section>
+
+<!-- ============ 五、API 契约 ============ -->
+<section id="s5">
+  <h2>五、后端 API 接口契约</h2>
+  <p>基址 <code>/api/v1</code>，统一 JSON；鉴权 <code>Authorization: Bearer &lt;JWT&gt;</code>。错误统一体：<code>{"error":{"code":"...","message":"..."}}</code>。常用错误码：401 未认证 / 403 无权 / 404 不存在 / 422 参数错误 / 429 限流 / 500 服务错误。</p>
+
+  <h3>5.1 认证</h3>
+  <table>
+    <tr><th>方法 / 路径</th><th>说明</th><th>请求</th><th>响应（要点）</th></tr>
+    <tr>
+      <td><code>POST /auth/device</code></td>
+      <td>设备匿名登录拿 JWT（不强制注册）</td>
+      <td><code>{device_id, platform}</code></td>
+      <td><code>{token, role:"anonymous|member"}</code></td>
+    </tr>
+  </table>
+
+  <h3>5.2 圣经与对照（模块 A）</h3>
+  <table>
+    <tr><th>方法 / 路径</th><th>说明</th><th>响应（要点）</th></tr>
+    <tr>
+      <td><code>GET /bible/books</code></td>
+      <td>书卷目录</td>
+      <td><code>{books:[{id, name_en, name_zh, chapters}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /bible/books/{book}/chapters/{ch}/verses</code></td>
+      <td>某章全部节（KJV + 本应用中文 + 和合本参照）</td>
+      <td><code>{book, chapter, verses:[{verse, kjv_text, our_zh, cuv_ref_text}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /compare/verses?refs=Jn3:16,Ro3:23</code></td>
+      <td>对照 + 释经注记</td>
+      <td><code>{items:[{ref, kjv_text, our_zh, cuv_ref_text, note:{diff_type, observation, basis, conclusion, status}}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /search?q=love&corpus=kjv|egw|doctrine</code></td>
+      <td>全文/向量检索</td>
+      <td><code>{hits:[{source_type, source_id, ref, snippet, score}]}</code></td>
+    </tr>
+  </table>
+
+  <h3>5.3 牧师问答（模块 B）</h3>
+  <table>
+    <tr><th>方法 / 路径</th><th>说明</th><th>请求 / 响应（要点）</th></tr>
+    <tr>
+      <td><code>POST /qa/ask</code></td>
+      <td>提交问题，触发 RAG + 校验闸门</td>
+      <td>
+        <b>Req</b> <code>{question, locale?}</code><br/>
+        <b>Res</b> <code>{answer_id, answer_zh, citations:[{source_type, source_id, ref, snippet}], confidence, needs_human}</code><br/>
+        <span class="pill p-warn">闸门</span> needs_human=true 时 answer_zh 仅给引导语，转人工
+      </td>
+    </tr>
+    <tr>
+      <td><code>GET /qa/{answer_id}</code></td>
+      <td>取历史问答</td>
+      <td>同 ask 响应体</td>
+    </tr>
+    <tr>
+      <td><code>POST /qa/{answer_id}/feedback</code></td>
+      <td>用户纠错 / 评分</td>
+      <td><code>{rating, comment?}</code> → 进 <code>qa_feedback</code> + 必要时 review_queue</td>
+    </tr>
+  </table>
+
+  <h3>5.4 健康指导（模块 C）</h3>
+  <table>
+    <tr><th>方法 / 路径</th><th>说明</th><th>响应（要点）</th></tr>
+    <tr>
+      <td><code>GET /health/topics</code></td>
+      <td>NEWSTART 八支柱</td>
+      <td><code>{topics:[{id, code, name_zh, summary}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /health/topics/{id}/guidance</code></td>
+      <td>某支柱指导条目（仅已审）</td>
+      <td><code>{items:[{guidance_id, title, body_zh, evidence_level, sources:[source_id], disclaimer}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>POST /health/log</code></td>
+      <td>每日打卡</td>
+      <td><code>{topic_code, metric_id, value, logged_at}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /health/log?from=&to=</code></td>
+      <td>打卡历史</td>
+      <td><code>{entries:[...]}</code></td>
+    </tr>
+  </table>
+
+  <h3>5.5 用户同步与审核（内部）</h3>
+  <table>
+    <tr><th>方法 / 路径</th><th>说明</th><th>要点</th></tr>
+    <tr>
+      <td><code>POST /sync</code></td>
+      <td>差量同步书签/笔记/打卡</td>
+      <td><code>{last_seq, changes:[...]}</code> → <code>{new_seq, applied}</code></td>
+    </tr>
+    <tr>
+      <td><code>GET /review/queue</code></td>
+      <td>顾问拉取待审（需 advisor 角色）</td>
+      <td><code>{items:[{id, kind, payload, status}]}</code></td>
+    </tr>
+    <tr>
+      <td><code>POST /review/items/{id}</code></td>
+      <td>批准/驳回（需 advisor）</td>
+      <td><code>{action:"approve|reject", note?}</code> → 触发 content_version</td>
+    </tr>
+  </table>
+
+  <div class="note"><b>契约纪律</b>：接口路径、字段名、状态码以本表为唯一事实来源；前端 retrofit 客户端由本表生成；任何 breaking change 必须 bump <code>/api/v1</code> 到 <code>/api/v2</code> 并行过渡，不得静默改字段。</div>
+</section>
+
+<!-- ============ 六、数据契约 ============ -->
+<section id="s6">
+  <h2>六、数据契约（对外 DTO 与落库对齐）</h2>
+  <p>以下 DTO 直接映射 schema-and-rag 的落库表，确保「接口返回 = 数据库可溯源」。</p>
+  <pre><span class="k">// VerseView</span>  →  bible_verse_kjv + bible_verse_zh + bible_verse_cuv_ref
+{
+  "ref": "Jn 3:16",
+  "kjv_text": "For God so loved the world...",   <span class="c">// 权威来源（英文）</span>
+  "our_zh": "神爱世人……",                         <span class="c">// 本应用独立产出</span>
+  "cuv_ref_text": "神爱世人……"                     <span class="c">// 仅参照，不参与来源</span>
+}
+
+<span class="k">// ComparisonNote</span>  →  comparison_note（status 必须为 approved 才下发）
+{
+  "ref": "Jn 3:16",
+  "diff_type": "archaic_kjv | mistranslation | text_tradition | consistent",
+  "observation": "KJV 'whosoever' 古词，本应用译作'凡'……",
+  "basis": "source_id:KJV-Jn3:16；希腊原文 pás",    <span class="c">// 必填</span>
+  "conclusion": "本应用与和合本此处一致，差异仅在 KJV 古词",
+  "status": "approved | draft"
+}
+
+<span class="k">// QaAnswer</span>  →  qa_answer + qa_citation
+{
+  "answer_id": "qa_8f2c",
+  "answer_zh": "根据……（见【来源:BIBLE|Jn3:16】）",
+  "citations": [{"source_type":"BIBLE","source_id":"KJV-Jn3:16","ref":"Jn 3:16","snippet":"..."}],
+  "confidence": 0.82,
+  "needs_human": false
+}
+
+<span class="k">// HealthGuidance</span>  →  health_guidance（medical_reviewed 必须为 true）
+{
+  "guidance_id": "hg_12",
+  "title": "每日饮水量建议",
+  "body_zh": "……",
+  "evidence_level": "A|B|C",
+  "sources": ["EGW-MH-p123","BIBLE-..."],
+  "disclaimer": "本内容不替代专业医疗诊断……"
+}</pre>
+  <div class="warnbox"><b>一致性红线</b>：DTO 里的 <code>source_id</code> 必须能在 <code>content_chunk.source_id</code> 或对应权威表中查到；前端展示引用时点击应跳转回 KJV/EGW/教义原文，形成「产出 → 来源」闭环。任何 <code>cuv</code> 前缀 id 绝不允许出现在 citations 中。</div>
+</section>
+
+<!-- ============ 七、权限 ============ -->
+<section id="s7">
+  <h2>七、角色权限与鉴权</h2>
+  <table>
+    <thead><tr><th>角色</th><th>能力</th><th>约束</th></tr></thead>
+    <tbody>
+      <tr><td><b>anonymous</b></td><td>浏览圣经/译文/对照/健康公开内容、检索</td><td>无书签/问答/打卡；只读已 approved/medical_reviewed 内容</td></tr>
+      <tr><td><b>member</b></td><td>上述 + 书签/笔记/问答/健康打卡/差量同步</td><td>问答受闸门限制；不可见 draft 内容</td></tr>
+      <tr><td><b>advisor</b></td><td>member + review_queue 审批 + 问答纠错复核</td><td>只能批准/驳回，不可改权威原文</td></tr>
+      <tr><td><b>admin</b></td><td>advisor + 内容发布/回滚（content_version）+ 白名单管理</td><td>所有发布动作留审计日志</td></tr>
+    </tbody>
+  </table>
+  <div class="note">鉴权：设备匿名 JWT（role=anonymous）→ 可选绑定账号升级 member；advisor/admin 须后台人工开通并 MFA。所有写操作（发布、审批、纠错）落入审计表，与内容版本化联动，支持回滚。</div>
+</section>
+
+<!-- ============ 八、验收门禁 ============ -->
+<section id="s8">
+  <h2>八、验收质量门禁</h2>
+  <p>与 master-handbook 的「准确性校验机制」对齐，作为每个阶段 Done 的硬条件：</p>
+  <table>
+    <thead><tr><th>维度</th><th>门禁指标</th><th>阈值</th></tr></thead>
+    <tbody>
+      <tr><td>溯源完整性</td><td>对外中文内容可追 source_id 比例</td><td class="p-ok">100%</td></tr>
+      <tr><td>引用必填</td><td>问答 citations 非空率</td><td class="p-ok">100%</td></tr>
+      <tr><td>臆测拦截</td><td>无来源回答被闸门拦截率</td><td class="p-ok">100%</td></tr>
+      <tr><td>置信兜底</td><td>confidence &lt; 0.70 转人工率</td><td class="p-ok">100%</td></tr>
+      <tr><td>内容隔离</td><td>citations 中出现 cuv/中文译本 id</td><td class="p-bad">0（出现即拦截）</td></tr>
+      <tr><td>医学边界</td><td>未 medical_reviewed 的健康条目可见率</td><td class="p-bad">0%</td></tr>
+      <tr><td>离线可用</td><td>首屏 + 圣经阅读断网成功率</td><td class="p-ok">100%</td></tr>
+      <tr><td>崩溃率</td><td>公测期客户端崩溃率</td><td class="p-warn">&lt; 1%</td></tr>
+    </tbody>
+  </table>
+  <div class="danger"><b>上线否决项（Go/No-Go）</b>：① 法务白名单未签字；② 引用缺失率 &gt; 0；③ 和合本 id 进入 citations；④ 未审健康条目漏出；⑤ 离线圣经不可用。任一不达标，禁止发布。</div>
+</section>
+
+<!-- ============ 九、依赖风险 ============ -->
+<section id="s9">
+  <h2>九、依赖与风险</h2>
+  <ul>
+    <li><span class="pill p-bad">版权</span> <b>最高优先级</b>：法务裁定前不得上线任何 EGW/Tier 2 内容；英联邦 KJV 须走 ASV/WEB 替代开关。</li>
+    <li><span class="pill p-warn">内容</span> 权威库采集与中文译校是长链条，建议 P0 即启动，避免 M3/M4 因内容缺失阻塞。</li>
+    <li><span class="pill p-warn">模型</span> 自托管中文 LLM 显存/算力门槛；若外网云 API 须评估合规与数据出境风险，RAG 上下文含教义内容需脱敏或本地化。</li>
+    <li><span class="pill p-brand">离线包</span> EGW 文库较大，离线包需分卷；首版可仅预置圣经+教义，EGW 按需下载。</li>
+    <li><span class="pill p-purple">表述分寸</span> 对照/纠正功能以释经观察呈现，避免论战化；comparison_note 经 advisor 双审。</li>
+  </ul>
+  <div class="note">本 MVP 拆解与前面六份文档构成完整交付链：<b>总册（定位）→ 落库（数据）→ RAG 时序（流程）→ 法务白名单（合规）→ NEWSTART（健康数据）→ 检索示例+注释规范（实现）→ 本册（排期+接口+验收）</b>。下一步可进入实际编码：建议从 M1 数据层 DDL 迁移脚本与 P0 内容采集脚本同步起跑。</div>
+</section>
+
+<div class="foot">本文档为工程交付蓝图，版权/合规结论以法务正式裁定为准 · 生成于 2026-10-05 · 与 master-handbook 等六份设计文档配套使用</div>
+</div>
+</body>
+</html>

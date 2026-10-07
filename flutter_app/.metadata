@@ -1,0 +1,13 @@
+# This file tracks properties of this Flutter project.
+# Used by Flutter tool to assess project health.
+#
+# This file should be UTF-8 encoded and can contain information about
+# the project such as project name, version, and other settings.
+
+project_type: app
+
+# Tracks if the project is using the new "flutter" command, or the older
+# "flutter" + gradle delegate approach. This is set to true by default.
+version:
+  revision: ""
+  channel: ""

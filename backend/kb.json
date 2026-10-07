@@ -1,0 +1,1683 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "note": "种子知识库。权威依据仅限 KJV 英文圣经、怀爱伦(EGW)原版英文著作、SDA 公开教义；中文为独立产出，和合本(CUV)绝不作权威来源。所有条目在公开部署前应人工复核；EGW 原文取自官方公共版权档案并标注出处。",
+    "authority_order": [
+      "KJV (英文底本)",
+      "EGW 原版英文著作",
+      "SDA 教义"
+    ],
+    "cuv_policy": "CUV 仅作参照展示，绝不作为 citation 的 source_id"
+  },
+  "verses": [
+    {
+      "ref": "JHN 3:16",
+      "book_code": "JHN",
+      "chapter": 3,
+      "verse": 16,
+      "text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "zh": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生。"
+    },
+    {
+      "ref": "EPH 2:8",
+      "book_code": "EPH",
+      "chapter": 2,
+      "verse": 8,
+      "text": "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God:",
+      "zh": "你们得救是本乎恩，也因着信；这并不是出于自己，乃是神所赐的；"
+    },
+    {
+      "ref": "EPH 2:9",
+      "book_code": "EPH",
+      "chapter": 2,
+      "verse": 9,
+      "text": "Not of works, lest any man should boast.",
+      "zh": "也不是出于行为，免得有人自夸。"
+    },
+    {
+      "ref": "ROM 6:23",
+      "book_code": "ROM",
+      "chapter": 6,
+      "verse": 23,
+      "text": "For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.",
+      "zh": "因为罪的工价乃是死；惟有神的恩赐，在我们的主基督耶稣里，乃是永生。"
+    },
+    {
+      "ref": "ROM 3:23",
+      "book_code": "ROM",
+      "chapter": 3,
+      "verse": 23,
+      "text": "For all have sinned, and come short of the glory of God;",
+      "zh": "因为世人都犯了罪，亏缺了神的荣耀；"
+    },
+    {
+      "ref": "GEN 2:2",
+      "book_code": "GEN",
+      "chapter": 2,
+      "verse": 2,
+      "text": "And on the seventh day God ended his work which he had made; and he rested on the seventh day from all his work which he had made.",
+      "zh": "到第七日，神造物的工已经完毕，就在第七日歇了他一切的工，安息了。"
+    },
+    {
+      "ref": "EXO 20:8",
+      "book_code": "EXO",
+      "chapter": 20,
+      "verse": 8,
+      "text": "Remember the sabbath day, to keep it holy.",
+      "zh": "当记念安息日，守为圣日。"
+    },
+    {
+      "ref": "EXO 20:11",
+      "book_code": "EXO",
+      "chapter": 20,
+      "verse": 11,
+      "text": "For in six days the LORD made heaven and earth, the sea, and all that in them is, and rested the seventh day: wherefore the LORD blessed the sabbath day, and hallowed it.",
+      "zh": "因为六日之内，耶和华造天、地、海和其中的万物，第七日便安息，所以耶和华赐福与安息日，定为圣日。"
+    },
+    {
+      "ref": "MAT 28:19",
+      "book_code": "MAT",
+      "chapter": 28,
+      "verse": 19,
+      "text": "Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost:",
+      "zh": "所以你们要去，使万民作我的门徒，奉父、子、圣灵的名给他们施洗；"
+    },
+    {
+      "ref": "MAT 28:20",
+      "book_code": "MAT",
+      "chapter": 28,
+      "verse": 20,
+      "text": "Teaching them to observe all things whatsoever I have commanded you: and, lo, I am with you alway, even unto the end of the world. Amen.",
+      "zh": "凡我所吩咐你们的，都教训他们遵守，我就常与你们同在，直到世界的末了。"
+    },
+    {
+      "ref": "ACT 1:9",
+      "book_code": "ACT",
+      "chapter": 1,
+      "verse": 9,
+      "text": "And when he had spoken these things, while they beheld, he was taken up; and a cloud received him out of their sight.",
+      "zh": "说了这话，他们正看的时候，他就被取上升，有一朵云彩把他接去，便看不见他了。"
+    },
+    {
+      "ref": "ACT 1:11",
+      "book_code": "ACT",
+      "chapter": 1,
+      "verse": 11,
+      "text": "Which also said, Ye men of Galilee, why stand ye gazing up into heaven? this same Jesus, which is taken up from you into heaven, shall so come in like manner as ye have seen him go into heaven.",
+      "zh": "加利利人哪，你们为什么站着望天呢？这离开你们被接升天的耶稣，你们见他怎样往天上去，他还要怎样来。"
+    },
+    {
+      "ref": "1CO 15:51",
+      "book_code": "1CO",
+      "chapter": 15,
+      "verse": 51,
+      "text": "Behold, I shew you a mystery; We shall not all sleep, but we shall all be changed,",
+      "zh": "我如今把一件奥秘的事告诉你们：我们不是都要睡觉，乃是都要改变，"
+    },
+    {
+      "ref": "1CO 15:52",
+      "book_code": "1CO",
+      "chapter": 15,
+      "verse": 52,
+      "text": "In a moment, in the twinkling of an eye, at the last trump: for the trumpet shall sound, and the dead shall be raised incorruptible, and we shall be changed.",
+      "zh": "就在一霎时，眨眼之间，号筒末次吹响的时候；因号筒要响，死人就要复活，成为不朽坏的，我们也要改变。"
+    },
+    {
+      "ref": "ECC 9:5",
+      "book_code": "ECC",
+      "chapter": 9,
+      "verse": 5,
+      "text": "For the living know that they shall die: but the dead know not any thing, neither have they any more a reward; for the memory of them is forgotten.",
+      "zh": "活着的人知道必死；死了的人却毫无所知，也不再得赏赐，他们的记念却被遗忘。"
+    },
+    {
+      "ref": "JHN 14:6",
+      "book_code": "JHN",
+      "chapter": 14,
+      "verse": 6,
+      "text": "Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.",
+      "zh": "耶稣说：我就是道路、真理、生命；若不藉着我，没有人能到父那里去。"
+    },
+    {
+      "ref": "REV 14:6",
+      "book_code": "REV",
+      "chapter": 14,
+      "verse": 6,
+      "text": "And I saw another angel fly in the midst of heaven, having the everlasting gospel to preach unto them that dwell on the earth, and to every nation, and kindred, and tongue, and people,",
+      "zh": "我又看见另有一位天使飞在空中，有永远的福音要传给住在地上的人，就是各国、各族、各方、各民。"
+    },
+    {
+      "ref": "REV 14:7",
+      "book_code": "REV",
+      "chapter": 14,
+      "verse": 7,
+      "text": "Saying with a loud voice, Fear God, and give glory to him; for the hour of his judgment is come: and worship him that made heaven, and earth, and the sea, and the fountains of waters.",
+      "zh": "他大声说：应当敬畏神，将荣耀归给他，因他施行审判的时候已经到了；应当敬拜那创造天、地、海和众水泉源的。"
+    },
+    {
+      "ref": "REV 14:12",
+      "book_code": "REV",
+      "chapter": 14,
+      "verse": 12,
+      "text": "Here is the patience of the saints: here are they that keep the commandments of God, and the faith of Jesus.",
+      "zh": "圣徒的忍耐就在此；他们是守神诫命和耶稣真道的。"
+    },
+    {
+      "ref": "ISA 40:31",
+      "book_code": "ISA",
+      "chapter": 40,
+      "verse": 31,
+      "text": "But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.",
+      "zh": "但那等候耶和华的，必从新得力；他们必如鹰展翅上腾，他们奔跑却不困倦，行走却不疲乏。"
+    },
+    {
+      "ref": "PSA 23:1",
+      "book_code": "PSA",
+      "chapter": 23,
+      "verse": 1,
+      "text": "The LORD is my shepherd; I shall not want.",
+      "zh": "耶和华是我的牧者，我必不至缺乏。"
+    },
+    {
+      "ref": "PHP 4:13",
+      "book_code": "PHP",
+      "chapter": 4,
+      "verse": 13,
+      "text": "I can do all things through Christ which strengtheneth me.",
+      "zh": "我靠着那加给我力量的，凡事都能作。"
+    },
+    {
+      "ref": "GAL 5:22",
+      "book_code": "GAL",
+      "chapter": 5,
+      "verse": 22,
+      "text": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith,",
+      "zh": "圣灵所结的果子，就是仁爱、喜乐、和平、忍耐、恩慈、良善、信实、"
+    },
+    {
+      "ref": "GAL 5:23",
+      "book_code": "GAL",
+      "chapter": 5,
+      "verse": 23,
+      "text": "Meekness, temperance: against such there is no law.",
+      "zh": "温柔、节制；这样的事，没有律法禁止。"
+    },
+    {
+      "ref": "ROM 12:2",
+      "book_code": "ROM",
+      "chapter": 12,
+      "verse": 2,
+      "text": "And be not conformed to this world: but be ye transformed by the renewing of your mind, that ye may prove what is that good, and acceptable, and perfect, will of God.",
+      "zh": "不要效法这个世界，只要心意更新而变化，叫你们察验何为神的善良、纯全、可喜悦的旨意。"
+    },
+    {
+      "ref": "MAT 11:28",
+      "book_code": "MAT",
+      "chapter": 11,
+      "verse": 28,
+      "text": "Come unto me, all ye that labour and are heavy laden, and I will give you rest.",
+      "zh": "凡劳苦担重担的人，可以到我这里来，我就使你们得安息。"
+    },
+    {
+      "ref": "JHN 1:1",
+      "book_code": "JHN",
+      "chapter": 1,
+      "verse": 1,
+      "text": "In the beginning was the Word, and the Word was with God, and the Word was God.",
+      "zh": "太初有道，道与神同在，道就是神。"
+    },
+    {
+      "ref": "JHN 1:14",
+      "book_code": "JHN",
+      "chapter": 1,
+      "verse": 14,
+      "text": "And the Word was made flesh, and dwelt among us, (and we beheld his glory, the glory as of the only begotten of the Father,) full of grace and truth.",
+      "zh": "道成了肉身，住在我们中间，充充满满地有恩典，有真理。"
+    },
+    {
+      "ref": "HEB 11:6",
+      "book_code": "HEB",
+      "chapter": 11,
+      "verse": 6,
+      "text": "But without faith it is impossible to please him: for he that cometh to God must believe that he is, and that he is a rewarder of them that diligently seek him.",
+      "zh": "人非有信，就不能得神的喜悦；因为到神面前来的人，必须信有神，且信他赏赐那寻求他的人。"
+    },
+    {
+      "ref": "JAS 2:17",
+      "book_code": "JAS",
+      "chapter": 2,
+      "verse": 17,
+      "text": "Even so faith, if it hath not works, is dead, being alone.",
+      "zh": "这样，信心若没有行为就是死的。"
+    },
+    {
+      "ref": "1PE 3:21",
+      "book_code": "1PE",
+      "chapter": 3,
+      "verse": 21,
+      "text": "The like figure whereunto even baptism doth also now save us (not the putting away of the filth of the flesh, but the answer of a good conscience toward God,) by the resurrection of Jesus Christ:",
+      "zh": "这水所表明的洗礼，现在藉着耶稣基督复活，也拯救你们；这洗礼本不在乎除掉肉体的污秽，只求在神面前有无亏的良心。"
+    },
+    {
+      "ref": "MAT 3:16",
+      "book_code": "MAT",
+      "chapter": 3,
+      "verse": 16,
+      "text": "And Jesus, when he was baptized, went up straightway out of the water: and, lo, the heavens were opened unto him, and he saw the Spirit of God descending like a dove, and lighting upon him:",
+      "zh": "耶稣受了洗，随即从水里上来；天忽然为他开了，他就看见神的灵仿佛鸽子降下，落在他身上。"
+    },
+    {
+      "ref": "REV 21:4",
+      "book_code": "REV",
+      "chapter": 21,
+      "verse": 4,
+      "text": "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away.",
+      "zh": "神要擦去他们一切的眼泪；不再有死亡，也不再有悲哀、哭号、疼痛，因为以前的事都过去了。"
+    },
+    {
+      "ref": "2CO 5:17",
+      "book_code": "2CO",
+      "chapter": 5,
+      "verse": 17,
+      "text": "Therefore if any man be in Christ, he is a new creature: old things are passed away; behold, all things are become new.",
+      "zh": "若有人在基督里，他就是新造的人，旧事已过，都变成新的了。"
+    },
+    {
+      "ref": "MAL 3:10",
+      "book_code": "MAL",
+      "chapter": 3,
+      "verse": 10,
+      "text": "Bring ye all the tithes into the storehouse, that there may be meat in mine house, and prove me now herewith, saith the LORD of hosts, if I will not open you the windows of heaven, and pour you out a blessing, that there shall not be room enough to receive it.",
+      "zh": "万军之耶和华说：你们要将当纳的十分之一全然送入仓库，使我家中有粮，以此试试我，是否为你们敞开天上的窗户，倾福与你们，甚至无处可容。"
+    },
+    {
+      "ref": "2CO 9:7",
+      "book_code": "2CO",
+      "chapter": 9,
+      "verse": 7,
+      "text": "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity: for God loveth a cheerful giver.",
+      "zh": "各人要随本心所酌定的捐献，不要作难，不要勉强，因为捐得乐意的人是神所喜爱的。"
+    },
+    {
+      "ref": "1CO 16:2",
+      "book_code": "1CO",
+      "chapter": 16,
+      "verse": 2,
+      "text": "Upon the first day of the week let every one of you lay by him in store, as God hath prospered him, that there be no gatherings when I come.",
+      "zh": "每逢七日的第一日，各人要照自己的进项抽存，免得我来的时候现凑。"
+    },
+    {
+      "ref": "LEV 11:3",
+      "book_code": "LEV",
+      "chapter": 11,
+      "verse": 3,
+      "text": "Whatsoever parteth the hoof, and is clovenfooted, and cheweth the cud, among the beasts, that shall ye eat.",
+      "zh": "凡蹄分两瓣、倒嚼的走兽，你们都可以吃。"
+    },
+    {
+      "ref": "1CO 6:19",
+      "book_code": "1CO",
+      "chapter": 6,
+      "verse": 19,
+      "text": "What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?",
+      "zh": "岂不知你们的身子就是圣灵的殿吗？这圣灵是从神而来，住在你们里头的；你们不是自己的人。"
+    },
+    {
+      "ref": "1CO 6:20",
+      "book_code": "1CO",
+      "chapter": 6,
+      "verse": 20,
+      "text": "For ye are bought with a price: therefore glorify God in your body, and in your spirit, which are God's.",
+      "zh": "因为你们是重价买来的，所以要在你们的身子上荣耀神。"
+    },
+    {
+      "ref": "MAL 4:1",
+      "book_code": "MAL",
+      "chapter": 4,
+      "verse": 1,
+      "text": "For, behold, the day cometh, that shall burn as an oven; and all the proud, yea, and all that do wickedly, shall be stubble: and the day that cometh shall burn them up, saith the LORD of hosts, that it shall leave them neither root nor branch.",
+      "zh": "万军之耶和华说：那日临近，势如烧着的火炉；凡狂傲的和行恶的必如碎秸，在那日必被烧尽，连根带枝一无所剩。"
+    },
+    {
+      "ref": "MAT 19:6",
+      "book_code": "MAT",
+      "chapter": 19,
+      "verse": 6,
+      "text": "Wherefore they are no more twain, but one flesh. What therefore God hath joined together, let not man put asunder.",
+      "zh": "既然如此，夫妻不再是两个人，乃是一体的了。所以神所配合的，人不可分开。"
+    },
+    {
+      "ref": "MAL 2:16",
+      "book_code": "MAL",
+      "chapter": 2,
+      "verse": 16,
+      "text": "For the LORD, the God of Israel, saith that he hateth putting away: for one covereth violence with his garment, saith the LORD of hosts: therefore take heed to your spirit, that ye deal not treacherously.",
+      "zh": "耶和华以色列的神说：休妻的事，是我所恨恶的；所以你们当谨守自己的心，不可行事诡诈。"
+    },
+    {
+      "ref": "MAT 24:6",
+      "book_code": "MAT",
+      "chapter": 24,
+      "verse": 6,
+      "text": "And ye shall hear of wars and rumours of wars: see that ye be not troubled: for all these things must come to pass, but the end is not yet.",
+      "zh": "你们也要听见打仗和打仗的风声，总不要惊慌；因为这些事是必须有的，只是末期还没有到。"
+    },
+    {
+      "ref": "2TI 3:1",
+      "book_code": "2TI",
+      "chapter": 3,
+      "verse": 1,
+      "text": "This know also, that in the last days perilous times shall come.",
+      "zh": "你该知道，末世必有危险的日子来到。"
+    },
+    {
+      "ref": "2TI 3:2",
+      "book_code": "2TI",
+      "chapter": 3,
+      "verse": 2,
+      "text": "For men shall be lovers of their own selves, covetous, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy,",
+      "zh": "因为那时人要专顾自己、贪爱钱财、自夸、狂傲、谤讟、违背父母、忘恩、不圣洁、"
+    },
+    {
+      "ref": "DAN 8:14",
+      "book_code": "DAN",
+      "chapter": 8,
+      "verse": 14,
+      "text": "And he said unto me, Unto two thousand and three hundred days; then shall the sanctuary be cleansed.",
+      "zh": "他对我说：到二千三百日，圣所就必洁净。"
+    },
+    {
+      "ref": "REV 7:4",
+      "book_code": "REV",
+      "chapter": 7,
+      "verse": 4,
+      "text": "And I heard the number of them which were sealed: and there were sealed an hundred and forty and four thousand of all the tribes of the children of Israel.",
+      "zh": "我听见以色列人各支派中受印的数目有十四万四千。"
+    },
+    {
+      "ref": "REV 14:1",
+      "book_code": "REV",
+      "chapter": 14,
+      "verse": 1,
+      "text": "And I looked, and, lo, a Lamb stood on the mount Sion, and with him an hundred forty and four thousand, having his Father's name written in their foreheads.",
+      "zh": "我又观看，见羔羊站在锡安山，同他又有十四万四千人，都有他父的名写在额上。"
+    },
+    {
+      "ref": "1TH 4:16",
+      "book_code": "1TH",
+      "chapter": 4,
+      "verse": 16,
+      "text": "For the Lord himself shall descend from heaven with a shout, with the voice of the archangel, and with the trump of God: and the dead in Christ shall rise first:",
+      "zh": "因为主必亲自从天降临，有呼叫的声音和天使长的声音，又有神的号吹响；那在基督里死了的人必先复活。"
+    },
+    {
+      "ref": "1CO 15:23",
+      "book_code": "1CO",
+      "chapter": 15,
+      "verse": 23,
+      "text": "But every man in his own order: Christ the firstfruits; afterward they that are Christ's at his coming.",
+      "zh": "但各人是按着自己的次序复活：初熟的果子是基督；以后在他来的时候，是那些属基督的。"
+    },
+    {
+      "ref": "2TI 3:16",
+      "book_code": "2TI",
+      "chapter": 3,
+      "verse": 16,
+      "text": "All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:",
+      "zh": "圣经都是神所默示的，于教训、督责、使人归正、教导人学义都是有益的。"
+    },
+    {
+      "ref": "2PE 1:21",
+      "book_code": "2PE",
+      "chapter": 1,
+      "verse": 21,
+      "text": "For the prophecy came not in old time by the will of man: but holy men of God spake as they were moved by the Holy Ghost.",
+      "zh": "因为预言从来没有出于人意的，乃是人被圣灵感动，说出神的话来。"
+    },
+    {
+      "ref": "EPH 4:30",
+      "book_code": "EPH",
+      "chapter": 4,
+      "verse": 30,
+      "text": "And grieve not the holy Spirit of God, whereby ye are sealed unto the day of redemption.",
+      "zh": "不要叫神的圣灵担忧；你们原是受了他的印记，等候得赎的日子来到。"
+    },
+    {
+      "ref": "REV 7:3",
+      "book_code": "REV",
+      "chapter": 7,
+      "verse": 3,
+      "text": "Saying, Hurt not the earth, neither the sea, nor the trees, till we have sealed the servants of our God in their foreheads.",
+      "zh": "又说：地与海并树木，你们不可伤害，等我们印了神众仆人的额。"
+    },
+    {
+      "ref": "MAT 6:16",
+      "book_code": "MAT",
+      "chapter": 6,
+      "verse": 16,
+      "text": "Moreover when ye fast, be not, as the hypocrites, of a sad countenance: for they disfigure their faces, that they may appear unto men to fast. Verily I say unto you, They have their reward.",
+      "zh": "你们禁食的时候，不可像那假冒为善的人，脸上带着愁容；因为他们把脸弄得难看，故意叫人看出他们是禁食。我实在告诉你们，他们已经得了他们的赏赐。"
+    },
+    {
+      "ref": "MAT 6:17",
+      "book_code": "MAT",
+      "chapter": 6,
+      "verse": 17,
+      "text": "But thou, when thou fastest, anoint thine head, and wash thy face;",
+      "zh": "你禁食的时候，要梳头洗脸，"
+    },
+    {
+      "ref": "MAT 6:18",
+      "book_code": "MAT",
+      "chapter": 6,
+      "verse": 18,
+      "text": "That thou appear not unto men to fast, but unto thy Father which is in secret: and thy Father, which seeth in secret, shall reward thee openly.",
+      "zh": "不叫人看出你禁食来，只叫你暗中的父看见；你父在暗中察看，必然报答你。"
+    },
+    {
+      "ref": "ISA 58:6",
+      "book_code": "ISA",
+      "chapter": 58,
+      "verse": 6,
+      "text": "Is not this the fast that I have chosen? to loose the bands of wickedness, to undo the heavy burdens, and to let the oppressed go free, and that ye break every yoke?",
+      "zh": "我所拣选的禁食不是要松开凶恶的绳，解下轭上的索，使被欺压的得自由，折断一切的轭吗？"
+    },
+    {
+      "ref": "2CO 6:17",
+      "book_code": "2CO",
+      "chapter": 6,
+      "verse": 17,
+      "text": "Wherefore come out from among them, and be ye separate, saith the Lord, and touch not the unclean thing; and I will receive you,",
+      "zh": "又说：你们务要从他们中间出来，与他们分别；不要沾不洁净的物，我就收纳你们。"
+    }
+  ],
+  "doctrine": [
+    {
+      "belief_id": 1,
+      "code": "SCRIPTURES",
+      "title_en": "The Holy Scriptures",
+      "title_zh": "圣经",
+      "en_text": "The Holy Scriptures, Old and New Testaments, are the written Word of God, the infallible revelation of His will.",
+      "zh_text": "圣经包括旧约与新约六十六卷，是神启示的言语，是信仰与生活的无误权威标准。"
+    },
+    {
+      "belief_id": 2,
+      "code": "TRINITY",
+      "title_en": "The Trinity",
+      "title_zh": "三一真神",
+      "en_text": "There is one God: Father, Son, and Holy Spirit, a unity of three co-eternal Persons.",
+      "zh_text": "独一真神以三个位格永存：圣父、圣子、圣灵，同质、同权、同荣。"
+    },
+    {
+      "belief_id": 6,
+      "code": "CREATION",
+      "title_en": "Creation",
+      "title_zh": "创造",
+      "en_text": "God created the world in six days and rested on the seventh, instituting the Sabbath.",
+      "zh_text": "神在六日创造万物，并以第七日安息日为创造的纪念与恩赐；人类按神的形像被造。"
+    },
+    {
+      "belief_id": 7,
+      "code": "NATURE_OF_MAN",
+      "title_en": "The Nature of Man",
+      "title_zh": "人的本性",
+      "en_text": "Man is a unity of body, mind, and spirit; mortal, but offered eternal life through Christ.",
+      "zh_text": "人是灵、魂、体的统一体，按神形像被造；因罪死亡，但在基督里可得永生。"
+    },
+    {
+      "belief_id": 8,
+      "code": "GREAT_CONTROVERSY",
+      "title_en": "The Great Controversy",
+      "title_zh": "善恶之争",
+      "en_text": "All humanity is involved in a great controversy between Christ and Satan.",
+      "zh_text": "全宇宙正经历神与撒但之间的善恶之争；基督降世是为救赎人类、恢复神本来的旨意。"
+    },
+    {
+      "belief_id": 9,
+      "code": "LIFE_DEATH_RESURRECTION",
+      "title_en": "The Life, Death, and Resurrection of Christ",
+      "title_zh": "基督的生平、受死与复活",
+      "en_text": "Christ, the eternal Son, became incarnate, died for our sins, and rose again.",
+      "zh_text": "耶稣是永生神子，以童贞女所生，替人受死、复活、升天，是人类的救主与中保。"
+    },
+    {
+      "belief_id": 10,
+      "code": "SALVATION",
+      "title_en": "The Experience of Salvation",
+      "title_zh": "救赎的经验",
+      "en_text": "By repentance and faith we are justified and adopted as children of God.",
+      "zh_text": "因信称义、因信成圣；悔改信靠基督，人得赦免并成为神儿女。"
+    },
+    {
+      "belief_id": 11,
+      "code": "GROWING_IN_CHRIST",
+      "title_en": "Growing in Christ",
+      "title_zh": "在基督里成长",
+      "en_text": "Through daily communion and the Spirit's power, believers grow in Christlikeness.",
+      "zh_text": "藉祷告、读经、团契与圣灵充满，信徒日日更新，活出基督品格。"
+    },
+    {
+      "belief_id": 12,
+      "code": "THE_CHURCH",
+      "title_en": "The Church",
+      "title_zh": "教会",
+      "en_text": "The church is the community of believers commissioned to proclaim the gospel.",
+      "zh_text": "教会是由信靠基督的人组成的普世团契，受差遣传扬福音、施行圣礼、建立信徒。"
+    },
+    {
+      "belief_id": 13,
+      "code": "REMNANT",
+      "title_en": "The Remnant and Its Mission",
+      "title_zh": "余民及其使命",
+      "en_text": "God preserves a remnant who keep His commandments and the faith of Jesus.",
+      "zh_text": "末世神保留忠心守诫命、持守耶稣真道的余民，奉命宣扬永远的福音。"
+    },
+    {
+      "belief_id": 15,
+      "code": "BAPTISM",
+      "title_en": "Baptism",
+      "title_zh": "洗礼",
+      "en_text": "Baptism by immersion is a public sign of death to sin and new life in Christ.",
+      "zh_text": "洗礼是藉全身入水表明与基督同死、同埋、同复活，是悔改信主后顺从的公开见证。"
+    },
+    {
+      "belief_id": 18,
+      "code": "GIFT_OF_PROPHECY",
+      "title_en": "The Gift of Prophecy",
+      "title_zh": "预言的恩赐",
+      "en_text": "The writings of Ellen G. White confirm and illuminate Scripture, but never replace it.",
+      "zh_text": "怀爱伦(EGW)的著作为余民教会带来安慰、指引与纠正，证实圣经真理，但绝不取代圣经的权威。"
+    },
+    {
+      "belief_id": 19,
+      "code": "LAW_OF_GOD",
+      "title_en": "The Law of God",
+      "title_zh": "神的律法",
+      "en_text": "The Ten Commandments express God's character and will; faith establishes the law.",
+      "zh_text": "十条诫命是神旨意的神圣表达，显明罪、引导圣洁生活；因信称义不废掉律法，反坚固律法。"
+    },
+    {
+      "belief_id": 20,
+      "code": "SABBATH",
+      "title_en": "The Sabbath",
+      "title_zh": "安息日",
+      "en_text": "The seventh-day Sabbath, from Friday sunset to Saturday sunset, is a holy memorial of Creation and Redemption.",
+      "zh_text": "第七日（从周五日落到周六日落）是神设立的圣日，记念创造与救赎，普世信徒当守为圣。"
+    },
+    {
+      "belief_id": 24,
+      "code": "HEAVENLY_SANCTUARY",
+      "title_en": "Christ's Ministry in the Heavenly Sanctuary",
+      "title_zh": "基督在天上的圣所",
+      "en_text": "Christ ministers in the heavenly sanctuary, concluding with the investigative judgment.",
+      "zh_text": "基督复活升天后在天上圣所为人类代求，并在末世执行查案审判。"
+    },
+    {
+      "belief_id": 22,
+      "code": "CHRISTIAN_BEHAVIOR",
+      "title_en": "Christian Behavior",
+      "title_zh": "基督徒的本分",
+      "en_text": "As stewards of body and mind, believers honor God through temperate, wholesome living.",
+      "zh_text": "信徒当以身体为圣灵的殿，在饮食、言语、金钱与生活中活出荣神益人的生活，作世上的光。"
+    },
+    {
+      "belief_id": 25,
+      "code": "SECOND_ADVENT",
+      "title_en": "The Second Advent",
+      "title_zh": "耶稣再临",
+      "en_text": "Christ will return visibly and personally in glory to raise the dead and establish His kingdom.",
+      "zh_text": "耶稣必亲自、肉眼可见、大有荣耀地再来，接属他的人，建立他的国。"
+    },
+    {
+      "belief_id": 26,
+      "code": "DEATH_RESURRECTION",
+      "title_en": "Death and Resurrection",
+      "title_zh": "死亡与复活",
+      "en_text": "Death is an unconscious sleep; the righteous are raised at Christ's return.",
+      "zh_text": "死亡是无知觉的睡眠；义人于基督再临时复活得永生，恶人于千禧年后复活受审。"
+    },
+    {
+      "belief_id": 27,
+      "code": "MILLENNIUM",
+      "title_en": "The Millennium and the End of Sin",
+      "title_zh": "千禧年与罪恶的终结",
+      "en_text": "During the millennium Satan is bound; after it the wicked are raised and sin is destroyed.",
+      "zh_text": "千禧年间基督与圣徒在天上掌权，撒但被捆绑；此后恶人复活受审，罪恶永被消除。"
+    },
+    {
+      "belief_id": 28,
+      "code": "NEW_EARTH",
+      "title_en": "The New Earth",
+      "title_zh": "新天新地",
+      "en_text": "God will make all things new; the redeemed will dwell with Him forever.",
+      "zh_text": "神将更新天地，信徒与神同住于无死亡、无哭泣、无疼痛的新天新地，直到永远。"
+    },
+    {
+      "belief_id": 21,
+      "code": "STEWARDSHIP",
+      "title_en": "Stewardship",
+      "title_zh": "管家职分",
+      "en_text": "We are God's stewards, entrusted with time, abilities, possessions, and the gospel, to manage for His glory and the blessing of others.",
+      "zh_text": "我们是神的管家，受托管理时间、才干、财物与福音，为荣耀神并造福他人而善加运用；十一奉献是承认神为万有的主、并凭信经历他信实的具体行动。"
+    }
+  ],
+  "faq": [
+    {
+      "keywords": [
+        "安息日",
+        "守安息",
+        "第七日",
+        "礼拜天",
+        "主日",
+        "Sunday",
+        "Sabbath"
+      ],
+      "answer_zh": "圣经记载神在创造后赐福第七日并分别为圣（创2:2-3），十诫吩咐「当记念安息日，守为圣日」（出20:8、11）。启示录称真圣徒是「守神诫命和耶稣真道的」（启14:12）。本应用以 KJV 为权威底本，教导守第七日安息日。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO20:8",
+          "ref": "EXO 20:8",
+          "snippet": "Remember the sabbath day, to keep it holy."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-GEN2:2",
+          "ref": "GEN 2:2",
+          "snippet": "And on the seventh day God ended his work ... and he rested"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV14:12",
+          "ref": "REV 14:12",
+          "snippet": "Here is the patience of the saints ... keep the commandments of God, and the faith of Jesus."
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B20",
+          "ref": "教义 #20 安息日",
+          "snippet": "第七日（从周五日落到周六日落）是神设立的圣日，记念创造与救赎。"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-DA-288",
+          "ref": "The Desire of Ages, pp. 288-289",
+          "snippet": "Then the Sabbath is a sign of Christ's power to make us holy. As a sign of His sanctifying power, the Sabbath is given to all who through Christ become a part of the Israel of God."
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-6T-350",
+          "ref": "Testimonies for the Church, vol. 6, p. 350",
+          "snippet": "The Sabbath given to the world as the sign of God as the Creator is also the sign of Him as the Sanctifier. The power that created all things is the power that re-creates the soul in His own likeness."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "救恩",
+        "得救",
+        "称义",
+        "怎么得救",
+        "信耶稣",
+        "如何得救",
+        "拯救"
+      ],
+      "answer_zh": "圣经明言「你们得救是本乎恩，也因着信；这并不是出于自己，乃是神所赐的；也不是出于行为，免得有人自夸」（弗2:8-9）。「因为世人都犯了罪，亏缺了神的荣耀」（罗3:23），「罪的工价乃是死；惟有神的恩赐，在基督耶稣里乃是永生」（罗6:23）。救恩是神白白的恩典，惟凭信心接受。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH2:8",
+          "ref": "EPH 2:8",
+          "snippet": "For by grace are ye saved through faith; and that not of yourselves: it is the gift of God"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH2:9",
+          "ref": "EPH 2:9",
+          "snippet": "Not of works, lest any man should boast."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM3:23",
+          "ref": "ROM 3:23",
+          "snippet": "For all have sinned, and come short of the glory of God"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM6:23",
+          "ref": "ROM 6:23",
+          "snippet": "the gift of God is eternal life through Jesus Christ our Lord"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-SC-FAITH",
+          "ref": "Steps to Christ, ch. 8 (Faith and Acceptance)",
+          "snippet": "While the sinner cannot save himself, he still has something to do to secure salvation. 'him that cometh to Me,' says Christ, 'I will in no wise cast out.' John 6:37. But we must come to him; and when we repent of our sins, we must believe that he accepts and pardons us. Faith is the gift of God, but the power to exercise it is ours. Faith is the hand by which the soul takes hold upon the divine offers of grace and mercy."
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-SC-BELIEVE",
+          "ref": "Steps to Christ, ch. 8 (Faith and Acceptance)",
+          "snippet": "It is so if you believe it. Do not wait to feel that you are made whole, but say, 'I believe it; it is so, not because I feel it, but because God has promised.'"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "洗礼",
+        "浸礼",
+        "受洗",
+        "baptism",
+        "怎么受洗"
+      ],
+      "answer_zh": "洗礼是悔改信主后顺从的公开见证，表明与基督同死、同埋、同复活。耶稣亲自受洗作了榜样（太3:16），彼得教导「这水所表明的洗礼……藉着耶稣基督复活也拯救你们」（彼前3:21）。本会按圣经实行全身入水的浸礼。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT3:16",
+          "ref": "MAT 3:16",
+          "snippet": "And Jesus, when he was baptized, went up straightway out of the water"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE3:21",
+          "ref": "1PE 3:21",
+          "snippet": "The like figure whereunto even baptism doth also now save us"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B15",
+          "ref": "教义 #15 洗礼",
+          "snippet": "洗礼是藉全身入水表明与基督同死、同埋、同复活。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "耶稣再来",
+        "再临",
+        "末日",
+        "主来",
+        "Second Coming",
+        "return of Christ"
+      ],
+      "answer_zh": "天使应许「这离开你们被接升天的耶稣，你们见他怎样往天上去，他还要怎样来」（徒1:11）。保罗说明「就在一霎时，眨眼之间，号筒末次吹响的时候；死人要复活成为不朽坏的」（林前15:51-52）。耶稣必亲自、肉眼可见、大有荣耀地再来。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ACT1:11",
+          "ref": "ACT 1:11",
+          "snippet": "this same Jesus ... shall so come in like manner as ye have seen him go into heaven"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:51",
+          "ref": "1CO 15:51",
+          "snippet": "We shall not all sleep, but we shall all be changed"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:52",
+          "ref": "1CO 15:52",
+          "snippet": "the dead shall be raised incorruptible, and we shall be changed"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B25",
+          "ref": "教义 #25 耶稣再临",
+          "snippet": "耶稣必亲自、肉眼可见、大有荣耀地再来。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "死",
+        "死后",
+        "灵魂",
+        "阴间",
+        "state of the dead",
+        "人死后去哪"
+      ],
+      "answer_zh": "圣经说「活人知道必死，死人却毫无所知」（传9:5），表明死亡是无知觉的沉睡，并非灵魂立刻上天堂或下地狱。信徒的盼望在于基督再来时的复活（林前15:52）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ECC9:5",
+          "ref": "ECC 9:5",
+          "snippet": "the dead know not any thing, neither have they any more a reward"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:52",
+          "ref": "1CO 15:52",
+          "snippet": "the dead shall be raised incorruptible"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B26",
+          "ref": "教义 #26 死亡与复活",
+          "snippet": "死亡是无知觉的睡眠；义人于基督再临时复活得永生。"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GC-549",
+          "ref": "The Great Controversy, pp. 549-550",
+          "snippet": "The Bible clearly teaches that the dead do not go immediately to heaven. They are represented as sleeping until the resurrection."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "圣经",
+        "圣经可信",
+        "圣经权威",
+        "Scripture",
+        "bible"
+      ],
+      "answer_zh": "本会以圣经（旧约、新约六十六卷）为信仰与生活至高、无误的权威。本应用以 KJV 英文为权威底本，中文为本会独立产出，和合本仅作参照，不作权威来源。",
+      "citations": [
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B1",
+          "ref": "教义 #1 圣经",
+          "snippet": "圣经是神启示的言语，是信仰与生活的无误权威标准。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "三位一体",
+        "三一",
+        "圣父圣子圣灵",
+        "Trinity"
+      ],
+      "answer_zh": "独一真神以三个位格永存：圣父、圣子、圣灵，同质、同权、同荣（信仰基本法第2条）。「太初有道，道与神同在，道就是神」（约1:1）；「道成了肉身，住在我们中间」（约1:14）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN1:1",
+          "ref": "JHN 1:1",
+          "snippet": "In the beginning was the Word, and the Word was with God, and the Word was God"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN1:14",
+          "ref": "JHN 1:14",
+          "snippet": "And the Word was made flesh, and dwelt among us"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B2",
+          "ref": "教义 #2 三一真神",
+          "snippet": "圣父、圣子、圣灵，同质、同权、同荣。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "健康",
+        "饮食",
+        "吃什么",
+        "NEWSTART",
+        "健康生活",
+        "节制",
+        "养生"
+      ],
+      "answer_zh": "本会倡导以圣经原则为基础的健康生活（NEWSTART：营养、运动、水、阳光、节制、空气、休息、信靠）。但涉及具体医疗或诊断，请务必咨询持证医生——本模块内容不构成医疗建议。",
+      "citations": [
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B22",
+          "ref": "教义 #22 基督徒的本分",
+          "snippet": "信徒当以身体为圣灵的殿，活出荣神益人的生活。"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GV-93",
+          "ref": "The Great Visions of Ellen G. White, p. 93.3 (GVEGW 93.3)",
+          "snippet": "Care of health is a religious duty. The body, which God calls His temple, should be preserved in as healthy a condition as possible."
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GV-94",
+          "ref": "The Great Visions of Ellen G. White, p. 94.3 (GVEGW 94.3)",
+          "snippet": "True temperance teaches us to dispense entirely with everything hurtful and to use judiciously that which is healthful."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "方言",
+        "说方言",
+        "灵恩",
+        "tongues",
+        "gifts",
+        "圣灵的恩赐"
+      ],
+      "answer_zh": "圣灵的恩赐包括「仁爱、喜乐、和平、忍耐、恩慈、良善、信实、温柔、节制」（加5:22-23），是为建立教会。本会强调以圣经为准则判别各样恩赐，避免极端表现。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-GAL5:22",
+          "ref": "GAL 5:22",
+          "snippet": "the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-GAL5:23",
+          "ref": "GAL 5:23",
+          "snippet": "Meekness, temperance: against such there is no law"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "祷告",
+        "祈祷",
+        "怎么祷告",
+        "prayer"
+      ],
+      "answer_zh": "耶稣邀请「凡劳苦担重担的人，可以到我这里来，我就使你们得安息」（太11:28）。藉祷告、读经与圣灵充满，信徒得以在基督里成长。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT11:28",
+          "ref": "MAT 11:28",
+          "snippet": "Come unto me, all ye that labour and are heavy laden, and I will give you rest"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B11",
+          "ref": "教义 #11 在基督里成长",
+          "snippet": "藉祷告、读经、团契与圣灵充满，信徒日日更新。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "使命",
+        "传福音",
+        "大使命",
+        "mission",
+        "evangelism"
+      ],
+      "answer_zh": "耶稣颁布大使命「所以你们要去，使万民作我的门徒，奉父、子、圣灵的名给他们施洗……我就常与你们同在，直到世界的末了」（太28:19-20）。本会奉差遣向普世华人宣扬永远的福音。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT28:19",
+          "ref": "MAT 28:19",
+          "snippet": "Go ye therefore, and teach all nations, baptizing them"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT28:20",
+          "ref": "MAT 28:20",
+          "snippet": "I am with you alway, even unto the end of the world"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "安息日会",
+        "基督复临安息日会",
+        "你们是什么教会",
+        "SDA",
+        "是什么教"
+      ],
+      "answer_zh": "基督复临安息日会是持守圣经全部真理的基督教教会，核心包括：以圣经为权威、守第七日安息日、盼望耶稣再来、倡导基于圣经的健康生活、并重视怀爱伦著作对圣经的辅助光照。",
+      "citations": [
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B13",
+          "ref": "教义 #13 余民及其使命",
+          "snippet": "神保留忠心守诫命、持守耶稣真道的余民。"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B20",
+          "ref": "教义 #20 安息日",
+          "snippet": "第七日是神设立的圣日。"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B18",
+          "ref": "教义 #18 预言的恩赐",
+          "snippet": "怀爱伦著作为教会带来安慰、指引与纠正。"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-DA-288",
+          "ref": "The Desire of Ages, pp. 288-289",
+          "snippet": "Then the Sabbath is a sign of Christ's power to make us holy. As a sign of His sanctifying power, the Sabbath is given to all who through Christ become a part of the Israel of God."
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-6T-350",
+          "ref": "Testimonies for the Church, vol. 6, p. 350",
+          "snippet": "The Sabbath given to the world as the sign of God as the Creator is also the sign of Him as the Sanctifier. The power that created all things is the power that re-creates the soul in His own likeness."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "预定",
+        "预定论",
+        "自由意志",
+        "free will",
+        "predestination"
+      ],
+      "answer_zh": "圣经既宣告神愿万人得救，也呼吁人「就当恐惧战兢，作成你们得救的工夫」（腓2:12），表明人拥有真实的道德选择责任，救恩须凭信接受。",
+      "citations": [
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B10",
+          "ref": "教义 #10 救赎的经验",
+          "snippet": "因信称义、因信成圣；悔改信靠基督，人得赦免。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "新天新地",
+        "天堂",
+        "永生",
+        "new earth",
+        "heaven"
+      ],
+      "answer_zh": "约翰预言「神要擦去他们一切的眼泪；不再有死亡，也不再有悲哀、哭号、疼痛」（启21:4）。「若有人在基督里，他就是新造的人，旧事已过，都变成新的了」（林后5:17）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV21:4",
+          "ref": "REV 21:4",
+          "snippet": "there shall be no more death, neither sorrow, nor crying"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO5:17",
+          "ref": "2CO 5:17",
+          "snippet": "if any man be in Christ, he is a new creature"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B28",
+          "ref": "教义 #28 新天新地",
+          "snippet": "神将更新天地，信徒与神同住直到永远。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "信心与行为",
+        "因信称义还是行为",
+        "faith works",
+        "行为"
+      ],
+      "answer_zh": "人称义「是本乎恩，也因着信」（弗2:8-9），但「信心若没有行为就是死的」（雅2:17）。真信心必结出顺服的果子，却非靠行为赚取救恩。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH2:8",
+          "ref": "EPH 2:8",
+          "snippet": "For by grace are ye saved through faith"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JAS2:17",
+          "ref": "JAS 2:17",
+          "snippet": "faith, if it hath not works, is dead, being alone"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "怀爱伦",
+        "EGW",
+        "先知",
+        "预言的恩赐"
+      ],
+      "answer_zh": "怀爱伦(EGW)是十九世纪基督徒作家，本会视其著作为「预言恩赐」的印证（信仰基本法第18条），为教会带来安慰、指引与纠正，但始终以圣经为最高权威，其作品绝不取代圣经。",
+      "citations": [
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B18",
+          "ref": "教义 #18 预言的恩赐",
+          "snippet": "怀爱伦著作为余民教会带来安慰、指引与纠正，证实圣经真理，但绝不取代圣经。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "十一奉献",
+        "十分之一",
+        "什一",
+        "奉献",
+        "tithe",
+        "纳什一",
+        "捐输"
+      ],
+      "answer_zh": "圣经教导信徒将当纳的十分之一送入仓库，使神家有粮，并以此经历神的信实（玛3:10）。捐助当出于甘心乐意，因为「捐得乐意的人是神所喜爱的」（林后9:7）；并要「照自己的进项抽存」（林前16:2）。这是神托付的管家职分，而非用金钱换取恩典。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAL3:10",
+          "ref": "MAL 3:10",
+          "snippet": "Bring ye all the tithes into the storehouse ... pour you out a blessing"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO9:7",
+          "ref": "2CO 9:7",
+          "snippet": "for God loveth a cheerful giver"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO16:2",
+          "ref": "1CO 16:2",
+          "snippet": "lay by him in store, as God hath prospered him"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B21",
+          "ref": "教义 #21 管家职分",
+          "snippet": "我们是神的管家，受托管理时间、才干、财物与福音。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "洁净食物",
+        "不洁食物",
+        "饮食条例",
+        "吃什么",
+        "食物",
+        "饮食原则",
+        "素食",
+        "健康饮食"
+      ],
+      "answer_zh": "圣经以律法区分洁净与不洁净的走兽（利11:3 等），原则是要人分别为圣。新约更指出「你们的身子就是圣灵的殿」（林前6:19-20），当为荣耀神而保守身体。本会据此倡导以植物性为主的节制饮食，但具体营养方案请咨询持证医生——本模块不构成医疗建议。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LEV11:3",
+          "ref": "LEV 11:3",
+          "snippet": "Whatsoever parteth the hoof ... cheweth the cud ... that shall ye eat"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO6:19",
+          "ref": "1CO 6:19-20",
+          "snippet": "your body is the temple of the Holy Ghost ... ye are not your own"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B22",
+          "ref": "教义 #22 基督徒的本分",
+          "snippet": "信徒当以身体为圣灵的殿，活出荣神益人的生活。"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GV-93",
+          "ref": "The Great Visions of Ellen G. White, p. 93.3 (GVEGW 93.3)",
+          "snippet": "Care of health is a religious duty. The body, which God calls His temple, should be preserved in as healthy a condition as possible."
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GV-94",
+          "ref": "The Great Visions of Ellen G. White, p. 94.3 (GVEGW 94.3)",
+          "snippet": "True temperance teaches us to dispense entirely with everything hurtful and to use judiciously that which is healthful."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "地狱",
+        "永刑",
+        "火湖",
+        "恶人结局",
+        "永永远远受苦",
+        "eternal punishment",
+        "hell"
+      ],
+      "answer_zh": "圣经描写恶人的结局是被焚烧净尽、「并不留根与条」（玛4:1），死亡是无知觉的睡眠（传9:5），「罪的工价乃是死」（罗6:23）。本会相信恶人受审后最终被消灭，而非永远在火中受苦——这与「神就是爱」的本性相合。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAL4:1",
+          "ref": "MAL 4:1",
+          "snippet": "the day that cometh shall burn them up ... leave them neither root nor branch"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ECC9:5",
+          "ref": "ECC 9:5",
+          "snippet": "the dead know not any thing"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM6:23",
+          "ref": "ROM 6:23",
+          "snippet": "the wages of sin is death ... the gift of God is eternal life"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B26",
+          "ref": "教义 #26 死亡与复活",
+          "snippet": "死亡是无知觉的睡眠；义人于基督再临时复活得永生。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "婚姻",
+        "离婚",
+        "结婚",
+        "休妻",
+        "夫妻",
+        "marriage",
+        "divorce"
+      ],
+      "answer_zh": "耶稣明言神所配合的，人不可分开（太19:6）；先知也说「休妻的事是我所恨恶的」（玛2:16）。婚姻是一男一女、一主所立的终身盟约，离婚与再婚须极其慎重，并以圣经为准则。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT19:6",
+          "ref": "MAT 19:6",
+          "snippet": "What therefore God hath joined together, let not man put asunder"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAL2:16",
+          "ref": "MAL 2:16",
+          "snippet": "he hateth putting away"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B22",
+          "ref": "教义 #22 基督徒的本分",
+          "snippet": "信徒当以身体为圣灵的殿，活出荣神益人的生活。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "末世",
+        "预兆",
+        "征兆",
+        "灾难",
+        "打仗",
+        "末日兆头",
+        "signs of the end",
+        "end times"
+      ],
+      "answer_zh": "耶稣预言末世必有「打仗和打仗的风声」（太24:6），保罗也警戒「末世必有危险的日子来到」（提后3:1-2），人必专顾自己、贪爱钱财。这些兆头提醒信徒警醒等候主的再来。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT24:6",
+          "ref": "MAT 24:6",
+          "snippet": "ye shall hear of wars and rumours of wars ... the end is not yet"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2TI3:1",
+          "ref": "2TI 3:1-2",
+          "snippet": "in the last days perilous times shall come"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B25",
+          "ref": "教义 #25 耶稣再临",
+          "snippet": "耶稣必亲自、肉眼可见、大有荣耀地再来。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "查案审判",
+        "审判",
+        "宽容时期",
+        "洁净圣所",
+        "investigative judgment",
+        "赎罪日"
+      ],
+      "answer_zh": "但以理预言「到二千三百日，圣所就必洁净」（但8:14），对应天上圣所的查案审判。启14:6-7 呼召人「应当敬畏神……因他施行审判的时候已经到了」。这是天上进行的、为万民定案的步骤，信徒当以成圣的生活回应。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DAN8:14",
+          "ref": "DAN 8:14",
+          "snippet": "Unto two thousand and three hundred days; then shall the sanctuary be cleansed"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV14:6",
+          "ref": "REV 14:6",
+          "snippet": "having the everlasting gospel to preach"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV14:7",
+          "ref": "REV 14:7",
+          "snippet": "the hour of his judgment is come"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B24",
+          "ref": "教义 #24 基督在天上的圣所",
+          "snippet": "基督在天上圣所为人类代求，并在末世执行查案审判。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "144000",
+        "十四万四千",
+        "余民",
+        "受印",
+        "印记",
+        "the 144000",
+        "sealed"
+      ],
+      "answer_zh": "启示录记载「受印的数目有十四万四千」（启7:4），他们与羔羊同站在锡安山，「额上写着父的名」（启14:1）。这代表末世忠心守神诫命、被神印证的余民群体。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV7:4",
+          "ref": "REV 7:4",
+          "snippet": "there were sealed an hundred and forty and four thousand"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV14:1",
+          "ref": "REV 14:1",
+          "snippet": "having his Father's name written in their foreheads"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B13",
+          "ref": "教义 #13 余民及其使命",
+          "snippet": "神保留忠心守诫命、持守耶稣真道的余民。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "复活",
+        "死人复活",
+        "复活次序",
+        "睡了的人",
+        "resurrection",
+        "the dead"
+      ],
+      "answer_zh": "保罗说明复活有次序：基督是初熟的果子，「以后在他来的时候，是那些属基督的」（林前15:23）。帖前4:16 应许「那在基督里死了的人必先复活」。义人于基督再临时复活得永生，恶人于千禧年后复活受审。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:23",
+          "ref": "1CO 15:23",
+          "snippet": "afterward they that are Christ's at his coming"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TH4:16",
+          "ref": "1TH 4:16",
+          "snippet": "the dead in Christ shall rise first"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B26",
+          "ref": "教义 #26 死亡与复活",
+          "snippet": "死亡是无知觉的睡眠；义人于基督再临时复活得永生。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "圣经无误",
+        "默示",
+        "正典",
+        "圣经权威",
+        "圣经怎么来的",
+        "canon",
+        "inspiration",
+        "inerrancy"
+      ],
+      "answer_zh": "「圣经都是神所默示的」（提后3:16），先知「被圣灵感动，说出神的话来」（彼后1:21）。本会以六十六卷新旧约为信仰与生活无误的权威。本应用以 KJV 英文为权威底本，中文为本会独立产出，和合本仅作参照，不作权威来源。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2TI3:16",
+          "ref": "2TI 3:16",
+          "snippet": "All scripture is given by inspiration of God"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2PE1:21",
+          "ref": "2PE 1:21",
+          "snippet": "moved by the Holy Ghost"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B1",
+          "ref": "教义 #1 圣经",
+          "snippet": "圣经是神启示的言语，是信仰与生活的无误权威标准。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "圣灵印记",
+        "受印",
+        "印记",
+        "圣灵的印",
+        "seal of god",
+        "sealed by spirit"
+      ],
+      "answer_zh": "信徒「受了他（圣灵）的印记，等候得赎的日子」（弗4:30）；启7:3 记载天使受命「印神众仆人的额」而后才可降灾。这印记是圣灵在人生命中的保守与归属的记号。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH4:30",
+          "ref": "EPH 4:30",
+          "snippet": "ye are sealed unto the day of redemption"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV7:3",
+          "ref": "REV 7:3",
+          "snippet": "till we have sealed the servants of our God"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B13",
+          "ref": "教义 #13 余民及其使命",
+          "snippet": "神保留忠心守诫命、持守耶稣真道的余民。"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "禁食",
+        "祷告禁食",
+        "怎么禁食",
+        "fasting",
+        "fast"
+      ],
+      "answer_zh": "耶稣教导禁食不可像假冒为善的人故意叫人看见，而要在暗中诚心进行（太6:16-18）。以赛亚书指明神所拣选的禁食是「松开凶恶的绳、使被欺压的得自由」（赛58:6）——即行公义、怜悯的实际行动。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT6:16",
+          "ref": "MAT 6:16-18",
+          "snippet": "when ye fast, be not, as the hypocrites, of a sad countenance"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA58:6",
+          "ref": "ISA 58:6",
+          "snippet": "to let the oppressed go free, and that ye break every yoke"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "与世界分别",
+        "分别为圣",
+        "世俗",
+        "分别",
+        "separate from world",
+        "be ye separate"
+      ],
+      "answer_zh": "神呼召信徒「从他们中间出来，与他们分别……我就收纳你们」（林后6:17），并「不要效法这个世界」（罗12:2）。分别不是避世，而是在生活、言语、价值观上见证基督，作世上的光。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO6:17",
+          "ref": "2CO 6:17",
+          "snippet": "come out from among them, and be ye separate"
+        },
+        {
+          "source_type": "DOCTRINE",
+          "source_id": "SDA-B22",
+          "ref": "教义 #22 基督徒的本分",
+          "snippet": "信徒当以身体为圣灵的殿，活出荣神益人的生活。"
+        }
+      ]
+    }
+  ],
+  "egw": [
+    {
+      "id": "EGW-DA-288",
+      "source_type": "EGW",
+      "source_id": "EGW-DA-288",
+      "ref": "The Desire of Ages, pp. 288-289",
+      "topic": [
+        "sabbath",
+        "sanctification"
+      ],
+      "zh_topic": [
+        "安息日",
+        "守安息",
+        "成圣",
+        "第七日"
+      ],
+      "text": "Then the Sabbath is a sign of Christ's power to make us holy. As a sign of His sanctifying power, the Sabbath is given to all who through Christ become a part of the Israel of God."
+    },
+    {
+      "id": "EGW-6T-350",
+      "source_type": "EGW",
+      "source_id": "EGW-6T-350",
+      "ref": "Testimonies for the Church, vol. 6, p. 350",
+      "topic": [
+        "sabbath",
+        "sanctifier",
+        "law"
+      ],
+      "zh_topic": [
+        "安息日",
+        "守安息",
+        "诫命",
+        "律法"
+      ],
+      "text": "The Sabbath given to the world as the sign of God as the Creator is also the sign of Him as the Sanctifier. The power that created all things is the power that re-creates the soul in His own likeness."
+    },
+    {
+      "id": "EGW-SC-FAITH",
+      "source_type": "EGW",
+      "source_id": "EGW-SC-FAITH",
+      "ref": "Steps to Christ, ch. 8 (Faith and Acceptance)",
+      "topic": [
+        "salvation",
+        "faith",
+        "grace"
+      ],
+      "zh_topic": [
+        "救恩",
+        "得救",
+        "称义",
+        "信心",
+        "信耶稣",
+        "如何得救"
+      ],
+      "text": "While the sinner cannot save himself, he still has something to do to secure salvation. 'him that cometh to Me,' says Christ, 'I will in no wise cast out.' John 6:37. But we must come to him; and when we repent of our sins, we must believe that he accepts and pardons us. Faith is the gift of God, but the power to exercise it is ours. Faith is the hand by which the soul takes hold upon the divine offers of grace and mercy."
+    },
+    {
+      "id": "EGW-SC-BELIEVE",
+      "source_type": "EGW",
+      "source_id": "EGW-SC-BELIEVE",
+      "ref": "Steps to Christ, ch. 8 (Faith and Acceptance)",
+      "topic": [
+        "faith",
+        "assurance",
+        "promise"
+      ],
+      "zh_topic": [
+        "救恩",
+        "得救",
+        "信心",
+        "应许",
+        "信耶稣"
+      ],
+      "text": "It is so if you believe it. Do not wait to feel that you are made whole, but say, 'I believe it; it is so, not because I feel it, but because God has promised.'"
+    },
+    {
+      "id": "EGW-GC-549",
+      "source_type": "EGW",
+      "source_id": "EGW-GC-549",
+      "ref": "The Great Controversy, pp. 549-550",
+      "topic": [
+        "state of the dead",
+        "resurrection",
+        "soul"
+      ],
+      "zh_topic": [
+        "死",
+        "死后",
+        "灵魂",
+        "阴间",
+        "复活",
+        "人死后去哪"
+      ],
+      "text": "The Bible clearly teaches that the dead do not go immediately to heaven. They are represented as sleeping until the resurrection."
+    },
+    {
+      "id": "EGW-GV-93",
+      "source_type": "EGW",
+      "source_id": "EGW-GV-93",
+      "ref": "The Great Visions of Ellen G. White, p. 93.3 (GVEGW 93.3)",
+      "topic": [
+        "health",
+        "temple",
+        "duty"
+      ],
+      "zh_topic": [
+        "健康",
+        "饮食",
+        "节制",
+        "身子",
+        "养生"
+      ],
+      "text": "Care of health is a religious duty. The body, which God calls His temple, should be preserved in as healthy a condition as possible."
+    },
+    {
+      "id": "EGW-GV-94",
+      "source_type": "EGW",
+      "source_id": "EGW-GV-94",
+      "ref": "The Great Visions of Ellen G. White, p. 94.3 (GVEGW 94.3)",
+      "topic": [
+        "temperance",
+        "health"
+      ],
+      "zh_topic": [
+        "健康",
+        "节制",
+        "饮食",
+        "养生",
+        "NEWSTART"
+      ],
+      "text": "True temperance teaches us to dispense entirely with everything hurtful and to use judiciously that which is healthful."
+    }
+  ]
+}

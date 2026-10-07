@@ -1,0 +1,298 @@
+{
+ "verse": [
+  {
+   "book_id": 1,
+   "chapter": 1,
+   "verse": 1,
+   "ref": "GEN 1:1",
+   "kjv_text": "In the beginning God created the heaven and the earth.",
+   "our_zh": "起初，神创造天地。",
+   "cuv_ref_text": "起初，神创造天地。"
+  },
+  {
+   "book_id": 1,
+   "chapter": 1,
+   "verse": 2,
+   "ref": "GEN 1:2",
+   "kjv_text": "And the earth was without form, and void; and darkness was upon the face of the deep.",
+   "our_zh": "地是空虚混沌，渊面黑暗。",
+   "cuv_ref_text": "地是空虚混沌，渊面黑暗。"
+  },
+  {
+   "book_id": 43,
+   "chapter": 3,
+   "verse": 16,
+   "ref": "JHN 3:16",
+   "kjv_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+   "our_zh": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。",
+   "cuv_ref_text": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。"
+  }
+ ],
+ "book": [
+  {
+   "book_id": 1,
+   "book_code": "GEN",
+   "name_en": "Genesis",
+   "name_zh": "创世记",
+   "testament": "OT",
+   "chapter_count": 50
+  },
+  {
+   "book_id": 43,
+   "book_code": "JHN",
+   "name_en": "John",
+   "name_zh": "约翰福音",
+   "testament": "NT",
+   "chapter_count": 21
+  }
+ ],
+ "doctrine": [
+  {
+   "belief_id": 1,
+   "code": "SCRIPTURE",
+   "title_en": "The Holy Scriptures",
+   "title_zh": "圣经",
+   "en_text": "The Holy Scriptures...",
+   "zh_text": "圣经是上帝旨意的启示，本应用以 KJV 英文为权威底本。"
+  }
+ ],
+ "health_topic": [
+  {
+   "topic_id": 1,
+   "code": "NUT",
+   "name_zh": "营养",
+   "summary": "以圣经所记原始饮食为原则，选择单纯、少加工的食物，使身体得着合宜的滋养。",
+   "sort_order": 0
+  },
+  {
+   "topic_id": 2,
+   "code": "EXE",
+   "name_zh": "运动",
+   "summary": "有规律的身体活动是维持健康的必要条件，与节制相配合效果最佳。",
+   "sort_order": 1
+  },
+  {
+   "topic_id": 3,
+   "code": "WAT",
+   "name_zh": "水",
+   "summary": "充足的水分摄取是身体代谢与清洁的基础，内用外用皆有其益。",
+   "sort_order": 2
+  },
+  {
+   "topic_id": 4,
+   "code": "SUN",
+   "name_zh": "阳光",
+   "summary": "适度的日光有助身体机能，惟当避免过度曝晒。",
+   "sort_order": 3
+  },
+  {
+   "topic_id": 5,
+   "code": "TEM",
+   "name_zh": "节制",
+   "summary": "凡有益之物当适度使用，凡有害之物当全然戒绝。",
+   "sort_order": 4
+  },
+  {
+   "topic_id": 6,
+   "code": "AIR",
+   "name_zh": "空气",
+   "summary": "清新的空气与良好通风是生命之本，应尽量避免久处污浊密闭之地。",
+   "sort_order": 5
+  },
+  {
+   "topic_id": 7,
+   "code": "RES",
+   "name_zh": "休息",
+   "summary": "规律作息与安息日的歇息，使身心重新得力。",
+   "sort_order": 6
+  },
+  {
+   "topic_id": 8,
+   "code": "TRU",
+   "name_zh": "信靠",
+   "summary": "心灵的健康根植于对上帝的信靠；身体的健康亦受心境影响。",
+   "sort_order": 7
+  }
+ ],
+ "health_topic_source": [
+  {
+   "id": 1,
+   "topic_id": 1,
+   "source_type": "BIBLE",
+   "source_id": "GEN 1:29"
+  },
+  {
+   "id": 2,
+   "topic_id": 1,
+   "source_type": "BIBLE",
+   "source_id": "DAN 1:12"
+  },
+  {
+   "id": 3,
+   "topic_id": 1,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 4,
+   "topic_id": 2,
+   "source_type": "BIBLE",
+   "source_id": "1TI 4:8"
+  },
+  {
+   "id": 5,
+   "topic_id": 2,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 6,
+   "topic_id": 3,
+   "source_type": "BIBLE",
+   "source_id": "JHN 4:14"
+  },
+  {
+   "id": 7,
+   "topic_id": 3,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 8,
+   "topic_id": 4,
+   "source_type": "BIBLE",
+   "source_id": "MAL 4:2"
+  },
+  {
+   "id": 9,
+   "topic_id": 4,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 10,
+   "topic_id": 5,
+   "source_type": "BIBLE",
+   "source_id": "1CO 9:25"
+  },
+  {
+   "id": 11,
+   "topic_id": 5,
+   "source_type": "BIBLE",
+   "source_id": "1CO 6:19-20"
+  },
+  {
+   "id": 12,
+   "topic_id": 5,
+   "source_type": "EGW",
+   "source_id": "EGW-TEM"
+  },
+  {
+   "id": 13,
+   "topic_id": 6,
+   "source_type": "BIBLE",
+   "source_id": "GEN 2:7"
+  },
+  {
+   "id": 14,
+   "topic_id": 6,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 15,
+   "topic_id": 7,
+   "source_type": "BIBLE",
+   "source_id": "EXO 20:8-11"
+  },
+  {
+   "id": 16,
+   "topic_id": 7,
+   "source_type": "BIBLE",
+   "source_id": "MRK 6:31"
+  },
+  {
+   "id": 17,
+   "topic_id": 7,
+   "source_type": "EGW",
+   "source_id": "EGW-MH"
+  },
+  {
+   "id": 18,
+   "topic_id": 8,
+   "source_type": "BIBLE",
+   "source_id": "PHP 4:6-7"
+  },
+  {
+   "id": 19,
+   "topic_id": 8,
+   "source_type": "BIBLE",
+   "source_id": "PSA 23:1"
+  },
+  {
+   "id": 20,
+   "topic_id": 8,
+   "source_type": "BIBLE",
+   "source_id": "1TH 5:23"
+  }
+ ],
+ "health_metric": [
+  {
+   "metric_id": 1,
+   "topic_code": "NUT",
+   "name_zh": "蔬果份数",
+   "unit": "份/日",
+   "target_value": "≥5"
+  },
+  {
+   "metric_id": 2,
+   "topic_code": "EXE",
+   "name_zh": "运动时长",
+   "unit": "分钟",
+   "target_value": "≥30"
+  },
+  {
+   "metric_id": 3,
+   "topic_code": "WAT",
+   "name_zh": "饮水量",
+   "unit": "毫升",
+   "target_value": "1500–2000"
+  },
+  {
+   "metric_id": 4,
+   "topic_code": "SUN",
+   "name_zh": "户外日照",
+   "unit": "分钟",
+   "target_value": "15–30"
+  },
+  {
+   "metric_id": 5,
+   "topic_code": "TEM",
+   "name_zh": "刺激性饮品",
+   "unit": "杯",
+   "target_value": "0"
+  },
+  {
+   "metric_id": 6,
+   "topic_code": "AIR",
+   "name_zh": "通风时长",
+   "unit": "分钟",
+   "target_value": "≥30"
+  },
+  {
+   "metric_id": 7,
+   "topic_code": "RES",
+   "name_zh": "睡眠时长",
+   "unit": "分钟",
+   "target_value": "≥420"
+  },
+  {
+   "metric_id": 8,
+   "topic_code": "TRU",
+   "name_zh": "心情评分",
+   "unit": "1–5",
+   "target_value": "≥3"
+  }
+ ],
+ "health_guidance": []
+}

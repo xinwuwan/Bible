@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>落库设计 + RAG 问答时序图</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --ink:#1f2733; --muted:#5b6776;
+    --line:#e4e8ee; --accent:#2f6df0; --accent2:#0f9d7a; --warn:#c9621a;
+    --soft:#eef3fd; --soft2:#eafaf3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.65;font-size:14.5px}
+  .wrap{max-width:1000px;margin:0 auto;padding:30px 22px 70px}
+  header.hero{background:linear-gradient(135deg,#2f6df0,#0f9d7a);color:#fff;border-radius:16px;padding:28px 28px;margin-bottom:24px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:0;opacity:.92;font-size:13.5px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:20px}
+  section h2{margin:0 0 12px;font-size:19px;border-left:4px solid var(--accent);padding-left:11px}
+  section h3{font-size:15.5px;margin:18px 0 7px;color:var(--accent)}
+  p{margin:7px 0}
+  .code{background:#0f1c2e;color:#d6e2f5;padding:14px 16px;border-radius:10px;font-family:"SF Mono",Consolas,monospace;font-size:12.5px;overflow:auto;white-space:pre}
+  .note{background:var(--soft);border-left:4px solid var(--accent);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .warn{background:#fff6ec;border-left:4px solid var(--warn);padding:11px 15px;border-radius:8px;margin:12px 0;font-size:13.5px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .box{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .box h4{margin:0 0 5px;font-size:14px}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--soft);color:var(--accent);margin:2px 4px 2px 0}
+  svg{width:100%;height:auto}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:600}
+  .legend{font-size:12px;color:var(--muted);margin-top:6px}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>落库设计 + RAG 问答时序图</h1>
+  <p>模块 A/B/C 的数据表结构（Postgres + pgvector）· 模块 B「牧师问答」端到端 RAG 流程</p>
+</header>
+
+<!-- ============ 落库设计 ============ -->
+<section id="schema">
+  <h2>一、落库设计（PostgreSQL + pgvector）</h2>
+  <p>设计目标：<strong>权威原文可追溯、中文为绑定产出、向量可检索、审核可审计</strong>。所有 "来源" 表存英文原版；"中文" 表通过外键绑定来源主键，从机制上杜绝 "中文当来源"。</p>
+
+  <h3>1.1 圣经（KJV 底本 + 中文产出 + 对照参照）</h3>
+  <div class="code">CREATE TABLE bible_book (
+  book_id      SMALLINT PRIMARY KEY,
+  book_code    VARCHAR(8)  NOT NULL UNIQUE,   -- GEN, EXO, MAT ...
+  book_name_en VARCHAR(64) NOT NULL,
+  testament    VARCHAR(8)  NOT NULL,          -- OT / NT
+  position     SMALLINT NOT NULL
+);
+
+-- KJV 权威底本（逐节，唯一来源）
+CREATE TABLE bible_verse_kjv (
+  verse_id  BIGSERIAL PRIMARY KEY,
+  book_id   SMALLINT NOT NULL REFERENCES bible_book(book_id),
+  chapter   SMALLINT NOT NULL,
+  verse     SMALLINT NOT NULL,
+  text_kjv  TEXT NOT NULL,
+  UNIQUE (book_id, chapter, verse)
+);
+
+-- 本应用中文译本（产出物，绑定原文）
+CREATE TABLE bible_verse_zh (
+  verse_id      BIGINT PRIMARY KEY REFERENCES bible_verse_kjv(verse_id),
+  text_zh       TEXT NOT NULL,
+  translator    VARCHAR(64),
+  glossary_ver  VARCHAR(16),
+  status        VARCHAR(12) NOT NULL DEFAULT 'pending', -- pending/review/approved
+  approved_by   VARCHAR(64),
+  approved_at   TIMESTAMPTZ,
+  content_ver   VARCHAR(16)                     -- 内容版本号
+);
+
+-- 和合本：仅作「被观察的参照对象」，明确非来源
+CREATE TABLE bible_verse_cuv_ref (
+  verse_id     BIGINT PRIMARY KEY REFERENCES bible_verse_kjv(verse_id),
+  text_cuv     TEXT NOT NULL,
+  ref_note     TEXT                                -- 版权/引用说明
+);
+
+-- 对照释经注释（神学顾问撰写，对事不对人）
+CREATE TABLE comparison_note (
+  note_id    BIGSERIAL PRIMARY KEY,
+  verse_id   BIGINT NOT NULL REFERENCES bible_verse_kjv(verse_id),
+  note_zh    TEXT NOT NULL,
+  diff_type  VARCHAR(16),                         -- wording/structure/theology
+  author     VARCHAR(64),
+  status     VARCHAR(12) NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ DEFAULT now()
+);</div>
+
+  <h3>1.2 怀爱伦著作（EGW 原版 + 中文产出）</h3>
+  <div class="code">CREATE TABLE egw_work (
+  work_id       VARCHAR(16) PRIMARY KEY,          -- SC, GC, DA, MH ...
+  title_en      VARCHAR(128) NOT NULL,
+  pub_year      SMALLINT,
+  public_domain BOOLEAN,                          -- 法务界定是否可作底本
+  license_note  TEXT
+);
+
+-- EGW 权威底本（逐段）
+CREATE TABLE egw_paragraph (
+  para_id    BIGSERIAL PRIMARY KEY,
+  work_id    VARCHAR(16) NOT NULL REFERENCES egw_work(work_id),
+  chapter_no SMALLINT,
+  section_no SMALLINT,
+  para_no    SMALLINT,
+  text_en    TEXT NOT NULL,
+  UNIQUE (work_id, chapter_no, section_no, para_no)
+);
+
+-- EGW 中文（产出物）
+CREATE TABLE egw_paragraph_zh (
+  para_id     BIGINT PRIMARY KEY REFERENCES egw_paragraph(para_id),
+  text_zh     TEXT NOT NULL,
+  status      VARCHAR(12) DEFAULT 'pending',
+  approved_by VARCHAR(64),
+  approved_at TIMESTAMPTZ
+);</div>
+
+  <h3>1.3 教义条款（SDA 官方英文 + 中文）</h3>
+  <div class="code">CREATE TABLE doctrine_belief (
+  belief_no  SMALLINT PRIMARY KEY,                -- 1..28
+  title_en   VARCHAR(128) NOT NULL,
+  title_zh   VARCHAR(128),
+  text_en    TEXT NOT NULL,                       -- 官方英文原版
+  text_zh    TEXT,
+  status     VARCHAR(12) DEFAULT 'approved'
+);</div>
+
+  <h3>1.4 统一检索分块 + 向量（RAG 核心）</h3>
+  <div class="code">-- 把 bible/egw/doctrine 的中英片段统一切片，供混合检索
+CREATE TABLE content_chunk (
+  chunk_id    BIGSERIAL PRIMARY KEY,
+  source_type VARCHAR(12) NOT NULL,               -- bible / egw / doctrine
+  source_id   VARCHAR(32) NOT NULL,               -- verse_id / para_id / belief_no
+  lang        VARCHAR(4)  NOT NULL,               -- en / zh
+  content     TEXT NOT NULL,
+  embedding   VECTOR(1536),                       -- pgvector 维度随模型而定
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX idx_chunk_vec ON content_chunk
+  USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+CREATE INDEX idx_chunk_src ON content_chunk (source_type, source_id);</div>
+
+  <h3>1.5 术语词典（译法一致约束）</h3>
+  <div class="code">CREATE TABLE glossary (
+  term_id       SERIAL PRIMARY KEY,
+  term_en       VARCHAR(64) NOT NULL UNIQUE,      -- justification ...
+  term_zh       VARCHAR(64) NOT NULL,             -- 称义 ...
+  definition_zh TEXT,
+  domain        VARCHAR(24)                       -- theology/health/doctrine
+);</div>
+
+  <h3>1.6 审核 / 版本 / 审计（专家在环）</h3>
+  <div class="code">CREATE TABLE content_version (
+  version_id     BIGSERIAL PRIMARY KEY,
+  entity_type    VARCHAR(16),                     -- bible_zh/egw_zh/doctrine/note
+  entity_id      VARCHAR(32),
+  content_before TEXT,
+  content_after  TEXT,
+  changed_by     VARCHAR(64),
+  change_reason  TEXT,
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE review_queue (
+  task_id     BIGSERIAL PRIMARY KEY,
+  entity_type VARCHAR(16),
+  entity_id   VARCHAR(32),
+  status      VARCHAR(12) DEFAULT 'open',         -- open/approved/rejected
+  assigned_to VARCHAR(64),
+  note        TEXT
+);</div>
+
+  <h3>1.7 问答记录 + 强制引用 + 反馈</h3>
+  <div class="code">CREATE TABLE qa_session (
+  qa_id        BIGSERIAL PRIMARY KEY,
+  user_id      VARCHAR(32),
+  question_zh  TEXT NOT NULL,
+  answer_zh    TEXT,
+  confidence   NUMERIC(3,2),                       -- 0.00~1.00
+  needs_human  BOOLEAN DEFAULT false,              -- 低置信转人工
+  model_used   VARCHAR(32),
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
+-- 回答必须锚定权威片段（引用必填的落地）
+CREATE TABLE qa_citation (
+  qa_id       BIGINT NOT NULL REFERENCES qa_session(qa_id),
+  source_type VARCHAR(12) NOT NULL,               -- bible / egw / doctrine
+  source_id   VARCHAR(32) NOT NULL,
+  snippet     TEXT,
+  PRIMARY KEY (qa_id, source_type, source_id)
+);
+
+CREATE TABLE qa_feedback (
+  feedback_id   BIGSERIAL PRIMARY KEY,
+  qa_id         BIGINT REFERENCES qa_session(qa_id),
+  feedback_type VARCHAR(16),                       -- correct/report/helpful
+  comment_zh    TEXT,
+  routed_to     VARCHAR(64),                        -- 进入顾问复核队列
+  created_at    TIMESTAMPTZ DEFAULT now()
+);</div>
+
+  <h3>1.8 用户与个性化（同步 / 离线）</h3>
+  <div class="code">CREATE TABLE app_user (
+  user_id      VARCHAR(32) PRIMARY KEY,
+  email        VARCHAR(128) UNIQUE,
+  display_name VARCHAR(64),
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE user_bookmark (
+  bm_id      BIGSERIAL PRIMARY KEY,
+  user_id    VARCHAR(32) REFERENCES app_user(user_id),
+  source_type VARCHAR(12),
+  source_id  VARCHAR(32),
+  note_zh    TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- 健康打卡（模块 C，附医疗免责）
+CREATE TABLE health_log (
+  log_id      BIGSERIAL PRIMARY KEY,
+  user_id     VARCHAR(32) REFERENCES app_user(user_id),
+  log_date    DATE NOT NULL,
+  water_ml    INTEGER,
+  sleep_min   INTEGER,
+  exercise_min INTEGER,
+  mood        VARCHAR(12),
+  note_zh     TEXT
+);</div>
+
+  <div class="note"><strong>关键约束（机制化防止「中文当来源」）：</strong>所有 <code>*_zh</code> 表的主键都是来源表外键（如 <code>bible_verse_zh.verse_id</code> → <code>bible_verse_kjv.verse_id</code>）；和合本单独存在 <code>bible_verse_cuv_ref</code> 中，<strong>不参与任何翻译或教义推理</strong>，仅在对照 UI 展示。检索与问答只从 <code>content_chunk</code> 取权威片段，引用回写 <code>qa_citation</code> 强制溯源。</div>
+
+  <h3>实体关系速览</h3>
+  <div class="grid">
+    <div class="box"><h4>圣经域</h4>
+      <span class="tag">bible_book 1—N bible_verse_kjv</span>
+      <span class="tag">kjv 1—1 zh(产出)</span>
+      <span class="tag">kjv 1—1 cuv_ref(参照)</span>
+      <span class="tag">kjv 1—N comparison_note</span>
+    </div>
+    <div class="box"><h4>EGW 域</h4>
+      <span class="tag">egw_work 1—N egw_paragraph</span>
+      <span class="tag">para 1—1 zh(产出)</span>
+    </div>
+    <div class="box"><h4>教义域</h4>
+      <span class="tag">doctrine_belief 1—N content_chunk</span>
+    </div>
+    <div class="box"><h4>问答域</h4>
+      <span class="tag">qa_session 1—N qa_citation</span>
+      <span class="tag">qa_session 1—N qa_feedback</span>
+      <span class="tag">citation → content_chunk(source)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAG 时序图 ============ -->
+<section id="rag">
+  <h2>二、模块 B「牧师问答」RAG 时序图</h2>
+  <p>端到端流程：用户提问 → 混合检索权威片段 → 受控 LLM 生成（强制引用）→ 校验闸门 → 达标返回 / 不达标转人工 → 用户纠错闭环。</p>
+
+  <svg viewBox="0 0 780 600" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,sans-serif">
+    <defs>
+      <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L9,4 L0,8 Z" fill="#5b6776"/>
+      </marker>
+      <marker id="arrR" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+        <path d="M0,0 L9,4 L0,8 Z" fill="#c9621a"/>
+      </marker>
+    </defs>
+    <rect x="0" y="0" width="780" height="600" fill="#fbfcfe"/>
+
+    <!-- lifeline headers -->
+    <g font-size="12" font-weight="700" text-anchor="middle">
+      <rect x="22" y="18" width="86" height="26" rx="8" fill="#eef3fd" stroke="#2f6df0"/>
+      <text x="65" y="35" fill="#2f6df0">客户端</text>
+      <rect x="150" y="18" width="92" height="26" rx="8" fill="#eafaf3" stroke="#0f9d7a"/>
+      <text x="196" y="35" fill="#0f9d7a">问答服务</text>
+      <rect x="286" y="18" width="92" height="26" rx="8" fill="#fff" stroke="#33414f"/>
+      <text x="332" y="35" fill="#22303f">检索服务</text>
+      <rect x="424" y="18" width="86" height="26" rx="8" fill="#fff" stroke="#33414f"/>
+      <text x="467" y="35" fill="#22303f">向量库</text>
+      <rect x="552" y="18" width="70" height="26" rx="8" fill="#fff7ee" stroke="#c9621a"/>
+      <text x="587" y="35" fill="#c9621a">LLM</text>
+      <rect x="662" y="18" width="96" height="26" rx="8" fill="#fff" stroke="#33414f"/>
+      <text x="710" y="35" fill="#22303f">顾问队列</text>
+    </g>
+
+    <!-- lifelines -->
+    <g stroke="#c2cad6" stroke-width="1.4" stroke-dasharray="4 4">
+      <line x1="65"  y1="44" x2="65"  y2="575"/>
+      <line x1="196" y1="44" x2="196" y2="575"/>
+      <line x1="332" y1="44" x2="332" y2="575"/>
+      <line x1="467" y1="44" x2="467" y2="575"/>
+      <line x1="587" y1="44" x2="587" y2="575"/>
+      <line x1="710" y1="44" x2="710" y2="575"/>
+    </g>
+
+    <!-- messages -->
+    <g font-size="10.5" fill="#22303f">
+      <!-- 1 -->
+      <line x1="67" y1="70" x2="194" y2="70" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="130" y="64" text-anchor="middle">1 提交信仰问题(question_zh)</text>
+      <!-- 2 -->
+      <line x1="198" y1="96" x2="330" y2="96" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="264" y="90" text-anchor="middle">2 检索权威片段(query, lang)</text>
+      <!-- 3 -->
+      <line x1="334" y1="122" x2="465" y2="122" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="400" y="116" text-anchor="middle">3 混合检索(向量+关键词)</text>
+      <!-- 4 -->
+      <line x1="465" y1="148" x2="334" y2="148" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="400" y="142" text-anchor="middle">4 候选片段(source_id, score)</text>
+      <!-- 5 -->
+      <line x1="330" y1="174" x2="198" y2="174" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="264" y="168" text-anchor="middle">5 重排+过滤(阈值)</text>
+      <!-- 6 -->
+      <line x1="198" y1="202" x2="585" y2="202" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="392" y="196" text-anchor="middle">6 系统提示(牧师人格)+片段+强制引用</text>
+      <!-- 7 -->
+      <line x1="585" y1="228" x2="198" y2="228" stroke="#5b6776" marker-end="url(#arr)"/>
+      <text x="392" y="222" text-anchor="middle">7 生成回答(含引用锚定)</text>
+    </g>
+
+    <!-- 8 internal check box -->
+    <rect x="150" y="248" width="92" height="40" rx="8" fill="#fff" stroke="#2f6df0" stroke-dasharray="3 3"/>
+    <text x="196" y="266" text-anchor="middle" font-size="10.5" fill="#2f6df0">8 校验闸门</text>
+    <text x="196" y="281" text-anchor="middle" font-size="9" fill="#5b6776">引用必填? 置信≥阈值?</text>
+    <line x1="196" y1="248" x2="196" y2="230" stroke="#5b6776" stroke-width="1.2"/>
+
+    <!-- alt box -->
+    <rect x="40" y="300" width="700" height="200" rx="10" fill="none" stroke="#0f9d7a" stroke-width="1.4"/>
+    <text x="52" y="318" font-size="11" font-weight="700" fill="#0f9d7a">alt  达标 [confidence ≥ 阈值 且 引用完整]</text>
+    <rect x="560" y="300" width="180" height="200" rx="10" fill="none" stroke="#c9621a" stroke-width="1.4"/>
+    <text x="572" y="318" font-size="10.5" font-weight="700" fill="#c9621a">else  不达标</text>
+
+    <!-- 9a -->
+    <line x1="196" y1="345" x2="67" y2="345" stroke="#0f9d7a" marker-end="url(#arr)"/>
+    <text x="135" y="339" text-anchor="middle" font-size="10" fill="#0f9d7a">9a 返回回答+原文出处</text>
+    <!-- 9b -->
+    <line x1="196" y1="345" x2="708" y2="345" stroke="#c9621a" marker-end="url(#arrR)"/>
+    <text x="470" y="339" text-anchor="middle" font-size="10" fill="#c9621a">9b 转人工复核队列(needs_human=true)</text>
+
+    <!-- 10 human correct -->
+    <line x1="708" y1="400" x2="198" y2="400" stroke="#c9621a" marker-end="url(#arrR)"/>
+    <text x="455" y="394" text-anchor="middle" font-size="10" fill="#c9621a">10 顾问修正/确认(异步)</text>
+    <!-- 11 supplement -->
+    <line x1="198" y1="430" x2="67" y2="430" stroke="#0f9d7a" marker-end="url(#arr)"/>
+    <text x="135" y="424" text-anchor="middle" font-size="10" fill="#0f9d7a">11 补充/更正回答</text>
+
+    <!-- 12 feedback -->
+    <line x1="67" y1="478" x2="196" y2="478" stroke="#5b6776" marker-end="url(#arr)"/>
+    <text x="135" y="472" text-anchor="middle" font-size="10" fill="#22303f">12 用户纠错/上报</text>
+    <!-- 13 route -->
+    <line x1="196" y1="504" x2="708" y2="504" stroke="#5b6776" marker-end="url(#arr)"/>
+    <text x="455" y="498" text-anchor="middle" font-size="10" fill="#22303f">13 进入复核队列(routed_to)</text>
+
+    <!-- footer note -->
+    <text x="40" y="560" font-size="10" fill="#5b6776">说明：所有片段只来自 content_chunk（权威原文切片）；回答须经「引用必填 + 置信阈值」闸门，否则转人工，避免模型臆测。</text>
+  </svg>
+  <p class="legend">参与者：客户端 · 问答服务（含 API 网关）· 检索服务 · 向量库（pgvector）· LLM（受控生成）· 顾问队列（专家在环）</p>
+
+  <h3>闸门逻辑（伪代码）</h3>
+  <div class="code">def answer(question_zh):
+    hits = retrieval.hybrid_search(question_zh, top_k=8)   # 向量 + 关键词
+    hits = rerank(hits, threshold=0.72)                     # 重排 + 阈值过滤
+    prompt = build_pastor_prompt(question_zh, hits)         # 牧师人格 + 片段 + 引用约束
+    ans, cites, conf = llm.generate(prompt)
+
+    if not cites or conf < 0.70:                            # 引用必填 + 置信不足
+        qa.needs_human = True
+        review_queue.route(ans, hits)                       # 转顾问队列
+        return "建议咨询本地面牧者，问题已转交资深顾问复核"
+    qa_citation.bulk_insert(qa_id, cites)                   # 强制溯源落地
+    return ans  # 前端可一键展开 citation 原文出处</div>
+</section>
+
+<footer>落库设计 + RAG 时序图 · 配套《系统设计方案》app-design.html · 权威来源：KJV · Ellen G. White 原版英文著作 · SDA 官方教义</footer>
+
+</div>
+</body>
+</html>

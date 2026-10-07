@@ -1,0 +1,56 @@
+# pubspec_example.yaml
+# 全应用（模块 A 对照 / 模块 B 牧师问答 / 模块 C 健康 NEWSTART）的依赖与资产声明
+# 复制到 Flutter 项目根目录并改名为 pubspec.yaml
+#
+# 注意：本工作区的 .dart 文件是平铺的（与 offline_db_helper.dart 同级），
+# 放入真实 Flutter 工程时请把它们移到 lib/ 下，例如:
+#   lib/main.dart
+#   lib/app_models.dart            lib/note_repository.dart
+#   lib/offline_db_helper.dart     lib/comparison_page.dart
+#   lib/verse_compare_card.dart    lib/comparison_note_sheet.dart
+#   lib/search_page.dart
+#   lib/qa_models.dart             lib/qa_repository.dart
+#   lib/citation_list.dart         lib/qa_page.dart            （模块 B）
+#   lib/health_models.dart         lib/health_repository.dart
+#   lib/health_page.dart           lib/health_topic_page.dart
+#   lib/health_topic_card.dart     lib/health_checkin_sheet.dart （模块 C）
+# 测试放 test/、test/helpers/。
+# 资产：build_offline_db.py 产出的 app_offline.db、export_notes_json.py 产出的 notes.json。
+
+name: faith_compare_app
+description: 全球华人跨平台信仰应用 —— 模块 A 翻译与对照 / 模块 B 牧师问答 / 模块 C 健康 NEWSTART
+publish_to: "no"
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  path: ^1.9.0                 # 路径拼接
+  path_provider: ^2.1.0        # 可写目录（首次复制预置库用）
+  http: ^1.2.0                 # 远端注记 / 问答 / 同步（离线时不可用则降级）
+  shared_preferences: ^2.2.2   # 首次引导页「已看过」标记持久化
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0   # 3.x 自带 analysis_options_user.yaml；^5.x 要求 Dart ≥3.5（本项目 Dart 3.4.4 不适用）
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/web/app_data.json  # gen_web_data.py 产物（web 通用离线数据，取代 app_offline.db）
+    - assets/web/qa_faq.json    # 模块 B 离线信仰问答库（无需后端即可本地真实回答）
+    - assets/notes.json         # export_notes_json.py 产物（26 条，全部 status=draft）
+
+# 构建示例（正式发布不要开 SHOW_DRAFT_NOTES / SHOW_UNREVIEWED_HEALTH）:
+#   flutter build apk --dart-define=API_BASE=https://api.example.com \
+#     --dart-define=USE_REMOTE_NOTES=true --dart-define=USE_REMOTE_QA=true
+#   flutter run --dart-define=SHOW_DRAFT_NOTES=true         # 仅联调：查看 draft 注记
+#   flutter run --dart-define=SHOW_UNREVIEWED_HEALTH=true   # 仅联调：查看未审健康条目
+#
+# 离线包构建（健康条目默认被闸门过滤，内部预览才放行）:
+#   python build_offline_db.py --from-json offline_sample.json --out assets/app_offline.db
+#   python build_offline_db.py --from-json offline_sample.json --out preview.db --allow-unreviewed-health

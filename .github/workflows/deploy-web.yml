@@ -1,0 +1,117 @@
+# Deploy Flutter Web to GitHub Pages
+#
+# 作用：每次 push 到 main 分支，自动 抓取全本 KJV + 和合本(CUV) -> flutter build web -> 发布为可访问的 https 链接。
+# 前置（一次性，在仓库 Settings > Pages 里设置）：
+#   - Source 选 "GitHub Actions"（不是 Deploy from a branch）
+# 链接形式（项目页）：https://<用户名>.github.io/<仓库名>/
+# 注意：本沙箱无法运行 flutter build，请在本机或 CI 上执行；此文件为发布配置。
+#
+# 若改用自定义域名 / 用户页(username.github.io)，请把 build 步骤的
+#   --base-href "/${{ github.event.repository.name }}/"
+# 改成 --base-href "/" 并在仓库设置里配置自定义域。
+#
+# 测试闸门（Test Gate）：在构建发布之前先跑
+#   - Dart 数据层验证（verify_web_data.dart）
+#   - Dart 离线问答验证（verify_offline_qa.dart）
+#   - Python 后端契约 + API 测试（backend/tests/）
+# 任一门失败都会中断发布，避免把坏版本推到线上。
+# 注意：数据层验证基于「已提交的样本」运行，必须在"注入全本 KJV"之前执行
+# （注入会把 app_data.json 换成全本 66 卷，使样本断言失效，但注入结果由 fetch 脚本负责，本身另有容错）。
+
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个发布，避免并发覆盖
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: flutter_app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.3"
+          channel: stable
+          cache: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Add Dart SDK to PATH
+        # flutter-action 随附 dart，但不在 PATH 上；把它加进去供 verify 脚本使用。
+        run: echo "$FLUTTER_ROOT/bin/cache/dart-sdk/bin" >> "$GITHUB_PATH"
+
+      # ---------------- 测试闸门（基于已提交样本 + 后端逻辑）----------------
+      - name: Test gate — data layer (verify_web_data)
+        working-directory: ${{ github.workspace }}
+        run: dart run verify_web_data.dart
+
+      - name: Test gate — offline QA (verify_offline_qa)
+        working-directory: ${{ github.workspace }}
+        run: dart run verify_offline_qa.dart
+
+      - name: Test gate — backend contract (no deps)
+        working-directory: ${{ github.workspace }}
+        run: python3 backend/tests/test_contract.py
+
+      - name: Test gate — backend API (needs fastapi)
+        working-directory: ${{ github.workspace }}
+        run: |
+          python3 -m pip install -r backend/requirements.txt
+          python3 backend/tests/test_api.py
+      # ---------------------------------------------------------------------
+
+      - name: Inject full KJV + CUV (CI has network)
+        # 从公共领域源抓取全本 KJV 与和合本(CUV)，写入 app_data.json；
+        # 若抓取失败（网络异常），保留已提交的样本数据，构建仍可进行。
+        # KJV 为权威底本；CUV 仅作参照展示。
+        working-directory: ${{ github.workspace }}
+        run: |
+          python3 fetch_kjv.py || echo "KJV fetch failed; using committed sample data"
+          python3 fetch_cuv.py || echo "CUV fetch failed; CUV column left empty"
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze .
+
+      - name: Build web release
+        # 项目页需要 base-href 带仓库名，否则静态资源 404。
+        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: flutter_app/build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

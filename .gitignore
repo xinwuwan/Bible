@@ -1,0 +1,14 @@
+# 根目录忽略项（Flutter 工程产物）
+flutter_app/.dart_tool/
+flutter_app/build/
+flutter_app/.flutter-plugins
+flutter_app/.flutter-plugins-dependencies
+**/__pycache__/
+*.pyc
+.DS_Store
+
+# 隐私与本地产物（切勿公开到仓库）
+.workbuddy/
+*.db
+*.db-journal
+/build/

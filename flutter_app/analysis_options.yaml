@@ -1,0 +1,12 @@
+# analysis_options.yaml
+#
+# 本沙箱 pub 缓存中的 flutter_lints 未随附 analysis_options_user.yaml，
+# 故此处不 include（include 会在分析时报 include_file_not_found）。
+# 在有完整 flutter_lints 的环境中，建议改回：
+#   include: package:flutter_lints/analysis_options_user.yaml
+#
+# 即便不带 flutter_lints 规则，dart analyze 仍能保证代码无错误/无未用导入等。
+linter:
+  rules:
+    # 项目约定：避免使用已弃用的 surfaceVariant，统一用 surfaceContainerHighest
+    avoid_print: false

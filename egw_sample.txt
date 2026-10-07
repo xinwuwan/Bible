@@ -1,0 +1,9 @@
+# Chapter 1
+This is a sample paragraph for the first chapter. It demonstrates how the ingest script splits plain text into paragraphs.
+
+This is the second sample paragraph in chapter one, separated from the first by a blank line.
+
+# Chapter 2
+Another paragraph under chapter two. The script keeps the current chapter context for blocks that have no explicit heading.
+
+Final sample paragraph to show that multiple blocks per chapter are numbered sequentially.
