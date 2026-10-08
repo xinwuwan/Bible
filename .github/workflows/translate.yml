@@ -8,6 +8,8 @@
 #        LLM_BASE_URL （可选，默认 https://api.openai.com/v1）
 #        LLM_MODEL    （可选，默认 gpt-4o-mini）
 # 效果：翻译断点续译（our_zh.json 已译章节自动跳过），完成后自动合并并重新部署。
+# 接力：每轮最多译 300 章（约 1.5h，远小于 350min 超时），跑完若仍有未译章节，
+#       自动触发下一轮续译，直到全本译完——无需人工反复点击。进度每 25 章落库一次。
 
 name: Translate KJV to Chinese
 
@@ -22,6 +24,12 @@ on:
 permissions:
   contents: write
   actions: write
+
+# 串行化：自动续译会触发下一轮 run，concurrency 让其排队等待，
+# 避免多个翻译 run 并发读写 our_zh.json 造成竞态。
+concurrency:
+  group: translate-kjv
+  cancel-in-progress: false
 
 jobs:
   translate:
@@ -53,9 +61,10 @@ jobs:
           if [ -n "${{ github.event.inputs.books }}" ]; then
             ARGS="--books ${{ github.event.inputs.books }}"
           fi
-          python3 translate_kjv.py $ARGS
+          python3 translate_kjv.py --max-chapters 300 $ARGS
 
-      - name: Commit our_zh.json
+      - name: Commit our_zh.json (final flush)
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -65,6 +74,20 @@ jobs:
           else
             git commit -m "chore: translate more KJV chapters via LLM"
             git push
+          fi
+
+      - name: Continue if chapters remain (auto redispatch)
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAIN=$(python3 translate_kjv.py --dry-run | grep -oE '待译章数 = [0-9]+' | grep -oE '[0-9]+' | head -1)
+          echo "remaining chapters: ${REMAIN:-0}"
+          if [ "${REMAIN:-0}" -gt 0 ]; then
+            echo "仍有未译章节，自动触发下一轮续译..."
+            gh workflow run translate.yml
+          else
+            echo "全部章节已翻译完成。"
           fi
 
       - name: Trigger deploy
