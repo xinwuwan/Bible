@@ -16,6 +16,8 @@ translate_kjv.py - 用 LLM 从 KJV 英文直译生成「本应用中文译文」
   - 防复制校验：--apply 阶段若 our_zh 与 cuv_ref_text 逐字相同，则丢弃该节译文
     （宁可留空，也不把和合本当译文）。
   - 限流退避：遇 429/5xx 指数退避重试；整章失败跳过并记入 _translate_fail.json。
+  - 增量落库：每译满 25 章即提交并推送 our_zh.json，超时也只丢最后 25 章，且
+    可被下一轮自动续译（配合 --max-chapters 与 CI 自动重触发形成接力）。
 
 运行（需 OpenAI 兼容接口的密钥）：
   set LLM_API_KEY=sk-...
@@ -30,6 +32,7 @@ translate_kjv.py - 用 LLM 从 KJV 英文直译生成「本应用中文译文」
 import argparse
 import json
 import os
+import subprocess
 import sys
 import time
 import urllib.request
@@ -95,6 +98,32 @@ def save_our_zh(our_zh):
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(our_zh, f, ensure_ascii=False, indent=1)
     os.replace(tmp, OUR_ZH_FILE)
+
+
+def commit_progress():
+    """CI 中增量提交并推送 our_zh.json，作为断点续译的落库点。
+
+    失败仅告警、不中断主流程（可能发生在无 git/无 token 的本地环境）。
+    """
+    try:
+        subprocess.run(
+            ["git", "add", "--", OUR_ZH_FILE],
+            check=True, capture_output=True, text=True,
+        )
+        st = subprocess.run(
+            ["git", "diff", "--cached", "--quiet", "--", OUR_ZH_FILE],
+            capture_output=True,
+        )
+        if st.returncode == 0:
+            return  # 无变化，无需提交
+        subprocess.run(
+            ["git", "commit", "-m", "chore: incremental KJV translation progress"],
+            check=True, capture_output=True, text=True,
+        )
+        subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
+        print("[progress] 已提交并推送当前译文进度")
+    except Exception as e:  # noqa: BLE001 - 增量提交失败不应中断翻译
+        print(f"[warn] 增量提交失败（不影响翻译，下一轮可续译）: {e}", file=sys.stderr)
 
 
 def call_llm(chapter_verses, settings, timeout=90):
@@ -176,6 +205,10 @@ def apply_to_data(our_zh):
 def main():
     ap = argparse.ArgumentParser(description="用 LLM 从 KJV 直译生成 our_zh 译文")
     ap.add_argument("--books", help="只译指定书卷 id（逗号分隔，如 1,2,3）")
+    ap.add_argument(
+        "--max-chapters", type=int, default=0,
+        help="本次最多翻译章数（0=不限制）；用于把全本拆成多轮接力，避免超时。",
+    )
     ap.add_argument("--dry-run", action="store_true", help="仅统计待译章数")
     ap.add_argument(
         "--apply",
@@ -212,6 +245,10 @@ def main():
             continue
         pending.append((book_id, chapter, vs))
 
+    # 把全本拆成多轮：限制本轮处理的章数，配合 CI 自动重触发接力。
+    if args.max_chapters and args.max_chapters > 0:
+        pending = pending[: args.max_chapters]
+
     if args.dry_run:
         print(f"[dry-run] 待译章数 = {len(pending)} / 总章数 {len(chapters)}")
         return 0
@@ -229,8 +266,9 @@ def main():
             result = call_llm(vs, settings)
             our_zh.update(result)
             done += 1
-            if done % 10 == 0:
+            if done % 25 == 0:
                 save_our_zh(our_zh)
+                commit_progress()
                 print(f"[progress] 已完成 {done}/{len(pending)} 章，累计 {len(our_zh)} 节")
         except Exception as e:  # noqa: BLE001
             print(f"[warn] 第 {book_id} 卷 {chapter} 章失败: {e}", file=sys.stderr)
@@ -238,6 +276,7 @@ def main():
             with open(FAIL_FILE, "w", encoding="utf-8") as f:
                 json.dump(fails, f, ensure_ascii=False, indent=1)
     save_our_zh(our_zh)
+    commit_progress()  # 收尾落库（本轮不足 25 章或已是最后一轮时）
     print(f"[done] 翻译完成：成功 {done} 章，失败 {len(fails)} 章，累计 {len(our_zh)} 节")
     if fails:
         print(f"[warn] 失败章节见 {FAIL_FILE}，可重跑本脚本断点续译。")
