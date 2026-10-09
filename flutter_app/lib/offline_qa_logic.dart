@@ -168,11 +168,15 @@ class OfflineQaLogic {
       return _enforce(ans);
     }
 
-    // 3) 无命中 -> 转人工（不臆测）
+    // 3) 无命中 -> 转人工（不臆测），但给出可操作的指引
     final ans = QaAnswer(
       answerId: 'qa_offline_needs_human',
       answerZh: '这个问题我暂时没有在已审核的知识库中检索到确切依据。'
-          '为避免臆测，已转交人工顾问。你可以换一种问法，或等待顾问答复。',
+          '为避免臆测，我不会凭空作答。你可以：\n'
+          '① 直接输入经文引用（如「路加福音3:23」或「Luke 3:23」），可立即查经并给出权威出处；\n'
+          '② 换一种问法，例如围绕安息日、救恩、洗礼、耶稣的降生/复活/钉十字架、'
+          '祷告、健康原则、末世预兆等主题提问；\n'
+          '③ 点击下方按钮转交人工顾问答复。',
       citations: const [],
       confidence: 0.0,
       needsHuman: true,
