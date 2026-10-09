@@ -2,6 +2,259 @@
   "faq": [
     {
       "keywords": [
+        "十字架",
+        "钉十字架",
+        "受难",
+        "各各他",
+        "四十岁",
+        "耶稣几岁",
+        "crucifixion",
+        "crucified"
+      ],
+      "answer_zh": "关于耶稣钉十字架：① 意义——「基督照圣经所说，为我们的罪死了」（林前15:3），「他被挂在木头上，亲身担当了我们的罪」（彼前2:24），这是替罪的救赎之死。② 年龄——圣经没有直接记载，但可以由经文推算：路加福音 3:23 记载耶稣受洗开始传道时「约有三十岁」；但以理书 9:27 预言弥赛亚将在第七十个七的「一七之半」被剪除，对应约三年半的传道期。因此耶稣钉十字架时约三十三岁，不是四十岁。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LUK3:23",
+          "ref": "LUK 3:23",
+          "snippet": "And Jesus himself began to be about thirty years of age"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DAN9:27",
+          "ref": "DAN 9:27",
+          "snippet": "in the midst of the week he shall cause the sacrifice and the oblation to cease"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:3",
+          "ref": "1CO 15:3",
+          "snippet": "how that Christ died for our sins according to the scriptures"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE2:24",
+          "ref": "1PE 2:24",
+          "snippet": "Who his own self bare our sins in his own body on the tree"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "降生",
+        "诞生",
+        "圣诞",
+        "马槽",
+        "童女",
+        "道成肉身",
+        "virgin birth",
+        "virgin",
+        "nativity"
+      ],
+      "answer_zh": "耶稣由童女马利亚受圣灵感孕而生：「必有童女怀孕生子，给他起名叫以马内利」（赛7:14；应验于太1:23）。「道成了肉身，住在我们中间」（约1:14）——他是永生神子，却为救赎降世为人。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA7:14",
+          "ref": "ISA 7:14",
+          "snippet": "Behold, a virgin shall conceive, and bear a son, and shall call his name Immanuel"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT1:23",
+          "ref": "MAT 1:23",
+          "snippet": "they shall call his name Emmanuel, which being interpreted is, God with us"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN1:14",
+          "ref": "JHN 1:14",
+          "snippet": "And the Word was made flesh, and dwelt among us"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "耶稣复活",
+        "第三天",
+        "空坟墓",
+        "坟墓空了",
+        "他复活了",
+        "he is risen",
+        "rose again"
+      ],
+      "answer_zh": "「他不在这里，照他所说的，已经复活了」（太28:6）。「基督已经从死里复活，成为睡了之人初熟的果子」（林前15:20）。耶稣肉身第三天复活是福音的根基，也是信徒复活盼望的凭据。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT28:6",
+          "ref": "MAT 28:6",
+          "snippet": "He is not here: for he is risen, as he said"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:20",
+          "ref": "1CO 15:20",
+          "snippet": "But now is Christ risen from the dead, and become the firstfruits of them that slept"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "什么是罪",
+        "罪的定义",
+        "犯罪",
+        "罪人",
+        "sin",
+        "sinner"
+      ],
+      "answer_zh": "圣经定义：「凡犯罪的，就是违背律法；违背律法就是罪」（约壹3:4）；「人若知道行善，却不去行，这就是他的罪了」（雅4:17）。世人都犯了罪（罗3:23），但「我们若认自己的罪，神是信实的，是公义的，必要赦免我们的罪」（约壹1:9）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JN3:4",
+          "ref": "1JN 3:4",
+          "snippet": "for sin is the transgression of the law"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM3:23",
+          "ref": "ROM 3:23",
+          "snippet": "For all have sinned, and come short of the glory of God"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JN1:9",
+          "ref": "1JN 1:9",
+          "snippet": "If we confess our sins, he is faithful and just to forgive us our sins"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "神的爱",
+        "爱世人",
+        "神爱我",
+        "耶稣爱我",
+        "god's love",
+        "loved the world"
+      ],
+      "answer_zh": "「神爱世人，甚至将他的独生子赐给他们，叫一切信他的，不至灭亡，反得永生」（约3:16）。「惟有基督在我们还作罪人的时候为我们死，神的爱就在此向我们显明了」（罗5:8）。神的爱在十字架上显明，且这爱永不改变。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN3:16",
+          "ref": "JHN 3:16",
+          "snippet": "For God so loved the world, that he gave his only begotten Son"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM5:8",
+          "ref": "ROM 5:8",
+          "snippet": "while we were yet sinners, Christ died for us"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "忧虑",
+        "焦虑",
+        "惧怕",
+        "害怕",
+        "担心",
+        "恐惧",
+        "不安",
+        "worry",
+        "fear",
+        "anxiety"
+      ],
+      "answer_zh": "圣经应许「应当一无挂虑，只要凡事藉着祷告、祈求和感谢，将你们所要的告诉神」（腓4:6）；「你们要将一切的忧虑卸给神，因为他顾念你们」（彼前5:7）。耶稣说「不要为明天忧虑」（太6:34）。信靠与祷告是胜过忧虑之路。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PHP4:6",
+          "ref": "PHP 4:6",
+          "snippet": "Be careful for nothing; but in every thing by prayer and supplication with thanksgiving"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE5:7",
+          "ref": "1PE 5:7",
+          "snippet": "Casting all your care upon him; for he careth for you"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT6:34",
+          "ref": "MAT 6:34",
+          "snippet": "Take therefore no thought for the morrow"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "疾病",
+        "生病",
+        "医治",
+        "治病",
+        "康复",
+        "healing",
+        "sick"
+      ],
+      "answer_zh": "「他赦免你的一切罪孽，医治你的一切疾病」（诗103:3）；雅各书教导为病人祷告、抹油奉主名医治（雅5:14-15）。同时神也赐人智慧使用医药与生活方式护理身体（NEWSTART）。涉及具体诊断与治疗，请务必咨询持证医生——本模块内容不构成医疗建议。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA103:3",
+          "ref": "PSA 103:3",
+          "snippet": "Who forgiveth all thine iniquities; who healeth all thy diseases"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JAS5:14",
+          "ref": "JAS 5:14",
+          "snippet": "let him call for the elders of the church; and let them pray over him"
+        },
+        {
+          "source_type": "EGW",
+          "source_id": "EGW-GV-93",
+          "ref": "The Great Visions of Ellen G. White, p. 93.3",
+          "snippet": "Care of health is a religious duty."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "律法",
+        "十诫",
+        "诫命",
+        "守律法",
+        "law of god",
+        "commandments"
+      ],
+      "answer_zh": "耶稣说「莫想我来要废掉律法和先知。我来不是要废掉，乃是要成全」（太5:17）；保罗也说「我们因信废了律法吗？断然不是，更是坚固律法」（罗3:31）。十诫是神品格的写照，信徒因信称义后更当靠恩典顺从——「你们若爱我，就必遵守我的命令」（约14:15）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT5:17",
+          "ref": "MAT 5:17",
+          "snippet": "I am not come to destroy, but to fulfil"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM3:31",
+          "ref": "ROM 3:31",
+          "snippet": "Do we then make void the law through faith? God forbid: yea, we establish the law"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN14:15",
+          "ref": "JHN 14:15",
+          "snippet": "If ye love me, keep my commandments"
+        }
+      ]
+    },
+    {
+      "keywords": [
         "安息日",
         "守安息",
         "第七日",
