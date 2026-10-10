@@ -1,1 +1,243 @@
-Ly8gb2ZmbGluZV9xYV9sb2dpYy5kYXJ0DQovLyDmqKHlnZcgQiDnprvnur/pl67nrZTnmoTnuq8gRGFydCDpgLvovpHvvIjkuI3kvp3otZYgRmx1dHRlcu+8jOWPr+WcqOaymeeuseeUqCBkYXJ0IOebtOaOpeWNlea1i++8ieOAgg0KLy8gbm9xYTogdW51c2VkX2ltcG9ydCDlt7Lnp7vpmaQgZGFydDpjb252ZXJ0IOS+nei1luOAgg0KLy8NCi8vIOiuvuiuoe+8muS4jiBiYWNrZW5kL2FwcC9yZXNwb25kZXIucHkg55qEIE9mZmxpbmVSZXNwb25kZXLjgIFrYi5weSDlrozlhajlr7npvZDjgIINCi8vIOaVsOaNruadpea6kO+8muW3suWKoOi9veeahCBLSlYg57uP5paH77yIYXBwX2RhdGEuanNvbu+8iSsg5omT5YyF55qEIHFhX2ZhcS5qc29uIOS/oeS7sOmXruetlOOAgg0KLy8NCi8vIOWQiOinhOmTgeW+i++8mg0KLy8gICAtIENVViDnu53kuI3ov5vlhaXlvJXnlKjvvIjku7vkvZUgQ1VWIGlkIOiiq+W8uuWItuWJlOmZpO+8iQ0KLy8gICAtIOmdnuS6uuW3peWbnuetlOiLpeWkseWOu+WFqOmDqOW8leeUqO+8jOW8uuWItui9rOS6uuW3pe+8iOe7neS4jeWxleekuuaXoOS+neaNrueahOWbnuetlO+8iQ0KLy8gICAtIOaXoOWRveS4reebtOaOpei9rOS6uuW3pe+8jOS4jeiHhua1iw0KaW1wb3J0ICdxYV9tb2RlbHMuZGFydCc7DQoNCi8vLyDkuabljbfliKvlkI0gLT4g5qCH5YeGIDMg5a2X5q+N5Luj56CB77yI55So5LqOIue6pue/sOemj+mfszPnq6AxNuiKgiLov5nnsbvkuK3mloflvJXnlKjop6PmnpDvvIkNCmNvbnN0IE1hcDxTdHJpbmcsIFN0cmluZz4gYm9va0FsaWFzZXMgPSB7DQogICdnZW5lc2lzJzogJ0dFTicsICfliJvkuJborrAnOiAnR0VOJywgJ+WJteS4luiomCc6ICdHRU4nLA0KICAnZXhvZHVzJzogJ0VYTycsICflh7rln4Plj4rorrAnOiAnRVhPJywgJ+WHuuWfg+WPiuiomCc6ICdFWE8nLA0KICAnbGV2aXRpY3VzJzogJ0xFVicsICfliKnmnKrorrAnOiAnTEVWJywgJ+WIqeacquiomCc6ICdMRVYnLA0KICAnbnVtYmVycyc6ICdOVU0nLCAn5rCR5pWw6K6wJzogJ05VTScsICfmsJHmlbjoqJgnOiAnTlVNJywNCiAgJ2RldXRlcm9ub215JzogJ0RFVScsICfnlLPlkb3orrAnOiAnREVVJywgJ+eUs+WRveiomCc6ICdERVUnLA0KICAnam9zaHVhJzogJ0pPUycsICfnuqbkuabkuprorrAnOiAnSk9TJywgJ+e0hOabuOS6nuiomCc6ICdKT1MnLA0KICAnanVkZ2VzJzogJ0pERycsICflo6vluIjorrAnOiAnSkRHJywgJ+Wjq+W4q+iomCc6ICdKREcnLA0KICAncnV0aCc6ICdSVVQnLCAn6Lev5b6X6K6wJzogJ1JVVCcsICfot6/lvpfoqJgnOiAnUlVUJywNCiAgJzEgc2FtdWVsJzogJzFTQScsICfmkpLmr43ogLPorrDkuIonOiAnMVNBJywgJ+aSkuavjeiAs+iomOS4iic6ICcxU0EnLA0KICAnMiBzYW11ZWwnOiAnMlNBJywgJ+aSkuavjeiAs+iusOS4iyc6ICcyU0EnLCAn5pKS5q+N6ICz6KiY5LiLJzogJzJTQScsDQogICcxIGtpbmdzJzogJzFLSScsICfliJfnjovnuqrkuIonOiAnMUtJJywgJ+WIl+eOi+e0gOS4iic6ICcxS0knLA0KICAnMiBraW5ncyc6ICcyS0knLCAn5YiX546L57qq5LiLJzogJzJLSScsICfliJfnjovntIDkuIsnOiAnMktJJywNCiAgJzEgY2hyb25pY2xlcyc6ICcxQ0gnLCAn5Y6G5Luj5b+X5LiKJzogJzFDSCcsICfmrbfku6Plv5fkuIonOiAnMUNIJywNCiAgJzIgY2hyb25pY2xlcyc6ICcyQ0gnLCAn5Y6G5Luj5b+X5LiLJzogJzJDSCcsICfmrbfku6Plv5fkuIsnOiAnMkNIJywNCiAgJ2V6cmEnOiAnRVpSJywgJ+S7peaWr+aLieiusCc6ICdFWlInLCAn5Lul5pav5ouJ6KiYJzogJ0VaUicsDQogICduZWhlbWlhaCc6ICdORUgnLCAn5bC85biM57Gz6K6wJzogJ05FSCcsICflsLzluIznsbPoqJgnOiAnTkVIJywNCiAgJ2VzdGhlcic6ICdFU1QnLCAn5Lul5pav5biW6K6wJzogJ0VTVCcsICfku6Xmlq/luJboqJgnOiAnRVNUJywNCiAgJ2pvYic6ICdKT0InLCAn57qm5Lyv6K6wJzogJ0pPQicsICfntITkvK/oqJgnOiAnSk9CJywNCiAgJ3BzYWxtcyc6ICdQU0EnLCAn6K+X56+HJzogJ1BTQScsICfoqannr4cnOiAnUFNBJywNCiAgJ3Byb3ZlcmJzJzogJ1BSTycsICfnrrToqIAnOiAnUFJPJywNCiAgJ2VjY2xlc2lhc3Rlcyc6ICdFQ0MnLCAn5Lyg6YGT5LmmJzogJ0VDQycsICflgrPpgZPmm7gnOiAnRUNDJywNCiAgJ3Nvbmcgb2Ygc29sb21vbic6ICdTTkcnLCAn6ZuF5q2MJzogJ1NORycsDQogICdpc2FpYWgnOiAnSVNBJywgJ+S7pei1m+S6muS5pic6ICdJU0EnLCAn5Lul6LO95Lqe5pu4JzogJ0lTQScsDQogICdqZXJlbWlhaCc6ICdKRVInLCAn6IC25Yip57Gz5LmmJzogJ0pFUicsICfogLbliKnnsbPmm7gnOiAnSkVSJywNCiAgJ2xhbWVudGF0aW9ucyc6ICdMQU0nLCAn6IC25Yip57Gz5ZOA5q2MJzogJ0xBTScsDQogICdlemVraWVsJzogJ0VaSycsICfku6Xopb/nu5PkuaYnOiAnRVpLJywgJ+S7peilv+e1kOabuCc6ICdFWksnLA0KICAnZGFuaWVsJzogJ0RBTicsICfkvYbku6XnkIbkuaYnOiAnREFOJywgJ+S9huS7peeQhuabuCc6ICdEQU4nLA0KICAnaG9zZWEnOiAnSE9TJywgJ+S9leilv+mYv+S5pic6ICdIT1MnLCAn5L2V6KW/6Zi/5pu4JzogJ0hPUycsDQogICdqb2VsJzogJ0pPTCcsICfnuqbnj6XkuaYnOiAnSk9MJywgJ+e0hOePpeabuCc6ICdKT0wnLA0KICAnYW1vcyc6ICdBTU8nLCAn6Zi/5pGp5Y+45LmmJzogJ0FNTycsICfpmL/mkanlj7jmm7gnOiAnQU1PJywNCiAgJ29iYWRpYWgnOiAnT0JBJywgJ+S/hOW3tOW6leS6muS5pic6ICdPQkEnLCAn5L+E5be05bqV5Lqe5pu4JzogJ09CQScsDQogICdqb25haCc6ICdKT04nLCAn57qm5ou/5LmmJzogJ0pPTicsICfntITmi7/mm7gnOiAnSk9OJywNCiAgJ21pY2FoJzogJ01JQycsICflvKXov6bkuaYnOiAnTUlDJywgJ+W9jOi/puabuCc6ICdNSUMnLA0KICAnbmFodW0nOiAnTkFNJywgJ+mCo+m4v+S5pic6ICdOQU0nLCAn6YKj6bS75pu4JzogJ05BTScsDQogICdoYWJha2t1ayc6ICdIQUInLCAn5ZOI5be06LC35LmmJzogJ0hBQicsICflk4jlt7TosLfmm7gnOiAnSEFCJywNCiAgJ3plcGhhbmlhaCc6ICdaRVAnLCAn6KW/55Wq6ZuF5LmmJzogJ1pFUCcsICfopb/nlarpm4Xmm7gnOiAnWkVQJywNCiAgJ2hhZ2dhaSc6ICdIQUcnLCAn5ZOI6K+l5LmmJzogJ0hBRycsICflk4joqbLmm7gnOiAnSEFHJywNCiAgJ3plY2hhcmlhaCc6ICdaRUMnLCAn5pKS6L+m5Yip5Lqa5LmmJzogJ1pFQycsICfmkpLov6bliKnkup7mm7gnOiAnWkVDJywNCiAgJ21hbGFjaGknOiAnTUFMJywgJ+eOm+aLieWfuuS5pic6ICdNQUwnLCAn55Gq5ouJ5Z+65pu4JzogJ01BTCcsDQogICdtYXR0aGV3JzogJ01BVCcsICfpqazlpKrnpo/pn7MnOiAnTUFUJywgJ+mmrOWkquemj+mfsyc6ICdNQVQnLA0KICAnbWFyayc6ICdNUksnLCAn6ams5Y+v56aP6Z+zJzogJ01SSycsICfppqzlj6/npo/pn7MnOiAnTVJLJywNCiAgJ2x1a2UnOiAnTFVLJywgJ+i3r+WKoOemj+mfsyc6ICdMVUsnLA0KICAnam9obic6ICdKSE4nLCAn57qm57+w56aP6Z+zJzogJ0pITicsICfntITnv7Dnpo/pn7MnOiAnSkhOJywNCiAgJ2FjdHMnOiAnQUNUJywgJ+S9v+W+kuihjOS8oCc6ICdBQ1QnLCAn5L2/5b6S6KGM5YKzJzogJ0FDVCcsDQogICdyb21hbnMnOiAnUk9NJywgJ+e9l+mprOS5pic6ICdST00nLCAn576F6aas5pu4JzogJ1JPTScsDQogICcxIGNvcmludGhpYW5zJzogJzFDTycsICflk6XmnpflpJrliY3kuaYnOiAnMUNPJywgJ+WTpeael+WkmuWJjeabuCc6ICcxQ08nLA0KICAnMiBjb3JpbnRoaWFucyc6ICcyQ08nLCAn5ZOl5p6X5aSa5ZCO5LmmJzogJzJDTycsICflk6XmnpflpJrlvozmm7gnOiAnMkNPJywNCiAgJ2dhbGF0aWFucyc6ICdHQUwnLCAn5Yqg5ouJ5aSq5LmmJzogJ0dBTCcsICfliqDmi4nlpKrmm7gnOiAnR0FMJywNCiAgJ2VwaGVzaWFucyc6ICdFUEgnLCAn5Lul5byX5omA5LmmJzogJ0VQSCcsICfku6XlvJfmiYDmm7gnOiAnRVBIJywNCiAgJ3BoaWxpcHBpYW5zJzogJ1BIUCcsICfohZPnq4vmr5TkuaYnOiAnUEhQJywgJ+iFk+eri+avlOabuCc6ICdQSFAnLA0KICAnY29sb3NzaWFucyc6ICdDT0wnLCAn5q2M572X6KW/5LmmJzogJ0NPTCcsICfmrYznvoXopb/mm7gnOiAnQ09MJywNCiAgJzEgdGhlc3NhbG9uaWFucyc6ICcxVEgnLCAn5biW5pKS572X5bC86L+m5YmN5LmmJzogJzFUSCcsICfluJbmkpLnvoXlsLzov6bliY3mm7gnOiAnMVRIJywNCiAgJzIgdGhlc3NhbG9uaWFucyc6ICcyVEgnLCAn5biW5pKS572X5bC86L+m5ZCO5LmmJzogJzJUSCcsICfluJbmkpLnvoXlsLzov6blvozmm7gnOiAnMlRIJywNCiAgJzEgdGltb3RoeSc6ICcxVEknLCAn5o+Q5pGp5aSq5YmN5LmmJzogJzFUSScsICfmj5DmkanlpKrliY3mm7gnOiAnMVRJJywNCiAgJzIgdGltb3RoeSc6ICcyVEknLCAn5o+Q5pGp5aSq5ZCO5LmmJzogJzJUSScsICfmj5DmkanlpKrlvozmm7gnOiAnMlRJJywNCiAgJ3RpdHVzJzogJ1RJVCcsICfmj5DlpJrkuaYnOiAnVElUJywgJ+aPkOWkmuabuCc6ICdUSVQnLA0KICAncGhpbGVtb24nOiAnUEhNJywgJ+iFk+WIqemXqOS5pic6ICdQSE0nLCAn6IWT5Yip6ZaA5pu4JzogJ1BITScsDQogICdoZWJyZXdzJzogJ0hFQicsICfluIzkvK/mnaXkuaYnOiAnSEVCJywgJ+W4jOS8r+S+huabuCc6ICdIRUInLA0KICAnamFtZXMnOiAnSkFTJywgJ+mbheWQhOS5pic6ICdKQVMnLCAn6ZuF5ZCE5pu4JzogJ0pBUycsDQogICcxIHBldGVyJzogJzFQRScsICflvbzlvpfliY3kuaYnOiAnMVBFJywgJ+W9vOW+l+WJjeabuCc6ICcxUEUnLA0KICAnMiBwZXRlcic6ICcyUEUnLCAn5b285b6X5ZCO5LmmJzogJzJQRScsICflvbzlvpflvozmm7gnOiAnMlBFJywNCiAgJzEgam9obic6ICcxSk4nLCAn57qm57+w5LiA5LmmJzogJzFKTicsICfntITnv7DkuIDmm7gnOiAnMUpOJywNCiAgJzIgam9obic6ICcySk4nLCAn57qm57+w5LqM5LmmJzogJzJKTicsICfntITnv7Dkuozmm7gnOiAnMkpOJywNCiAgJzMgam9obic6ICczSk4nLCAn57qm57+w5LiJ5LmmJzogJzNKTicsICfntITnv7DkuInmm7gnOiAnM0pOJywNCiAgJ2p1ZGUnOiAnSlVEJywgJ+eKueWkp+S5pic6ICdKVUQnLCAn54y25aSn5pu4JzogJ0pVRCcsDQogICdyZXZlbGF0aW9uJzogJ1JFVicsICflkK/npLrlvZUnOiAnUkVWJywgJ+WVn+ekuumMhCc6ICdSRVYnLA0KfTsNCg0KY2xhc3MgT2ZmbGluZVFhTG9naWMgew0KICBmaW5hbCBMaXN0PE1hcDxTdHJpbmcsIGR5bmFtaWM+PiBmYXE7DQogIGZpbmFsIE1hcDxTdHJpbmcsIE1hcDxTdHJpbmcsIGR5bmFtaWM+PiB2ZXJzZUluZGV4OyAvLyAiZ2VuIDE6MSIgLT4gdmVyc2Ugcm93DQoNCiAgT2ZmbGluZVFhTG9naWModGhpcy5mYXEsIHRoaXMudmVyc2VJbmRleCk7DQoNCiAgLy8vIOS7juW3suWKoOi9veeahOe7j+aWhyArIGZhcSDliJfooajmnoTlu7rvvIhib29rX2lkIC0+IGJvb2tfY29kZSDmmKDlsITntKLlvJXnu4/mlofvvInjgIINCiAgZmFjdG9yeSBPZmZsaW5lUWFMb2dpYy5idWlsZCh7DQogICAgcmVxdWlyZWQgTGlzdDxNYXA8U3RyaW5nLCBkeW5hbWljPj4gdmVyc2VzLA0KICAgIHJlcXVpcmVkIExpc3Q8TWFwPFN0cmluZywgZHluYW1pYz4+IGJvb2tzLA0KICAgIHJlcXVpcmVkIExpc3Q8TWFwPFN0cmluZywgZHluYW1pYz4+IGZhcSwNCiAgfSkgew0KICAgIGZpbmFsIGNvZGVCeUlkID0gPGludCwgU3RyaW5nPnt9Ow0KICAgIGZvciAoZmluYWwgYiBpbiBib29rcykgew0KICAgICAgZmluYWwgaWQgPSBiWydib29rX2lkJ107DQogICAgICBmaW5hbCBjb2RlID0gYlsnYm9va19jb2RlJ107DQogICAgICBpZiAoaWQgaXMgaW50ICYmIGNvZGUgaXMgU3RyaW5nKSBjb2RlQnlJZFtpZF0gPSBjb2RlOw0KICAgIH0NCiAgICBmaW5hbCBpbmRleCA9IDxTdHJpbmcsIE1hcDxTdHJpbmcsIGR5bmFtaWM+Pnt9Ow0KICAgIGZvciAoZmluYWwgdiBpbiB2ZXJzZXMpIHsNCiAgICAgIGZpbmFsIGJpZCA9IHZbJ2Jvb2tfaWQnXTsNCiAgICAgIGZpbmFsIGNvZGUgPSBiaWQgaXMgaW50ID8gY29kZUJ5SWRbYmlkXSA6IG51bGw7DQogICAgICBpZiAoY29kZSAhPSBudWxsICYmIHZbJ2NoYXB0ZXInXSBpcyBpbnQgJiYgdlsndmVyc2UnXSBpcyBpbnQpIHsNCiAgICAgICAgaW5kZXhbJyR7Y29kZS50b0xvd2VyQ2FzZSgpfSAke3ZbJ2NoYXB0ZXInXX06JHt2Wyd2ZXJzZSddfSddID0gdjsNCiAgICAgIH0NCiAgICB9DQogICAgcmV0dXJuIE9mZmxpbmVRYUxvZ2ljKGZhcSwgaW5kZXgpOw0KICB9DQoNCiAgUWFBbnN3ZXIgYW5zd2VyKFN0cmluZyBxdWVzdGlvbiwge1N0cmluZyBsb2NhbGUgPSAnemgnfSkgew0KICAgIGZpbmFsIHEgPSBxdWVzdGlvbi50cmltKCk7DQoNCiAgICAvLyAxKSDnu4/mloflvJXnlKjnm7Tmn6XvvIjkuK3oi7HvvIkNCiAgICBmaW5hbCB2ID0gX2xvb2t1cFZlcnNlKHEpOw0KICAgIGlmICh2ICE9IG51bGwpIHsNCiAgICAgIGZpbmFsIHJlZiA9ICh2WydyZWYnXSBhcyBTdHJpbmc/KSA/PyAnJzsNCiAgICAgIGZpbmFsIGtqdiA9ICh2WydranZfdGV4dCddIGFzIFN0cmluZz8pID8/ICcnOw0KICAgICAgZmluYWwgemhSYXcgPSB2WydvdXJfemgnXTsNCiAgICAgIGZpbmFsIHpoID0gKHpoUmF3IGlzIFN0cmluZyAmJiB6aFJhdy5pc05vdEVtcHR5KQ0KICAgICAgICAgID8gemhSYXcNCiAgICAgICAgICA6ICfvvIjkuK3mlofor5HmloflvoXooaXlhYXvvIknOw0KICAgICAgZmluYWwgYW5zID0gUWFBbnN3ZXIoDQogICAgICAgIGFuc3dlcklkOiAncWFfb2ZmbGluZV8ke3JlZi5yZXBsYWNlQWxsKCcgJywgJycpfScsDQogICAgICAgIGFuc3dlclpoOiAn44CQJHJlZuOAkUtKViDoi7HmloflupXmnKzvvIjmnKzlupTnlKjkuK3mlofor5HmlofkuLrni6znq4vkuqflh7rvvIzpnZ7njrDmnInkuK3mlofor5HmnKzvvJvlkozlkIjmnKzku4XkvZzlj4LnhafvvIlcblxuKiokemgqKicsDQogICAgICAgIGNpdGF0aW9uczogWw0KICAgICAgICAgIFFhQ2l0YXRpb24oDQogICAgICAgICAgICBzb3VyY2VUeXBlOiBRYVNvdXJjZVR5cGUuYmlibGUsDQogICAgICAgICAgICBzb3VyY2VJZDogJ0tKVi0ke3JlZi5yZXBsYWNlQWxsKCcgJywgJycpfScsDQogICAgICAgICAgICByZWY6IHJlZiwNCiAgICAgICAgICAgIHNuaXBwZXQ6IGtqdiwNCiAgICAgICAgICApLA0KICAgICAgICBdLA0KICAgICAgICBjb25maWRlbmNlOiAwLjk3LA0KICAgICAgICBuZWVkc0h1bWFuOiBmYWxzZSwNCiAgICAgICk7DQogICAgICByZXR1cm4gX2VuZm9yY2UoYW5zKTsNCiAgICB9DQoNCiAgICAvLyAyKSBGQVEg5YWz6ZSu6K+N5Yy56YWNDQogICAgTWFwPFN0cmluZywgZHluYW1pYz4/IGJlc3Q7DQogICAgdmFyIGJlc3RTY29yZSA9IDA7DQogICAgZm9yIChmaW5hbCBlbnRyeSBpbiBmYXEpIHsNCiAgICAgIHZhciBzY29yZSA9IDA7DQogICAgICBmb3IgKGZpbmFsIHJhdyBpbiAoZW50cnlbJ2tleXdvcmRzJ10gYXMgTGlzdDxkeW5hbWljPj8gPz8gY29uc3QgW10pKSB7DQogICAgICAgIGZpbmFsIGt3ID0gKHJhdyBhcyBTdHJpbmcpLnRvTG93ZXJDYXNlKCk7DQogICAgICAgIGlmIChxLnRvTG93ZXJDYXNlKCkuY29udGFpbnMoa3cpKSBzY29yZSsrOw0KICAgICAgfQ0KICAgICAgaWYgKHNjb3JlID4gYmVzdFNjb3JlKSB7DQogICAgICAgIGJlc3RTY29yZSA9IHNjb3JlOw0KICAgICAgICBiZXN0ID0gZW50cnk7DQogICAgICB9DQogICAgfQ0KICAgIGlmIChiZXN0ICE9IG51bGwgJiYgYmVzdFNjb3JlID4gMCkgew0KICAgICAgZmluYWwgY2l0YXRpb25zID0gKGJlc3RbJ2NpdGF0aW9ucyddIGFzIExpc3Q8ZHluYW1pYz4/ID8/IGNvbnN0IFtdKQ0KICAgICAgICAgIC53aGVyZVR5cGU8TWFwPFN0cmluZywgZHluYW1pYz4+KCkNCiAgICAgICAgICAubWFwKFFhQ2l0YXRpb24uZnJvbUpzb24pDQogICAgICAgICAgLnRvTGlzdCgpOw0KICAgICAgZmluYWwgYW5zID0gUWFBbnN3ZXIoDQogICAgICAgIGFuc3dlcklkOiAncWFfb2ZmbGluZV9mYXEnLA0KICAgICAgICBhbnN3ZXJaaDogKGJlc3RbJ2Fuc3dlcl96aCddIGFzIFN0cmluZz8pID8/ICcnLA0KICAgICAgICBjaXRhdGlvbnM6IGNpdGF0aW9ucywNCiAgICAgICAgY29uZmlkZW5jZTogKDAuNzAgKyAwLjA1ICogYmVzdFNjb3JlKS5jbGFtcCgwLjAsIDAuOTIpLA0KICAgICAgICBuZWVkc0h1bWFuOiBmYWxzZSwNCiAgICAgICk7DQogICAgICByZXR1cm4gX2VuZm9yY2UoYW5zKTsNCiAgICB9DQoNCiAgICAvLyAzKSDml6Dlkb3kuK0gLT4g6L2s5Lq65bel77yI5LiN6IeG5rWL77yJ77yM5L2G57uZ5Ye65Y+v5pON5L2c55qE5oyH5byVDQogICAgZmluYWwgYW5zID0gUWFBbnN3ZXIoDQogICAgICBhbnN3ZXJJZDogJ3FhX29mZmxpbmVfbmVlZHNfaHVtYW4nLA0KICAgICAgYW5zd2VyWmg6ICcqKui/meS4qumXrumimOaIkeaaguaXtuayoeacieWcqOW3suWuoeaguOeahOefpeivhuW6k+S4reajgOe0ouWIsOehruWIh+S+neaNru+8jOS4uumBv+WFjeiHhua1i++8jOaIkeS4jeS8muWHreepuuS9nOetlOOAgioqIOS9oOWPr+S7pe+8mlxuJw0KICAgICAgICAgICfikaAg55u05o6l6L6T5YWl57uP5paH5byV55So77yI5aaC44CM6Lev5Yqg56aP6Z+zMzoyM+OAjeaIluOAjEx1a2UgMzoyM+OAje+8ie+8jOWPr+eri+WNs+afpee7j+W5tue7meWHuuadg+WogeWHuuWkhO+8m1xuJw0KICAgICAgICAgICfikaEg5o2i5LiA56eN6Zeu5rOV77yM5L6L5aaC5Zu057uV5a6J5oGv5pel44CB5pWR5oGp44CB5rSX56S844CB6IC256ij55qE6ZmN55SfL+Wkjea0uy/pkonljYHlrZfmnrbjgIEnDQogICAgICAgICAgJ+elt+WRiuOAgeWBpeW6t+WOn+WImeOAgeacq+S4lumihOWFhuetieS4u+mimOaPkOmXru+8m1xuJw0KICAgICAgICAgICfikaIg54K55Ye75LiL5pa55oyJ6ZKu6L2s5Lqk5Lq65bel6aG+6Zeu562U5aSN44CCJywNCiAgICAgIGNpdGF0aW9uczogY29uc3QgW10sDQogICAgICBjb25maWRlbmNlOiAwLjAsDQogICAgICBuZWVkc0h1bWFuOiB0cnVlLA0KICAgICk7DQogICAgcmV0dXJuIF9lbmZvcmNlKGFucyk7DQogIH0NCg0KICBNYXA8U3RyaW5nLCBkeW5hbWljPj8gX2xvb2t1cFZlcnNlKFN0cmluZyBxKSB7DQogICAgaWYgKHEuaXNFbXB0eSkgcmV0dXJuIG51bGw7DQogICAgZmluYWwgZW4gPSBSZWdFeHAociIoW0EtWmEtel17Miw0fSlccyooXGR7MSwzfSlccypbOu+8ml1ccyooXGR7MSwzfSkiKQ0KICAgICAgICAuZmlyc3RNYXRjaChxKTsNCiAgICBpZiAoZW4gIT0gbnVsbCkgew0KICAgICAgdmFyIGNvZGUgPSBlbi5ncm91cCgxKSEudG9VcHBlckNhc2UoKTsNCiAgICAgIGNvZGUgPSBib29rQWxpYXNlc1tjb2RlLnRvTG93ZXJDYXNlKCldID8/IGNvZGU7DQogICAgICBmaW5hbCBrZXkgPSAnJHtjb2RlLnRvTG93ZXJDYXNlKCl9ICR7ZW4uZ3JvdXAoMil9OiR7ZW4uZ3JvdXAoMyl9JzsNCiAgICAgIGlmICh2ZXJzZUluZGV4LmNvbnRhaW5zS2V5KGtleSkpIHJldHVybiB2ZXJzZUluZGV4W2tleV07DQogICAgfQ0KICAgIGZvciAoZmluYWwgZSBpbiBib29rQWxpYXNlcy5lbnRyaWVzKSB7DQogICAgICBmaW5hbCBuYW1lID0gZS5rZXk7DQogICAgICBpZiAobmFtZS5sZW5ndGggPD0gMikgY29udGludWU7IC8vIOi3s+i/h+i/h+efreWIq+WQje+8iOWmgiLnuqYi77yJ6YG/5YWN6K+v5Yy56YWNDQogICAgICBpZiAocS5jb250YWlucyhuYW1lKSkgew0KICAgICAgICBmaW5hbCBtMSA9IFJlZ0V4cCgNCiAgICAgICAgICAgICAgICAiJHtSZWdFeHAuZXNjYXBlKG5hbWUpfVxccyrnrKw/XFxzKihcXGR7MSwzfSlcXHMq56ugXFxzKuesrD9cXHMqKFxcZHsxLDN9KVxccyroioI/IikNCiAgICAgICAgICAgIC5maXJzdE1hdGNoKHEpOw0KICAgICAgICBpZiAobTEgIT0gbnVsbCkgew0KICAgICAgICAgIGZpbmFsIGtleSA9ICcke2UudmFsdWUudG9Mb3dlckNhc2UoKX0gJHttMS5ncm91cCgxKX06JHttMS5ncm91cCgyKX0nOw0KICAgICAgICAgIGlmICh2ZXJzZUluZGV4LmNvbnRhaW5zS2V5KGtleSkpIHJldHVybiB2ZXJzZUluZGV4W2tleV07DQogICAgICAgIH0NCiAgICAgICAgZmluYWwgbTIgPSBSZWdFeHAoDQogICAgICAgICAgICAgICAgIiR7UmVnRXhwLmVzY2FwZShuYW1lKX1cXHMqKFxcZHsxLDN9KVxccypbOu+8ml1cXHMqKFxcZHsxLDN9KSIpDQogICAgICAgICAgICAuZmlyc3RNYXRjaChxKTsNCiAgICAgICAgaWYgKG0yICE9IG51bGwpIHsNCiAgICAgICAgICBmaW5hbCBrZXkgPSAnJHtlLnZhbHVlLnRvTG93ZXJDYXNlKCl9ICR7bTIuZ3JvdXAoMSl9OiR7bTIuZ3JvdXAoMil9JzsNCiAgICAgICAgICBpZiAodmVyc2VJbmRleC5jb250YWluc0tleShrZXkpKSByZXR1cm4gdmVyc2VJbmRleFtrZXldOw0KICAgICAgICB9DQogICAgICB9DQogICAgfQ0KICAgIHJldHVybiBudWxsOw0KICB9DQoNCiAgUWFBbnN3ZXIgX2VuZm9yY2UoUWFBbnN3ZXIgYSkgew0KICAgIGZpbmFsIGNpdGVzID0gYS5jaXRhdGlvbnMud2hlcmUoKGMpID0+ICFjLmlzQ3V2KS50b0xpc3QoKTsNCiAgICBpZiAoIWEubmVlZHNIdW1hbiAmJiBjaXRlcy5pc0VtcHR5KSB7DQogICAgICByZXR1cm4gUWFBbnN3ZXIoDQogICAgICAgIGFuc3dlcklkOiBhLmFuc3dlcklkLA0KICAgICAgICBhbnN3ZXJaaDogJ++8iOetlOahiOe8uuWwkeadg+WogeW8leeUqO+8jOW3sui9rOS6pOS6uuW3pemhvumXruWkjeaguO+8iSR7YS5hbnN3ZXJaaH0nLA0KICAgICAgICBjaXRhdGlvbnM6IGNvbnN0IFtdLA0KICAgICAgICBjb25maWRlbmNlOiAwLjAsDQogICAgICAgIG5lZWRzSHVtYW46IHRydWUsDQogICAgICApOw0KICAgIH0NCiAgICBpZiAoY2l0ZXMubGVuZ3RoICE9IGEuY2l0YXRpb25zLmxlbmd0aCkgew0KICAgICAgcmV0dXJuIFFhQW5zd2VyKA0KICAgICAgICBhbnN3ZXJJZDogYS5hbnN3ZXJJZCwNCiAgICAgICAgYW5zd2VyWmg6IGEuYW5zd2VyWmgsDQogICAgICAgIGNpdGF0aW9uczogY2l0ZXMsDQogICAgICAgIGNvbmZpZGVuY2U6IGEuY29uZmlkZW5jZSwNCiAgICAgICAgbmVlZHNIdW1hbjogYS5uZWVkc0h1bWFuLA0KICAgICAgKTsNCiAgICB9DQogICAgcmV0dXJuIGE7DQogIH0NCn0NCg==
+// offline_qa_logic.dart
+// 模块 B 离线问答的纯 Dart 逻辑（不依赖 Flutter，可在沙箱用 dart 直接单测）。
+// noqa: unused_import 已移除 dart:convert 依赖。
+//
+// 设计：与 backend/app/responder.py 的 OfflineResponder、kb.py 完全对齐。
+// 数据来源：已加载的 KJV 经文（app_data.json）+ 打包的 qa_faq.json 信仰问答。
+//
+// 合规铁律：
+//   - CUV 绝不进入引用（任何 CUV id 被强制剔除）
+//   - 非人工回答若失去全部引用，强制转人工（绝不展示无依据的回答）
+//   - 无命中直接转人工，不臆测
+import 'qa_models.dart';
+
+/// 书卷别名 -> 标准 3 字母代码（用于"约翰福音3章16节"这类中文引用解析）
+const Map<String, String> bookAliases = {
+  'genesis': 'GEN', '创世记': 'GEN', '創世記': 'GEN',
+  'exodus': 'EXO', '出埃及记': 'EXO', '出埃及記': 'EXO',
+  'leviticus': 'LEV', '利未记': 'LEV', '利未記': 'LEV',
+  'numbers': 'NUM', '民数记': 'NUM', '民數記': 'NUM',
+  'deuteronomy': 'DEU', '申命记': 'DEU', '申命記': 'DEU',
+  'joshua': 'JOS', '约书亚记': 'JOS', '約書亞記': 'JOS',
+  'judges': 'JDG', '士师记': 'JDG', '士師記': 'JDG',
+  'ruth': 'RUT', '路得记': 'RUT', '路得記': 'RUT',
+  '1 samuel': '1SA', '撒母耳记上': '1SA', '撒母耳記上': '1SA',
+  '2 samuel': '2SA', '撒母耳记下': '2SA', '撒母耳記下': '2SA',
+  '1 kings': '1KI', '列王纪上': '1KI', '列王紀上': '1KI',
+  '2 kings': '2KI', '列王纪下': '2KI', '列王紀下': '2KI',
+  '1 chronicles': '1CH', '历代志上': '1CH', '歷代志上': '1CH',
+  '2 chronicles': '2CH', '历代志下': '2CH', '歷代志下': '2CH',
+  'ezra': 'EZR', '以斯拉记': 'EZR', '以斯拉記': 'EZR',
+  'nehemiah': 'NEH', '尼希米记': 'NEH', '尼希米記': 'NEH',
+  'esther': 'EST', '以斯帖记': 'EST', '以斯帖記': 'EST',
+  'job': 'JOB', '约伯记': 'JOB', '約伯記': 'JOB',
+  'psalms': 'PSA', '诗篇': 'PSA', '詩篇': 'PSA',
+  'proverbs': 'PRO', '箴言': 'PRO',
+  'ecclesiastes': 'ECC', '传道书': 'ECC', '傳道書': 'ECC',
+  'song of solomon': 'SNG', '雅歌': 'SNG',
+  'isaiah': 'ISA', '以赛亚书': 'ISA', '以賽亞書': 'ISA',
+  'jeremiah': 'JER', '耶利米书': 'JER', '耶利米書': 'JER',
+  'lamentations': 'LAM', '耶利米哀歌': 'LAM',
+  'ezekiel': 'EZK', '以西结书': 'EZK', '以西結書': 'EZK',
+  'daniel': 'DAN', '但以理书': 'DAN', '但以理書': 'DAN',
+  'hosea': 'HOS', '何西阿书': 'HOS', '何西阿書': 'HOS',
+  'joel': 'JOL', '约珥书': 'JOL', '約珥書': 'JOL',
+  'amos': 'AMO', '阿摩司书': 'AMO', '阿摩司書': 'AMO',
+  'obadiah': 'OBA', '俄巴底亚书': 'OBA', '俄巴底亞書': 'OBA',
+  'jonah': 'JON', '约拿书': 'JON', '約拿書': 'JON',
+  'micah': 'MIC', '弥迦书': 'MIC', '彌迦書': 'MIC',
+  'nahum': 'NAM', '那鸿书': 'NAM', '那鴻書': 'NAM',
+  'habakkuk': 'HAB', '哈巴谷书': 'HAB', '哈巴谷書': 'HAB',
+  'zephaniah': 'ZEP', '西番雅书': 'ZEP', '西番雅書': 'ZEP',
+  'haggai': 'HAG', '哈该书': 'HAG', '哈該書': 'HAG',
+  'zechariah': 'ZEC', '撒迦利亚书': 'ZEC', '撒迦利亞書': 'ZEC',
+  'malachi': 'MAL', '玛拉基书': 'MAL', '瑪拉基書': 'MAL',
+  'matthew': 'MAT', '马太福音': 'MAT', '馬太福音': 'MAT',
+  'mark': 'MRK', '马可福音': 'MRK', '馬可福音': 'MRK',
+  'luke': 'LUK', '路加福音': 'LUK',
+  'john': 'JHN', '约翰福音': 'JHN', '約翰福音': 'JHN',
+  'acts': 'ACT', '使徒行传': 'ACT', '使徒行傳': 'ACT',
+  'romans': 'ROM', '罗马书': 'ROM', '羅馬書': 'ROM',
+  '1 corinthians': '1CO', '哥林多前书': '1CO', '哥林多前書': '1CO',
+  '2 corinthians': '2CO', '哥林多后书': '2CO', '哥林多後書': '2CO',
+  'galatians': 'GAL', '加拉太书': 'GAL', '加拉太書': 'GAL',
+  'ephesians': 'EPH', '以弗所书': 'EPH', '以弗所書': 'EPH',
+  'philippians': 'PHP', '腓立比书': 'PHP', '腓立比書': 'PHP',
+  'colossians': 'COL', '歌罗西书': 'COL', '歌羅西書': 'COL',
+  '1 thessalonians': '1TH', '帖撒罗尼迦前书': '1TH', '帖撒羅尼迦前書': '1TH',
+  '2 thessalonians': '2TH', '帖撒罗尼迦后书': '2TH', '帖撒羅尼迦後書': '2TH',
+  '1 timothy': '1TI', '提摩太前书': '1TI', '提摩太前書': '1TI',
+  '2 timothy': '2TI', '提摩太后书': '2TI', '提摩太後書': '2TI',
+  'titus': 'TIT', '提多书': 'TIT', '提多書': 'TIT',
+  'philemon': 'PHM', '腓利门书': 'PHM', '腓利門書': 'PHM',
+  'hebrews': 'HEB', '希伯来书': 'HEB', '希伯來書': 'HEB',
+  'james': 'JAS', '雅各书': 'JAS', '雅各書': 'JAS',
+  '1 peter': '1PE', '彼得前书': '1PE', '彼得前書': '1PE',
+  '2 peter': '2PE', '彼得后书': '2PE', '彼得後書': '2PE',
+  '1 john': '1JN', '约翰一书': '1JN', '約翰一書': '1JN',
+  '2 john': '2JN', '约翰二书': '2JN', '約翰二書': '2JN',
+  '3 john': '3JN', '约翰三书': '3JN', '約翰三書': '3JN',
+  'jude': 'JUD', '犹大书': 'JUD', '猶大書': 'JUD',
+  'revelation': 'REV', '启示录': 'REV', '啟示錄': 'REV',
+};
+
+class OfflineQaLogic {
+  final List<Map<String, dynamic>> faq;
+  final Map<String, Map<String, dynamic>> verseIndex; // "gen 1:1" -> verse row
+
+  OfflineQaLogic(this.faq, this.verseIndex);
+
+  /// 从已加载的经文 + faq 列表构建（book_id -> book_code 映射索引经文）。
+  factory OfflineQaLogic.build({
+    required List<Map<String, dynamic>> verses,
+    required List<Map<String, dynamic>> books,
+    required List<Map<String, dynamic>> faq,
+  }) {
+    final codeById = <int, String>{};
+    for (final b in books) {
+      final id = b['book_id'];
+      final code = b['book_code'];
+      if (id is int && code is String) codeById[id] = code;
+    }
+    final index = <String, Map<String, dynamic>>{};
+    for (final v in verses) {
+      final bid = v['book_id'];
+      final code = bid is int ? codeById[bid] : null;
+      if (code != null && v['chapter'] is int && v['verse'] is int) {
+        index['${code.toLowerCase()} ${v['chapter']}:${v['verse']}'] = v;
+      }
+    }
+    return OfflineQaLogic(faq, index);
+  }
+
+  QaAnswer answer(String question, {String locale = 'zh'}) {
+    final q = question.trim();
+
+    // 1) 经文引用直查（中英）
+    final v = _lookupVerse(q);
+    if (v != null) {
+      final ref = (v['ref'] as String?) ?? '';
+      final kjv = (v['kjv_text'] as String?) ?? '';
+      final zhRaw = v['our_zh'];
+      final zh = (zhRaw is String && zhRaw.isNotEmpty)
+          ? zhRaw
+          : '（中文译文待补充）';
+      final ans = QaAnswer(
+        answerId: 'qa_offline_${ref.replaceAll(' ', '')}',
+        answerZh: '【$ref】KJV 英文底本（本应用中文译文为独立产出，非现有中文译本；和合本仅作参照）\n\n**$zh**',
+        citations: [
+          QaCitation(
+            sourceType: QaSourceType.bible,
+            sourceId: 'KJV-${ref.replaceAll(' ', '')}',
+            ref: ref,
+            snippet: kjv,
+          ),
+        ],
+        confidence: 0.97,
+        needsHuman: false,
+      );
+      return _enforce(ans);
+    }
+
+    // 2) FAQ 关键词匹配（按关键词长度加权：越具体的关键词权重越大，
+    //    避免单个短词意外命中、也让长问题中的核心专名主导排序）
+    Map<String, dynamic>? best;
+    var bestScore = 0;
+    final ql = q.toLowerCase();
+    for (final entry in faq) {
+      var score = 0;
+      for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
+        final kw = (raw as String).toLowerCase();
+        if (kw.isNotEmpty && ql.contains(kw)) score += kw.length;
+      }
+      if (score > bestScore) {
+        bestScore = score;
+        best = entry;
+      }
+    }
+    if (best != null && bestScore >= 2) {
+      final citations = (best['citations'] as List<dynamic>? ?? const [])
+          .whereType<Map<String, dynamic>>()
+          .map(QaCitation.fromJson)
+          .toList();
+      final ans = QaAnswer(
+        answerId: 'qa_offline_faq',
+        answerZh: (best['answer_zh'] as String?) ?? '',
+        citations: citations,
+        confidence: (0.70 + 0.05 * bestScore).clamp(0.0, 0.92),
+        needsHuman: false,
+      );
+      return _enforce(ans);
+    }
+
+    // 3) 无命中 -> 转人工（不臆测），但给出可操作的指引
+    final ans = QaAnswer(
+      answerId: 'qa_offline_needs_human',
+      answerZh: '**这个问题我暂时没有在已审核的知识库中检索到确切依据，为避免臆测，我不会凭空作答。** 你可以：\n'
+          '① 直接输入经文引用（如「路加福音3:23」或「Luke 3:23」），可立即查经并给出权威出处；\n'
+          '② 换一种问法，例如围绕安息日、救恩、洗礼、耶稣的降生/复活/钉十字架、'
+          '祷告、健康原则、末世预兆等主题提问；\n'
+          '③ 点击下方按钮转交人工顾问答复。',
+      citations: const [],
+      confidence: 0.0,
+      needsHuman: true,
+    );
+    return _enforce(ans);
+  }
+
+  Map<String, dynamic>? _lookupVerse(String q) {
+    if (q.isEmpty) return null;
+    final en = RegExp(r"([A-Za-z]{2,4})\s*(\d{1,3})\s*[:：]\s*(\d{1,3})")
+        .firstMatch(q);
+    if (en != null) {
+      var code = en.group(1)!.toUpperCase();
+      code = bookAliases[code.toLowerCase()] ?? code;
+      final key = '${code.toLowerCase()} ${en.group(2)}:${en.group(3)}';
+      if (verseIndex.containsKey(key)) return verseIndex[key];
+    }
+    for (final e in bookAliases.entries) {
+      final name = e.key;
+      if (name.length <= 2) continue; // 跳过过短别名（如"约"）避免误匹配
+      if (q.contains(name)) {
+        final m1 = RegExp(
+                "${RegExp.escape(name)}\\s*第?\\s*(\\d{1,3})\\s*章\\s*第?\\s*(\\d{1,3})\\s*节?")
+            .firstMatch(q);
+        if (m1 != null) {
+          final key = '${e.value.toLowerCase()} ${m1.group(1)}:${m1.group(2)}';
+          if (verseIndex.containsKey(key)) return verseIndex[key];
+        }
+        final m2 = RegExp(
+                "${RegExp.escape(name)}\\s*(\\d{1,3})\\s*[:：]\\s*(\\d{1,3})")
+            .firstMatch(q);
+        if (m2 != null) {
+          final key = '${e.value.toLowerCase()} ${m2.group(1)}:${m2.group(2)}';
+          if (verseIndex.containsKey(key)) return verseIndex[key];
+        }
+      }
+    }
+    return null;
+  }
+
+  QaAnswer _enforce(QaAnswer a) {
+    final cites = a.citations.where((c) => !c.isCuv).toList();
+    if (!a.needsHuman && cites.isEmpty) {
+      return QaAnswer(
+        answerId: a.answerId,
+        answerZh: '（答案缺少权威引用，已转交人工顾问复核）${a.answerZh}',
+        citations: const [],
+        confidence: 0.0,
+        needsHuman: true,
+      );
+    }
+    if (cites.length != a.citations.length) {
+      return QaAnswer(
+        answerId: a.answerId,
+        answerZh: a.answerZh,
+        citations: cites,
+        confidence: a.confidence,
+        needsHuman: a.needsHuman,
+      );
+    }
+    return a;
+  }
+}
