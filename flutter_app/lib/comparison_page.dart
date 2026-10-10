@@ -16,9 +16,13 @@ import 'package:flutter/material.dart';
 import 'app_models.dart';
 import 'app_theme.dart';
 import 'comparison_note_sheet.dart';
+import 'kjv_cuv_diff.dart';
 import 'note_repository.dart';
 import 'offline_db_helper.dart';
 import 'verse_compare_card.dart';
+
+/// 差异标示用的琥珀色（与 verse_compare_card 保持一致）
+const Color _diffColor = Color(0xFFE0A100);
 
 class ComparisonPage extends StatefulWidget {
   final int bookId;
@@ -47,6 +51,7 @@ class _ComparisonPageState extends State<ComparisonPage> {
   List<VerseView> _verses = [];
   final Map<String, ComparisonNote> _noteMap = {};
   bool _showCuv = true;
+  bool _onlyDiffs = false; // 仅看 KJV 与和合本有差异的经节
   bool _loadingNotes = false;
   String? _error;
 
@@ -54,6 +59,10 @@ class _ComparisonPageState extends State<ComparisonPage> {
   void initState() {
     super.initState();
     _chapter = widget.initialChapter;
+    // 差异标示数据（KJV↔和合本）全局加载一次，加载完成后刷新以显示过滤器/图例
+    KjvCuvDiffStore.load().then((_) {
+      if (mounted) setState(() {});
+    });
     _loadChapter();
   }
 
@@ -122,6 +131,13 @@ class _ComparisonPageState extends State<ComparisonPage> {
       appBar: AppBar(
         title: Text('${widget.bookName} 第 $_chapter 章'),
         actions: [
+          if (KjvCuvDiffStore.isAvailable)
+            IconButton(
+              tooltip: _onlyDiffs ? '显示全部经节' : '仅看 KJV 与和合本有差异的经节',
+              icon: Icon(_onlyDiffs ? Icons.filter_alt_off_outlined : Icons.filter_alt_outlined),
+              color: _onlyDiffs ? _diffColor : null,
+              onPressed: () => setState(() => _onlyDiffs = !_onlyDiffs),
+            ),
           IconButton(
             tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
             icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
@@ -193,6 +209,9 @@ class _ComparisonPageState extends State<ComparisonPage> {
                 const SizedBox(width: 10),
                 if (_showCuv)
                   _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
+                const SizedBox(width: 10),
+                if (KjvCuvDiffStore.isAvailable)
+                  _LegendDot(color: _diffColor, text: '⚠ 中英差异'),
                 const Spacer(),
                 if (_loadingNotes)
                   const SizedBox(
@@ -216,17 +235,36 @@ class _ComparisonPageState extends State<ComparisonPage> {
           Expanded(
             child: _verses.isEmpty
                 ? const Center(child: Text('本章暂无离线数据'))
-                : ListView.builder(
-                    itemCount: _verses.length,
-                    itemBuilder: (context, i) {
-                      final v = _verses[i];
-                      final note = _noteMap[_normRef(v.ref)];
-                      return VerseCompareCard(
-                        verse: v,
-                        note: note,
-                        showCuv: _showCuv,
-                        draftMode: widget.draftMode,
-                        onTapNote: note == null ? null : () => _openNote(note),
+                : Builder(
+                    builder: (context) {
+                      final display = _onlyDiffs
+                          ? _verses
+                              .where((v) => KjvCuvDiffStore.get(v.ref) != null)
+                              .toList()
+                          : _verses;
+                      if (display.isEmpty) {
+                        return Center(
+                          child: Text(
+                            _onlyDiffs
+                                ? '本章没有标记出的 KJV 与和合本差异'
+                                : '本章暂无离线数据',
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: display.length,
+                        itemBuilder: (context, i) {
+                          final v = display[i];
+                          final note = _noteMap[_normRef(v.ref)];
+                          return VerseCompareCard(
+                            verse: v,
+                            note: note,
+                            showCuv: _showCuv,
+                            draftMode: widget.draftMode,
+                            onTapNote: note == null ? null : () => _openNote(note),
+                            diff: KjvCuvDiffStore.get(v.ref),
+                          );
+                        },
                       );
                     },
                   ),

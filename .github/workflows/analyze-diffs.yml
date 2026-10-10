@@ -1,0 +1,89 @@
+# Analyze KJV <-> CUV divergences
+#
+# 用途：用 LLM 比对全本 KJV 英文与和合本(CUV)中文，自动生成 kjv_cuv_diffs.json，
+#       供模块 A「对照阅读」高亮标出两译含义/底本/措辞的差异，减少人工核对精力。
+# 触发：仓库 Actions 页 -> Analyze KJV-CUV Diffs -> Run workflow（手动，按需）
+# 前置 Secrets：LLM_API_KEY（必填）/ LLM_BASE_URL / LLM_MODEL
+#           建议 LLM_MODEL 用有额度的模型（如 glm-4-plus），glm-4-flash 免费额度易限流。
+# 效果：断点续跑（已标记的 ref 跳过），每轮最多 300 章，跑完若仍有未比章节自动触发下一轮。
+#       完成后提交 kjv_cuv_diffs.json 并重新部署。curated 种子会被合并保留。
+
+name: Analyze KJV-CUV Diffs
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_chapters:
+        description: "本轮最多比对章数（留空 = 300；用于接力）"
+        required: false
+        default: "300"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: analyze-kjv-cuv
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 全本 KJV + 和合本(CUV) 临时抓取进 app_data.json（不提交），供分析脚本比对。
+      - name: Fetch full KJV + CUV into app_data.json
+        run: |
+          python3 fetch_kjv.py
+          python3 fetch_cuv.py
+
+      - name: Analyze divergences (resume from existing diffs)
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          python3 analyze_kjv_cuv.py --max-chapters ${{ github.event.inputs.max_chapters }}
+
+      - name: Commit kjv_cuv_diffs.json (final flush)
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add flutter_app/assets/web/kjv_cuv_diffs.json
+          if git diff --cached --quiet; then
+            echo "no new diffs this run"
+          else
+            git commit -m "chore: update KJV-CUV divergence diffs via LLM"
+            git push
+          fi
+
+      - name: Continue if chapters remain (auto redispatch)
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAIN=$(python3 analyze_kjv_cuv.py --dry-run | grep -oE '待比章数 = [0-9]+' | grep -oE '[0-9]+' | head -1)
+          echo "remaining chapters: ${REMAIN:-0}"
+          if [ "${REMAIN:-0}" -gt 0 ]; then
+            echo "仍有未比章节，自动触发下一轮..."
+            gh workflow run analyze-diffs.yml
+          else
+            echo "全部章节已比对完成。"
+          fi
+
+      - name: Trigger deploy
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-web.yml

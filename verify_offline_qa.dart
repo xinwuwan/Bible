@@ -66,9 +66,9 @@ void main() {
   print('== 无命中 -> 转人工（不臆测）==');
   final a5 = logic.answer('今天天气怎么样zzz');
   check('无命中 needsHuman=true', a5.needsHuman == true);
-  // 答案首句带 ** 加粗标记（结论先行），去掉标记后再断言文案
+  // 答案首句带 ** 加粗标记（结论先行），且诚实声明不妄言（牧者语气）
   check('无命中 answerZh 诚实引导',
-      a5.answerZh.replaceAll('**', '').startsWith('这个问题我暂时'));
+      a5.answerZh.replaceAll('**', '').contains('不敢妄言'));
 
   print('== 合规闸门：CUV 强制剔除 ==');
   // 直接构造含 CUV 的回答，验证 _enforce（通过 answer 不可达，这里用模型校验 isCuv）

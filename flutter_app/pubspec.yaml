@@ -43,6 +43,7 @@ flutter:
   assets:
     - assets/web/app_data.json  # gen_web_data.py 产物（web 通用离线数据，取代 app_offline.db）
     - assets/web/qa_faq.json    # 模块 B 离线信仰问答库（无需后端即可本地真实回答）
+    - assets/web/kjv_cuv_diffs.json  # KJV↔和合本差异标示（analyze_kjv_cuv.py 生成）
     - assets/notes.json         # export_notes_json.py 产物（26 条，全部 status=draft）
 
 # 构建示例（正式发布不要开 SHOW_DRAFT_NOTES / SHOW_UNREVIEWED_HEALTH）:

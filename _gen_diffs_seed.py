@@ -1,0 +1,100 @@
+# -*- coding: utf-8 -*-
+"""生成 kjv_cuv_diffs.json 的「手工校订种子清单」。
+
+说明：
+  - 这些条目均为圣经学界公认、可考据的 KJV（依 Textus Receptus）与和合本（1919，
+    依批判本/英文修订本传统）之间的差异，绝非主观判断，可放心作为对照阅读的高亮提示。
+  - 标注只说明「两译所据底本/措辞不同」，不判定谁对谁错；KJV 始终是本应用权威底本。
+  - 全本自动化扩展由 analyze_kjv_cuv.py（LLM 辅助）完成，本文件是起步种子。
+"""
+import json, os
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(BASE, "flutter_app", "assets", "web", "kjv_cuv_diffs.json")
+
+items = {
+    "1JN 5:7": {
+        "type": "text_tradition",
+        "severity": "high",
+        "note": "KJV（依 Textus Receptus）在约壹5:7 记『天上作见证的：父、道、圣灵，三者为一』；"
+                "和合本（依批判本）省略此句，仅保留『水、血、圣灵』的地上见证。"
+                "属底本传统不同，非译法对错——对照时请注意两译所依原文不同。",
+        "kjv_focus": "For there are three that bear record in heaven, the Father, the Word, and the Holy Ghost: and these three are one.",
+        "cuv_focus": "（和合本此处无『天上三一』一句，直接从『作见证的原来有三：就是圣灵、水，与血』接续）",
+    },
+    "MAT 6:13": {
+        "type": "text_tradition",
+        "severity": "medium",
+        "note": "KJV 主祷文末有颂词『因为国度、权柄、荣耀，全是你的，直到永远。阿们。』；"
+                "和合本（依较短抄本传统）将此颂词置于注脚或略去。属底本传统不同。",
+        "kjv_focus": "For thine is the kingdom, and the power, and the glory, for ever. Amen.",
+        "cuv_focus": "（和合本在主祷文末多作注脚处理此颂词）",
+    },
+    "ROM 16:24": {
+        "type": "text_tradition",
+        "severity": "low",
+        "note": "KJV 罗马书16:24 有祝福『愿我们主耶稣基督的恩常与你们众人同在。阿们。』；"
+                "和合本无此独立一节（并入16:20/27 的祝福）。属底本传统不同。",
+        "kjv_focus": "The grace of our Lord Jesus Christ be with you all. Amen.",
+        "cuv_focus": "（和合本无罗马书16:24此节）",
+    },
+    "MAT 17:21": {
+        "type": "text_tradition",
+        "severity": "low",
+        "note": "KJV 太17:21『此病若不禁食祷告，总不能出来』；和合本略去本节（依批判本）。属底本传统不同。",
+        "kjv_focus": "Howbeit this kind goeth not out but by prayer and fasting.",
+        "cuv_focus": "（和合本无马太福音17:21此节）",
+    },
+    "MAT 18:11": {
+        "type": "text_tradition",
+        "severity": "low",
+        "note": "KJV 太18:11『人子来，为要拯救失丧的人』；和合本略去本节。属底本传统不同。",
+        "kjv_focus": "For the Son of man is come to save that which was lost.",
+        "cuv_focus": "（和合本无马太福音18:11此节）",
+    },
+    "LUK 17:36": {
+        "type": "text_tradition",
+        "severity": "low",
+        "note": "KJV 路17:36『两个人在田里，一个被接去，一个撇下』；和合本略去本节。属底本传统不同。",
+        "kjv_focus": "Two men shall be in the field; the one shall be taken, and the other left.",
+        "cuv_focus": "（和合本无路加福音17:36此节）",
+    },
+    "ROM 8:1": {
+        "type": "text_tradition",
+        "severity": "low",
+        "note": "KJV 罗8:1 末附『……就是不随从肉体、只随从圣灵的人』；"
+                "和合本（依较短抄本）略去后半句，仅『如今那些在基督耶稣里的，就不定罪了。』属底本传统不同。",
+        "kjv_focus": "There is therefore now no condemnation to them which are in Christ Jesus, who walk not after the flesh, but after the Spirit.",
+        "cuv_focus": "如今那些在基督耶稣里的，就不定罪了。",
+    },
+    "1TH 4:15": {
+        "type": "archaic_kjv",
+        "severity": "medium",
+        "note": "KJV 用 『prevent』（古英语意为『先到、在前』）译『我们……必不 prevent 那已睡的人』；"
+                "和合本作『我们……断不能比他们先（到）』。两译含义一致，但 KJV 古词易被现代读者误读为『阻止』。"
+                "特标出，免你对照时困惑。",
+        "kjv_focus": "We which are alive and remain unto the coming of the Lord shall not prevent them which are asleep.",
+        "cuv_focus": "我们这活着还存留到主降临的人，断不能比那已经睡了的人先（到）。",
+    },
+    "1CO 13:13": {
+        "type": "archaic_kjv",
+        "severity": "low",
+        "note": "KJV 在林前13 多处用 『charity』（古英语『爱/仁爱』，对应希腊文 agape）译此处；"
+                "和合本统一译为『爱』。含义一致，但 KJV 古词易被误读为『慈善』。对照时请按『爱』理解。",
+        "kjv_focus": "And now abideth faith, hope, charity, these three; but the greatest of these is charity.",
+        "cuv_focus": "如今常存的有信，有望，有爱；这三样，其中最大的是爱。",
+    },
+}
+
+data = {
+    "version": 1,
+    "generated_by": "curated-seed-v1",
+    "description": "KJV 与和合本(CUV)差异的种子清单；由 analyze_kjv_cuv.py 可扩展为全本。",
+    "items": items,
+}
+
+os.makedirs(os.path.dirname(OUT), exist_ok=True)
+with open(OUT, "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+print(f"已生成 {OUT}：{len(items)} 条差异种子")

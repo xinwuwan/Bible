@@ -6,19 +6,32 @@
 //   ② 本应用中文译文  —— 本应用独立产出（非任何现有中文译本）
 //   ③ 和合本          —— 仅参照展示，灰色弱化，标注「不作为权威来源」
 //
+// 增强：当某节 KJV 与和合本(CUV)含义有差异（底本传统不同 / KJV 古词）时，
+//   以琥珀色描边 + 「⚠ 中英差异」标签 + 说明条 明确标示，并把差异片段加粗，
+//   大幅减少人工逐节核对的精力消耗。
+//
 // 跨平台：宽度 >= 720 时三栏并排（平板/桌面），否则纵向堆叠（手机）。
 
 import 'package:flutter/material.dart';
 
 import 'app_models.dart';
 import 'app_theme.dart';
+import 'kjv_cuv_diff.dart';
+
+/// 差异标示用的琥珀色系
+const Color _diffBorder = Color(0xFFE0A100);
+const Color _diffBg = Color(0xFFFFF8E6);
+const Color _diffChipBg = Color(0xFFFDE7C8);
+const Color _diffChipFg = Color(0xFF8A5A00);
+const Color _diffHiBg = Color(0xFFFFF0B3);
 
 class VerseCompareCard extends StatelessWidget {
   final VerseView verse;
   final ComparisonNote? note;
-  final bool showCuv;      // 是否显示和合本参照栏
-  final bool draftMode;    // 开发联调：允许展示 draft 注记（发布必须 false）
+  final bool showCuv; // 是否显示和合本参照栏
+  final bool draftMode; // 开发联调：允许展示 draft 注记（发布必须 false）
   final VoidCallback? onTapNote;
+  final KjvCuvDiff? diff; // 非 null 表示该节 KJV 与和合本存在需留意的差异
 
   const VerseCompareCard({
     super.key,
@@ -27,12 +40,22 @@ class VerseCompareCard extends StatelessWidget {
     this.showCuv = true,
     this.draftMode = false,
     this.onTapNote,
+    this.diff,
   });
 
   @override
   Widget build(BuildContext context) {
+    final hasDiff = diff != null;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+      elevation: hasDiff ? 2 : 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: hasDiff
+            ? BorderSide(color: _diffBorder, width: diff!.emphasised ? 2 : 1.3)
+            : BorderSide.none,
+      ),
+      color: hasDiff ? _diffBg : null,
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -46,14 +69,16 @@ class VerseCompareCard extends StatelessWidget {
                   height: 26,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: AppTheme.primary.withOpacity(0.10),
+                    color: hasDiff
+                        ? _diffBorder.withOpacity(0.18)
+                        : AppTheme.primary.withOpacity(0.10),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     '${verse.verse}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppTheme.primary,
+                      color: hasDiff ? _diffChipFg : AppTheme.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -68,9 +93,39 @@ class VerseCompareCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                if (note != null) _NoteChip(note: note!, draftMode: draftMode, onTap: onTapNote),
+                if (note != null)
+                  _NoteChip(note: note!, draftMode: draftMode, onTap: onTapNote),
               ],
             ),
+            // 差异标签
+            if (hasDiff)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: _diffChipBg,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: _diffBorder.withOpacity(0.5)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.warning_amber_rounded,
+                          size: 14, color: _diffChipFg),
+                      const SizedBox(width: 5),
+                      Text(
+                        '中英差异·${diff!.typeLabel}',
+                        style: const TextStyle(
+                            fontSize: 11.5,
+                            color: _diffChipFg,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             const SizedBox(height: 10),
             LayoutBuilder(
               builder: (context, c) {
@@ -82,6 +137,7 @@ class VerseCompareCard extends StatelessWidget {
                     text: verse.kjvText,
                     color: AppTheme.scriptureBlue,
                     emphasis: true,
+                    highlight: diff?.kjvFocus,
                   ),
                   _Block(
                     label: '本应用中文译文',
@@ -99,22 +155,57 @@ class VerseCompareCard extends StatelessWidget {
                       color: AppTheme.cuvGrey,
                       emphasis: false,
                       muted: true,
+                      highlight: diff?.cuvFocus,
                     ),
                 ];
                 if (wide) {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: blocks
-                        .map((b) => Expanded(child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 4),
-                              child: b,
-                            )))
+                        .map((b) => Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: b,
+                              ),
+                            ))
                         .toList(),
                   );
                 }
                 return Column(children: blocks);
               },
             ),
+            // 差异说明条
+            if (hasDiff)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: _diffChipBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: _diffBorder.withOpacity(0.35)),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 1, right: 6),
+                        child: Icon(Icons.info_outline,
+                            size: 15, color: _diffChipFg),
+                      ),
+                      Expanded(
+                        child: Text(
+                          diff!.note,
+                          style: const TextStyle(
+                              fontSize: 12, color: _diffChipFg, height: 1.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -165,6 +256,7 @@ class _Block extends StatelessWidget {
   final bool emphasis;
   final bool muted;
   final bool pending;
+  final String? highlight; // 差异片段：命中则加粗 + 浅底，辅助肉眼定位
 
   const _Block({
     required this.label,
@@ -174,10 +266,17 @@ class _Block extends StatelessWidget {
     required this.emphasis,
     this.muted = false,
     this.pending = false,
+    this.highlight,
   });
 
   @override
   Widget build(BuildContext context) {
+    final style = AppTheme.scripture(
+      size: muted ? 13.5 : 15,
+      color: muted ? AppTheme.inkSoft : AppTheme.ink,
+      weight: emphasis ? FontWeight.w500 : FontWeight.w400,
+      height: muted ? 1.55 : 1.65,
+    );
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(12),
@@ -229,19 +328,35 @@ class _Block extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 7),
-          Text(
-            text,
-            style: AppTheme.scripture(
-              size: muted ? 13.5 : 15,
-              color: muted ? AppTheme.inkSoft : AppTheme.ink,
-              weight: emphasis ? FontWeight.w500 : FontWeight.w400,
-              height: muted ? 1.55 : 1.65,
-            ).copyWith(
-              fontStyle: pending ? FontStyle.italic : FontStyle.normal,
-            ),
-          ),
+          _buildText(text, highlight, style, pending),
         ],
       ),
     );
+  }
+
+  /// 渲染正文：若 highlight 命中则把该片段加粗 + 浅琥珀底，便于一眼定位差异。
+  Widget _buildText(
+      String text, String? highlight, TextStyle style, bool pending) {
+    final base = style.copyWith(
+      fontStyle: pending ? FontStyle.italic : FontStyle.normal,
+    );
+    if (highlight == null ||
+        highlight.isEmpty ||
+        !text.contains(highlight)) {
+      return Text(text, style: base);
+    }
+    final spans = <TextSpan>[];
+    final idx = text.indexOf(highlight);
+    if (idx > 0) spans.add(TextSpan(text: text.substring(0, idx)));
+    spans.add(TextSpan(
+      text: highlight,
+      style: base.copyWith(
+        fontWeight: FontWeight.bold,
+        backgroundColor: _diffHiBg,
+      ),
+    ));
+    final end = idx + highlight.length;
+    if (end < text.length) spans.add(TextSpan(text: text.substring(end)));
+    return Text.rich(TextSpan(children: spans, style: base));
   }
 }

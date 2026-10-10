@@ -170,7 +170,17 @@ class _QaPageState extends State<QaPage> {
           ),
           Expanded(
             child: _turns.isEmpty
-                ? const Center(child: Text('提出你的信仰或教义问题'))
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 28),
+                      child: Text(
+                        '弟兄姊妹，请把你心里的疑问、重担或渴慕带到这里。\n'
+                        '我愿陪你一同查考圣经；需要更深陪伴时，也为你转介真实的牧者。',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.black54, height: 1.6),
+                      ),
+                    ),
+                  )
                 : ListView.builder(
                     padding: const EdgeInsets.only(bottom: 8),
                     itemCount: _turns.length,
