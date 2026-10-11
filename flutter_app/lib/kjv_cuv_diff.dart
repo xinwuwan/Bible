@@ -91,6 +91,20 @@ class KjvCuvDiffStore {
   /// 取某节差异（ref 形如 "JHN 3:16" 或 "JHN3:16" 均可）
   static KjvCuvDiff? get(String ref) => _byRef[_norm(ref)];
 
+  /// 全部差异记录（严重度降序，再按 ref 排序）——供「差异速览」弹层使用
+  static List<KjvCuvDiff> get all {
+    final list = _byRef.values.toList();
+    list.sort((a, b) {
+      final c = b.severityRank.compareTo(a.severityRank);
+      return c != 0 ? c : a.ref.compareTo(b.ref);
+    });
+    return list;
+  }
+
+  /// 严重度中文标签
+  static String severityLabel(String severity) =>
+      {'high': '显著', 'medium': '中等', 'low': '轻微'}[severity] ?? '轻微';
+
   static String _norm(String s) =>
       s.replaceAll(RegExp(r'\s+'), '').toUpperCase();
 }

@@ -45,6 +45,104 @@ Widget buildAnswerRichText(String text, TextStyle base) {
   );
 }
 
+/// 牧者回信卡片：把回答渲染成「真人牧师回信」的版式，而不只是一段文字。
+/// - 抬头「牧师的回复」：让用户一眼知道这是有人在对他说话；
+/// - 含 **结论** 的段落：左侧强调条 + 加粗（结论先行更醒目）；
+/// - ①②③ 等序号自动换行：把讲义式的密度变成可读的条目；
+/// - 结尾短小的祝福/叮咛：单独成段、暖色斜体，像牧师署名前的一句心里话。
+class _PastorAnswerCard extends StatelessWidget {
+  final String answer;
+
+  const _PastorAnswerCard({required this.answer});
+
+  static const _warm = Color(0xFF8D6E63);
+  static const _accent = Color(0xFF2E7D32);
+
+  /// 预处理：序号前后自动断行，拆成段落
+  List<String> get _lines {
+    final t = answer.replaceAllMapped(
+        RegExp(r'([①②③④⑤⑥⑦⑧⑨⑩])'), (m) => '\n${m.group(1)}');
+    return t
+        .split('\n')
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .toList();
+  }
+
+  /// 结尾祝福/邀请：短小、无加粗、以牧者口吻词开头
+  bool _isCloser(String line) =>
+      line.length <= 44 &&
+      !line.contains('**') &&
+      !line.contains('（') &&
+      RegExp(r'^(愿|若|如果|欢迎|把|主必|主与|让|你|在|弟兄)').hasMatch(line);
+
+  @override
+  Widget build(BuildContext context) {
+    final lines = _lines;
+    final conclusionIdx = lines.indexWhere((l) => l.contains('**'));
+    final lastIdx = lines.length - 1;
+    const base = TextStyle(fontSize: 14, height: 1.55);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 抬头：牧师的回复
+        const Row(
+          children: [
+            SizedBox(
+              width: 22,
+              height: 22,
+              child: CircleAvatar(
+                radius: 11,
+                backgroundColor: _accent,
+                child: Icon(Icons.record_voice_over,
+                    size: 13, color: Colors.white),
+              ),
+            ),
+            SizedBox(width: 6),
+            Text('牧师的回复',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: _accent)),
+          ],
+        ),
+        const Divider(height: 12),
+        for (var i = 0; i < lines.length; i++) ...[
+          if (i == conclusionIdx)
+            // 结论段：左侧强调条 + 加粗
+            Container(
+              margin: const EdgeInsets.only(top: 2, bottom: 6),
+              padding: const EdgeInsets.only(left: 8),
+              decoration: const BoxDecoration(
+                border: Border(left: BorderSide(color: _accent, width: 3)),
+              ),
+              child: buildAnswerRichText(
+                lines[i],
+                base.copyWith(
+                    fontSize: 14.5, height: 1.6, fontWeight: FontWeight.w500),
+              ),
+            )
+          else if (i == lastIdx && lines.length > 1 && _isCloser(lines[i]))
+            // 结尾祝福：暖色斜体，像一句署名前的叮咛
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: buildAnswerRichText(
+                lines[i],
+                base.copyWith(
+                    fontStyle: FontStyle.italic, color: _warm, fontSize: 13.5),
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: buildAnswerRichText(lines[i], base),
+            ),
+        ],
+      ],
+    );
+  }
+}
+
 class QaPage extends StatefulWidget {
   final QaRepository repo;
   final ValueChanged<QaCitation>? onOpenCitation;
@@ -321,10 +419,7 @@ class _TurnView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildAnswerRichText(
-              a.answerZh,
-              const TextStyle(fontSize: 14, height: 1.55),
-            ),
+            _PastorAnswerCard(answer: a.answerZh),
             if (a.needsHuman) ...[
               const SizedBox(height: 8),
               SizedBox(
