@@ -17,7 +17,7 @@ import 'qa_repository.dart';
 
 /// 人工顾问答复邮箱：转人工时，用户的问题将以邮件形式发送到此地址。
 /// 留空 = 人工通道尚未配置（点击按钮会给出诚实提示，绝不假装"已提交"）。
-const String kHumanReviewEmail = '';
+const String kHumanReviewEmail = 'xinwuwan@163.com';
 
 /// 将答案文本中的 **加粗** 标记渲染为粗体（轻量 Markdown 支持，不引入额外依赖）。
 /// 用于「结论先行」——把每条回答的开头结论用 **...** 标粗，让用户一眼看到重点。
