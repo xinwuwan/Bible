@@ -3779,6 +3779,320 @@
           "snippet": "Thou art wearied in the multitude of thy counsels. Let now the astrologers, the stargazers, the monthly prognosticators, stand up, and save thee from these things that shall come upon thee."
         }
       ]
+    },
+    {
+      "keywords": [
+        "失恋",
+        "分手",
+        "被甩",
+        "感情受伤",
+        "单恋",
+        "暗恋",
+        "失恋了"
+      ],
+      "answer_zh": "**失恋的痛是真实的，但你的价值从不系在谁留下来——「我以永远的爱爱你，因此我以慈爱吸引你」（耶31:3）；离别的风浪里，那不放手的仍是神。** 心碎，祂都数过。 诗篇说「他医好伤心的人，裹好他们的伤处」（诗147:3）；彼得说「你们要把一切忧虑卸给神，因为他顾念你们」（彼前5:7）；罗马书应许「神使万事互相效力，叫爱神的人得益处」（罗8:28）。 具体：允许自己难过几天、不急着找人填补空位、把未说出口的话写给神；若走不出来，点「转人工顾问」陪你。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JER31:3",
+          "ref": "JER 31:3",
+          "snippet": "Yea, I have loved thee with an everlasting love: therefore with lovingkindness have I drawn thee."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA147:3",
+          "ref": "PSA 147:3",
+          "snippet": "He healeth the broken in heart, and bindeth up their wounds."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE5:7",
+          "ref": "1PE 5:7",
+          "snippet": "Casting all your care upon him; for he careth for you."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "移民",
+        "搬家",
+        "离乡",
+        "远离家人",
+        "出国",
+        "异地",
+        "离乡背井"
+      ],
+      "answer_zh": "**迁徙本是人间常态——亚伯拉罕「出去的时候，还不知往哪里去」（来11:8）；无论你搬到哪座城，神都比你先到，祂不因距离挪开半步。** 孤单时，祂是最近的邻舍。 诗篇说「我往哪里去，躲避你的灵？……就是在那里，你的手必引导我」（诗139:7,10）；耶稣应许「我就常与你们同在，直到世界的末了」（太28:20）；保罗说「我们生活、动作、存留，都在乎他」（徒17:28）。 具体：落地先找当地教会/团契、用视讯守住家人连接、把新环境当成神给你的禾场；想家时，告诉神。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA139:7",
+          "ref": "PSA 139:7",
+          "snippet": "Whither shall I go from thy spirit? or whither shall I flee from thy presence?"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA139:10",
+          "ref": "PSA 139:10",
+          "snippet": "Even there shall thy hand lead me, and thy right hand shall hold me."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT28:20",
+          "ref": "MAT 28:20",
+          "snippet": "Lo, I am with you alway, even unto the end of the world."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "不孕",
+        "求子",
+        "领养",
+        "不能生育",
+        "难受孕",
+        "想要孩子"
+      ],
+      "answer_zh": "**不能生育的眼泪，神都收在祂的瓶子里——哈拿曾在空荡的怀里切求（撒上1:10-11）；孩子从来不是恩典的凭证，你的价值在创造主手中，不在子宫里。** 路还长，爱有别的形状。 撒母耳记记哈拿「许愿说……将这孩子归与耶和华」（撒上1:11）；诗篇宣告「儿女是耶和华所赐的产业」（诗127:3）；保罗讲「所受的乃是儿子的心，因此我们呼叫：阿爸，父」（罗8:15，神也开路收养）。 具体：允许哀伤、与配偶坦诚同行、认真了解领养这条路；教会有许多无子的家庭，彼此陪伴不孤单。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1SA1:11",
+          "ref": "1SA 1:11",
+          "snippet": "And she vowed a vow, and said, O LORD of hosts, if thou wilt... give unto thine handmaid a man child, then I will give him unto the LORD..."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA127:3",
+          "ref": "PSA 127:3",
+          "snippet": "Lo, children are an heritage of the LORD: and the fruit of the womb is his reward."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM8:15",
+          "ref": "ROM 8:15",
+          "snippet": "For ye have not received the spirit of bondage again to fear; but ye have received the Spirit of adoption, whereby we cry, Abba, Father."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "婆媳",
+        "家庭矛盾",
+        "妯娌",
+        "长辈矛盾",
+        "亲戚相处",
+        "婆媳关系"
+      ],
+      "answer_zh": "**家不是讲理的法庭，是学爱的学堂——「你们各人都当爱妻子，如同爱自己一样……妻子也当敬重丈夫」（弗5:33）；婆媳之间，最缺的不是道理，而是站在对方鞋里的温柔。** 两代人的爱，都值得被尊重。 保罗吩咐「你们作儿女的，要凡事听从父母」（西3:20，含公婆如父母）；箴言说「温柔的回答，使怒消退」（箴15:1）；彼得劝「务要尊敬众人」（彼前2:17）。 具体：不当面顶撞、关起门再和配偶沟通、用小事表达关心；把长辈的挑剔，祷告化成怜悯——他们也曾是害怕不被爱的孩子。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH5:33",
+          "ref": "EPH 5:33",
+          "snippet": "Nevertheless let every one of you in particular so love his wife even as himself; and the wife see that she reverence her husband."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL3:20",
+          "ref": "COL 3:20",
+          "snippet": "Children, obey your parents in all things: for this is well pleasing unto the Lord."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO15:1",
+          "ref": "PRO 15:1",
+          "snippet": "A soft answer turneth away wrath: but grievous words stir up anger."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "自卑",
+        "自我价值",
+        "觉得自己没用",
+        "不够好",
+        "自我形象",
+        "配得"
+      ],
+      "answer_zh": "**你的价值不是自己挣来的分数，而是创造主亲手签名——「神就照着自己的形像造人」（创1:27）；在被钉的基督眼里，你值得祂用命来换，这比全世界的标准都重。** 不够好，正是恩典的起点。 以赛亚说「你在我看为宝为尊」（赛43:4）；大卫颂赞「我要称谢你，因我受造奇妙可畏」（诗139:14）；保罗说「你们是重价买来的……要在你们身上荣耀神」（林前6:20）。 具体：每天用一句「神看我为宝」替代自我批判；把「我不够好」翻译成「我正被陶造」；别让别人的尺，量你被造的尊贵。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-GEN1:27",
+          "ref": "GEN 1:27",
+          "snippet": "So God created man in his own image, in the image of God created he him;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA139:14",
+          "ref": "PSA 139:14",
+          "snippet": "I will praise thee; for I am fearfully and wonderfully made:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA43:4",
+          "ref": "ISA 43:4",
+          "snippet": "Since thou wast precious in my sight, thou hast been honourable, and I have loved thee:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "说谎",
+        "诚实",
+        "作弊",
+        "撒谎",
+        "偷东西",
+        "谎言"
+      ],
+      "answer_zh": "**诚实不是笨，是与神同行的代价——「行诡诈的，为耶和华所憎恶；行事诚实的，为他所喜悦」（箴12:22）；一次谎、一场作弊，偷走的是你与自己良心的平安。** 认错，比掩盖更轻。 出埃及记说「不可作假见证」（出20:16）；撒母耳记记扫罗「不诚实……被厌弃」（参撒上15:22-23）；约翰说「我们若在光明中行……祂儿子耶稣的血也洗净我们一切的不义」（约壹1:7,9）。 具体：作弊/说谎后，先向神认罪、该道歉的人就道歉；用一次彻底的诚实，把裂开的信任补回来；需要力量时点「转人工顾问」。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO12:22",
+          "ref": "PRO 12:22",
+          "snippet": "Lying lips are abomination to the LORD: but they that deal truly are his delight."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO20:16",
+          "ref": "EXO 20:16",
+          "snippet": "Thou shalt not bear false witness against thy neighbour."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JN1:9",
+          "ref": "1JN 1:9",
+          "snippet": "If we confess our sins, he is faithful and just to forgive us our sins, and to cleanse us from all unrighteousness."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "追星",
+        "明星",
+        "爱豆",
+        "粉圈",
+        "把人当神",
+        "过度迷恋",
+        "偶像崇拜"
+      ],
+      "answer_zh": "**喜欢一个优秀的人不是罪，但把任何人放上本属神的宝座，就是偶像——「除了我以外，你不可有别神」（出20:3）；明星会老、会跌倒，唯有神作你安稳的磐石。** 爱可以有，敬拜只给一位。 十诫宣示「不可为自己雕刻偶像」（出20:4-5）；约翰警戒「不要爱世界……人若爱世界，爱父的心就不在他里面了」（约壹2:15）；诗篇说「你们要休息，要知道我是神」（诗46:10，别把安全感寄托在人身上）。 具体：可以享受作品、学习对方的优点，却不为他熬夜、不花钱失序、不把人生决定交给他；把「最想取悦谁」先答给神。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO20:3",
+          "ref": "EXO 20:3",
+          "snippet": "Thou shalt have no other gods before me."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO20:4",
+          "ref": "EXO 20:4",
+          "snippet": "Thou shalt not make unto thee any graven image, or any likeness... thou shalt not bow down thyself to them,"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JN2:15",
+          "ref": "1JN 2:15",
+          "snippet": "Love not the world, neither the things that are in the world. If any man love the world, the love of the Father is not in him."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "霸凌",
+        "被欺负",
+        "校园霸凌",
+        "被霸凌",
+        "被排挤欺负",
+        "霸凌者"
+      ],
+      "answer_zh": "**欺负人的手，碰不到你在神那里的尊贵——「人的怒气并不成就神的义」（雅1:20）；你被伤害，不是因为你「活该」，而是罪进了世界，而你正被神紧紧抱住。** 说出来，不是软弱。 诗篇呼求「耶和华啊，求你救我脱离恨我的人」（诗59:1-2，参诗10:14 神看顾孤苦）；耶稣说「让小孩子到我这里来」（太19:14，祂珍爱被欺的幼小）；彼得说「基督也为你们受过苦，给你们留下榜样」（彼前2:21）。 具体：一定告诉可信的成人/老师/父母，不独自扛；记下证据、寻求保护；教会的弟兄姊妹也为你守望——你不是孤身一人。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA10:14",
+          "ref": "PSA 10:14",
+          "snippet": "Thou hast seen it; for thou beholdest mischief and spite, to requite it with thy hand: the poor committeth himself unto thee;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT19:14",
+          "ref": "MAT 19:14",
+          "snippet": "Suffer little children, and forbid them not, to come unto me: for of such is the kingdom of heaven."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE2:21",
+          "ref": "1PE 2:21",
+          "snippet": "For even hereunto were ye called: because Christ also suffered for us, leaving us an example, that ye should follow his steps."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "催婚",
+        "剩女",
+        "大龄未嫁",
+        "年龄焦虑",
+        "被催找对象",
+        "被催婚"
+      ],
+      "answer_zh": "**婚姻不是人生的及格线，单身也不是失败——「各人领受神的恩赐，一个是这样，一个是那样」（林前7:7）；催婚的声音再响，替你活一生的是你自己，为你定界限的是神。** 急，不急在人的钟点里。 保罗说「与其欲火攻心，不如嫁娶」（林前7:9，指有需要者可婚），也明说「我愿众人像我一样」（林前7:7，单身亦可）；传道书说「生有时，死有时」（传3:2，时机在神）；诗篇说「我的年限，在乎你」（诗139:16）。 具体：温和而坚定地划定边界、把择偶交托神、用单身的日子投资自己与祂；不必为「到点」匆忙进入不对的关系。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO7:7",
+          "ref": "1CO 7:7",
+          "snippet": "For I would that all men were even as I myself. But every man hath his proper gift of God, one after this manner, and another after that."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO7:9",
+          "ref": "1CO 7:9",
+          "snippet": "But if they cannot contain, let them marry: for it is better to marry than to burn."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ECC3:2",
+          "ref": "ECC 3:2",
+          "snippet": "A time to be born, and a time to die; a time to plant, and a time to pluck up that which is planted;"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "初信",
+        "刚信主",
+        "信主后",
+        "属灵婴儿",
+        "新信徒",
+        "信仰起步",
+        "信主之后"
+      ],
+      "answer_zh": "**欢迎回家——你不是要立刻「做对」一切，而是开始「认识」一位真实的神；初信如同婴孩学步，跌撞是过程，不是结局。** 先喝水，再学跑。 彼得说「要爱慕那纯净的灵奶，叫你们因此渐长」（彼前2:2）；耶稣说「神是个灵，所以拜祂的，必须用心灵和诚实拜祂」（约4:24）；祂又应许「我就常与你们同在」（太28:20）。 具体：每天读一小段福音书（如约翰福音）、用简单的话祷告、找个属灵长辈同行；别被「属灵术语」吓到——神听的是你的心，不是你的流利。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE2:2",
+          "ref": "1PE 2:2",
+          "snippet": "As newborn babes, desire the sincere milk of the word, that ye may grow thereby:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN4:24",
+          "ref": "JHN 4:24",
+          "snippet": "God is a Spirit: and they that worship him must worship him in spirit and in truth."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT28:20",
+          "ref": "MAT 28:20",
+          "snippet": "Lo, I am with you alway, even unto the end of the world."
+        }
+      ]
     }
   ]
 }
