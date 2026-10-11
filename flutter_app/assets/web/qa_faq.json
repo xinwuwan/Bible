@@ -3458,6 +3458,327 @@
           "snippet": "Where there is neither Greek nor Jew, circumcision nor uncircumcision... but Christ is all, and in all."
         }
       ]
+    },
+    {
+      "keywords": [
+        "孝敬父母",
+        "养老",
+        "赡养父母",
+        "奉养",
+        "父母年老",
+        "孝顺",
+        "孝敬"
+      ],
+      "answer_zh": "**孝敬父母是十诫中第一条带应许的命令——「要孝敬父母，使你得福，在世长寿」（弗6:2-3）；父母年老时奉养与体恤，是儿女不可推卸的本分，也是信仰最平常的见证。** 这不是律法重担，而是爱的回报。 出埃及记说「当孝敬父母」（出20:12）；保罗吩咐「你们作儿女的，要在主里听从父母……这是理所当然的」（弗6:1）；又警戒「人若不看顾亲属……就是背了真道，比不信的人还不好」（提前5:8）。 实际：常打电话、耐心听他们唠叨、在医疗与养老上尽本分、用行动把信仰活给他们看；若代沟难沟通，求神给你温柔与智慧。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO20:12",
+          "ref": "EXO 20:12",
+          "snippet": "Honour thy father and thy mother: that thy days may be long upon the land which the LORD thy God giveth thee."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI5:8",
+          "ref": "1TI 5:8",
+          "snippet": "But if any provide not for his own, and specially for those of his own house, he hath denied the faith, and is worse than an infidel."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH6:1",
+          "ref": "EPH 6:1",
+          "snippet": "Children, obey your parents in the Lord: for this is right."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "忍耐",
+        "等候神",
+        "耐心",
+        "等不到",
+        "恒心",
+        "等候",
+        "急不得"
+      ],
+      "answer_zh": "**等候神不是浪费时间，而是信心最深的操练——「要等候耶和华！当壮胆，坚固你的心」（诗27:14）；祂的 timing 好过我们的急躁。** 急不来的事，正要你交托。 诗篇说「凡等候耶和华、心里寻求他的，耶和华必施恩给他」（诗33:18，参33:20）；以赛亚应许「但那等候耶和华的必从新得力」（赛40:31）；保罗勉励「在指望中要喜乐，在患难中要忍耐」（罗12:12）。 具体：把焦躁写下来祷告交托、限定「今天我只做今天能做的」、在等待里先顺服神已显明的旨意——等候本身也是顺服。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA27:14",
+          "ref": "PSA 27:14",
+          "snippet": "Wait on the LORD: be of good courage, and he shall strengthen thine heart: wait, I say, on the LORD."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA40:31",
+          "ref": "ISA 40:31",
+          "snippet": "But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM12:12",
+          "ref": "ROM 12:12",
+          "snippet": "Rejoicing in hope; patient in tribulation; continuing instant in prayer;"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "交友",
+        "择友",
+        "良友",
+        "远离损友",
+        "朋友的影响",
+        "不该交的朋友"
+      ],
+      "answer_zh": "**你常和谁在一起，就会慢慢变成谁——圣经提醒「滥交是败坏善行」（林前15:33）；择友不是势利，而是保护自己的灵魂。** 良友催你靠近神，损友拖你远离神。 箴言说「与智慧人同行的，必得智慧；和愚昧人作伴的，必受亏损」（箴13:20）；又警戒「好生气的人，不可与他结交」（箴22:24）；诗篇称「耶和华知道义人的道路」（诗1:6，义人的同伴也蒙福）。 具体：以「能否一起祷告、彼此造就」为交友标尺；不排斥未信朋友，却不让任何关系把你拉进罪里；为朋友祷告，也请良友为你守望。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO15:33",
+          "ref": "1CO 15:33",
+          "snippet": "Be not deceived: evil communications corrupt good manners."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO13:20",
+          "ref": "PRO 13:20",
+          "snippet": "He that walketh with wise men shall be wise: but a companion of fools shall be destroyed."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO22:24",
+          "ref": "PRO 22:24",
+          "snippet": "Make no friendship with an angry man; and with a furious man thou shalt not go:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "考试",
+        "升学",
+        "学业",
+        "读书",
+        "考前压力",
+        "学生",
+        "课业"
+      ],
+      "answer_zh": "**你读书考试，不是独自争抢名次，而是把青春献给神——「无论作甚么，都要从心里作，像是给主作的」（西3:23）；压力可以把你压垮，也可以把你压向神。** 祂体谅学生的担子。 传道书劝「你趁着年幼……当记念造你的主」（传12:1）；保罗勉励「在敬虔上操练自己」（提前4:7，学业也是操练）；又对提摩太说「你当竭力在神面前得蒙喜悦……按着正意分解真理的道」（提后2:15，学习须殷勤）。 具体：把焦虑变成祷告、订合理计划不熬夜透支、用成绩荣耀神而非取悦人；考砸了，神的爱不因此减少半分。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL3:23",
+          "ref": "COL 3:23",
+          "snippet": "And whatsoever ye do, do it heartily, as to the Lord, and not unto men;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ECC12:1",
+          "ref": "ECC 12:1",
+          "snippet": "Remember now thy Creator in the days of thy youth, while the evil days come not,"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2TI2:15",
+          "ref": "2TI 2:15",
+          "snippet": "Study to shew thyself approved unto God, a workman that needeth not to be ashamed, rightly dividing the word of truth."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "游戏",
+        "手游",
+        "追剧",
+        "娱乐",
+        "沉迷游戏",
+        "短视频",
+        "游戏成瘾"
+      ],
+      "answer_zh": "**游戏与娱乐本身不是罪，但「凡对我有辖制的东西，我就不做它的奴」——「凡事我都可行，但不都有益处……我总不受它的辖制」（林前6:12）；沉浸虚拟，常是为逃避现实里那句没问出口的祷告。** 赎回你的光阴。 保罗说「要爱惜光阴，因为现今的世代邪恶」（弗5:16）；又警戒「不要醉酒……乃要被圣灵充满」（弗5:18，把瘾代入圣灵）；诗篇说「我禁止我脚走一切的邪路」（诗119:101，自制出于爱）。 具体：设使用时限、把手机请出卧室、用一章圣经或一段祷告替代刷屏；若已成瘾难自拔，坦诚告诉信任的人，点「转人工顾问」一起面对。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO6:12",
+          "ref": "1CO 6:12",
+          "snippet": "All things are lawful unto me, but all things are not expedient: all things are lawful for me, but I will not be brought under the power of any."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH5:16",
+          "ref": "EPH 5:16",
+          "snippet": "Redeeming the time, because the days are evil."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA119:101",
+          "ref": "PSA 119:101",
+          "snippet": "I have refrained my feet from every evil way, that I might keep thy word."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "灵性低谷",
+        "枯干",
+        "感觉不到神",
+        "神很远",
+        "属灵枯干",
+        "信仰冷淡",
+        "感觉神不在"
+      ],
+      "answer_zh": "**枯干不等于被神丢弃——连诗篇作者都喊过「我的神，我的神，为什么离弃我」（诗22:1）；感觉不到神，常常正是信心被精炼的时刻，不是信仰失败的证据。** 祂比你先到这低谷。 诗篇鼓励「我的心哪，你为何忧闷？应当仰望神」（诗42:5，11）；以赛亚应许「疲乏的，他赐能力」（赛40:29）；耶稣说「我是葡萄树，你们是枝子……离了我，你们就不能做甚么」（约15:5）。 具体：别用「感觉」衡量与神的关系，回转到祂的话与祷告；低谷里仍行的那一步顺服，比高山上的热血更珍贵。需要时点「转人工顾问」陪你走出。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA42:5",
+          "ref": "PSA 42:5",
+          "snippet": "Why art thou cast down, O my soul? and why art thou disquieted in me? hope thou in God:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA40:29",
+          "ref": "ISA 40:29",
+          "snippet": "He giveth power to the faint; and to them that have no might he increaseth strength."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN15:5",
+          "ref": "JHN 15:5",
+          "snippet": "I am the vine, ye are the branches: He that abideth in me, and I in him, the same bringeth forth much fruit:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "夫妻吵架",
+        "婚姻沟通",
+        "吵架",
+        "冷战",
+        "夫妻相处",
+        "婚姻危机",
+        "夫妻不和"
+      ],
+      "answer_zh": "**吵架本身不致命，长久的冷战才伤家——「生气却不要犯罪；不可含怒到日落」（弗4:26）；婚姻不是赢辩论，而是两个人一起跪下来求神。** 先连接，再讲理。 保罗吩咐丈夫「按情理和妻子同住……因你们是一同承受生命之恩的」（彼前3:7）；歌罗西书说「倘若这人与那人有嫌隙，总要彼此包容，彼此饶恕」（西3:13）；箴言警戒「回答柔和，使怒消退」（箴15:1）。 具体：争论前先祷告、约定「不翻旧账、不人身攻击」、睡前和好；若已冷战多日，主动说一句「我们祷告吧」比争输赢更勇敢。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EPH4:26",
+          "ref": "EPH 4:26",
+          "snippet": "Be ye angry, and sin not: let not the sun go down upon your wrath:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE3:7",
+          "ref": "1PE 3:7",
+          "snippet": "Likewise, ye husbands, dwell with them according to knowledge, giving honour unto the wife, as unto the weaker vessel,"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL3:13",
+          "ref": "COL 3:13",
+          "snippet": "Forbearing one another, and forgiving one another, if any man have a quarrel against any:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "蒙召",
+        "呼召",
+        "全职",
+        "奉献自己",
+        "事奉",
+        "全职传道",
+        "神的呼召"
+      ],
+      "answer_zh": "**事奉神不只在「全职传道」这一种形式里——「所以弟兄们，我以神的慈悲劝你们，将身体献上，当作活祭」（罗12:1）；神对你的呼召，可能是在职场、在家庭、在人群里活出基督。** 先献上自己，再看清岗位。 以赛亚听见「我差遣谁呢？谁肯为我们去？」就答「我在这里，请差遣我」（赛6:8）；保罗说「各人蒙召的时候是甚么身分，仍要守住这身分」（林前7:20，岗位≠呼召轻重）；彼得说「要照神所赐的恩……作神百般恩赐的好管家」（彼前4:10）。 具体：在祷告中把主权交托、在现有岗位上忠心、请成熟牧者陪你分辨；无论「全职」与否，每一天都可以是圣工。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM12:1",
+          "ref": "ROM 12:1",
+          "snippet": "I beseech you therefore, brethren, by the mercies of God, that ye present your bodies a living sacrifice,"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA6:8",
+          "ref": "ISA 6:8",
+          "snippet": "Also I heard the voice of the Lord, saying, Whom shall I send, and who will go for us? Then said I, Here am I; send me."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE4:10",
+          "ref": "1PE 4:10",
+          "snippet": "As every man hath received the gift, even so minister the same one to another, as good stewards of the manifold grace of God."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "过年",
+        "春节",
+        "年俗",
+        "过年习俗",
+        "民间节期",
+        "农历新年",
+        "过年怎么过"
+      ],
+      "answer_zh": "**春节本身不是偶像——问题的不是「过年」，而是年俗里那些带拜偶像意味的仪式；「你们务要从他们中间出来，与他们分别」（林后6:17），亲情可以尽，祭拜不可随。** 守住边界，也守住关系。 保罗说「你们和不信的人原不相配……义和不义有甚么相交呢？」（林后6:14-15）；约翰警戒「不要爱世界和世界上的事」（约壹2:15）；耶稣说「凯撒的物当归给凯撒，神的物当归给神」（太22:21，世俗节庆有它的位置）。 具体：回家团圆、给长辈拜年、送祝福都蒙神喜悦；但烧香拜偶像、算命择日这类，温柔拒绝并解释；用这日子把和平的福音活给家人看。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO6:17",
+          "ref": "2CO 6:17",
+          "snippet": "Wherefore come out from among them, and be ye separate, saith the Lord, and touch not the unclean thing;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO6:14",
+          "ref": "2CO 6:14",
+          "snippet": "Be ye not unequally yoked together with unbelievers: for what fellowship hath righteousness with unrighteousness?"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JN2:15",
+          "ref": "1JN 2:15",
+          "snippet": "Love not the world, neither the things that are in the world. If any man love the world, the love of the Father is not in him."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "算命",
+        "星座",
+        "风水",
+        "抽签",
+        "占卜",
+        "看相",
+        "命理",
+        "看风水",
+        "塔罗"
+      ],
+      "answer_zh": "**占卜、星座、风水，在圣经里同属「交鬼」的禁区——「你们中间不可有……观兆的、占卜的、用迷术的」（申18:10-12）；你的命不在星盘里，而在造你的神手中。** 把明天交回给神。 申命记明令「因你这些可憎的事，耶和华你的神将他们（外邦人）从你面前赶出」（申18:12）；以赛亚讥笑「你的观兆者……怎能救你呢？」（赛47:13）；诗篇宣告「我的肺腑是你所造的……命定我的年限，在乎你」（诗139:13,16，生命在神手里）。 具体：好奇或焦虑时，转身祷告交托而非查运势；若家人要你算命，温柔婉拒并说明信心；转发「运势贴」前，先思想它把主权给了谁。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DEU18:10",
+          "ref": "DEU 18:10",
+          "snippet": "There shall not be found among you any one that maketh his son or his daughter to pass through the fire, or that useth divination, or an observer of times,"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DEU18:12",
+          "ref": "DEU 18:12",
+          "snippet": "For all that do these things are an abomination unto the LORD:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA47:13",
+          "ref": "ISA 47:13",
+          "snippet": "Thou art wearied in the multitude of thy counsels. Let now the astrologers, the stargazers, the monthly prognosticators, stand up, and save thee from these things that shall come upon thee."
+        }
+      ]
     }
   ]
 }
