@@ -359,7 +359,14 @@
         "浸礼",
         "受洗",
         "baptism",
-        "怎么受洗"
+        "怎么受洗",
+        "点水",
+        "浸水礼",
+        "洗礼方式",
+        "点水礼",
+        "要浸水吗",
+        "全身入水",
+        "滴礼"
       ],
       "answer_zh": "**洗礼是悔改信主后顺从的公开见证，表明与基督同死、同埋、同复活；本会实行全身入水的浸礼。** 这水所表明的，是你与基督同死同活——愿你在其中遇见复活的祂。 耶稣亲自受洗作榜样（太3:16），彼得教导「这水所表明的洗礼……藉着耶稣基督复活也拯救你们」（彼前3:21）。\n\n若你已信主，愿这礼成为你顺服的见证；若还在寻求，我们陪你同走。",
       "citations": [
@@ -428,7 +435,9 @@
         "灵魂",
         "阴间",
         "state of the dead",
-        "人死后去哪"
+        "人死后去哪",
+        "死了会怎么样",
+        "人死了"
       ],
       "answer_zh": "**圣经指明死亡是无知觉的沉睡，并非灵魂立刻上天堂或下地狱；盼望在于基督再来时的复活。** 面对死亡你不必惧怕，因那睡了的人有荣耀的盼望。 「死人却毫无所知」（传9:5）。信徒复活在「基督再临」时（林前15:52）。\n\n在主里睡了的人，只等那晨星出现。",
       "citations": [
@@ -840,7 +849,34 @@
         "食物",
         "饮食原则",
         "素食",
-        "健康饮食"
+        "健康饮食",
+        "乌龟",
+        "甲鱼",
+        "王八",
+        "海龟",
+        "龟能吃",
+        "龟可以吃",
+        "虾能吃",
+        "虾可以吃",
+        "螃蟹",
+        "蟹能吃",
+        "贝类",
+        "海鲜",
+        "海鲜能吃",
+        "鳝鱼",
+        "泥鳅",
+        "无鳞",
+        "无鳞鱼",
+        "兔子",
+        "兔肉",
+        "猪肉",
+        "不洁净的动物",
+        "哪些动物能吃",
+        "能吃什么肉",
+        "动物的洁净",
+        "什么肉不能吃",
+        "什么肉",
+        "龟鳖"
       ],
       "answer_zh": "**本会以圣经分洁净/不洁净的原则为基础，倡导以植物性为主的节制饮食；具体营养方案请咨询医生——本模块不构成医疗建议。** 吃什么，也是你爱惜身体、荣耀神的方式。 律法区分洁净走兽（利11:3），新约指出「你们的身子就是圣灵的殿」（林前6:19-20）。\n\n在餐桌上也把荣耀归给那赐粮的主。",
       "citations": [
@@ -1088,7 +1124,12 @@
         "圣经怎么来的",
         "canon",
         "inspiration",
-        "inerrancy"
+        "inerrancy",
+        "不同版本",
+        "圣经版本",
+        "译本",
+        "钦定本",
+        "多种译本"
       ],
       "answer_zh": "**本应用以圣经为信仰与生活无误的权威；KJV 为权威底本，中文为本会独立产出，和合本仅作参照。** 圣经是神吹气而成，值得你一生倚靠。 「圣经都是神所默示的」（提后3:16）；先知「被圣灵感动，说出神的话来」（彼后1:21）。\n\n让神的话，作你脚前的灯、路上的光。",
       "citations": [
@@ -2235,7 +2276,12 @@
         "安息日生活",
         "安息日该做什么",
         "keep sabbath",
-        "sabbath observance"
+        "sabbath observance",
+        "安息日可以",
+        "安息日能不能",
+        "安息日上班",
+        "安息日做饭",
+        "安息日可以吗"
       ],
       "answer_zh": "**安息日是神所设立的圣日，为要人停下劳碌、专心亲近创造与救赎的主；不是重担，而是赐福。** 这一天把手机、忙碌、忧虑轻轻放下。 先知说「你若在安息日掉转你的脚步……以耶和华为乐，主就使你乘驾地的高处」（赛58:13-14）；耶稣说「安息日是为人设立的」（可2:27）。\n\n愿你在这一日，享受与主同在的真正安息。",
       "citations": [
@@ -3270,7 +3316,9 @@
         "军人",
         "打仗",
         "武力",
-        "参军"
+        "参军",
+        "服兵役",
+        "兵役"
       ],
       "answer_zh": "**圣经既设立掌权者作神的用人（罗13），也记念为义受逼迫的人；从军与否是良心在神面前的抉择，不可彼此论断。** 关键在于动机：保护弱小、维持公义，与出于仇恨的杀戮，本质不同。 保罗说「作官的原不是叫行善的惧怕，乃是叫作恶的惧怕」（罗13:3）；耶稣称愿意和平的百夫长为「这么大的信心，就是在以色列中，我也没有遇见过」（太8:10）；但祂也宣告「动刀的，必死在刀下」（太26:52）。 若你蒙召入伍，求神使你在职责与良知中都站立得稳；若良心不容，也当被尊重——神看内心。",
       "citations": [
@@ -3644,7 +3692,9 @@
         "良友",
         "远离损友",
         "朋友的影响",
-        "不该交的朋友"
+        "不该交的朋友",
+        "交朋友",
+        "怎么交朋友"
       ],
       "answer_zh": "**你常和谁在一起，就会慢慢变成谁——圣经提醒「滥交是败坏善行」（林前15:33）；择友不是势利，而是保护自己的灵魂。** 良友催你靠近神，损友拖你远离神。 箴言说「与智慧人同行的，必得智慧；和愚昧人作伴的，必受亏损」（箴13:20）；又警戒「好生气的人，不可与他结交」（箴22:24）；诗篇称「耶和华知道义人的道路」（诗1:6，义人的同伴也蒙福）。 具体：以「能否一起祷告、彼此造就」为交友标尺；不排斥未信朋友，却不让任何关系把你拉进罪里；为朋友祷告，也请良友为你守望。",
       "citations": [
@@ -4550,7 +4600,8 @@
         "道成肉身是神",
         "耶稣与神同等",
         "耶稣是主吗",
-        "耶稣是创造者"
+        "耶稣是创造者",
+        "耶稣是谁"
       ],
       "answer_zh": "**耶稣既是完全的人，也是完全的神；祂与父原为一，道成肉身而来，为要作成救赎。** 祂不是被造的受造物，而是创造主自己取了人性，好作我们的大祭司与救主。「道成了肉身，住在我们中间」（约1:14）。你可以坦然信靠这位昔在、今在、以后永在的全能者。",
       "citations": [
@@ -4819,7 +4870,9 @@
         "财富福音",
         "prosperity gospel",
         "信主为什么还苦",
-        "信主就亨通吗"
+        "信主就亨通吗",
+        "信主就一帆风顺",
+        "一帆风顺"
       ],
       "answer_zh": "**信主不保证今生一帆风顺——主明说「在世上你们有苦难」；但祂应许在苦难中赐出人意外的平安，并叫万事互相效力。** 成功神学把信仰当成「奉献就得发财」的交易，偏离了十字架的本质。保罗反而说「凡立志在基督耶稣里敬虔度日的，也都要受逼迫」（提后3:12）。真正的福气不是避开风雨，而是风雨中有主同行：「你们要先求他的国」（太6:33），其余的祂必看顾。",
       "citations": [
@@ -4996,6 +5049,375 @@
           "source_id": "KJV-JHN4:24",
           "ref": "JHN 4:24",
           "snippet": "God is a Spirit: and they that worship him must worship him in spirit and in truth."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "耶稣33岁",
+        "33岁",
+        "三十三岁",
+        "耶稣童年",
+        "耶稣少年",
+        "耶稣青年",
+        "耶稣小时候",
+        "耶稣年轻",
+        "三十岁",
+        "青年时期",
+        "记载少",
+        "记载特别少",
+        "记载的特别少",
+        "耶稣的经历"
+      ],
+      "answer_zh": "**福音书刻意聚焦耶稣的救赎使命，而非写一部完整传记——三十岁前的沉默岁月，正是祂「智慧与身量，并神和人喜爱祂的心」一齐增长的岁月。** 路加只记了祂十二岁在圣殿的一幕（路2:41-52），并说祂「约三十岁」才开始公开事奉（路3:23）；三十岁也是旧约祭司与利未人开始供职的年纪（民4:3），耶稣正是在父所定的时候才「出来」。使徒约翰说，耶稣所行的事若都写下来，「就是世界也容不下这些书」（约21:25）——福音书不是漏记，而是有目的的见证：「要叫你们信耶稣是基督，是神的儿子，并且叫你们信了祂，就可以因祂的名得生命」（约20:31）。所以青年时代的「少记载」不是缺憾，恰是圣灵把焦点留给了十字架与空坟墓。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LUK2:52",
+          "ref": "LUK 2:52",
+          "snippet": "And Jesus increased in wisdom and stature, and in favour with God and man."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LUK3:23",
+          "ref": "LUK 3:23",
+          "snippet": "And Jesus himself began to be about thirty years of age, being (as was supposed) the son of Joseph..."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JOH21:25",
+          "ref": "JOH 21:25",
+          "snippet": "And there are also many other things which Jesus did, the which, if they should be written every one, I suppose that even the world itself could not contain the books that should be written. Amen."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "洗脚礼",
+        "洗脚",
+        "彼此洗脚",
+        "为别人洗脚",
+        "foot washing",
+        "谦卑礼",
+        "濯足",
+        "圣餐前的洗脚",
+        "洗脚是什么"
+      ],
+      "answer_zh": "**洗脚礼是耶稣亲自设立、通常在圣餐之前施行的谦卑礼：「我是你们的主……尚且洗你们的脚，你们也当彼此洗脚。」（约13:14）** 那一夜，荣耀的主束上腰、拿毛巾，作了最卑微的仆人之事（约13:4-5）。这礼不是卫生习俗，而是属灵功课：① 认罪——像洗去脚上的尘土，求主洁净；② 和好——与曾伤害你的弟兄姊妹在主前彼此低头；③ 服事——甘心取最低的位置。耶稣说：「我给你们作了榜样，叫你们照着我向你们所作的去作。你们既知道这事，若是去行就有福了。」（约13:15,17）愿你在低头的那一刻，尝到主应许的福。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JOH13:14",
+          "ref": "JOH 13:14",
+          "snippet": "If I then, your Lord and Master, have washed your feet; ye also ought to wash one another's feet."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JOH13:15",
+          "ref": "JOH 13:15",
+          "snippet": "For I have given you an example, that ye should do as I have done to you."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JOH13:17",
+          "ref": "JOH 13:17",
+          "snippet": "If ye know these things, happy are ye if ye do them."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "瑜伽",
+        "冥想",
+        "太极",
+        "打坐",
+        "气功",
+        "禅修",
+        "瑜珈",
+        "正念",
+        "可以练瑜伽",
+        "基督徒能练瑜伽"
+      ],
+      "answer_zh": "**锻炼身体是好的，但瑜伽、气功等源自异教灵修体系的功法，其体式、呼吸与「倒空自己」的操练常与通灵、交鬼的根源相连，圣经劝我们与这类事分别（申18:10-12；林后6:17）；锻炼可以选择散步、拉伸、力量训练等中立方式。** 我们并非说每个练瑜伽的人都已卷入邪术，而是提醒：凡把身体交给一套带着属灵根源的功法，就不能只当它「纯是运动」——「所以，你们或吃或喝，无论作什么，都要为荣耀神而行。」（林前10:31）心里疑惑不定的事，就当存敬畏停手（罗14:23）。心里的平安与专注，神另有正路赐下：祂的话与祷告带来的，是出人意外的平安（腓4:6-8）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DEU18:10",
+          "ref": "DEU 18:10",
+          "snippet": "There shall not be found among you any one that maketh his son or his daughter to pass through the fire, or that useth divination, or an observer of times, or an enchanter, or a witch."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO10:31",
+          "ref": "1CO 10:31",
+          "snippet": "Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PHI4:8",
+          "ref": "PHI 4:8",
+          "snippet": "Finally, brethren, whatsoever things are true, whatsoever things are honest, whatsoever things are just, whatsoever things are pure... think on these things."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "纹身",
+        "刺青",
+        "纹身可以吗",
+        "纹身是罪吗",
+        "tattoo",
+        "身上刺字",
+        "刺花纹",
+        "打孔",
+        "纹眉纹身"
+      ],
+      "answer_zh": "**圣经明言不可为身体刺印标记：「不可为死人用刀划身，也不可在身上刺花纹。我是耶和华。」（利19:28）；身体是圣灵的殿，当尊荣而非刻蚀（林前6:19-20）。** 神给这禁令，是把身体从异教膜拜的习俗里分别出来——祂要我们显明自己属于祂，而不是用印记标榜归属别的什么。若你已纹了身，不必活在自责里：基督的宝血洗净过去，你的价值在祂里面从不打折；若你正在考虑，我们诚实地劝你把身体留作圣灵洁净的居所。恩典接待每一个回转的人，也赐下从今以后更美的选择。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LEV19:28",
+          "ref": "LEV 19:28",
+          "snippet": "Ye shall not make any cuttings in your flesh for the dead, nor print any marks upon you: I am the LORD."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO6:19",
+          "ref": "1CO 6:19",
+          "snippet": "What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO6:20",
+          "ref": "1CO 6:20",
+          "snippet": "For ye are bought with a price: therefore glorify God in your body, and in your spirit, which are God's."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "恶的起源",
+        "罪的起源",
+        "魔鬼的来历",
+        "魔鬼的起源",
+        "撒但的来历",
+        "撒但的起源",
+        "魔鬼怎么来",
+        "撒但怎么来",
+        "魔鬼从哪里",
+        "撒但从哪里",
+        "恶从哪里来",
+        "罪从哪里来",
+        "神为什么造魔鬼",
+        "路锡甫",
+        "恶是怎么来的",
+        "恶是从哪里来的",
+        "罪是从哪里来的"
+      ],
+      "answer_zh": "**神所造的原来都是好的；恶不是神造的，而是一位受造天使（路锡甫）滥用自己的自由、被骄傲败坏而生的：「你从受造之日所行的都完全，后来在你中间又察出不义。」（结28:15）** 以赛亚记记载他的堕落：「明亮之星，早晨之子啊，你何竟从天坠落？……我心里曾说：我要升到天上，我要高举我的宝座在神众星以上。」（赛14:12-13）罪的起点，是不满自己的位分、想要与神同等——这正是我们每个人受试探时的影子。圣经没有让「恶的起源」成为神的污点：祂既不造恶，也绝不被恶胜过，且付上儿子的生命来除灭魔鬼的作为（约壹3:8）。黑暗有限期，光明有永存。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EZE28:15",
+          "ref": "EZE 28:15",
+          "snippet": "Thou wast perfect in thy ways from the day that thou wast created, till iniquity was found in thee."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA14:12",
+          "ref": "ISA 14:12",
+          "snippet": "How art thou fallen from heaven, O Lucifer, son of the morning! how art thou cut down to the ground, which didst weaken the nations!"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1JO3:8",
+          "ref": "1JO 3:8",
+          "snippet": "He that committeth sin is of the devil; for the devil sinneth from the beginning. For this purpose the Son of God was manifested, that he might destroy the works of the devil."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "被提",
+        "教会被提",
+        "秘密被提",
+        "灾前被提",
+        "被提是什么",
+        "rapture",
+        "被提走",
+        "信徒被提",
+        "隐秘被提"
+      ],
+      "answer_zh": "**被提是真的，但不是秘密的：基督再来时，有呼叫的声音、天使长的声音和神的号筒——「死了的人必先复活，以后我们这活着还存留的人必和他们一同被提到云里，在空中与主相遇。」（帖前4:16-17）** 「隐秘被提」的说法（先悄悄提走信徒、世界照常运转七年）圣经并无教导；耶稣亲口提醒：「若有人对你们说：基督在旷野里，你们不要出去……因为闪电从东边发出，直照到西边。人子降临也要这样。」（太24:26-27）祂的再来是响亮的、可见的、荣耀的（启1:7）。所以基督徒的盼望不是逃离的暗号，而是警醒的等候：主来那一刻，义人复活、改变、被提，与主永远同在——这是何等真实的安慰（帖前4:18）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TH4:16",
+          "ref": "1TH 4:16",
+          "snippet": "For the Lord himself shall descend from heaven with a shout, with the voice of the archangel, and with the trump of God: and the dead in Christ shall rise first:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TH4:17",
+          "ref": "1TH 4:17",
+          "snippet": "Then we which are alive and remain shall be caught up together with them in the clouds, to meet the Lord in the air: and so shall we ever be with the Lord."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT24:27",
+          "ref": "MAT 24:27",
+          "snippet": "For as the lightning cometh out of the east, and shineth even unto the west; so shall also the coming of the Son of man be."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "看医生",
+        "吃药",
+        "可以看医生吗",
+        "基督徒看医生",
+        "打针",
+        "就医",
+        "求医",
+        "服药",
+        "看病",
+        "看医生是没信心",
+        "就医祷告冲突",
+        "生病吃药",
+        "不吃药",
+        "不吃药只祷告",
+        "只祷告不吃药"
+      ],
+      "answer_zh": "**看医生、用药并不表明缺乏信心——保罗亲自劝提摩太用药，他所爱的同工路加本身就是医生；祷告与就医并行，正是神赐医治的两只手。** 「因你胃口不清……再不要照常喝水，可以稍微用点酒。」（提前5:23）——这是保罗给病人具体的医疗建议；他称路加为「亲爱的医生」（西4:14），并未叫他改行。雅各书的原则是两者同行：「你们中间有病了的呢，他就该请教会的长老来，他们可以奉主的名用油抹他，为他祷告。」（雅5:14）所以生病时：① 恳切祷告求医治；② 也不轻看神借医生、药物与卫生法则的普通恩典。急症、持续症状，请立即就医——这本模块不构成医疗建议。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI5:23",
+          "ref": "1TI 5:23",
+          "snippet": "Drink no longer water, but use a little wine for thy stomach's sake and thine often infirmities."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL4:14",
+          "ref": "COL 4:14",
+          "snippet": "Luke, the beloved physician, and Demas, greet you."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JAM5:14",
+          "ref": "JAM 5:14",
+          "snippet": "Is any sick among you? let him call for the elders of the church; and let them pray over him, anointing him with oil in the name of the Lord:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "化妆",
+        "首饰",
+        "可以化妆吗",
+        "基督徒化妆",
+        "戴首饰",
+        "化妆是罪吗",
+        "打扮",
+        "穿着打扮",
+        "金饰",
+        "耳环",
+        "项链",
+        "穿衣服原则",
+        "怎么穿衣服",
+        "穿衣服"
+      ],
+      "answer_zh": "**圣经的重心不是「禁用一切妆饰」，而是「以里面存着长久温柔安静的心为妆饰」：穿着整洁、端庄、朴素即可，不必把心思与钱财押在金玉之贵上。** 「愿女人廉耻、自守，以正派衣裳为妆饰，不以编发、黄金、珍珠和贵价的衣裳为妆饰。」（提前2:9）「不要以外面的辫头发、戴金饰、穿美衣为妆饰，只要以里面存着长久温柔安静的心为妆饰，这在神面前是极宝贵的。」（彼前3:3-4）化妆与首饰不是罪，但当它成了自我价值的来源、吸引目光的钩子，或让家境困窘，就该回到里面对齐神——你在祂眼中原是奇妙可畏（诗139:14），不必靠妆饰撑起价值。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI2:9",
+          "ref": "1TI 2:9",
+          "snippet": "In like manner also, that women adorn themselves in modest apparel, with shamefacedness and sobriety; not with broided hair, or gold, or pearls, or costly array;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE3:3",
+          "ref": "1PE 3:3",
+          "snippet": "Whose adorning let it not be that outward adorning of plaiting the hair, and of wearing of gold, or of putting on of apparel;"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE3:4",
+          "ref": "1PE 3:4",
+          "snippet": "But let it be the hidden man of the heart, in that which is not corruptible, even the ornament of a meek and quiet spirit, which is in the sight of God of great price."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "祷告姿势",
+        "跪着祷告",
+        "站着祷告",
+        "祷告要跪着吗",
+        "要跪下吗",
+        "必须跪下",
+        "闭眼祷告",
+        "双手合十",
+        "坐着祷告",
+        "祷告的姿势",
+        "要跪着",
+        "一定要跪着"
+      ],
+      "answer_zh": "**神看内心过于姿势：圣经里跪着、站着、俯伏、坐着的祷告都有；姿势当表达敬畏，却不必成为定式或重担。** 所罗门奉献圣殿时「跪在……向天举手」（王上8:54）；税吏「远远地站着，连举目望天也不敢」（路18:13）；诗人邀请「我们屈身敬拜，在造我们的耶和华面前跪下」（诗95:6）。可见无论哪种姿势，圣经都强调同一件事：存敬畏与诚实的心来到神面前。若身体条件允许，跪下祷告是好操练——身体的态度常带领心的态度；卧床、乘车时心里的仰望，神同样垂听。要紧的是：「用心灵和诚实拜祂」（约4:24）。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1KI8:54",
+          "ref": "1KI 8:54",
+          "snippet": "And it was so, that when Solomon had made an end of praying all this prayer and supplication unto the LORD, he arose from before the altar of the LORD, from kneeling on his knees with his hands spread forth toward heaven."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA95:6",
+          "ref": "PSA 95:6",
+          "snippet": "O come, let us worship and bow down: let us kneel before the LORD our maker."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LUK18:13",
+          "ref": "LUK 18:13",
+          "snippet": "And the publican, standing afar off, would not lift up so much as his eyes unto heaven, but smote upon his breast, saying, God be merciful to me a sinner."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "圣经读不懂",
+        "读不懂圣经",
+        "看不懂圣经",
+        "圣经难懂",
+        "读经读不懂",
+        "读经不明白",
+        "读不明白圣经",
+        "圣经看不明白",
+        "看不明白",
+        "读不明白"
+      ],
+      "answer_zh": "**读不懂是每个读经人的起点，不是你的失败——连埃提阿伯的太监也说「没有人指教我，怎能明白呢？」（徒8:31）明白圣经有四条现成的路。** ① 求圣灵开路：「你的言语一解开，就发出亮光，使愚人通达。」（诗119:130）祷告着读，求主如向门徒那样「开他们的心窍，使他们能明白圣经」（路24:45）。② 从易读的卷入手：约翰福音、马可福音、诗篇，再回头补全整卷脉络。③ 用工具辅助：「他们清清楚楚地念神的律法书，讲明意思，使百姓明白所念的。」（尼8:8）串珠、可靠注释、翻译稳定的译本都是恩典。④ 与人同行：参加查经小组，在交通中被补足（路24:27,32）。读不懂的地方先记下、继续往前读——光常在下一章等你。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA119:130",
+          "ref": "PSA 119:130",
+          "snippet": "The entrance of thy words giveth light; it giveth understanding unto the simple."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-NEH8:8",
+          "ref": "NEH 8:8",
+          "snippet": "So they read in the book in the law of God distinctly, and gave the sense, and caused them to understand the reading."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-LUK24:45",
+          "ref": "LUK 24:45",
+          "snippet": "Then opened he their understanding, that they might understand the scriptures,"
         }
       ]
     }
