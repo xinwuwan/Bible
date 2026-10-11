@@ -442,7 +442,12 @@
         "state of the dead",
         "人死后去哪",
         "死了会怎么样",
-        "人死了"
+        "人死了",
+        "投胎",
+        "转世",
+        "轮回",
+        "人死后投胎",
+        "人死了会投胎吗"
       ],
       "answer_zh": "**圣经指明死亡是无知觉的沉睡，并非灵魂立刻上天堂或下地狱；盼望在于基督再来时的复活。** 面对死亡你不必惧怕，因那睡了的人有荣耀的盼望。 「死人却毫无所知」（传9:5）。信徒复活在「基督再临」时（林前15:52）。\n\n在主里睡了的人，只等那晨星出现。",
       "citations": [
@@ -1899,7 +1904,13 @@
         "抽烟喝酒",
         "戒赌",
         "怎么戒赌",
-        "戒赌博"
+        "戒赌博",
+        "可以喝酒吗",
+        "基督徒喝酒",
+        "醉酒是罪吗",
+        "圣经里的酒",
+        "饮酒",
+        "适度饮酒"
       ],
       "answer_zh": "**胜过坏习惯与成瘾，不是靠自己咬牙硬撑，而是靠与主联合、让圣灵的大能逐日替代旧性情。** 你不必孤军奋战，基督已赐你得胜的力。 保罗说「我靠着那加给我力量的，凡事都能作」（腓4:13）；「不要容罪在你们必死的身上作王」（罗6:12）。\n\n一次失败不等于终局；每天把那挣扎交托主，求祂为你开脱身的路。",
       "citations": [
@@ -2241,7 +2252,14 @@
         "被人排挤",
         "因信仰受苦",
         "persecution",
-        "suffer for christ"
+        "suffer for christ",
+        "信仰被嘲笑",
+        "同学笑我信耶稣",
+        "被讥笑",
+        "被人笑我信主",
+        "信仰被讽刺",
+        "因为信主被笑",
+        "信主被嘲讽"
       ],
       "answer_zh": "**为信仰受逼迫虽苦，却是与主同负的印记；主说『为义受逼迫的人有福了』，祂必同在、必赏赐。** 若因跟从主而被人排挤，你并不孤单。 保罗说「凡立志在基督耶稣里敬虔度日的，都要受逼迫」（提后3:12）；耶稣说「人若因我逼迫你们……你们就有福了」（太5:10-12）。\n\n把羞辱看作荣耀的冠冕，主记念你每一个为祂站立的片刻。",
       "citations": [
@@ -4921,7 +4939,13 @@
         "各宗教一样吗",
         "基督教与其他宗教",
         "world religions",
-        "宗教得救"
+        "宗教得救",
+        "轮回",
+        "转世",
+        "佛教轮回",
+        "人死了会投胎吗",
+        "投胎",
+        "印度教"
       ],
       "answer_zh": "**圣经清楚宣告：除基督以外「天下人间没有赐下别的名，我们可以靠着得救」（徒4:12）——各宗教或许都有对真理的渴慕，但救恩只在耶稣基督里。** 这并非轻视诚实寻求的人，而是诚实面对事实：罪的光景需要的是救赎，而非各路哲理的拼凑。「我就是道路、真理、生命；若不藉着我，没有人能到父那里去」（约14:6）。我们当以温柔敬畏的心，把这位独一的救主介绍给人。",
       "citations": [
@@ -6671,6 +6695,361 @@
           "source_id": "KJV-PSA68:5",
           "ref": "PSA 68:5",
           "snippet": "A father of the fatherless, and a judge of the widows, is God in his holy habitation."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "祭偶像的食物",
+        "偶像祭物",
+        "祭过偶像的肉",
+        "拜偶像的食物",
+        "吃祭偶像的肉",
+        "偶像的祭物",
+        "祭偶像的肉能吃吗",
+        "基督徒可以吃祭物吗",
+        "拜过偶像的食物"
+      ],
+      "answer_zh": "**偶像本身虚无，但为良心和软弱的弟兄，当谨慎不吃祭偶像之物。** 保罗指出“偶像在世上算不得什么，神也只有一位”（林前 8:4），所以食物本身不能污秽人；但“知识是叫人自高，惟有爱心能造就人”（林前 8:1），若同席会叫软弱的弟兄跌倒，就宁可不吃（林前 8:13）。使徒会议也嘱咐外邦信徒“要禁戒祭偶像的物和血”（徒 15:29）。所以原则不是“能不能”，而是“是否造就人与荣耀神”。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO8:4",
+          "ref": "1CO 8:4",
+          "snippet": "As concerning therefore the meats offered unto idols, we know that an idol is nothing in the world, and that there is none other God but one."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO8:13",
+          "ref": "1CO 8:13",
+          "snippet": "Wherefore, if meat make my brother to offend, I will eat no flesh while the world standeth, lest I make my brother to offend."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ACT15:29",
+          "ref": "ACT 15:29",
+          "snippet": "That ye abstain from meats offered to idols, and from blood, and from things strangled, and from fornication."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "减肥",
+        "瘦身",
+        "身材",
+        "体重",
+        "想减肥",
+        "怎么减肥",
+        "基督徒减肥",
+        "健康体重",
+        "基督徒可以减肥吗",
+        "身材焦虑",
+        "管不住嘴吃",
+        "想瘦下来"
+      ],
+      "answer_zh": "**管理身体是敬拜的一部分，但身材不能成为偶像。** 圣经说“岂不知你们的身子就是圣灵的殿吗……要在身子上荣耀神”（林前 6:19-20），所以适度运动、均衡饮食、保持健康是信徒的本分。又说“操练身体，益处还少；惟独敬虔，凡事都有益处”（提前 4:8）——身体固然要顾，却不可让体重与外形取代神成为焦虑的中心。若因身材陷入自嫌或过度节食，求神把价值感带回归他。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO6:19",
+          "ref": "1CO 6:19",
+          "snippet": "What? know ye not that your body is the temple of the Holy Ghost which is in you, which ye have of God, and ye are not your own?"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI4:8",
+          "ref": "1TI 4:8",
+          "snippet": "For bodily exercise profiteth little: but godliness is profitable unto all things, having promise of the life that now is, and of that which is to come."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM12:1",
+          "ref": "ROM 12:1",
+          "snippet": "present your bodies a living sacrifice, holy, acceptable unto God, which is your reasonable service."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "家人逼迫",
+        "父母反对信仰",
+        "家人反对信主",
+        "父母逼我拜偶像",
+        "家人不信还逼我",
+        "家人反对我信",
+        "父母反对我信",
+        "家人逼迫我信",
+        "家人不让我信",
+        "因信主被家人逼迫"
+      ],
+      "answer_zh": "**家人因信仰反对甚至逼迫，是许多信徒真实的十字架，但主早已预告。** 耶稣说“我来并不是叫地上太平，乃是叫地上动刀兵……人的仇敌就是自己家里的人”（太 10:34-36），并应许“凡为我的名受逼迫的人有福了”（太 5:11）。保罗也提醒“凡立志在基督耶稣里敬虔度日的，也都要受逼迫”（提后 3:12）。面对家人，不要以恶报恶，仍要以温柔和好行为见证；尊重他们、尽儿女本分，但“顺从神不顺从人”（徒 5:29）。时间会显出你生命的改变。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT10:35",
+          "ref": "MAT 10:35-36",
+          "snippet": "For I am come to set a man at variance against his father, and the daughter against her mother, and the daughter in law against her mother in law."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2TI3:12",
+          "ref": "2TI 3:12",
+          "snippet": "Yea, and all that will live godly in Christ Jesus shall suffer persecution."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1PE4:14",
+          "ref": "1PE 4:14",
+          "snippet": "If ye be reproached for the name of Christ, happy are ye: for the spirit of glory and of God resteth upon you."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "想轻生的人",
+        "有人想自杀",
+        "帮想不开的人",
+        "怎么帮想自杀的人",
+        "朋友想轻生",
+        "家人想不开",
+        "怎么安慰想自杀的人",
+        "身边人想轻生",
+        "帮助有自杀念头",
+        "如何帮想轻生"
+      ],
+      "answer_zh": "**当有人流露轻生念头，请务必认真看待并立刻寻求专业帮助——这是爱的行动，不是背叛。** 圣经体恤破碎的人：“耶和华靠近伤心的人，拯救灵性痛悔的人”（诗 34:18），并嘱咐我们“勉励灰心的，扶助软弱的人”（帖前 5:14）。你能做的是：倾听、陪伴、不批判，鼓励他/她尽快联系心理咨询师、精神科医生或危机热线（如当地心理援助热线），必要时通知家人或专业人士；同时用祷告托住他，告诉他生命宝贵、神仍掌权。若对方已有具体计划或即刻危险，请马上寻求紧急援助，生命安全永远是首要的。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA34:18",
+          "ref": "PSA 34:18",
+          "snippet": "The LORD is nigh unto them that are of a broken heart; and saveth such as be of a contrite spirit."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TH5:14",
+          "ref": "1TH 5:14",
+          "snippet": "warn them that are unruly, comfort the feebleminded, support the weak, be patient toward all men."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO17:22",
+          "ref": "PRO 17:22",
+          "snippet": "A merry heart doeth good like a medicine: but a broken spirit drieth the bones."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "基督徒投资",
+        "可以炒股吗",
+        "基督徒炒股",
+        "买保险",
+        "理财规划",
+        "基督徒理财",
+        "可以买基金吗",
+        "保险可以买吗",
+        "投资理财",
+        "基督徒可以投资吗",
+        "买股票"
+      ],
+      "answer_zh": "**理财、投资、买保险本身并非犯罪，关键是动机与次序：先求神的国，再做管家。** 耶稣用“按才受托”的比喻说明神喜悦忠心、有智慧的管家（太 25:14-15）；箴言也说“智慧人家中积蓄宝物膏油，愚昧人随得来随吃掉”（箴 21:20），鼓励积蓄与筹划。同时“人若不看顾亲属……就是背了真道”（提前 5:8），为家庭置备保障是责任。但要警惕：不可贪财（提前 6:10）、不可投机赌博心态、不可让财富取代神。投资有风险，量力而行、祷告求智慧。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT25:14",
+          "ref": "MAT 25:14-15",
+          "snippet": "For the kingdom of heaven is as a man travelling into a far country, who called his own servants, and delivered unto them his goods."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO21:20",
+          "ref": "PRO 21:20",
+          "snippet": "There is treasure to be desired and oil in the dwelling of the wise; but a foolish man spendeth it up."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI5:8",
+          "ref": "1TI 5:8",
+          "snippet": "But if any provide not for his own, and specially for those of his own house, he hath denied the faith, and is worse than an infidel."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "被教会处罚",
+        "被赶出教会",
+        "教会纪律",
+        "除名",
+        "被教会除名",
+        "教会对我惩戒",
+        "被停圣餐",
+        "教会处分我",
+        "被教会赶出",
+        "教会的惩戒",
+        "被教会管教"
+      ],
+      "answer_zh": "**教会惩戒的目的是挽回，不是弃绝；信徒也当用温柔的心彼此挽回。** 圣经给出的次序是：先私下劝戒，“你所得着的，只得着他和神”（太 18:15），不听就带两三个人，再不听才告诉教会（太 18:16-17）。对明知故犯、又不肯悔改的人，保罗吩咐“把这样的人交给撒但，败坏他的肉体，使他的灵魂可以得救”（林前 5:5）。但加拉太书也提醒：“若有人偶然被过犯所胜，你们属灵的人就当用温柔的心把他挽回过来”（加 6:1）。若你正经历管教，先省察自己、存谦卑的心；若觉处理不公，可按教会章程申诉。神的恩典仍敞开。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT18:15",
+          "ref": "MAT 18:15",
+          "snippet": "Moreover if thy brother shall trespass against thee, go and tell him his fault between thee and him alone: if he shall hear thee, thou hast gained thy brother."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO5:5",
+          "ref": "1CO 5:5",
+          "snippet": "To deliver such an one unto Satan for the destruction of the flesh, that the spirit may be saved in the day of the Lord Jesus."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-GAL6:1",
+          "ref": "GAL 6:1",
+          "snippet": "Brethren, if a man be overtaken in a fault, ye which are spiritual, restore such an one in the spirit of meekness; considering thyself, lest thou also be tempted."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "万圣节",
+        "情人节",
+        "过洋节",
+        "洋节",
+        "鬼节",
+        "基督徒过万圣节",
+        "可以过情人节吗",
+        "过万圣节可以吗",
+        "基督徒过洋节",
+        "过洋节合乎信仰吗"
+      ],
+      "answer_zh": "**过节本身不是问题，关键在于庆祝的内容是否荣耀神、是否造就人。** 保罗说“你们或吃或喝，无论做什么，都要为荣耀神而行”（林前 10:31），又提醒守日的人“为主守”（罗 14:5-6），把自由交在神面前。万圣节若只是孩子讨糖、南瓜装饰，可以轻松参与并把握时机见证光明；但若涉及拜鬼、灵界惧怕或恐怖装扮，信徒当分别为圣、远远避开，因为“暗中行的事，连说起来也是可耻的”（弗 5:12）。情人节表达爱，更可以藉此思想神舍己的爱。总原则：“凡事都可行，但不都有益处”（林前 10:23），以良心与见证为准。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO10:31",
+          "ref": "1CO 10:31",
+          "snippet": "Whether therefore ye eat, or drink, or whatsoever ye do, do all to the glory of God."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM14:5",
+          "ref": "ROM 14:5-6",
+          "snippet": "One man esteemeth one day above another: another esteemeth every day alike. Let every man be fully persuaded in his own mind."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO10:23",
+          "ref": "1CO 10:23",
+          "snippet": "All things are lawful for me, but all things are not expedient: all things are lawful for me, but all things edify not."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "看电影",
+        "电影",
+        "看小说",
+        "小说",
+        "网络小说",
+        "言情小说",
+        "基督徒看电影",
+        "可以看电影吗",
+        "基督徒看剧",
+        "看剧",
+        "追剧吗",
+        "看影视"
+      ],
+      "answer_zh": "**电影、小说、剧集本身不是禁区，但内容要经真理过滤。** 腓立比书给我们尺度：“凡是真实的、可敬的、公义的、清洁的、可爱的、有美名的……这些事你们都要思念”（腓 4:8）。所以暴力色情、亵渎信仰、鼓吹罪恶的内容当拒绝；而反映人性、引人向善、探讨意义的作品，可以带着分辨力观看，并在其中思想神的普遍恩典。也当注意“凡事都可行，但不都有益处”（林前 10:23），不让娱乐挤占灵修、家庭与休息。“保守你心，胜过保守一切”（箴 4:23）——观影后心里不安的，就停。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PHI4:8",
+          "ref": "PHI 4:8",
+          "snippet": "whatsoever things are true... honest... just... pure... lovely... of good report; if there be any virtue, and if there be any praise, think on these things."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1CO10:23",
+          "ref": "1CO 10:23",
+          "snippet": "All things are lawful for me, but all things are not expedient: all things are lawful for me, but all things edify not."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PRO4:23",
+          "ref": "PRO 4:23",
+          "snippet": "Keep thy heart with all diligence; for out of it are the issues of life."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "中医",
+        "西医",
+        "疫苗",
+        "看病怎么选",
+        "中医可信吗",
+        "打疫苗",
+        "中医西医",
+        "看中医",
+        "基督徒可以看中医吗",
+        "疫苗可以打吗",
+        "中医和西医"
+      ],
+      "answer_zh": "**医病是神的恩典管道之一，中西医、疫苗都可在祷告中智慧选用。** 圣经称神是“医治你的耶和华”（出 15:26），也记载“路加是亲爱的医生”（西 4:14），可见行医与医药是神所赐；保罗甚至劝提摩太“因你胃口不清，屡次患病，再不要照常喝水，可以稍微用点酒”（提前 5:23），说明具体医疗建议是被接纳的。选择中医、西医或接种疫苗，属于个人在祷告中求智慧的决定，没有属灵禁区；但仍要以科学证据、专业意见为依归，并继续依靠神。信心与就医并不冲突。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-EXO15:26",
+          "ref": "EXO 15:26",
+          "snippet": "I am the LORD that healeth thee."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL4:14",
+          "ref": "COL 4:14",
+          "snippet": "Luke, the beloved physician, and Demas, greet you."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI5:23",
+          "ref": "1TI 5:23",
+          "snippet": "Drink no longer water, but use a little wine for thy stomach's sake and thine often infirmities."
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "一次得救永远得救",
+        "会失去救恩吗",
+        "救恩会失落吗",
+        "救恩会失效吗",
+        "永蒙保守",
+        "救恩会丢掉吗",
+        "一次相信就永远得救吗",
+        "救恩还会失去吗",
+        "失去救恩"
+      ],
+      "answer_zh": "**救恩稳固，是神白白的应许；但人仍可用自由意志拒绝到底而失落——所以信徒要持守在恩中。** 主应许“凡父所赐给我的人，必到我这里来”（约 6:37），又应许“谁也不能从我父手里把他们夺去”（约 10:28），可见救恩的根基极稳固。然而希伯来书警戒那些“尝过天恩的滋味……后又离弃的人，不能再叫他们从新懊悔”（来 6:4-6），彼得也警告“他们晓得义路，竟背弃”（彼后 2:20-21）。因此圣经既讲“永蒙保守”，也讲“当恐惧战兢作成得救的工夫”（腓 2:12）。结论：不是你能不能“失去”，而是你要不要“持守”。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN10:28",
+          "ref": "JHN 10:28",
+          "snippet": "And I give unto them eternal life; and they shall never perish, neither shall any man pluck them out of my hand."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-HEB6:4",
+          "ref": "HEB 6:4-6",
+          "snippet": "For it is impossible for those who were once enlightened... if they shall fall away, to renew them again unto repentance."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PHI2:12",
+          "ref": "PHI 2:12",
+          "snippet": "work out your own salvation with fear and trembling."
         }
       ]
     }
