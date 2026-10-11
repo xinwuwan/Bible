@@ -473,6 +473,24 @@
           "source_id": "SDA-B1",
           "ref": "教义 #1 圣经",
           "snippet": "圣经是神启示的言语，是信仰与生活的无误权威标准。"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2TI3:16",
+          "ref": "2TI 3:16",
+          "snippet": "All scripture is given by inspiration of God, and is profitable for doctrine, for reproof, for correction, for instruction in righteousness:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PSA119:105",
+          "ref": "PSA 119:105",
+          "snippet": "Thy word is a lamp unto my feet, and a light unto my path."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ISA8:20",
+          "ref": "ISA 8:20",
+          "snippet": "To the law and to the testimony: if they speak not according to this word, it is because there is no light in them."
         }
       ]
     },
@@ -666,6 +684,24 @@
           "source_id": "SDA-B10",
           "ref": "教义 #10 救赎的经验",
           "snippet": "因信称义、因信成圣；悔改信靠基督，人得赦免。"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-DEU30:19",
+          "ref": "DEU 30:19",
+          "snippet": "I call heaven and earth to record this day against you, that I have set before you life and death, blessing and cursing: therefore choose life, that both thou and thy seed may live:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TI2:4",
+          "ref": "1TI 2:4",
+          "snippet": "Who will have all men to be saved, and to come unto the knowledge of the truth."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV22:17",
+          "ref": "REV 22:17",
+          "snippet": "And whosoever will, let him take the water of life freely."
         }
       ]
     },
@@ -736,6 +772,24 @@
           "source_id": "SDA-B18",
           "ref": "教义 #18 预言的恩赐",
           "snippet": "怀爱伦著作为余民教会带来安慰、指引与纠正，证实圣经真理，但绝不取代圣经。"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-REV19:10",
+          "ref": "REV 19:10",
+          "snippet": "...for the testimony of Jesus is the spirit of prophecy."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JOE2:28",
+          "ref": "JOE 2:28",
+          "snippet": "And it shall come to pass afterward, that I will pour out my spirit upon all flesh; and your sons and your daughters shall prophesy, your old men shall dream dreams, your young men shall see visions:"
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-1TH5:20",
+          "ref": "1TH 5:20",
+          "snippet": "Despise not prophesyings."
         }
       ]
     },
@@ -1120,7 +1174,10 @@
         "世俗",
         "分别",
         "separate from world",
-        "be ye separate"
+        "be ye separate",
+        "远离世界",
+        "远离世俗",
+        "不沾染世俗"
       ],
       "answer_zh": "**分别不是避世，而是在生活、言语、价值观上见证基督，作世上的光。** 分别不是离世，而是在世作光、作盐。 神呼召「从他们中间出来，与他们分别」（林后6:17），「不要效法这个世界」（罗12:2）。\n\n在世界中发光，却不属这世界——这是你的呼召。",
       "citations": [
@@ -1550,7 +1607,15 @@
         "神的带领",
         "god's will",
         "thy will",
-        "discern god's will"
+        "discern god's will",
+        "神想让我做什么",
+        "神想让我",
+        "神要我做什么",
+        "神要我",
+        "怎么明白神",
+        "神的心意",
+        "神让我做什么",
+        "神让我"
       ],
       "answer_zh": "**明白神旨意的关键，是先把心献上、让心意被更新，而非先求一个具体的答案。** 主造你不是要你盲从，乃要你在亲密中 discern。 保罗说「不要效法这个世界，只要心意更新而变化，叫你们察验何为神的善良、纯全、可喜悦的旨意」（罗12:2）；「你要专心仰赖耶和华……他必指引你的路」（箴3:5-6）。\n\n把每个决定先带到祂面前，求祂显明，祂必不误你。",
       "citations": [
@@ -1610,7 +1675,10 @@
         "婚姻对象",
         "unequally yoked",
         "christian dating",
-        "dating"
+        "dating",
+        "恋爱",
+        "可以恋爱",
+        "信徒恋爱"
       ],
       "answer_zh": "**恋爱与婚姻是神所设立的圣约，最稳妥的根基是两人同在主里、同心敬畏神。** 信仰不同心，路必越走越费力。 保罗警戒「你们和不信的原不相配，不要同负一轭」（林后6:14）；又劝「只在主里面才可嫁娶」（林前7:39）。\n\n先求主为你预备那同奔天路的人，宁可等候，不匆忙将就。",
       "citations": [
@@ -1753,7 +1821,17 @@
         "戒不掉",
         "addiction",
         "bad habits",
-        "overcome sin"
+        "overcome sin",
+        "赌博",
+        "赌博有罪",
+        "赌钱",
+        "网赌",
+        "抽烟",
+        "喝酒",
+        "抽烟喝酒",
+        "戒赌",
+        "怎么戒赌",
+        "戒赌博"
       ],
       "answer_zh": "**胜过坏习惯与成瘾，不是靠自己咬牙硬撑，而是靠与主联合、让圣灵的大能逐日替代旧性情。** 你不必孤军奋战，基督已赐你得胜的力。 保罗说「我靠着那加给我力量的，凡事都能作」（腓4:13）；「不要容罪在你们必死的身上作王」（罗6:12）。\n\n一次失败不等于终局；每天把那挣扎交托主，求祂为你开脱身的路。",
       "citations": [
@@ -1851,7 +1929,14 @@
         "职场见证",
         "work",
         "vocation",
-        "career"
+        "career",
+        "怎么荣耀神",
+        "上班荣耀神",
+        "职场荣耀神",
+        "为主工作荣耀神",
+        "工作中荣耀神",
+        "怎么工作",
+        "工作"
       ],
       "answer_zh": "**工作不是与信仰割裂的俗务，而是敬拜的延伸；无论做什么，都为荣耀神而作。** 你在职场上的诚实与勤恳，本身就是一篇无声的福音。 保罗说「无论作什么，都要从心里作，像是给主作的」（西3:23）；所罗门说「凡你手所当作的事，要尽力去作」（传9:10）。\n\n把每天的工作先交托主，在岗位上作光作盐，主必记念。",
       "citations": [
@@ -2309,7 +2394,6 @@
         "谦卑",
         "骄傲",
         "虚心",
-        "自卑",
         "太骄傲",
         "humility",
         "humble",
@@ -2504,7 +2588,11 @@
         "怎样教孩子",
         "parenting",
         "如何养育",
-        "带孩子信主"
+        "带孩子信主",
+        "教养",
+        "怎么教孩子",
+        "育儿",
+        "怎么养育孩子"
       ],
       "answer_zh": "**教养儿女，核心是「照主的教训警戒养育他们」——用爱心不惹动怒气，把神的话活出来、随时谈论。** 亲爱的父母，孩子最先信的不是道理，而是你生命里的平安与诚实。 保罗说：「你们作父亲的，不要惹儿女的气，只要照着主的教训和警戒养育他们」（弗6:4）。「教养孩童，使他走当行的道，就是到老他也不偏离」（箴22:6）。 你不必做完美父母，只要做真实、肯认错、常祷告的父母；榜样比说教更有力。若你正为亲子冲突挣扎，欢迎点下方转人工，我们陪你祷告。",
       "citations": [
@@ -2732,7 +2820,13 @@
         "说闲话",
         "控制言语",
         "gossip",
-        "怎样说话"
+        "怎样说话",
+        "管不住嘴",
+        "乱说话",
+        "多嘴",
+        "嘴乱说话",
+        "说话没节制",
+        "管不住嘴巴"
       ],
       "answer_zh": "**舌头虽小，却能点燃大火；基督徒的言语应当造就人，而不是消耗人——先听、慢说、不轻易论断。** 当你想指责别人，先问自己：我这样说是为建立，还是为发泄？ 雅各说：「惟独舌头没有人能制伏，是不止息的恶物」（雅3:8）；神也吩咐「污秽的言语一句不可出口，只要随事说造就人的好话」（弗4:29）。 论断人常是把自己的标准当成神的标准；把批评化为代祷，关系就松了。若你常为说话懊悔，转人工，我们陪你操练。",
       "citations": [
@@ -3207,7 +3301,13 @@
         "梦境",
         "神在梦中说话",
         "dream",
-        "怎么解梦"
+        "怎么解梦",
+        "做梦",
+        "梦到神",
+        "梦见神",
+        "做梦梦到神",
+        "做梦梦到",
+        "梦境中"
       ],
       "answer_zh": "**神在旧约常借异梦异象启示（如约瑟、但以理），并应许「少年人要见异象，老年人要作异梦」（珥2:28）；但今天神已赐下完备的圣经，任何梦都必须用圣经检验，不能越过祂的话语。** 别把每个梦都当成神的命令。 约珥说：「以后，我要将我的灵浇灌凡有血气的……」（珥2:28）；约翰警戒「一切的灵，你们不可都信，总要试验」（约壹4:1）；圣经也记「圣经都是神所默示的……叫属神的人得以完全」（提后3:16）。 若梦带来平安与印证，可祷告思想；若引发恐惧或违背圣经，不必惶惑，仍以神已写下的话为根基。",
       "citations": [
@@ -3342,7 +3442,12 @@
         "被人冤枉",
         "谣言",
         "中伤",
-        "名誉"
+        "名誉",
+        "别人冤枉我",
+        "冤枉我",
+        "被冤枉",
+        "别人冤枉",
+        "被人冤枉我"
       ],
       "answer_zh": "**被人冤枉、名誉受损，是极深的痛；但圣经教导我们：把伸冤交给神，自己仍以恩慈与真理回应，不陷入以恶报恶。** 你不必急着自证，主都看见。 彼得说「他并没有犯罪，口里也没有诡诈……被骂不还口，受害不说威吓的话，只将自己交托那按公义审判人的主」（彼前2:22-23）；保罗说「不要以恶报恶……主说，伸冤在我，我必报应」（罗12:17,19）。 具体：不传播对方的谣言、必要时温和澄清、把重担交托；若伤害持续，点「转人工顾问」我们陪你走过。",
       "citations": [
@@ -3373,7 +3478,12 @@
         "负债",
         "财务危机",
         "债台高筑",
-        "bankruptcy"
+        "bankruptcy",
+        "欠了一身债",
+        "一身债",
+        "欠钱",
+        "欠了债",
+        "欠了一屁股债"
       ],
       "answer_zh": "**债务压身时，最容易觉得神也远离；但祂是「使无变有」的神，也赐人智慧走出泥沼。先安息在祂的供应里，再一步步行出责任。** 欠债不丢人，逃避才危险。 保罗说「凡事都可行，但不都有益处……你们无论甚么事，都不要被它辖制」（林前6:12）；箴言警戒「富户管辖穷人，欠债的是债主的仆人」（箴22:7）；并鼓励「要以手作工，正当度日」（弗4:28）。 实际：坦诚面对、列清清单、与债主沟通、砍掉不必要开支、寻求教会或专业辅导；也把焦虑交托。需要时点「转人工顾问」。",
       "citations": [
@@ -3467,7 +3577,11 @@
         "奉养",
         "父母年老",
         "孝顺",
-        "孝敬"
+        "孝敬",
+        "赡养",
+        "奉养父母",
+        "怎么奉养",
+        "父母年纪大了"
       ],
       "answer_zh": "**孝敬父母是十诫中第一条带应许的命令——「要孝敬父母，使你得福，在世长寿」（弗6:2-3）；父母年老时奉养与体恤，是儿女不可推卸的本分，也是信仰最平常的见证。** 这不是律法重担，而是爱的回报。 出埃及记说「当孝敬父母」（出20:12）；保罗吩咐「你们作儿女的，要在主里听从父母……这是理所当然的」（弗6:1）；又警戒「人若不看顾亲属……就是背了真道，比不信的人还不好」（提前5:8）。 实际：常打电话、耐心听他们唠叨、在医疗与养老上尽本分、用行动把信仰活给他们看；若代沟难沟通，求神给你温柔与智慧。",
       "citations": [
@@ -3913,7 +4027,13 @@
         "觉得自己没用",
         "不够好",
         "自我形象",
-        "配得"
+        "配得",
+        "我很自卑",
+        "好自卑",
+        "很自卑",
+        "自己很自卑",
+        "没价值",
+        "觉得自己没价值"
       ],
       "answer_zh": "**你的价值不是自己挣来的分数，而是创造主亲手签名——「神就照着自己的形像造人」（创1:27）；在被钉的基督眼里，你值得祂用命来换，这比全世界的标准都重。** 不够好，正是恩典的起点。 以赛亚说「你在我看为宝为尊」（赛43:4）；大卫颂赞「我要称谢你，因我受造奇妙可畏」（诗139:14）；保罗说「你们是重价买来的……要在你们身上荣耀神」（林前6:20）。 具体：每天用一句「神看我为宝」替代自我批判；把「我不够好」翻译成「我正被陶造」；别让别人的尺，量你被造的尊贵。",
       "citations": [
@@ -3976,7 +4096,10 @@
         "粉圈",
         "把人当神",
         "过度迷恋",
-        "偶像崇拜"
+        "偶像崇拜",
+        "拜偶像",
+        "追星拜偶像",
+        "偶像化"
       ],
       "answer_zh": "**喜欢一个优秀的人不是罪，但把任何人放上本属神的宝座，就是偶像——「除了我以外，你不可有别神」（出20:3）；明星会老、会跌倒，唯有神作你安稳的磐石。** 爱可以有，敬拜只给一位。 十诫宣示「不可为自己雕刻偶像」（出20:4-5）；约翰警戒「不要爱世界……人若爱世界，爱父的心就不在他里面了」（约壹2:15）；诗篇说「你们要休息，要知道我是神」（诗46:10，别把安全感寄托在人身上）。 具体：可以享受作品、学习对方的优点，却不为他熬夜、不花钱失序、不把人生决定交给他；把「最想取悦谁」先答给神。",
       "citations": [
@@ -4228,7 +4351,12 @@
         "照顾家人",
         "久病",
         "照护",
-        "长期生病"
+        "长期生病",
+        "长期卧床",
+        "重病",
+        "重病卧床",
+        "家人重病",
+        "卧病"
       ],
       "answer_zh": "**长期照护是看不见的牺牲，神都数算——「这些事你们既作在我这弟兄中一个最小的身上，就是作在我身上了」（太25:40）；你在病床前的每一夜，祂都陪着。** 照顾者也需要被照顾。 耶稣看见病人的亲属就「怜悯他们」（太14:14）；保罗提醒「各人的重担要互相担当」（加6:2）；诗篇应许「神是我们的避难所」（诗46:1，你累时祂托住）。 具体：允许自己疲惫、找人轮替喘息、把愧疚交托（你已尽力）；必要时请专业与教会支援——照顾好自己，才走得到终点。",
       "citations": [
@@ -4321,7 +4449,11 @@
         "被信徒伤",
         "离开教会",
         "被弟兄伤",
-        "信仰创伤"
+        "信仰创伤",
+        "被教会里的人伤",
+        "被教会",
+        "在教会受伤",
+        "在教会受伤害"
       ],
       "answer_zh": "**伤你最深的，有时是「自己人」——但耶稣也指责过「文士和法利赛人有祸了」（太23:13）；信徒会跌倒，教会会破损，却不等于基督丢弃了你。** 你可以受伤，也可以重新相信。 耶稣洁净圣殿、斥责假冒为善（太21:12-13, 23:13）；彼得提醒长老「不是辖制所托付的，乃是作群羊的榜样」（彼前5:3）；诗篇说「投靠耶和华，胜过倚靠人」（诗118:8）。 具体：允许对人或对聚会失望，却不把对信徒的失望变成对神的失望；找一位真正成熟的牧者/长辈倾诉；神仍为你留了「不是弃绝你」的群体——慢慢来，祂不催。",
       "citations": [
@@ -4403,6 +4535,92 @@
           "source_id": "KJV-EPH4:2",
           "ref": "EPH 4:2",
           "snippet": "With all lowliness and meekness, with longsuffering, forbearing one another in love;"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "耶稣是神",
+        "耶稣真的是神",
+        "真的是神",
+        "耶稣的神性",
+        "基督是神",
+        "耶稣是上帝",
+        "耶稣是真神",
+        "道成肉身是神",
+        "耶稣与神同等",
+        "耶稣是主吗",
+        "耶稣是创造者"
+      ],
+      "answer_zh": "**耶稣既是完全的人，也是完全的神；祂与父原为一，道成肉身而来，为要作成救赎。** 祂不是被造的受造物，而是创造主自己取了人性，好作我们的大祭司与救主。「道成了肉身，住在我们中间」（约1:14）。你可以坦然信靠这位昔在、今在、以后永在的全能者。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN1:1",
+          "ref": "JHN 1:1",
+          "snippet": "In the beginning was the Word, and the Word was with God, and the Word was God."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-JHN10:30",
+          "ref": "JHN 10:30",
+          "snippet": "I and my Father are one."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-COL2:9",
+          "ref": "COL 2:9",
+          "snippet": "For in him dwelleth all the fulness of the Godhead bodily."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-PHP2:6",
+          "ref": "PHP 2:6",
+          "snippet": "Who, being in the form of God, thought it not robbery to be equal with God:"
+        }
+      ]
+    },
+    {
+      "keywords": [
+        "旧约新约",
+        "旧约和新约",
+        "新约旧约",
+        "新旧约区别",
+        "旧约律法",
+        "新约恩典",
+        "旧约是什么",
+        "新约是什么",
+        "律法和恩典",
+        "旧约与新约",
+        "新旧约",
+        "新约和旧约",
+        "新约与旧约"
+      ],
+      "answer_zh": "**旧约是神藉律法与应许预备救恩，新约是基督成全律法并赐下恩典；二者同出于一位神，新约成全而非废掉旧约。** 旧约指向那要来的弥赛亚，新约宣告祂已来到。我们今日活在恩典之下，却仍以律法为圣洁的尺度、以基督为成全。律法显明罪，恩典赦免罪，二者在十字架上汇合。",
+      "citations": [
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-MAT5:17",
+          "ref": "MAT 5:17",
+          "snippet": "Think not that I am come to destroy the law, or the prophets: I am not come to destroy, but to fulfil."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-2CO3:6",
+          "ref": "2CO 3:6",
+          "snippet": "Who also hath made us able ministers of the new testament; not of the letter, but of the spirit: for the letter killeth, but the spirit giveth life."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-HEB8:6",
+          "ref": "HEB 8:6",
+          "snippet": "But now hath he obtained a more excellent ministry, by how much also he is the mediator of a better covenant, which was established upon better promises."
+        },
+        {
+          "source_type": "BIBLE",
+          "source_id": "KJV-ROM3:31",
+          "ref": "ROM 3:31",
+          "snippet": "Do we then make void the law through faith? God forbid: yea, we establish the law."
         }
       ]
     }
