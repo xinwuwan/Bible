@@ -2,10 +2,13 @@
 // 模块 C 健康首页：NEWSTART 八支柱总览 + 今日打卡进度
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'health_models.dart';
 import 'health_repository.dart';
 import 'health_topic_card.dart';
 import 'health_topic_page.dart';
+import 'health_qa_page.dart';
 
 class HealthPage extends StatefulWidget {
   final HealthRepository repo;
@@ -30,13 +33,40 @@ class _HealthPageState extends State<HealthPage> {
   List<HealthTopic> _topics = const [];
   List<HealthMetric> _metrics = const [];
   List<HealthLogEntry> _logs = const [];
+  List<HealthDailyTip> _dailyTips = const [];
+  Set<int> _favTips = const {};
   bool _loading = true;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadFavs().then((_) => _load());
+  }
+
+  Future<void> _loadFavs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final list = prefs.getStringList('health_fav_tips') ?? [];
+      if (mounted) setState(() => _favTips = list.map(int.tryParse).whereType<int>().toSet());
+    } catch (_) {
+      // 偏好读取失败不影响主流程
+    }
+  }
+
+  Future<void> _toggleFav(int id) async {
+    final set = {..._favTips};
+    if (set.contains(id)) {
+      set.remove(id);
+    } else {
+      set.add(id);
+    }
+    setState(() => _favTips = set);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(
+          'health_fav_tips', set.map((e) => e.toString()).toList());
+    } catch (_) {}
   }
 
   Future<void> _load() async {
@@ -48,11 +78,13 @@ class _HealthPageState extends State<HealthPage> {
       final topics = await widget.repo.loadTopics();
       final metrics = await widget.repo.loadMetrics();
       final logs = await widget.repo.loadLogs(widget.userId);
+      final tips = await widget.repo.loadDailyTips();
       if (!mounted) return;
       setState(() {
         _topics = topics;
         _metrics = metrics;
         _logs = logs;
+        _dailyTips = tips;
         _loading = false;
       });
     } catch (e) {
@@ -61,6 +93,42 @@ class _HealthPageState extends State<HealthPage> {
         _error = '健康内容加载失败：$e';
         _loading = false;
       });
+    }
+  }
+
+  /// 当年的第几天（1 起），用于按日期轮换每日一贴
+  int get _dayOfYear {
+    final now = DateTime.now();
+    return now.difference(DateTime(now.year, 1, 1)).inDays + 1;
+  }
+
+  /// 今天的「健康一贴」（无数据时为 null）
+  HealthDailyTip? get _todayTip {
+    if (_dailyTips.isEmpty) return null;
+    return _dailyTips[(_dayOfYear - 1) % _dailyTips.length];
+  }
+
+  /// NEWSTART 支柱配色
+  Color _pillarColor(String pillar) {
+    switch (pillar.toUpperCase()) {
+      case 'NUT':
+        return const Color(0xFF2E7D32);
+      case 'EXE':
+        return const Color(0xFF1565C0);
+      case 'WAT':
+        return const Color(0xFF0097A7);
+      case 'SUN':
+        return const Color(0xFFF9A825);
+      case 'TEM':
+        return const Color(0xFF6A1B9A);
+      case 'AIR':
+        return const Color(0xFF00796B);
+      case 'RES':
+        return const Color(0xFF3949AB);
+      case 'TRU':
+        return const Color(0xFF8D6E63);
+      default:
+        return const Color(0xFF607D8B);
     }
   }
 
@@ -128,7 +196,32 @@ class _HealthPageState extends State<HealthPage> {
                       return CustomScrollView(
                         slivers: [
                           SliverToBoxAdapter(
+                            child: _DailyTipCard(
+                              tip: _todayTip,
+                              isFav: _todayTip != null &&
+                                  _favTips.contains(_todayTip!.id),
+                              pillarColor: _todayTip != null
+                                  ? _pillarColor(_todayTip!.pillar)
+                                  : _pillarColor('NUT'),
+                              onFav: _todayTip == null
+                                  ? null
+                                  : () => _toggleFav(_todayTip!.id),
+                              onAsk: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => const HealthQaPage()),
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
                             child: _DisclaimerBanner(total: _metrics.length, done: _totalDone),
+                          ),
+                          SliverToBoxAdapter(
+                            child: _HealthQaEntry(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => const HealthQaPage()),
+                              ),
+                            ),
                           ),
                           if (_topics.isEmpty)
                             const SliverFillRemaining(
@@ -164,6 +257,159 @@ class _HealthPageState extends State<HealthPage> {
                 ),
     );
   }
+}
+
+class _DailyTipCard extends StatelessWidget {
+  final HealthDailyTip? tip;
+  final bool isFav;
+  final Color pillarColor;
+  final VoidCallback? onFav;
+  final VoidCallback? onAsk;
+
+  const _DailyTipCard({
+    this.tip,
+    this.isFav = false,
+    this.pillarColor = const Color(0xFF2E7D32),
+    this.onFav,
+    this.onAsk,
+  });
+
+  static String _pillarName(String p) {
+    switch (p.toUpperCase()) {
+      case 'NUT':
+        return '营养';
+      case 'EXE':
+        return '运动';
+      case 'WAT':
+        return '水';
+      case 'SUN':
+        return '阳光';
+      case 'TEM':
+        return '节制';
+      case 'AIR':
+        return '空气';
+      case 'RES':
+        return '休息';
+      case 'TRU':
+        return '信靠';
+      default:
+        return '健康';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = tip;
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [pillarColor.withOpacity(0.14), pillarColor.withOpacity(0.04)],
+        ),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: pillarColor.withOpacity(0.3)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.lightbulb_outline, color: pillarColor, size: 18),
+                const SizedBox(width: 6),
+                const Text('今日健康一贴',
+                    style:
+                        TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
+                const Spacer(),
+                if (t != null)
+                  IconButton(
+                    icon: Icon(
+                      isFav ? Icons.favorite : Icons.favorite_border,
+                      size: 18,
+                      color: pillarColor,
+                    ),
+                    onPressed: onFav,
+                    tooltip: isFav ? '取消收藏' : '收藏',
+                  ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            if (t == null)
+              const Text('今日健康一贴暂无内容，稍后再来看看～',
+                  style: TextStyle(fontSize: 13, color: Colors.black54))
+            else ...[
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                decoration: BoxDecoration(
+                  color: pillarColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  _pillarName(t.pillar),
+                  style: TextStyle(
+                      fontSize: 10.5,
+                      color: pillarColor,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(t.title,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.w700, height: 1.4)),
+              const SizedBox(height: 4),
+              Text(t.body,
+                  style: const TextStyle(
+                      fontSize: 13, height: 1.5, color: Colors.black87)),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('来源：${t.source}',
+                        style:
+                            const TextStyle(fontSize: 11, color: Colors.black54)),
+                  ),
+                  TextButton.icon(
+                    onPressed: onAsk,
+                    icon: const Icon(Icons.chat_bubble_outline, size: 14),
+                    label: const Text('问问健康顾问',
+                        style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HealthQaEntry extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const _HealthQaEntry({this.onTap});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE8F5E9),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFF2E7D32).withOpacity(0.3)),
+        ),
+        child: ListTile(
+          leading:
+              const Icon(Icons.health_and_safety, color: Color(0xFF2E7D32)),
+          title: const Text('有问题？问问健康顾问',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          subtitle: const Text('关于饮食、运动、睡眠、节制等，本地即时回答（不替代医生）',
+              style: TextStyle(fontSize: 12)),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: onTap,
+        ),
+      );
 }
 
 class _DisclaimerBanner extends StatelessWidget {

@@ -3,6 +3,10 @@
 //   - OfflineHealthRepository：读预置离线 SQLite（正式路径）
 //   - MockHealthRepository  ：内存实现，供 widget 测试 / 无 DB 演示
 
+import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
+
 import 'health_models.dart';
 import 'offline_db_helper.dart';
 
@@ -18,6 +22,9 @@ abstract class HealthRepository {
   Future<List<HealthLogEntry>> loadLogs(String userId);
 
   Future<void> saveLog(HealthLogEntry entry);
+
+  /// 每日健康一贴（按日期轮换展示）
+  Future<List<HealthDailyTip>> loadDailyTips();
 }
 
 /// 读离线 JSON 资源（assets/web/app_data.json）+ shared_preferences 打卡记录
@@ -50,6 +57,21 @@ class OfflineHealthRepository implements HealthRepository {
   @override
   Future<void> saveLog(HealthLogEntry entry) async {
     await OfflineDbHelper.insertHealthLog(entry.toRow());
+  }
+
+  @override
+  Future<List<HealthDailyTip>> loadDailyTips() async {
+    try {
+      final s = await rootBundle.loadString('assets/web/health_daily.json');
+      final data = jsonDecode(s) as List<dynamic>;
+      return data
+          .whereType<Map<String, dynamic>>()
+          .map(HealthDailyTip.fromRow)
+          .toList();
+    } catch (_) {
+      // 资产缺失：返回空，页面给出友好降级
+      return const [];
+    }
   }
 }
 
@@ -93,6 +115,22 @@ class MockHealthRepository implements HealthRepository {
   Future<void> saveLog(HealthLogEntry entry) async {
     logs.add(entry);
   }
+
+  @override
+  Future<List<HealthDailyTip>> loadDailyTips() async => const [
+        HealthDailyTip(
+            id: 1,
+            pillar: 'NUT',
+            title: '以植物性食物为根基',
+            body: '把全谷、豆类、坚果、蔬果放在日常饮食的中心。',
+            source: '创世记 1:29'),
+        HealthDailyTip(
+            id: 2,
+            pillar: 'EXE',
+            title: '每天活动三十分钟',
+            body: '每周累计约 150 分钟中等强度活动，心肺会感谢你。',
+            source: '提摩太前书 4:8'),
+      ];
 
   // --------------------------- 默认示例数据 -----------------------------
 

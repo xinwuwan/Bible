@@ -239,6 +239,34 @@ class HealthLogEntry {
       );
 }
 
+/// 每日健康一贴：按日期轮换展示的一条 NEWSTART 健康知识（教育性，非诊断）
+class HealthDailyTip {
+  final int id;
+  final String pillar; // NUT/EXE/WAT/SUN/TEM/AIR/RES/TRU
+  final String title;
+  final String body;
+  final String source;
+
+  const HealthDailyTip({
+    required this.id,
+    required this.pillar,
+    required this.title,
+    required this.body,
+    required this.source,
+  });
+
+  /// 来自 assets/web/health_daily.json 的行
+  factory HealthDailyTip.fromRow(Map<String, dynamic> r) => HealthDailyTip(
+        id: (r['id'] as num?)?.toInt() ?? 0,
+        pillar: (r['pillar'] ?? '') as String,
+        title: (r['title'] ?? '') as String,
+        body: (r['body'] ?? '') as String,
+        source: (r['source'] ?? '') as String,
+      );
+
+  NewstartCode? get pillarCode => NewstartCodeX.tryParse(pillar);
+}
+
 /// 客户端合规闸门（打包脚本与后端闸门之外的第三道防线）
 class HealthGuard {
   static const String defaultDisclaimer =
