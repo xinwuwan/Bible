@@ -72,7 +72,9 @@ class HealthTopicCard extends StatelessWidget {
               const SizedBox(height: 8),
               // 极简进度线：只留进度条不带文字，汇总进度由顶部 Hero 区承担
               LinearProgressIndicator(
-                value: total == 0 ? 0.0 : (logged / total).clamp(0.0, 1.0),
+                value: metricCount == 0
+                    ? 0.0
+                    : (loggedCount / metricCount).clamp(0.0, 1.0),
                 minHeight: 4,
                 borderRadius: BorderRadius.circular(2),
                 backgroundColor: color.withOpacity(0.12),
