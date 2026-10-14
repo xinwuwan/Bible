@@ -195,6 +195,13 @@ class _HealthPageState extends State<HealthPage> {
                           : (c.maxWidth >= 560 ? 3 : 2);
                       return CustomScrollView(
                         slivers: [
+                          // 顶部 Hero：今日打卡进度环 + 鼓励语（原「今日完成」横幅并入此处）
+                          SliverToBoxAdapter(
+                            child: _TodayProgressHeader(
+                              done: _totalDone,
+                              total: _metrics.length,
+                            ),
+                          ),
                           SliverToBoxAdapter(
                             child: _DailyTipCard(
                               tip: _todayTip,
@@ -206,15 +213,9 @@ class _HealthPageState extends State<HealthPage> {
                               onFav: _todayTip == null
                                   ? null
                                   : () => _toggleFav(_todayTip!.id),
-                              onAsk: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (_) => const HealthQaPage()),
-                              ),
                             ),
                           ),
-                          SliverToBoxAdapter(
-                            child: _DisclaimerBanner(total: _metrics.length, done: _totalDone),
-                          ),
+                          // 唯一的健康顾问入口（每日一贴卡内的重复按钮已移除）
                           SliverToBoxAdapter(
                             child: _HealthQaEntry(
                               onTap: () => Navigator.of(context).push(
@@ -250,6 +251,21 @@ class _HealthPageState extends State<HealthPage> {
                                 ),
                               ),
                             ),
+                          // 页尾免责声明：一行小字，不再占大横幅
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
+                              child: Text(
+                                HealthGuard.defaultDisclaimer,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  height: 1.5,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       );
                     },
@@ -264,14 +280,12 @@ class _DailyTipCard extends StatelessWidget {
   final bool isFav;
   final Color pillarColor;
   final VoidCallback? onFav;
-  final VoidCallback? onAsk;
 
   const _DailyTipCard({
     this.tip,
     this.isFav = false,
     this.pillarColor = const Color(0xFF2E7D32),
     this.onFav,
-    this.onAsk,
   });
 
   static String _pillarName(String p) {
@@ -370,12 +384,6 @@ class _DailyTipCard extends StatelessWidget {
                         style:
                             const TextStyle(fontSize: 11, color: Colors.black54)),
                   ),
-                  TextButton.icon(
-                    onPressed: onAsk,
-                    icon: const Icon(Icons.chat_bubble_outline, size: 14),
-                    label: const Text('问问健康顾问',
-                        style: TextStyle(fontSize: 12)),
-                  ),
                 ],
               ),
             ],
@@ -412,44 +420,83 @@ class _HealthQaEntry extends StatelessWidget {
       );
 }
 
-class _DisclaimerBanner extends StatelessWidget {
-  final int total;
+class _TodayProgressHeader extends StatelessWidget {
   final int done;
+  final int total;
 
-  const _DisclaimerBanner({required this.total, required this.done});
+  const _TodayProgressHeader({required this.done, required this.total});
+
+  /// 随完成度变化的鼓励语（人性化反馈）
+  String get _encourage {
+    if (total == 0) return '今天也要好好照顾自己';
+    if (done >= total) return '今日全部完成，身心舒畅！';
+    if (done == 0) return '从一个小习惯开始吧';
+    return '开了个好头，继续保持～';
+  }
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final progress = total == 0 ? 0.0 : (done / total).clamp(0.0, 1.0);
     return Container(
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: cs.surfaceContainerHighest.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: cs.outlineVariant),
+        color: cs.primary.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: cs.primary.withOpacity(0.15)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Row(
-            children: [
-              Icon(Icons.info_outline, size: 18, color: cs.primary),
-              const SizedBox(width: 6),
-              Text('今日完成 $done / $total 项',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w600)),
-            ],
+          SizedBox(
+            width: 54,
+            height: 54,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 54,
+                  height: 54,
+                  child: CircularProgressIndicator(
+                    value: progress,
+                    strokeWidth: 5,
+                    backgroundColor: cs.primary.withOpacity(0.12),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(cs.primary),
+                  ),
+                ),
+                Text('$done',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: cs.primary)),
+              ],
+            ),
           ),
-          const SizedBox(height: 6),
-          Text(
-            HealthGuard.defaultDisclaimer,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Colors.grey.shade700),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('今日打卡  $done / $total',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: cs.primary)),
+                const SizedBox(height: 2),
+                Text(_encourage,
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color)),
+                const SizedBox(height: 2),
+                Text('轻点下方卡片，记录今日的健康习惯',
+                    style: TextStyle(
+                        fontSize: 11, color: Colors.grey.shade600)),
+              ],
+            ),
           ),
         ],
       ),

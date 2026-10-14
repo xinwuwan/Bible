@@ -28,6 +28,9 @@ import 'qa_models.dart';
 import 'qa_page.dart';
 import 'qa_repository.dart';
 import 'offline_qa_repository.dart';
+import 'rag_qa_repository.dart';
+import 'rag_client.dart';
+import 'rag_config.dart';
 import 'search_page.dart';
 
 const String kApiBaseUrl =
@@ -163,9 +166,19 @@ class _HomePageState extends State<HomePage> {
         ? RemoteNoteRepository(baseUrl: kApiBaseUrl)
         : const AssetNoteRepository();
     // 无后端时（默认）使用离线问答：链接里模块 B 即可本地真实回答，无需任何服务。
+    // 若已部署 RAG Worker 且在 rag_config.dart 填入 kRagEndpoint，则走离线优先 + RAG 兜底。
     _qaRepo = kUseRemoteQa
         ? RemoteQaRepository(baseUrl: kApiBaseUrl)
-        : (OfflineQaRepository.instance ?? MockQaRepository());
+        : (() {
+            final offline = OfflineQaRepository.instance;
+            if (offline != null && kRagEndpoint.isNotEmpty) {
+              return RagFallbackQaRepository(
+                offline: offline.logic,
+                ragClient: RagClient(kRagEndpoint),
+              );
+            }
+            return offline ?? MockQaRepository();
+          })();
   }
 
   @override

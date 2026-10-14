@@ -36,6 +36,9 @@ class OfflineQaRepository implements QaRepository {
   /// 已加载的单例（main() 中 await load() 后可用；未加载则回退构造为空逻辑）。
   static OfflineQaRepository? get instance => _instance;
 
+  /// 暴露内部离线逻辑，供 RAG 兜底仓储在 needsHuman 时复用其检索能力。
+  OfflineQaLogic get logic => _logic;
+
   @override
   Future<QaAnswer> ask(String question, {String locale = 'zh'}) async =>
       _logic.answer(question, locale: locale);

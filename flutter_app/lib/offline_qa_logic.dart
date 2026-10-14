@@ -186,6 +186,26 @@ class OfflineQaLogic {
     return _enforce(ans);
   }
 
+  /// 离线检索 top-K FAQ 条目（供 RAG 兜底作 context 用）。
+  /// 返回条目本身（含 answer_zh / citations），调用方负责转成 RagContextItem。
+  List<Map<String, dynamic>> retrieve(String question, {int topK = 3}) {
+    final ql = question.trim().toLowerCase();
+    final scored = <Map<String, dynamic>>[];
+    for (final entry in faq) {
+      var score = 0;
+      for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
+        final kw = (raw as String).toLowerCase();
+        if (kw.isNotEmpty && ql.contains(kw)) score += kw.length;
+      }
+      if (score > 0) scored.add({'score': score, 'entry': entry});
+    }
+    scored.sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
+    return scored
+        .take(topK)
+        .map((e) => e['entry'] as Map<String, dynamic>)
+        .toList();
+  }
+
   Map<String, dynamic>? _lookupVerse(String q) {
     if (q.isEmpty) return null;
     final en = RegExp(r"([A-Za-z]{2,4})\s*(\d{1,3})\s*[:：]\s*(\d{1,3})")

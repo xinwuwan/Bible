@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 
 import 'health_qa_logic.dart';
+import 'rag_qa_repository.dart';
 
 /// 把 **加粗** 渲染为粗体（与牧师问答一致）
 Widget buildHealthRichText(String text, TextStyle base) {
@@ -65,7 +66,7 @@ class _HealthQaPageState extends State<HealthQaPage> {
     super.dispose();
   }
 
-  void _send() {
+  void _send() async {
     final q = _ctrl.text.trim();
     if (q.isEmpty || _sending || _logic == null) return;
     _ctrl.clear();
@@ -74,7 +75,12 @@ class _HealthQaPageState extends State<HealthQaPage> {
       _turns.add(_Turn(question: q, loading: true));
       _sending = true;
     });
-    final ans = _logic!.ask(q);
+    HealthQaAnswer ans;
+    try {
+      ans = await healthRagAnswer(_logic!, q);
+    } catch (_) {
+      ans = _logic!.ask(q);
+    }
     if (mounted) {
       setState(() {
         _turns[idx] = _Turn(question: q, answer: ans);

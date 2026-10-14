@@ -70,45 +70,18 @@ class HealthTopicCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              _ProgressLine(
-                logged: loggedCount,
-                total: metricCount,
-                color: color,
+              // 极简进度线：只留进度条不带文字，汇总进度由顶部 Hero 区承担
+              LinearProgressIndicator(
+                value: total == 0 ? 0.0 : (logged / total).clamp(0.0, 1.0),
+                minHeight: 4,
+                borderRadius: BorderRadius.circular(2),
+                backgroundColor: color.withOpacity(0.12),
+                valueColor: AlwaysStoppedAnimation<Color>(color),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ProgressLine extends StatelessWidget {
-  final int logged;
-  final int total;
-  final Color color;
-
-  const _ProgressLine(
-      {required this.logged, required this.total, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    final text = total == 0
-        ? '今日 0/0（本支柱暂无指标）'
-        : '今日 $logged/$total';
-    final value = total == 0 ? 0.0 : (logged / total).clamp(0.0, 1.0);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        LinearProgressIndicator(
-          value: value,
-          minHeight: 4,
-          backgroundColor: color.withOpacity(0.12),
-          valueColor: AlwaysStoppedAnimation<Color>(color),
-        ),
-        const SizedBox(height: 4),
-        Text(text, style: Theme.of(context).textTheme.labelSmall),
-      ],
     );
   }
 }
