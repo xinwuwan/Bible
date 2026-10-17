@@ -80,17 +80,36 @@ class UserNoteRepository {
 
   Future<void> save(UserNote note) async {
     final key = normUserNoteRef(note.ref);
+    final prev = _map[key];
     _map[key] = note.copyWith(
       updatedAt: DateTime.now().millisecondsSinceEpoch,
     );
-    await _persist();
+    try {
+      await _persist();
+    } catch (_) {
+      // 落盘失败：回滚内存，避免「显示了却没存上」的假象
+      if (prev != null) {
+        _map[key] = prev;
+      } else {
+        _map.remove(key);
+      }
+      rethrow;
+    }
     _notify();
   }
 
   Future<void> delete(String ref) async {
     final key = normUserNoteRef(ref);
-    if (_map.remove(key) == null) return;
-    await _persist();
+    final prev = _map[key];
+    if (prev == null) return;
+    _map.remove(key);
+    try {
+      await _persist();
+    } catch (_) {
+      // 落盘失败：恢复内存中的原值
+      _map[key] = prev;
+      rethrow;
+    }
     _notify();
   }
 
