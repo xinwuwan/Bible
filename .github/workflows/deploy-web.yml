@@ -129,7 +129,10 @@ jobs:
 
       - name: Build web release
         # 项目页需要 base-href 带仓库名，否则静态资源 404。
-        run: flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+        # --web-renderer html：不用 CanvasKit（其 wasm/js 托管在 gstatic.com，
+        # 国内访问极慢/被干扰，是首屏慢的隐形杀手）；本应用为文本列表类，
+        # html 渲染完全够用，首屏只需 main.dart.js 一个文件。
+        run: flutter build web --release --web-renderer html --base-href "/${{ github.event.repository.name }}/"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
