@@ -23,8 +23,71 @@
 
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
+  <style>
+    /* 首屏 loading：Flutter 引擎启动前（html renderer 无 canvaskit 依赖，
+       启动前只有白屏）给出明确反馈，避免用户以为页面卡死。 */
+    #app-loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #FAF8F3;
+      font-family: Georgia, "Songti SC", "SimSun", serif;
+      color: #6E6A63;
+      z-index: 9999;
+      transition: opacity 0.3s ease;
+    }
+    #app-loading.done { opacity: 0; pointer-events: none; }
+    #app-loading .ring {
+      width: 42px;
+      height: 42px;
+      border: 3px solid #E9E4DA;
+      border-top-color: #43518F;
+      border-radius: 50%;
+      animation: app-spin 0.9s linear infinite;
+    }
+    #app-loading p {
+      margin-top: 14px;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+    @keyframes app-spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
+  <div id="app-loading">
+    <div class="ring"></div>
+    <p>真理对照 · 加载中</p>
+  </div>
   <script src="main.dart.js" type="application/javascript"></script>
+  <script>
+    // Flutter 首帧渲染后移除 loading 层。
+    // 注意：main.dart.js 是动态加载 flutter_bootstrap.js 的，本脚本执行时
+    // window._flutter 尚未就绪，因此轮询 DOM：html renderer 首帧会插入
+    // <flt-glass-pane>，canvaskit 则插入 <canvas>，二者任一出现即视为已渲染。
+    (function () {
+      var done = function () {
+        var el = document.getElementById('app-loading');
+        if (el) {
+          el.classList.add('done');
+          setTimeout(function () { el.remove(); }, 350);
+        }
+      };
+      var check = function (tries) {
+        if (document.querySelector('flt-glass-pane, canvas')) {
+          done();
+          return;
+        }
+        if (tries > 0) {
+          setTimeout(function () { check(tries - 1); }, 100);
+        }
+        // 超过 20 秒仍未渲染：保留 loading 层（说明真的卡住了），
+        // 由用户在控制台看到的具体报错决定下一步，不自动隐藏掩盖问题。
+      };
+      check(200);
+    })();
+  </script>
 </body>
 </html>
