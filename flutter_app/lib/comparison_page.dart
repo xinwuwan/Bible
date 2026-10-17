@@ -17,8 +17,13 @@ import 'app_models.dart';
 import 'app_theme.dart';
 import 'comparison_note_sheet.dart';
 import 'kjv_cuv_diff.dart';
+import 'main.dart' show locateRef;
 import 'note_repository.dart';
 import 'offline_db_helper.dart';
+import 'user_note.dart';
+import 'user_note_repository.dart';
+import 'user_note_sheet.dart';
+import 'user_notes_page.dart';
 import 'verse_compare_card.dart';
 
 /// 差异标示用的琥珀色（与 verse_compare_card 保持一致）
@@ -50,6 +55,7 @@ class _ComparisonPageState extends State<ComparisonPage> {
   late int _chapter;
   List<VerseView> _verses = [];
   final Map<String, ComparisonNote> _noteMap = {};
+  final Map<String, UserNote> _userNoteMap = {};
   bool _showCuv = true;
   bool _onlyDiffs = false; // 仅看 KJV 与和合本有差异的经节
   bool _loadingNotes = false;
@@ -63,7 +69,30 @@ class _ComparisonPageState extends State<ComparisonPage> {
     KjvCuvDiffStore.load().then((_) {
       if (mounted) setState(() {});
     });
+    // 用户随手笔记：先确保本地数据载入，再随仓库变更刷新
+    UserNoteRepository.instance.ensureLoaded();
+    UserNoteRepository.instance.addListener(_onUserNotesChanged);
     _loadChapter();
+  }
+
+  @override
+  void dispose() {
+    UserNoteRepository.instance.removeListener(_onUserNotesChanged);
+    super.dispose();
+  }
+
+  /// 笔记仓库任意变更（新增/修改/删除）后，刷新本章已加载的笔记映射
+  void _onUserNotesChanged() {
+    if (!mounted) return;
+    setState(_refreshUserNotes);
+  }
+
+  void _refreshUserNotes() {
+    _userNoteMap.clear();
+    for (final v in _verses) {
+      final n = UserNoteRepository.instance.get(v.ref);
+      if (n != null) _userNoteMap[_normRef(v.ref)] = n;
+    }
   }
 
   void _loadChapter() {
@@ -71,6 +100,7 @@ class _ComparisonPageState extends State<ComparisonPage> {
     setState(() {
       _verses = rows.map(VerseView.fromDbRow).toList();
       _noteMap.clear();
+      _refreshUserNotes();
       _error = null;
     });
     _loadNotes();
@@ -125,6 +155,51 @@ class _ComparisonPageState extends State<ComparisonPage> {
           const SnackBar(content: Text('已记录反馈，将进入复核队列（review_queue）')),
         );
       },
+    );
+  }
+
+  /// 打开用户随手笔记编辑器；返回 true 表示有变更，刷新本章映射
+  Future<void> _openUserNote(String ref) async {
+    final existing = UserNoteRepository.instance.get(ref);
+    final changed = await UserNoteSheet.show(
+      context,
+      ref: ref,
+      initialText: existing?.text,
+    );
+    if (changed == true && mounted) {
+      setState(_refreshUserNotes);
+    }
+  }
+
+  /// 打开「我的笔记」列表页
+  void _openUserNotesPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => UserNotesPage(onJumpToRef: _jumpToRef),
+      ),
+    );
+  }
+
+  /// 从笔记列表跳转到对应经文（新开对照页，保留当前书卷上下文）
+  void _jumpToRef(String ref) {
+    final loc = locateRef(ref);
+    if (loc == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('离线库暂无该处原文：$ref')),
+      );
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ComparisonPage(
+          bookId: loc['bookId'] as int,
+          bookName: loc['name'] as String,
+          chapterCount: loc['count'] as int,
+          initialChapter: loc['chapter'] as int,
+          notes: widget.notes,
+          draftMode: widget.draftMode,
+        ),
+      ),
     );
   }
 
@@ -282,6 +357,11 @@ class _ComparisonPageState extends State<ComparisonPage> {
       appBar: AppBar(
         title: Text('${widget.bookName} 第 $_chapter 章'),
         actions: [
+          IconButton(
+            tooltip: '我的笔记',
+            icon: const Icon(Icons.sticky_note_2_outlined),
+            onPressed: _openUserNotesPage,
+          ),
           IconButton(
             tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
             icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
@@ -458,6 +538,8 @@ class _ComparisonPageState extends State<ComparisonPage> {
                             draftMode: widget.draftMode,
                             onTapNote: note == null ? null : () => _openNote(note),
                             diff: KjvCuvDiffStore.get(v.ref),
+                            userNote: _userNoteMap[_normRef(v.ref)],
+                            onTapUserNote: () => _openUserNote(v.ref),
                           );
                         },
                       );
