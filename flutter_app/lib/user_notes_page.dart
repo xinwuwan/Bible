@@ -52,7 +52,7 @@ class _UserNotesPageState extends State<UserNotesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final notes = UserNoteRepository.instance.all;
+    final List<UserNote> notes = UserNoteRepository.instance.all;
     return Scaffold(
       appBar: AppBar(
         title: const Text('我的笔记'),
