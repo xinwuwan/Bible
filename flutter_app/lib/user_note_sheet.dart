@@ -63,11 +63,27 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
       return;
     }
     setState(() => _saving = true);
-    await UserNoteRepository.instance.save(
-      UserNote(ref: widget.ref, text: text, updatedAt: 0),
-    );
-    if (!mounted) return;
-    Navigator.of(context).pop(true);
+    // 先取 messenger：pop 之后当前 context 失效，无法再弹提示
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await UserNoteRepository.instance.save(
+        UserNote(ref: widget.ref, text: text, updatedAt: 0),
+      );
+      if (!mounted) return;
+      messenger.showSnackBar(
+        const SnackBar(content: Text('已保存到本机')),
+      );
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _saving = false);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('保存失败：浏览器存储不可用（隐私模式或存储已满）'),
+          duration: const Duration(seconds: 4),
+        ),
+      );
+    }
   }
 
   Future<void> _delete() async {
@@ -89,9 +105,20 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
       ),
     );
     if (ok != true) return;
-    await UserNoteRepository.instance.delete(widget.ref);
-    if (!mounted) return;
-    Navigator.of(context).pop(true);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await UserNoteRepository.instance.delete(widget.ref);
+      if (!mounted) return;
+      messenger.showSnackBar(
+        const SnackBar(content: Text('已删除')),
+      );
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      if (!mounted) return;
+      messenger.showSnackBar(
+        const SnackBar(content: Text('删除失败：浏览器存储不可用')),
+      );
+    }
   }
 
   @override
