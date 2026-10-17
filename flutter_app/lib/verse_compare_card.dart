@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'app_models.dart';
 import 'app_theme.dart';
 import 'kjv_cuv_diff.dart';
+import 'user_note.dart';
 
 /// 差异标示用的琥珀色系
 const Color _diffBorder = Color(0xFFE0A100);
@@ -32,6 +33,8 @@ class VerseCompareCard extends StatelessWidget {
   final bool draftMode; // 开发联调：允许展示 draft 注记（发布必须 false）
   final VoidCallback? onTapNote;
   final KjvCuvDiff? diff; // 非 null 表示该节 KJV 与和合本存在需留意的差异
+  final UserNote? userNote; // 用户本人对该节的随手笔记（本地）
+  final VoidCallback? onTapUserNote; // 始终可点：无笔记则打开空白编辑器
 
   const VerseCompareCard({
     super.key,
@@ -41,6 +44,8 @@ class VerseCompareCard extends StatelessWidget {
     this.draftMode = false,
     this.onTapNote,
     this.diff,
+    this.userNote,
+    this.onTapUserNote,
   });
 
   @override
@@ -95,6 +100,24 @@ class VerseCompareCard extends StatelessWidget {
                 const Spacer(),
                 if (note != null)
                   _NoteChip(note: note!, draftMode: draftMode, onTap: onTapNote),
+                if (onTapUserNote != null)
+                  IconButton(
+                    tooltip: userNote != null ? '我的笔记' : '记一笔',
+                    visualDensity: VisualDensity.compact,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                        minWidth: 32, minHeight: 32),
+                    iconSize: 18,
+                    onPressed: onTapUserNote,
+                    icon: Icon(
+                      userNote != null
+                          ? Icons.edit_note
+                          : Icons.edit_note_outlined,
+                      color: userNote != null
+                          ? AppTheme.primary
+                          : AppTheme.inkSoft,
+                    ),
+                  ),
               ],
             ),
             // 差异标签
@@ -203,6 +226,58 @@ class VerseCompareCard extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+            // 用户笔记预览（本机随手记，点击继续编辑）
+            if (userNote != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Material(
+                  color: AppTheme.primary.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(8),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: onTapUserNote,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 1, right: 6),
+                            child: Icon(Icons.edit_note,
+                                size: 15, color: AppTheme.primary),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '我的笔记',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppTheme.primary,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  userNote!.text,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12.5,
+                                    height: 1.5,
+                                    color: AppTheme.ink,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
