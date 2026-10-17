@@ -133,7 +133,9 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // stretch：子部件占满宽度。若用 start，按钮行会按内容宽度包裹、
+        // Spacer 失效、按钮布局畸形（曾出现只剩「取消」、保存被挤出可见区）
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
@@ -157,8 +159,9 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
           TextField(
             controller: _controller,
             autofocus: true,
-            maxLines: 8,
-            minLines: 4,
+            // 收敛高度峰值：键盘弹起时给按钮行留足空间
+            maxLines: 6,
+            minLines: 3,
             textInputAction: TextInputAction.newline,
             decoration: InputDecoration(
               hintText: '例如：这节让我想到……',
@@ -171,7 +174,13 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
             ),
           ),
           const SizedBox(height: 14),
-          Row(
+          // Wrap 而非 Row：窄屏/键盘弹起导致宽度吃紧时自动换行，
+          // 从根本上杜绝「保存」按钮被裁出可见区
+          Wrap(
+            alignment: WrapAlignment.end,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 4,
             children: [
               if (_isExisting)
                 TextButton.icon(
@@ -180,13 +189,11 @@ class _UserNoteSheetState extends State<UserNoteSheet> {
                   label: const Text('删除'),
                   style: TextButton.styleFrom(foregroundColor: cs.error),
                 ),
-              const Spacer(),
               TextButton(
                 onPressed:
                     _saving ? null : () => Navigator.of(context).pop(false),
                 child: const Text('取消'),
               ),
-              const SizedBox(width: 8),
               FilledButton.icon(
                 onPressed: _saving ? null : _save,
                 icon: const Icon(Icons.check, size: 18),
