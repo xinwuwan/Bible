@@ -127,12 +127,25 @@ jobs:
       - name: Analyze
         run: flutter analyze .
 
-      - name: Build web release
+      - name: Build web release (GitHub Pages, base-href /Bible/)
         # 项目页需要 base-href 带仓库名，否则静态资源 404。
         # --web-renderer html：不用 CanvasKit（其 wasm/js 托管在 gstatic.com，
         # 国内访问极慢/被干扰，是首屏慢的隐形杀手）；本应用为文本列表类，
         # html 渲染完全够用，首屏只需 main.dart.js 一个文件。
         run: flutter build web --release --web-renderer html --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Build web release (EdgeOne Pages, base-href /)
+        # EdgeOne Pages 是域名根部署，必须用 base-href "/"；
+        # 输出到独立目录，避免覆盖上面 GitHub Pages 用的产物。
+        run: flutter build web --release --web-renderer html --base-href "/" -o build/web-eo
+
+      - name: Deploy to EdgeOne Pages (domestic CDN)
+        # 未在仓库 Secrets 配置 EDGEONE_API_TOKEN 时自动跳过，不影响 GitHub Pages 部署。
+        # Token 获取：EdgeOne Pages 控制台 -> API Token（见 EdgeOne-Pages部署指南.md）。
+        if: ${{ secrets.EDGEONE_API_TOKEN != '' }}
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+        run: npx --yes edgeone pages deploy build/web-eo -n truth-compare -t $EDGEONE_API_TOKEN
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
