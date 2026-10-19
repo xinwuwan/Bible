@@ -194,8 +194,11 @@ class _HealthTopicPageState extends State<HealthTopicPage> {
       dense: true,
       contentPadding: EdgeInsets.zero,
       leading: const Icon(Icons.check_circle_outline, size: 18),
-      title: Text(m?.nameZh ?? '指标 #${e.metricId}'),
-      trailing: Text('${e.value}${m?.unitLabel ?? ''}'),
+      // ellipsis：大字号下指标名/数值超宽时省略号收尾，不再溢出条纹
+      title: Text(m?.nameZh ?? '指标 #${e.metricId}',
+          maxLines: 2, overflow: TextOverflow.ellipsis),
+      trailing: Text('${e.value}${m?.unitLabel ?? ''}',
+          maxLines: 1, overflow: TextOverflow.ellipsis),
     );
   }
 
@@ -287,11 +290,16 @@ class _SummaryCard extends StatelessWidget {
               Icon(topic.newstart?.icon ?? Icons.health_and_safety_outlined,
                   size: 20, color: color),
               const SizedBox(width: 8),
-              Text(topic.displayName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w600, color: color)),
+              // Flexible：支柱名随字号放大可省略号收尾，右侧代码徽章始终完整
+              Flexible(
+                child: Text(topic.displayName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600, color: color)),
+              ),
               const SizedBox(width: 8),
               Container(
                 padding:
