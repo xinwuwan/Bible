@@ -99,11 +99,16 @@ class _PastorAnswerCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 6),
-            Text('牧师的回复',
-                style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: _accent)),
+            // Flexible：抬头文字随字号放大时可收缩/省略，不挤爆左侧头像行
+            const Flexible(
+              child: Text('牧师的回复',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: _accent)),
+            ),
           ],
         ),
         const Divider(height: 12),
@@ -394,12 +399,15 @@ class _TurnView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              SizedBox(
-                height: 28,
-                child: OutlinedButton(
-                  onPressed: () => onRequestHuman(a, turn.question),
-                  child: const Text('转人工顾问', style: TextStyle(fontSize: 12)),
+              // 不写死按钮高度：文字随系统字号放大时按钮自动长高，
+              // 固定 28/30px 会把放大的文字挤出按钮
+              OutlinedButton(
+                onPressed: () => onRequestHuman(a, turn.question),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 36),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                 ),
+                child: const Text('转人工顾问', style: TextStyle(fontSize: 12)),
               ),
             ],
           ),
@@ -422,13 +430,14 @@ class _TurnView extends StatelessWidget {
             _PastorAnswerCard(answer: a.answerZh),
             if (a.needsHuman) ...[
               const SizedBox(height: 8),
-              SizedBox(
-                height: 30,
-                child: OutlinedButton.icon(
-                  onPressed: () => onRequestHuman(a, turn.question),
-                  icon: const Icon(Icons.support_agent, size: 14),
-                  label: const Text('转人工顾问', style: TextStyle(fontSize: 12)),
+              OutlinedButton.icon(
+                onPressed: () => onRequestHuman(a, turn.question),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 36),
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
                 ),
+                icon: const Icon(Icons.support_agent, size: 14),
+                label: const Text('转人工顾问', style: TextStyle(fontSize: 12)),
               ),
             ] else ...[
               const SizedBox(height: 8),
