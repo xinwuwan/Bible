@@ -24,6 +24,7 @@ import 'user_note.dart';
 import 'user_note_repository.dart';
 import 'user_note_sheet.dart';
 import 'user_notes_page.dart';
+import 'egw_verses_repository.dart';
 import 'verse_compare_card.dart';
 
 /// 差异标示用的琥珀色（与 verse_compare_card 保持一致）
@@ -72,6 +73,10 @@ class _ComparisonPageState extends State<ComparisonPage> {
     // 用户随手笔记：先确保本地数据载入，再随仓库变更刷新
     UserNoteRepository.instance.ensureLoaded();
     UserNoteRepository.instance.addListener(_onUserNotesChanged);
+    // 怀爱伦(EGW)经文论述离线数据：加载完成后刷新整页，卡片即展示对应区块
+    EgwVersesRepository.instance.ensureLoaded().then((_) {
+      if (mounted) setState(() {});
+    });
     _loadChapter();
   }
 
@@ -545,6 +550,7 @@ class _ComparisonPageState extends State<ComparisonPage> {
                             diff: KjvCuvDiffStore.get(v.ref),
                             userNote: _userNoteMap[_normRef(v.ref)],
                             onTapUserNote: () => _openUserNote(v.ref),
+                            egw: EgwVersesRepository.instance.get(v.ref),
                           );
                         },
                       );
