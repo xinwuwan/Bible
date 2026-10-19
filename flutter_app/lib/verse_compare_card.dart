@@ -81,6 +81,7 @@ class VerseCompareCard extends StatelessWidget {
                   ),
                   child: Text(
                     '${verse.verse}',
+                    maxLines: 1,
                     style: TextStyle(
                       fontSize: 12,
                       color: hasDiff ? _diffChipFg : AppTheme.primary,
@@ -89,12 +90,18 @@ class VerseCompareCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  verse.ref,
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    color: AppTheme.inkSoft,
-                    letterSpacing: 0.6,
+                // Flexible + ellipsis：ref 与右侧注记 chip/铅笔按钮同处一行，
+                // 大字号时 chip 变宽，ref 必须可收缩，否则整行横向溢出
+                Flexible(
+                  child: Text(
+                    verse.ref,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11.5,
+                      color: AppTheme.inkSoft,
+                      letterSpacing: 0.6,
+                    ),
                   ),
                 ),
                 const Spacer(),
