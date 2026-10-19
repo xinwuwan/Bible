@@ -16,7 +16,10 @@ import 'package:flutter/material.dart';
 
 import 'app_models.dart';
 import 'app_theme.dart';
+import 'egw_verses.dart';
+import 'external_link_helper.dart';
 import 'kjv_cuv_diff.dart';
+import 'sda_commentary.dart';
 import 'user_note.dart';
 
 /// 差异标示用的琥珀色系
@@ -35,6 +38,7 @@ class VerseCompareCard extends StatelessWidget {
   final KjvCuvDiff? diff; // 非 null 表示该节 KJV 与和合本存在需留意的差异
   final UserNote? userNote; // 用户本人对该节的随手笔记（本地）
   final VoidCallback? onTapUserNote; // 始终可点：无笔记则打开空白编辑器
+  final List<EgwVerseRef>? egw; // 怀爱伦(EGW)对该节的论述（离线，有数据才展示）
 
   const VerseCompareCard({
     super.key,
@@ -46,11 +50,13 @@ class VerseCompareCard extends StatelessWidget {
     this.diff,
     this.userNote,
     this.onTapUserNote,
+    this.egw,
   });
 
   @override
   Widget build(BuildContext context) {
     final hasDiff = diff != null;
+    final sdaUrl = sdaCommentaryUrl(verse.ref);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       elevation: hasDiff ? 2 : 1,
@@ -284,6 +290,88 @@ class VerseCompareCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                ),
+              ),
+            // 怀爱伦论述（EGW，离线数据，有数据才展示）
+            if (egw != null && egw!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Material(
+                  color: const Color(0xFFF3E5F5).withOpacity(0.45),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.auto_stories,
+                                size: 15, color: Color(0xFF6A1B9A)),
+                            SizedBox(width: 6),
+                            const Text(
+                              '怀爱伦论述',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF6A1B9A),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        ...egw!.map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  e.text,
+                                  style: const TextStyle(
+                                    fontSize: 12.5,
+                                    height: 1.5,
+                                    color: AppTheme.ink,
+                                  ),
+                                ),
+                                if (e.book.isNotEmpty || e.ref.isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: Text(
+                                      '— ${e.book}${e.ref.isNotEmpty ? ' ${e.ref}' : ''}',
+                                      style: const TextStyle(
+                                        fontSize: 10.5,
+                                        fontStyle: FontStyle.italic,
+                                        color: AppTheme.inkSoft,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            // SDA 圣经注释外链（第三方镜像，新标签打开，不离开 App）
+            if (sdaUrl != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlinedButton.icon(
+                    onPressed: () => openExternalLink(sdaUrl),
+                    icon: const Icon(Icons.menu_book_outlined, size: 16),
+                    label: const Text('SDA 圣经注释'),
+                    style: OutlinedButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      foregroundColor: AppTheme.primary,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                     ),
                   ),
                 ),
