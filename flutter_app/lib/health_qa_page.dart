@@ -255,9 +255,14 @@ class _AnswerCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 6),
-            Text('健康顾问',
-                style: TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF2E7D32))),
+            // Flexible：抬头文字随字号放大时可省略号收尾，不挤爆头像行
+            const Flexible(
+              child: Text('健康顾问',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF2E7D32))),
+            ),
           ],
         ),
         const Divider(height: 12),
