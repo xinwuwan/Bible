@@ -78,26 +78,33 @@ class _UserNotesPageState extends State<UserNotesPage> {
                       color: AppTheme.primary.withOpacity(0.10),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          code,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.primary,
-                          ),
-                        ),
-                        if (cv.isNotEmpty)
+                    // FittedBox(scaleDown)：书卷代码/章:节文字随字号放大
+                    // 超出 44px 徽章盒时自动缩小，永远完整可见（不裁切）
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
                           Text(
-                            cv,
+                            code,
+                            maxLines: 1,
                             style: const TextStyle(
-                              fontSize: 10,
-                              color: AppTheme.inkSoft,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.primary,
                             ),
                           ),
-                      ],
+                          if (cv.isNotEmpty)
+                            Text(
+                              cv,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: AppTheme.inkSoft,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                   title: Text(
