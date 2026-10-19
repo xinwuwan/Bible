@@ -89,13 +89,25 @@ Future<void> main() async {
 class FaithApp extends StatelessWidget {
   const FaithApp({super.key});
 
+  /// 全应用文本缩放上限：老年用户/系统大字号与布局稳定之间的平衡点。
+  /// 低于上限 → 跟随系统/浏览器字体放大（无障碍友好）；
+  /// 高于上限 → 夹紧，防止写死尺寸的装饰元素（进度环、节号徽章）被撑爆。
+  /// 配套：各页面已去除固定高度、改弹性布局（Wrap/Flexible/ellipsis），
+  /// 在上限范围内不会出现挤压重叠。
+  static const double kMaxTextScale = 1.5;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '真理对照',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      home: const AppRoot(),
+    // iOS/微信浏览器会把系统「文字大小」传给 Flutter web 的 textScaler；
+    // 夹紧极端值，同时保留正常范围的大字号支持。
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: kMaxTextScale,
+      child: MaterialApp(
+        title: '真理对照',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light(),
+        home: const AppRoot(),
+      ),
     );
   }
 }
@@ -409,8 +421,10 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(14),
               onTap: _unsupported ? null : _openSearch,
               child: Container(
-                height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
+                // minHeight 而非 height：大字号时文字换行/变高，容器随之长高，
+                // 不再把文字挤出 50px 的固定盒子
+                constraints: const BoxConstraints(minHeight: 50),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(14),
@@ -545,19 +559,24 @@ class _SectionTitle extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: AppTheme.ink,
-              letterSpacing: 0.3,
+          Flexible(
+            child: Text(
+              text,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.ink,
+                letterSpacing: 0.3,
+              ),
             ),
           ),
           if (count > 0) ...[
             const SizedBox(width: 6),
             Text(
               '$count 卷',
+              maxLines: 1,
               style: const TextStyle(fontSize: 12, color: AppTheme.inkSoft),
             ),
           ],
@@ -575,19 +594,28 @@ class _BookGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 用 Wrap 替代固定 mainAxisExtent=64 的网格：书卷名为中文，字号放大后
+    // 可能换行到两行，卡片高度必须能随内容长高，否则文字被裁切/重叠。
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 168,
-          mainAxisExtent: 64,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
-        ),
-        itemCount: books.length,
-        itemBuilder: (context, i) => _BookCard(book: books[i], onTap: onTap),
+      child: LayoutBuilder(
+        builder: (context, c) {
+          const spacing = 8.0;
+          // 与旧网格一致的目标列宽（maxCrossAxisExtent 168）
+          final columns = (c.maxWidth / 168).floor().clamp(2, 6);
+          final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
+          return Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: [
+              for (final b in books)
+                SizedBox(
+                  width: itemWidth,
+                  child: _BookCard(book: b, onTap: onTap),
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -615,12 +643,13 @@ class _BookCard extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // min：高度随内容自适应（不再有 64px 格子兜底，也绝不能爆）
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 book.nameZh,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 15,
@@ -629,27 +658,27 @@ class _BookCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 2),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        book.chapterCount > 0
-                            ? '${book.chapterCount} 章'
-                            : '',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: AppTheme.inkSoft,
-                        ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      book.chapterCount > 0
+                          ? '${book.chapterCount} 章'
+                          : '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.inkSoft,
                       ),
                     ),
-                    Icon(
-                      Icons.chevron_right,
-                      size: 14,
-                      color: AppTheme.line,
-                    ),
-                  ],
-                ),
+                  ),
+                  const Icon(
+                    Icons.chevron_right,
+                    size: 14,
+                    color: AppTheme.line,
+                  ),
+                ],
               ),
             ],
           ),
