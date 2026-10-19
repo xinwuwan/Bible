@@ -7,6 +7,10 @@
     to add your <meta> tags, <link> tags, and <script> tags.
   -->
   <meta charset="UTF-8">
+  <!-- 显式声明视口：不要依赖 Flutter 引擎运行时注入。viewport-fit=cover 适配刘海屏；
+       maximum-scale=1.0 + user-scalable=no 与 Flutter 官方模板一致，避免双击/误触
+       整页缩放破坏应用式布局。 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <!-- 本页内容已是简体中文，禁止浏览器自动翻译（防止被转成繁体显示） -->
   <meta name="google" content="notranslate">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -24,6 +28,15 @@
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
   <style>
+    /* 禁止 iOS Safari / 微信内置浏览器按系统「文字大小」设置自动放大页面文字：
+       Flutter web html 渲染器的文字由引擎按 px 精确排版，浏览器一旦自动放大
+       字形（-webkit-text-size-adjust:auto 的默认行为），文字就会溢出引擎算好
+       的布局盒 → 拥挤、重叠。100% = 完全不调整。该属性可继承进 shadow DOM，
+       因此同时覆盖 Flutter 渲染的正文与下面的首屏 loading 层。 */
+    html, body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
     /* 首屏 loading：Flutter 引擎启动前（html renderer 无 canvaskit 依赖，
        启动前只有白屏）给出明确反馈，避免用户以为页面卡死。 */
     #app-loading {
