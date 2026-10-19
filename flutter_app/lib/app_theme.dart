@@ -110,7 +110,8 @@ class AppTheme {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         indicatorColor: primary.withOpacity(0.12),
-        height: 68,
+        // 不写死 height：默认高度会随标签字号自适应（大字号无障碍），
+        // 固定值会把放大的标签文字挤出可见区。
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         labelTextStyle: const WidgetStatePropertyAll<TextStyle>(
           TextStyle(fontSize: 12, color: ink, fontWeight: FontWeight.w500),
