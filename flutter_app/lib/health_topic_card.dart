@@ -58,16 +58,16 @@ class HealthTopicCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Expanded(
-                child: Text(
-                  topic.summary ?? '',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.grey.shade700, height: 1.35),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              // 不用 Expanded：卡片已改为高度自适应（Wrap 网格），
+              // Expanded 在无边界高度约束下会抛布局异常
+              Text(
+                topic.summary ?? '',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Colors.grey.shade700, height: 1.35),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
               // 极简进度线：只留进度条不带文字，汇总进度由顶部 Hero 区承担
