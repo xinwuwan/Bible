@@ -193,6 +193,13 @@ class _HealthPageState extends State<HealthPage> {
                       final cross = c.maxWidth >= 900
                           ? 4
                           : (c.maxWidth >= 560 ? 3 : 2);
+                      // Wrap 网格的卡片宽度：与旧 SliverGrid 的 12px 左右边距
+                      // + 10px 间距保持一致，但卡片高度改为随内容自适应
+                      const gridSpacing = 10.0;
+                      final cardWidth = (c.maxWidth -
+                              24 -
+                              gridSpacing * (cross - 1)) /
+                          cross;
                       return CustomScrollView(
                         slivers: [
                           // 顶部 Hero：今日打卡进度环 + 鼓励语（原「今日完成」横幅并入此处）
@@ -230,24 +237,30 @@ class _HealthPageState extends State<HealthPage> {
                               child: Center(child: Text('暂无健康内容')),
                             )
                           else
+                            // Wrap 替代固定 childAspectRatio=1.15 的网格：
+                            // 卡片高度随文字字号自适应，大字号下九宫格不再
+                            // 出现内容溢出重叠（NEWSTART 仅 8 个支柱，
+                            // 一次性布局无性能问题）
                             SliverPadding(
                               padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
-                              sliver: SliverGrid(
-                                delegate: SliverChildBuilderDelegate(
-                                  (context, i) => HealthTopicCard(
-                                    topic: _topics[i],
-                                    loggedCount: _loggedCount(_topics[i].code),
-                                    metricCount: _metricCount(_topics[i].code),
-                                    onTap: () => _openTopic(_topics[i]),
-                                  ),
-                                  childCount: _topics.length,
-                                ),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: cross,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: 1.15,
+                              sliver: SliverToBoxAdapter(
+                                child: Wrap(
+                                  spacing: gridSpacing,
+                                  runSpacing: gridSpacing,
+                                  children: [
+                                    for (final t in _topics)
+                                      SizedBox(
+                                        width: cardWidth,
+                                        child: HealthTopicCard(
+                                          topic: t,
+                                          loggedCount:
+                                              _loggedCount(t.code),
+                                          metricCount:
+                                              _metricCount(t.code),
+                                          onTap: () => _openTopic(t),
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -332,9 +345,14 @@ class _DailyTipCard extends StatelessWidget {
               children: [
                 Icon(Icons.lightbulb_outline, color: pillarColor, size: 18),
                 const SizedBox(width: 6),
-                const Text('今日健康一贴',
-                    style:
-                        TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
+                // Flexible：标题随字号放大可省略号收尾，不挤掉右侧收藏按钮
+                const Flexible(
+                  child: Text('今日健康一贴',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 13, fontWeight: FontWeight.w700)),
+                ),
                 const Spacer(),
                 if (t != null)
                   IconButton(
@@ -465,11 +483,17 @@ class _TodayProgressHeader extends StatelessWidget {
                         AlwaysStoppedAnimation<Color>(cs.primary),
                   ),
                 ),
-                Text('$done',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: cs.primary)),
+                // FittedBox(scaleDown)：数字随字号放大超出 54px 环时自动
+                // 缩小，永远完整落在环内（不截断、不溢出）
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text('$done',
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: cs.primary)),
+                ),
               ],
             ),
           ),
