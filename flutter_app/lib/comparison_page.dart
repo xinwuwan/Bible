@@ -375,7 +375,9 @@ class _ComparisonPageState extends State<ComparisonPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 6, 14, 4),
             child: Container(
-              height: 46,
+              // minHeight 而非 height：下拉菜单文字随系统字号放大时长高，
+              // 固定 46px 会把放大的文字挤出容器造成重叠
+              constraints: const BoxConstraints(minHeight: 46),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
@@ -426,10 +428,14 @@ class _ComparisonPageState extends State<ComparisonPage> {
           if (KjvCuvDiffStore.isAvailable)
             Padding(
               padding: const EdgeInsets.fromLTRB(14, 6, 14, 0),
-              child: Row(
+              // Wrap 而非 Row：按钮文案随字号放大变宽时自动换行到下一行，
+              // 不再把第二个按钮挤出屏幕（RenderFlex overflow）
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 8,
+                runSpacing: 8,
                 children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
+                  OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
                         foregroundColor:
                             _onlyDiffs ? Colors.white : _diffColor,
@@ -456,8 +462,6 @@ class _ComparisonPageState extends State<ComparisonPage> {
                             : '本章无标记差异',
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       foregroundColor: _diffColor,
@@ -476,18 +480,19 @@ class _ComparisonPageState extends State<ComparisonPage> {
           // 权威层级图例
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
-            child: Row(
+            // Wrap 而非 Row：图例文字随系统字号放大变宽时自动换行，
+            // 不再横向溢出屏幕
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威底本'),
-                const SizedBox(width: 10),
                 _LegendDot(color: AppTheme.zhTeal, text: '本应用译文'),
-                const SizedBox(width: 10),
                 if (_showCuv)
                   _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
-                const SizedBox(width: 10),
                 if (KjvCuvDiffStore.isAvailable)
                   _LegendDot(color: _diffColor, text: '⚠ 中英差异'),
-                const Spacer(),
                 if (_loadingNotes)
                   const SizedBox(
                     width: 14,
