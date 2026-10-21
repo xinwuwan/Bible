@@ -13,6 +13,7 @@
 # 测试闸门（Test Gate）：在构建发布之前先跑
 #   - Dart 数据层验证（verify_web_data.dart）
 #   - Dart 离线问答验证（verify_offline_qa.dart）
+#   - Dart 问诊引擎验证（verify_consult_dialog.dart）
 #   - Python 后端契约 + API 测试（backend/tests/）
 # 任一门失败都会中断发布，避免把坏版本推到线上。
 # 注意：数据层验证基于「已提交的样本」运行，必须在"注入全本 KJV"之前执行
@@ -73,6 +74,10 @@ jobs:
       - name: Test gate — offline QA (verify_offline_qa)
         working-directory: ${{ github.workspace }}
         run: dart run verify_offline_qa.dart
+
+      - name: Test gate — consult dialog (verify_consult_dialog)
+        working-directory: ${{ github.workspace }}
+        run: dart run verify_consult_dialog.dart
 
       - name: Test gate — backend contract (no deps)
         working-directory: ${{ github.workspace }}

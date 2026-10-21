@@ -10,6 +10,7 @@ import 'health_topic_card.dart';
 import 'health_topic_page.dart';
 import 'health_qa_page.dart';
 import 'health_consult_page.dart';
+import 'consult_chat_page.dart';
 
 class HealthPage extends StatefulWidget {
   final HealthRepository repo;
@@ -241,6 +242,15 @@ class _HealthPageState extends State<HealthPage> {
                               ),
                             ),
                           ),
+                          // AI 医生助手（多轮对话问诊）入口
+                          SliverToBoxAdapter(
+                            child: _ConsultChatEntry(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => const ConsultChatPage()),
+                              ),
+                            ),
+                          ),
                           if (_topics.isEmpty)
                             const SliverFillRemaining(
                               hasScrollBody: false,
@@ -467,6 +477,32 @@ class _ConsultEntry extends StatelessWidget {
           title: const Text('专业咨询 · 医药布道',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
           subtitle: const Text('上传诊断材料 → 核验级别 → 疾病解读 + 医药布道建议（不替代医生）',
+              style: TextStyle(fontSize: 12)),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: onTap,
+        ),
+      );
+}
+
+class _ConsultChatEntry extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const _ConsultChatEntry({this.onTap});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE3F2FD),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFF1565C0).withOpacity(0.3)),
+        ),
+        child: ListTile(
+          leading: const Icon(Icons.forum, color: Color(0xFF1565C0)),
+          title: const Text('AI 医生助手 · 多轮问诊',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          subtitle: const Text('像真人医生一样逐步询问症状病史 → 结合上传报告综合分析 → '
+              '可能性判断 + 依据 + 检查建议（不替代医生）',
               style: TextStyle(fontSize: 12)),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
           onTap: onTap,
