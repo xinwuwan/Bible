@@ -70,6 +70,22 @@ void main() {
   check('无命中 answerZh 诚实引导',
       a5.answerZh.replaceAll('**', '').contains('不敢妄言'));
 
+  print('== FAQ 命中（怀爱伦健康事工著作，修复答非所问）==');
+  // 用户实测案例：问「怀爱伦的著作中哪些是关于健康事工的？」
+  // 旧算法只累加命中分，「怀爱伦」即误中「教义 #18 预言的恩赐」条目。
+  final a7 = logic.answer('怀爱伦的著作中哪些是关于健康事工的？');
+  check('怀爱伦健康事工回答非人工', a7.needsHuman == false);
+  check('怀爱伦健康事工回答有引用', a7.citations.isNotEmpty);
+  check('怀爱伦健康事工答到服务真诠', a7.answerZh.contains('服务真诠'));
+  check('怀爱伦健康事工答到医疗布道', a7.answerZh.contains('医疗布道'));
+  check('怀爱伦健康事工答无 CUV', a7.citations.every((c) => !c.isCuv));
+
+  print('== 覆盖率门控：跨主题问句不硬答 ==');
+  // 「安息日和洗礼有什么区别」同时含两个主题，任何单条目覆盖率仅 0.5，
+  // 必须转人工/RAG 而不是挑一个主题硬答。
+  final a8 = logic.answer('安息日和洗礼有什么区别');
+  check('跨主题问句转人工', a8.needsHuman == true);
+
   print('== 合规闸门：CUV 强制剔除 ==');
   // 直接构造含 CUV 的回答，验证 _enforce（通过 answer 不可达，这里用模型校验 isCuv）
   final cuvCit = QaCitation.fromJson({

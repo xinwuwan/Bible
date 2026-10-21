@@ -79,6 +79,27 @@ BOOK_ALIASES = {
     "revelation": "REV", "启示录": "REV", "啟示錄": "REV",
 }
 
+# 保守同义词归一组（组内首词为规范词）。只归一根词，避免语义漂移。
+# 与 Dart 端 offline_qa_logic.dart 的 _synGroups 保持一致。
+SYN_GROUPS = [
+    ["怀爱伦", "egw", "预言之灵", "怀师母"],
+    ["医疗布道", "健康事工", "医药布道", "健康布道", "医疗宣教", "medical missionary"],
+]
+_CANON = {w.lower(): g[0].lower() for g in SYN_GROUPS for w in g}
+
+
+def _canon(w: str) -> str:
+    return _CANON.get((w or "").lower(), (w or "").lower())
+
+
+def should_answer_direct(coverage: float, score: int) -> bool:
+    """覆盖率门控：问题概念被同一条目高比例覆盖才直接回答，否则宁缺毋滥。"""
+    if coverage >= 0.999 and score >= 2:
+        return True
+    if coverage >= 0.6 and score >= 4:
+        return True
+    return False
+
 
 class KnowledgeBase:
     def __init__(self, data: dict):
@@ -91,6 +112,18 @@ class KnowledgeBase:
         for v in self.verses:
             key = f"{str(v.get('book_code', '')).upper()} {int(v.get('chapter', 0))}:{int(v.get('verse', 0))}".lower()
             self._verse_index[key] = v
+        # 概念词典（原始关键词 + 归一词），供正向最大匹配切分
+        self._concept_dict = set()
+        self._max_concept_len = 1
+        for e in self.faq:
+            for kw in e.get("keywords", []):
+                kl = (kw or "").strip().lower()
+                if not kl:
+                    continue
+                cl = _canon(kl)
+                self._concept_dict.add(kl)
+                self._concept_dict.add(cl)
+                self._max_concept_len = max(self._max_concept_len, len(kl), len(cl))
 
     @classmethod
     def load(cls, path: str) -> "KnowledgeBase":
@@ -98,18 +131,56 @@ class KnowledgeBase:
             return cls(json.load(f))
 
     # ---------- 检索 ----------
-    def match_faq(self, question: str):
-        """返回 (best_entry, score)；无命中返回 (None, 0)。"""
-        q = (question or "").lower()
-        best, best_score = None, 0
+    def _concepts(self, question: str):
+        """正向最大匹配（FMM）切分问题中的概念集合；空集表示无已知概念。"""
+        ql = (question or "").lower()
+        out = set()
+        i, n = 0, len(ql)
+        while i < n:
+            hit = 0
+            for L in range(min(self._max_concept_len, n - i), 1, -1):
+                if ql[i:i + L] in self._concept_dict:
+                    hit = L
+                    break
+            if hit:
+                out.add(_canon(ql[i:i + hit]))
+                i += hit
+            else:
+                i += 1
+        return out
+
+    def _entry_concepts(self, entry):
+        return {_canon(k) for k in entry.get("keywords", []) if (k or "").strip()}
+
+    def match_faq_full(self, question: str):
+        """返回 (best_entry, score, coverage)；无命中返回 (None, 0, 0.0)。
+
+        score = 命中概念的长度加权和；coverage = 被同一条目覆盖的问题概念数 /
+        问题概念总数。排序键 (coverage, score, 命中数)。
+        """
+        q = self._concepts(question)
+        if not q:
+            return None, 0, 0.0
+        best, best_key = None, None
         for entry in self.faq:
-            score = 0
-            for kw in entry.get("keywords", []):
-                if (kw or "").lower() in q:
-                    score += 1
-            if score > best_score:
-                best_score, best = score, entry
-        return best, best_score
+            matched = self._entry_concepts(entry) & q
+            if not matched:
+                continue
+            score = sum(len(m) for m in matched)
+            key = (len(matched) / len(q), score, len(matched))
+            if best_key is None or key > best_key:
+                best_key, best = key, entry
+        if best is None:
+            return None, 0, 0.0
+        matched = self._entry_concepts(best) & q
+        coverage = len(matched) / len(q)
+        score = sum(len(m) for m in matched)
+        return best, score, coverage
+
+    def match_faq(self, question: str):
+        """兼容旧接口：返回 (best_entry, score)。门控判断请用 match_faq_full。"""
+        entry, score, _cov = self.match_faq_full(question)
+        return entry, score
 
     def lookup_verse_ref(self, question: str):
         """解析问题中的经文引用（中英均可），命中返回 verse dict，否则 None。"""

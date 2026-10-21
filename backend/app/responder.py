@@ -12,6 +12,7 @@ import urllib.error
 import uuid
 
 from . import compliance
+from .kb import should_answer_direct
 
 
 def _new_id() -> str:
@@ -66,9 +67,11 @@ class OfflineResponder:
             }
             return compliance.enforce(ans)
 
-        # 2) FAQ 关键词匹配
-        entry, score = self.kb.match_faq(q)
-        if entry and score > 0:
+        # 2) FAQ 概念匹配（覆盖率门控：问题概念须被同一条目高比例覆盖才直接答，
+        #    否则转人工，杜绝「怀爱伦的著作中哪些是关于健康事工的？」这类
+        #    跨主题问句被单个关键词误命中导致答非所问）
+        entry, score, cov = self.kb.match_faq_full(q)
+        if entry and should_answer_direct(cov, score):
             citations = [dict(c) for c in entry.get("citations", [])]
             body = entry.get("answer_zh", "")
             if egw_cites:
