@@ -85,7 +85,115 @@ class OfflineQaLogic {
   final List<Map<String, dynamic>> faq;
   final Map<String, Map<String, dynamic>> verseIndex; // "gen 1:1" -> verse row
 
-  OfflineQaLogic(this.faq, this.verseIndex);
+  /// 保守同义词归一组（组内首词为规范词）。只归一根词，避免语义漂移。
+  static const List<List<String>> _synGroups = [
+    ['怀爱伦', 'egw', '预言之灵', '怀师母'],
+    ['医疗布道', '健康事工', '医药布道', '健康布道', '医疗宣教', 'medical missionary'],
+  ];
+
+  /// 概念词典（全部条目的原始关键词 + 归一词），供正向最大匹配切分。
+  late final Set<String> _conceptDict;
+  late final int _maxConceptLen;
+
+  OfflineQaLogic(this.faq, this.verseIndex) {
+    _conceptDict = <String>{};
+    var maxLen = 1;
+    for (final entry in faq) {
+      for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
+        final kw = (raw as String).trim();
+        if (kw.isEmpty) continue;
+        final kl = kw.toLowerCase();
+        final cl = _canon(kl);
+        _conceptDict.add(kl);
+        _conceptDict.add(cl);
+        if (kl.length > maxLen) maxLen = kl.length;
+        if (cl.length > maxLen) maxLen = cl.length;
+      }
+    }
+    _maxConceptLen = maxLen;
+  }
+
+  static String _canon(String w) {
+    final l = w.toLowerCase();
+    for (final g in _synGroups) {
+      if (g.contains(l)) return g[0].toLowerCase();
+    }
+    return l;
+  }
+
+  /// 正向最大匹配（FMM）切分问题中的概念集合；空集表示无已知概念。
+  Set<String> _concepts(String question) {
+    final ql = question.toLowerCase();
+    final out = <String>{};
+    var i = 0;
+    while (i < ql.length) {
+      var hitLen = 0;
+      final room = ql.length - i;
+      final limit = _maxConceptLen < room ? _maxConceptLen : room;
+      for (var L = limit; L >= 2; L--) {
+        if (_conceptDict.contains(ql.substring(i, i + L))) {
+          hitLen = L;
+          break;
+        }
+      }
+      if (hitLen > 0) {
+        out.add(_canon(ql.substring(i, i + hitLen)));
+        i += hitLen;
+      } else {
+        i += 1;
+      }
+    }
+    return out;
+  }
+
+  Set<String> _entryConcepts(Map<String, dynamic> entry) {
+    final kw = <String>{};
+    for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
+      final k = (raw as String).trim().toLowerCase();
+      if (k.isNotEmpty) kw.add(_canon(k));
+    }
+    return kw;
+  }
+
+  /// 最佳 FAQ 匹配：按 (coverage, score) 双键排序。
+  /// coverage = 被同一条目覆盖的问题概念数 / 问题概念总数。
+  /// 返回 {'entry','score','coverage'}；无命中返回 null。
+  Map<String, dynamic>? _bestFaq(String question) {
+    final q = _concepts(question);
+    if (q.isEmpty) return null;
+    Map<String, dynamic>? best;
+    var bestCov = 0.0;
+    var bestScore = 0;
+    var bestN = 0;
+    for (final entry in faq) {
+      final matched = _entryConcepts(entry).intersection(q);
+      if (matched.isEmpty) continue;
+      var score = 0;
+      for (final m in matched) {
+        score += m.length;
+      }
+      final cov = matched.length / q.length;
+      if (best == null ||
+          cov > bestCov ||
+          (cov == bestCov && score > bestScore) ||
+          (cov == bestCov && score == bestScore && matched.length > bestN)) {
+        best = entry;
+        bestCov = cov;
+        bestScore = score;
+        bestN = matched.length;
+      }
+    }
+    if (best == null) return null;
+    return {'entry': best, 'score': bestScore, 'coverage': bestCov};
+  }
+
+  /// 覆盖率门控：仅当问题概念被同一条目高比例覆盖时才直接回答，
+  /// 否则宁缺毋滥（转 RAG 综合 / 人工），避免答非所问。
+  static bool _shouldAnswerDirect(double coverage, int score) {
+    if (coverage >= 0.999 && score >= 2) return true;
+    if (coverage >= 0.6 && score >= 4) return true;
+    return false;
+  }
 
   /// 从已加载的经文 + faq 列表构建（book_id -> book_code 映射索引经文）。
   factory OfflineQaLogic.build({
@@ -139,35 +247,29 @@ class OfflineQaLogic {
       return _enforce(ans);
     }
 
-    // 2) FAQ 关键词匹配（按关键词长度加权：越具体的关键词权重越大，
-    //    避免单个短词意外命中、也让长问题中的核心专名主导排序）
-    Map<String, dynamic>? best;
-    var bestScore = 0;
-    final ql = q.toLowerCase();
-    for (final entry in faq) {
-      var score = 0;
-      for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
-        final kw = (raw as String).toLowerCase();
-        if (kw.isNotEmpty && ql.contains(kw)) score += kw.length;
+    // 2) FAQ 概念匹配（FMM 切分 + 同义词归一 + 覆盖率门控）。
+    //    旧实现只累加命中关键词长度分：问题「怀爱伦的著作中哪些是关于
+    //    健康事工的？」中「怀爱伦」即可命中教义条目（答非所问）。现在要求
+    //    问题概念被同一条目高比例覆盖才直接答，否则转 RAG/人工。
+    final m = _bestFaq(q);
+    if (m != null) {
+      final cov = m['coverage'] as double;
+      final score = m['score'] as int;
+      if (_shouldAnswerDirect(cov, score)) {
+        final best = m['entry'] as Map<String, dynamic>;
+        final citations = (best['citations'] as List<dynamic>? ?? const [])
+            .whereType<Map<String, dynamic>>()
+            .map(QaCitation.fromJson)
+            .toList();
+        final ans = QaAnswer(
+          answerId: 'qa_offline_faq',
+          answerZh: (best['answer_zh'] as String?) ?? '',
+          citations: citations,
+          confidence: (0.70 + 0.05 * score).clamp(0.0, 0.92),
+          needsHuman: false,
+        );
+        return _enforce(ans);
       }
-      if (score > bestScore) {
-        bestScore = score;
-        best = entry;
-      }
-    }
-    if (best != null && bestScore >= 2) {
-      final citations = (best['citations'] as List<dynamic>? ?? const [])
-          .whereType<Map<String, dynamic>>()
-          .map(QaCitation.fromJson)
-          .toList();
-      final ans = QaAnswer(
-        answerId: 'qa_offline_faq',
-        answerZh: (best['answer_zh'] as String?) ?? '',
-        citations: citations,
-        confidence: (0.70 + 0.05 * bestScore).clamp(0.0, 0.92),
-        needsHuman: false,
-      );
-      return _enforce(ans);
     }
 
     // 3) 无命中 -> 转人工（不臆测），但给出可操作的指引
@@ -188,18 +290,32 @@ class OfflineQaLogic {
 
   /// 离线检索 top-K FAQ 条目（供 RAG 兜底作 context 用）。
   /// 返回条目本身（含 answer_zh / citations），调用方负责转成 RagContextItem。
+  /// 排序与直接答一致：覆盖率优先、长度加权分次之。
   List<Map<String, dynamic>> retrieve(String question, {int topK = 3}) {
-    final ql = question.trim().toLowerCase();
+    final q = _concepts(question.trim());
+    if (q.isEmpty) return const [];
     final scored = <Map<String, dynamic>>[];
     for (final entry in faq) {
+      final matched = _entryConcepts(entry).intersection(q);
+      if (matched.isEmpty) continue;
       var score = 0;
-      for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
-        final kw = (raw as String).toLowerCase();
-        if (kw.isNotEmpty && ql.contains(kw)) score += kw.length;
+      for (final m in matched) {
+        score += m.length;
       }
-      if (score > 0) scored.add({'score': score, 'entry': entry});
+      scored.add({
+        'entry': entry,
+        'cov': matched.length / q.length,
+        'score': score,
+        'n': matched.length,
+      });
     }
-    scored.sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
+    scored.sort((a, b) {
+      final c = (b['cov'] as double).compareTo(a['cov'] as double);
+      if (c != 0) return c;
+      final s = (b['score'] as int).compareTo(a['score'] as int);
+      if (s != 0) return s;
+      return (b['n'] as int).compareTo(a['n'] as int);
+    });
     return scored
         .take(topK)
         .map((e) => e['entry'] as Map<String, dynamic>)
