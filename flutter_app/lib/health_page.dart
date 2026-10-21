@@ -9,6 +9,7 @@ import 'health_repository.dart';
 import 'health_topic_card.dart';
 import 'health_topic_page.dart';
 import 'health_qa_page.dart';
+import 'health_consult_page.dart';
 
 class HealthPage extends StatefulWidget {
   final HealthRepository repo;
@@ -231,6 +232,15 @@ class _HealthPageState extends State<HealthPage> {
                               ),
                             ),
                           ),
+                          // 专业咨询（医药布道）入口
+                          SliverToBoxAdapter(
+                            child: _ConsultEntry(
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (_) => const HealthConsultPage()),
+                              ),
+                            ),
+                          ),
                           if (_topics.isEmpty)
                             const SliverFillRemaining(
                               hasScrollBody: false,
@@ -431,6 +441,32 @@ class _HealthQaEntry extends StatelessWidget {
           title: const Text('有问题？问问健康顾问',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
           subtitle: const Text('关于饮食、运动、睡眠、节制等，本地即时回答（不替代医生）',
+              style: TextStyle(fontSize: 12)),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: onTap,
+        ),
+      );
+}
+
+class _ConsultEntry extends StatelessWidget {
+  final VoidCallback? onTap;
+
+  const _ConsultEntry({this.onTap});
+
+  @override
+  Widget build(BuildContext context) => Container(
+        margin: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF3E5F5),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFF6A1B9A).withOpacity(0.3)),
+        ),
+        child: ListTile(
+          leading:
+              const Icon(Icons.medical_services, color: Color(0xFF6A1B9A)),
+          title: const Text('专业咨询 · 医药布道',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          subtitle: const Text('上传诊断材料 → 核验级别 → 疾病解读 + 医药布道建议（不替代医生）',
               style: TextStyle(fontSize: 12)),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
           onTap: onTap,
