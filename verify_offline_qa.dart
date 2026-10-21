@@ -86,6 +86,57 @@ void main() {
   final a8 = logic.answer('安息日和洗礼有什么区别');
   check('跨主题问句转人工', a8.needsHuman == true);
 
+  print('== FAQ 命中（怀爱伦儿童教育著作，v49 修复答非所问）==');
+  // 用户实测案例：问「怀爱伦的著作中哪些是关于儿童教育的？」
+  // 旧数据只有健康条目持「怀爱伦的著作」，本问句切出概念
+  // {怀爱伦的著作, 儿童教育} -> 健康条目覆盖率仅 0.5，未过门控转人工。
+  // v49 新增条目 A 同时持这两个关键词 -> 覆盖率 1.0 直接回答。
+  final a9 = logic.answer('怀爱伦的著作中哪些是关于儿童教育的？');
+  check('儿童教育原句非人工', a9.needsHuman == false);
+  check('儿童教育原句有引用', a9.citations.isNotEmpty);
+  check('儿童教育原句答到教育论', a9.answerZh.contains('教育论'));
+  check('儿童教育原句答到儿童教育指南', a9.answerZh.contains('儿童教育指南'));
+  check('儿童教育原句无 CUV', a9.citations.every((c) => !c.isCuv));
+
+  // 变体：裸「怀爱伦」+ 概念（靠条目 A 的「怀爱伦」关键词拿到覆盖率 1.0）
+  final a10 = logic.answer('怀爱伦关于儿童教育的著作');
+  check('儿童教育变体(裸怀爱伦)非人工', a10.needsHuman == false);
+  check('儿童教育变体答到教育论', a10.answerZh.contains('教育论'));
+
+  print('== FAQ 命中（怀爱伦著作总览，v49 新条目）==');
+  // 旧数据「怀著/著作」等通用词由健康条目持有 -> 通用问句被健康答案抢答。
+  // v49 健康条目瘦身为健康专用，总览条目 C 接管通用问句（插在健康条目前赢并列）。
+  final a11 = logic.answer('怀著有哪些');
+  check('怀著有哪些非人工', a11.needsHuman == false);
+  check('怀著有哪些答到历代愿望', a11.answerZh.contains('历代愿望'));
+  check('怀著有哪些答到善恶之争', a11.answerZh.contains('善恶之争'));
+  check('怀著有哪些无 CUV', a11.citations.every((c) => !c.isCuv));
+  final a12 = logic.answer('从哪本开始读怀著');
+  check('怀著入门问句非人工', a12.needsHuman == false);
+  check('怀著入门答到喜乐的密码', a12.answerZh.contains('喜乐的密码'));
+
+  print('== FAQ 命中（幼儿奉献礼，v49 新条目）==');
+  // 严禁裸词「奉献」（会撞 #24 十一奉献）；奉献礼系词只进新条目。
+  final a13 = logic.answer('幼儿奉献礼是什么意思');
+  check('幼儿奉献礼非人工', a13.needsHuman == false);
+  check('幼儿奉献礼答到哈拿', a13.answerZh.contains('哈拿'));
+  check('幼儿奉献礼不答十一奉献', !a13.answerZh.contains('十一奉献'));
+  // 回归：#24 十一奉献不被奉献礼条目抢答
+  final a14 = logic.answer('十一奉献是什么意思');
+  check('十一奉献回归非人工', a14.needsHuman == false);
+  check('十一奉献回归答到十分之一', a14.answerZh.contains('十分之一'));
+
+  print('== 修复：家庭祭坛问句不再命中夫妻吵架条目（v49）==');
+  // 旧数据「家庭祭坛/家庭敬拜/亲子祷告」系词由 idx113 夫妻吵架条目持有，
+  // 问家庭祭坛会得到吵架答案（答非所问）。v49 将这些词移交家庭敬拜条目。
+  final a15 = logic.answer('家庭祭坛怎么搞');
+  check('家庭祭坛问句非人工', a15.needsHuman == false);
+  check('家庭祭坛答到家庭敬拜', a15.answerZh.contains('敬拜'));
+  check('家庭祭坛不再答到吵架', !a15.answerZh.contains('吵架'));
+  // 回归：夫妻祷告仍由吵架条目回答
+  final a16 = logic.answer('夫妻一起祷告好吗');
+  check('夫妻祷告回归命中吵架条目', a16.needsHuman == false && a16.answerZh.contains('冷战'));
+
   print('== 合规闸门：CUV 强制剔除 ==');
   // 直接构造含 CUV 的回答，验证 _enforce（通过 answer 不可达，这里用模型校验 isCuv）
   final cuvCit = QaCitation.fromJson({
