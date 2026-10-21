@@ -129,7 +129,21 @@ jobs:
         run: flutter pub get
 
       - name: Analyze
-        run: flutter analyze .
+        # 输出同时落盘；失败时由下一步上传为 artifact，便于定位（本沙箱无 Flutter SDK）
+        run: |
+          flutter analyze . > analyze.log 2>&1
+          code=$?
+          cat analyze.log
+          exit $code
+
+      - name: Upload analyze log (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: analyze-log
+          path: flutter_app/analyze.log
+          if-no-files-found: warn
+          retention-days: 3
 
       - name: Build web release (EdgeOne, base-href /)
         # EdgeOne Pages 是域名根部署，必须用 base-href "/"；
