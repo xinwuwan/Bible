@@ -246,10 +246,10 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
   }) {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.all(Radius.circular(14)),
+        border: Border.fromBorderSide(BorderSide(color: Colors.black12)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -553,21 +553,13 @@ class _ComplianceBanner extends StatelessWidget {
 class _SubTitle extends StatelessWidget {
   final String text;
   const _SubTitle(this.text);
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Row(
         children: [
-          Container(
-            width: 3,
-            height: 14,
-            decoration: BoxDecoration(
-              color: const Color(0xFF6A1B9A),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
+          const _MarkBar(),
           const SizedBox(width: 6),
           Text(text,
               style: const TextStyle(
@@ -578,6 +570,23 @@ class _SubTitle extends StatelessWidget {
       ),
     );
   }
+}
+
+/// _SubTitle 左侧紫色竖条（全 const，规避 lint）
+class _MarkBar extends StatelessWidget {
+  const _MarkBar();
+
+  @override
+  Widget build(BuildContext context) => const SizedBox(
+        width: 3,
+        height: 14,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Color(0xFF6A1B9A),
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
+        ),
+      );
 }
 
 class _Bullet extends StatelessWidget {
