@@ -142,8 +142,6 @@ class ConsultAttachment {
     required this.extractedText,
     required this.hint,
   });
-
-  bool get hasText => extractedText.trim().isNotEmpty;
 }
 
 /// 静态数据加载 + 材料核验引擎
