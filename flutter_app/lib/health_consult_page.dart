@@ -452,39 +452,41 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     children.add(const SizedBox(height: 10));
 
     if (p != null) {
-      if (p.overview.isNotEmpty) ...[
-        const _SubTitle('这是什么病'),
-        Text(p.overview,
-            style: const TextStyle(fontSize: 13, height: 1.6)),
-        const SizedBox(height: 10),
-      ],
-      if (p.causes.isNotEmpty) ...[
-        const _SubTitle('怎么形成的'),
-        for (final c in p.causes) _Bullet(c),
-        const SizedBox(height: 10),
-      ],
-      if (p.impacts.isNotEmpty) ...[
-        const _SubTitle('对身体的影响'),
-        for (final i in p.impacts) _Bullet(i),
-        const SizedBox(height: 10),
-      ],
-      if (p.prognosis.isNotEmpty) ...[
-        const _SubTitle('后续可能的发展'),
-        Text(p.prognosis,
-            style: const TextStyle(fontSize: 13, height: 1.6)),
-        const SizedBox(height: 10),
-      ],
-      if (p.advice.isNotEmpty) ...[
-        const _SubTitle('医药布道建议（怀著 · NEWSTART）'),
-        const Text(
+      if (p.overview.isNotEmpty) {
+        children.add(const _SubTitle('这是什么病'));
+        children.add(Text(p.overview,
+            style: const TextStyle(fontSize: 13, height: 1.6)));
+        children.add(const SizedBox(height: 10));
+      }
+      if (p.causes.isNotEmpty) {
+        children.add(const _SubTitle('怎么形成的'));
+        for (final c in p.causes) children.add(_Bullet(c));
+        children.add(const SizedBox(height: 10));
+      }
+      if (p.impacts.isNotEmpty) {
+        children.add(const _SubTitle('对身体的影响'));
+        for (final i in p.impacts) children.add(_Bullet(i));
+        children.add(const SizedBox(height: 10));
+      }
+      if (p.prognosis.isNotEmpty) {
+        children.add(const _SubTitle('后续可能的发展'));
+        children.add(Text(p.prognosis,
+            style: const TextStyle(fontSize: 13, height: 1.6)));
+        children.add(const SizedBox(height: 10));
+      }
+      if (p.advice.isNotEmpty) {
+        children.add(const _SubTitle('医药布道建议（怀著 · NEWSTART）'));
+        children.add(const Text(
           '结合怀爱伦著作倡导的八大自然疗法原则与圣经健康律，以下建议作为生活方式参考，不替代药物治疗：',
           style: TextStyle(fontSize: 12, color: Colors.black54),
-        ),
-        const SizedBox(height: 6),
-        for (final a in p.advice)
-          _AdviceRow(pillar: a['pillar'] ?? '', text: a['text'] ?? ''),
-        const SizedBox(height: 10),
-      ],
+        ));
+        children.add(const SizedBox(height: 6));
+        for (final a in p.advice) {
+          children.add(_AdviceRow(
+              pillar: a['pillar'] ?? '', text: a['text'] ?? ''));
+        }
+        children.add(const SizedBox(height: 10));
+      }
     } else {
       children.add(const _SubTitle('疾病库暂未收录该诊断'));
       children.add(const Text(
