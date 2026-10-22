@@ -147,6 +147,45 @@ void main() {
   });
   check('CUV 判定 isCuv=true', cuvCit.isCuv);
 
+  print('== v50 新增 18 条怀著专题条目路由（锁定可达性 + 无 CUV）==');
+  // 每条用 kb.py 已验证可达的专属问句；断言非人工、有引用、无 CUV、含预期标记。
+  final v50cases = <String, String>{
+    '怀爱伦论饮食': '五谷',
+    '怀爱伦论节制': '烟草',
+    'newstart 八大原则': 'NEWSTART',
+    '怀爱伦论运动': '懒惰是极大的咒诅',
+    '怀爱伦论阳光': '自然疗法',
+    '喜乐乃是良药': '心智与身体的关系',
+    '怀爱伦论医治': '医疗对立',
+    '什么是医疗布道事工': '福音的实践',
+    '怀爱伦论教育': '恢复',
+    '怀爱伦论家庭教育': '第一所学校',
+    '圣经是孩子的第一本书': '第一本教科书',
+    '怀爱伦论祷告': '灵魂的呼吸',
+    '怀爱伦论十一奉献': '十分之一',
+    '怀爱伦论安息日': '创造与救赎',
+    '怀爱伦论死亡': '睡了',
+    '怀爱伦论复临': '主的再来',
+    '如何读怀著': '喜乐的密码',
+    '怀著权威': '预言恩赐',
+  };
+  v50cases.forEach((q, marker) {
+    final a = logic.answer(q);
+    check('[$q] 非人工', a.needsHuman == false);
+    check('[$q] 有引用', a.citations.isNotEmpty);
+    check('[$q] 无 CUV', a.citations.every((c) => !c.isCuv));
+    check('[$q] 结论加粗', a.answerZh.startsWith('**'));
+    check('[$q] 含预期标记:$marker', a.answerZh.contains(marker));
+  });
+
+  print('== v50 裸词「怀爱伦」仍归通用条目（idx23，不串味）==');
+  final bare = logic.answer('怀爱伦');
+  check('裸词怀爱伦非人工', bare.needsHuman == false);
+  check('裸词怀爱伦含预言恩赐', bare.answerZh.contains('预言恩赐'));
+
+  print('== v50 数据规模 ==');
+  check('faq 已扩展至 >=261 条', faq.length >= 261);
+
   print('\n结果：$passed 通过 / $failed 失败');
   exit(failed == 0 ? 0 : 1);
 }

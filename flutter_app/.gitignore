@@ -60,7 +60,6 @@ unlinked_spec.ds
 **/ios/Runner/GeneratedPluginRegistrant.*
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !**/android/**/gradle-wrapper.jar
