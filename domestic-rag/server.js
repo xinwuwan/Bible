@@ -286,6 +286,98 @@ async function callLLM(system, user) {
 }
 
 // ---------------------------------------------------------------------------
+// SDA 圣经注释按节抽取（v53）
+//
+// 背景：App 原先把用户跳转到第三方镜像 bible-strong.app 的注释页，用户要求
+// 「点击后在当条经文下方内联显示，不外跳」。该站无 CORS 头且有
+// X-Frame-Options: SAMEORIGIN，前端直抓/iframe 均被浏览器拦截，只能由服务端
+// 代理抓取、解析、清洗后返回纯文本 JSON。
+// 页面（Next.js RSC）内嵌 sections 数组：
+//   {slug:"1-1",startVerse:1,endVerse:1,html:"\x3Cp>In the beginning..."}
+// 按节精准抽取；同一节可能含多条（正文注释 + Ellen G. White 评注），全部返回。
+// ---------------------------------------------------------------------------
+const SDABC_OSIS = {
+  GEN: 'gen', EXO: 'exod', LEV: 'lev', NUM: 'num', DEU: 'deut',
+  JOS: 'josh', JDG: 'judg', RUT: 'ruth', '1SA': '1sam', '2SA': '2sam',
+  '1KI': '1kgs', '2KI': '2kgs', '1CH': '1chr', '2CH': '2chr', EZR: 'ezra',
+  NEH: 'neh', EST: 'esth', JOB: 'job', PSA: 'ps', PRO: 'prov', ECC: 'eccl',
+  SNG: 'song', ISA: 'isa', JER: 'jer', LAM: 'lam', EZK: 'ezek', DAN: 'dan',
+  HOS: 'hos', JOL: 'joel', AMO: 'amos', OBA: 'obad', JON: 'jonah', MIC: 'mic',
+  NAM: 'nah', HAB: 'hab', ZEP: 'zeph', HAG: 'hag', ZEC: 'zech', MAL: 'mal',
+  MAT: 'matt', MRK: 'mark', LUK: 'luke', JHN: 'john', ACT: 'acts',
+  ROM: 'rom', '1CO': '1cor', '2CO': '2cor', GAL: 'gal', EPH: 'eph',
+  PHP: 'phil', COL: 'col', '1TH': '1thess', '2TH': '2thess', '1TI': '1tim',
+  '2TI': '2tim', TIT: 'titus', PHM: 'phlm', HEB: 'heb', JAS: 'jas',
+  '1PE': '1pet', '2PE': '2pet', '1JN': '1john', '2JN': '2john',
+  '3JN': '3john', JUD: 'jude', REV: 'rev',
+};
+
+function unescapeRsc(s) {
+  return String(s || '')
+    .replace(/\\x3C/g, '<').replace(/\\x3E/g, '>').replace(/\\x26/g, '&')
+    .replace(/\\x3D/g, '=').replace(/\\x22/g, '"').replace(/\\x27/g, "'")
+    .replace(/\\x2F/g, '/').replace(/\\u003c/g, '<').replace(/\\u003e/g, '>')
+    .replace(/\\n/g, '\n').replace(/\\t/g, ' ').replace(/\\r/g, '')
+    .replace(/\\\\/g, '\\');
+}
+
+function htmlToText(h) {
+  let t = unescapeRsc(h);
+  t = t.replace(/<\/(p|div|li|h[1-6]|blockquote)>/gi, '\n');
+  t = t.replace(/<br\s*\/?>/gi, '\n');
+  t = t.replace(/<[^>]+>/g, '');
+  t = t.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  t = t.replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n');
+  return t.trim();
+}
+
+async function fetchCommentary(bookCode, chapter, verse) {
+  const osis = SDABC_OSIS[String(bookCode || '').toUpperCase()];
+  if (!osis) return { ok: false, error: `unknown book: ${bookCode}` };
+  const url = `https://bible-strong.app/commentary/en/sdabc/${osis}/${chapter}`;
+  const timeoutMs = Number(process.env.RAG_COMM_TIMEOUT_MS) || 20000;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; bible-app/1.0)' },
+      signal: ctrl.signal,
+    });
+    if (!r.ok) return { ok: false, error: `upstream ${r.status}` };
+    const html = await r.text();
+    const re = /\{slug:"([0-9\-]+)",startVerse:(\d+),endVerse:(\d+),html:"((?:[^"\\]|\\.)*)"\}/g;
+    const parts = [];
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      const sv = parseInt(m[2], 10);
+      const ev = parseInt(m[3], 10);
+      if (verse >= sv && verse <= ev) {
+        const text = htmlToText(m[4]);
+        if (text) parts.push(text);
+      }
+    }
+    if (!parts.length) {
+      return { ok: false, error: `no commentary section for ${bookCode} ${chapter}:${verse}` };
+    }
+    return {
+      ok: true,
+      ref: `${bookCode.toUpperCase()} ${chapter}:${verse}`,
+      text: parts.join('\n\n'),
+      source: 'SDA Bible Commentary (bible-strong.app 镜像)',
+      url,
+    };
+  } catch (e) {
+    const msg = (e && e.name === 'AbortError')
+      ? `commentary timeout after ${timeoutMs}ms`
+      : `commentary fetch failed: ${(e && e.message) || e}`;
+    return { ok: false, error: msg };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // HTTP 服务
 // ---------------------------------------------------------------------------
 function jsonRes(res, status, obj, origin) {
@@ -293,7 +385,7 @@ function jsonRes(res, status, obj, origin) {
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': origin || '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     Vary: 'Origin',
   });
@@ -313,7 +405,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': origin || '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       Vary: 'Origin',
     });
@@ -321,6 +413,21 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (req.method === 'GET') {
+    // v53：SDA 圣经注释按节抽取（服务端代理，返回纯文本 JSON）
+    const u = new URL(req.url, 'http://x');
+    if (u.pathname.replace(/\/+$/, '') === '/api/commentary') {
+      const book = (u.searchParams.get('book') || u.searchParams.get('ref') || '').trim();
+      let bk = book, ch = u.searchParams.get('chapter'), vs = u.searchParams.get('verse');
+      const refM = book.match(/^([0-9]?[A-Za-z]{2,4})\s*(\d{1,3})\s*[:：]\s*(\d{1,3})$/);
+      if (refM) { bk = refM[1]; ch = refM[2]; vs = refM[3]; }
+      const chN = parseInt(ch || '', 10);
+      const vsN = parseInt(vs || '', 10);
+      if (!bk || !Number.isFinite(chN) || !Number.isFinite(vsN)) {
+        return jsonRes(res, 400, { ok: false, error: 'need book+chapter+verse (or ref=GEN 1:1)' }, origin);
+      }
+      const out = await fetchCommentary(bk, chN, vsN);
+      return jsonRes(res, out.ok ? 200 : 502, out, origin);
+    }
     return jsonRes(res, 200, { service: 'bible-rag-proxy', ok: true, model: CONFIG.model }, origin);
   }
 

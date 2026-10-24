@@ -2,8 +2,15 @@
 // 纯 Dart 校验脚本：直接 import 真实的 health_models.dart（不含任何 Flutter 依赖），
 // 在普通 Dart VM 上实跑核心合规逻辑与数据转换，验证模块 C 的关键正确性。
 // 运行：<dart> verify_health_logic.dart   （无需 Flutter 引擎，故不依赖 dart:ui）
+//
+// v53：① import 从陈旧的根目录副本切到 flutter_app/lib/ 真实代码
+//        （根目录副本停留在 10-06，缺 HealthDailyTip，CI 等于在测旧代码）；
+//      ② 新增健康问答匹配护栏测试段（health_qa_matcher.dart，纯 Dart）。
 import 'dart:convert';
-import 'health_models.dart';
+import 'dart:io';
+
+import 'flutter_app/lib/health_models.dart';
+import 'flutter_app/lib/health_qa_matcher.dart';
 
 int _pass = 0;
 int _fail = 0;
@@ -145,6 +152,55 @@ void main() {
   final src = HealthSource.fromRow(sRow);
   check('Source type BIBLE', src.sourceType == HealthSourceType.bible);
   check('Source id 保留', src.sourceId == 'GEN 1:29');
+
+  // =====================================================================
+  // 11) v53 健康问答匹配护栏（health_qa_matcher.dart，纯 Dart 实跑真实数据）
+  // =====================================================================
+  print('');
+  print('=== v53 健康问答匹配护栏 ===');
+  final hfaq = parseHealthFaq(
+      File('flutter_app/assets/web/health_faq.json').readAsStringSync());
+  check('health_faq 已加载 (>=54)', hfaq.length >= 54);
+
+  // 用户实报案例：草本木本同食 -> 应命中「食物相克/搭配」条目，且非弱命中
+  final m1 = matchHealthFaq(hfaq, '草本植物和木本植物可以一起同食吗？');
+  final m1Ans = (m1.entry?['answer_zh'] as String?) ?? '';
+  check('草本木本同食 -> 命中食物搭配条目',
+      m1.hasEntry && !m1.weak && m1Ans.contains('食物相克'),
+      'score=${m1.score} hits=${m1.hits}');
+  check('草本木本同食 -> 多关键词命中（非单弱命中）', m1.hits.length >= 2,
+      'hits=${m1.hits}');
+
+  // 同义问法：两种食物能不能一起吃
+  final m2 = matchHealthFaq(hfaq, '米饭和面条能一起吃吗');
+  check('一起吃问法 -> 命中食物搭配条目',
+      m2.hasEntry && !m2.weak && ((m2.entry?['answer_zh'] as String?) ?? '').contains('食物相克'),
+      'score=${m2.score} hits=${m2.hits}');
+
+  // 护栏核心：单命中短通用类别词 -> 弱命中，不得直接作答
+  final m3 = matchHealthFaq(hfaq, '植物');
+  check('单命中「植物」-> 弱命中（不直接答）', m3.weak, 'hits=${m3.hits}');
+  final m4 = matchHealthFaq(hfaq, '饮食');
+  check('单命中「饮食」-> 弱命中（不直接答）', m4.weak, 'hits=${m4.hits}');
+
+  // 具体症状/主题问句不受护栏影响
+  final m5 = matchHealthFaq(hfaq, '睡不着怎么办');
+  check('睡不着 -> 强命中睡眠条目', m5.hasEntry && !m5.weak,
+      'score=${m5.score} hits=${m5.hits}');
+  final m6 = matchHealthFaq(hfaq, '头疼怎么缓解');
+  check('头疼 -> 强命中头痛条目', m6.hasEntry && !m6.weak,
+      'score=${m6.score} hits=${m6.hits}');
+  final m7 = matchHealthFaq(hfaq, '天天跑步好吗');
+  check('跑步 -> 非弱命中（含非通用词）', m7.hasEntry && !m7.weak,
+      'score=${m7.score} hits=${m7.hits}');
+
+  // 无命中 -> 空
+  final m8 = matchHealthFaq(hfaq, 'zzz完全不相关的问题qqq');
+  check('无命中 -> hasEntry=false', !m8.hasEntry);
+
+  // retrieve 不过护栏：给 RAG 的上下文应包含弱命中条目
+  final r1 = retrieveHealthFaq(hfaq, '植物', topK: 3);
+  check('retrieve「植物」仍返回上下文（护栏只拦直接答）', r1.isNotEmpty);
 
   print('');
   print('结果: $_pass 通过 / $_fail 失败');

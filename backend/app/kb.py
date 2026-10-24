@@ -96,6 +96,38 @@ SYN_GROUPS = [
 ]
 _CANON = {w.lower(): g[0].lower() for g in SYN_GROUPS for w in g}
 
+# ---------------------------------------------------------------------------
+# 疑问/功能填充词（v53）：FMM 切分后，问题中剩余的这些片段不构成「未覆盖实义主题」。
+# 用于 unknown_topic_veto——防止「怀爱伦的著作中，有哪些是关于家庭的？」这类
+# 问句里，未收录的主题词（家庭）被覆盖率门控漏算（切不出 -> 看不见 -> 误判全覆盖）。
+# ---------------------------------------------------------------------------
+QUESTION_FILLER = [
+    "请问", "一下", "想问", "问一下", "告诉我", "讲讲", "说说", "指教", "指点",
+    "解释", "介绍", "关于", "对于", "来说", "说来", "看来", "根据", "按照",
+    "怎么样", "为什么", "能不能", "可不可以", "有没有", "是不是", "与否",
+    "什么意思", "是什么意思", "啥意思", "意思",
+    "可以", "应该", "应当", "该", "就", "够", "不够", "足以",
+    "多少", "哪些", "哪个", "哪里", "哪儿", "哪来", "哪些人", "什么", "啥", "怎么",
+    "怎样", "如何", "能否", "时候", "何时", "吗", "呢", "吧", "啊", "呀", "哦",
+    "不", "没", "无", "别", "甭",
+    "我们", "你们", "他们", "她们", "咱们", "大家", "我的", "你的", "他的",
+    "我", "你", "他", "她", "它", "咱",
+    "是", "有", "在", "和", "与", "及", "或", "而", "并", "的", "了", "着",
+    "过", "把", "被", "让", "使", "会", "能", "要", "想", "得", "这", "那",
+    "之", "其", "以", "为", "于", "从", "到", "对", "跟", "同", "向", "往",
+]
+_FILLER_SORTED = sorted(set(QUESTION_FILLER), key=len, reverse=True)
+_PUNCT_RE = re.compile(
+    r"[\s\-_,.?!;:'\"()\[\]{}<>/\\|@#$%^&*+=~`，。？！、；：「」『』（）《》〈〉…—·\d]+"
+)
+
+
+def _strip_filler(text: str) -> str:
+    for f in _FILLER_SORTED:
+        if f in text:
+            text = text.replace(f, "")
+    return text
+
 
 def _canon(w: str) -> str:
     return _CANON.get((w or "").lower(), (w or "").lower())
@@ -172,14 +204,100 @@ class KnowledgeBase:
     def _entry_concepts(self, entry):
         return {_canon(k) for k in entry.get("keywords", []) if (k or "").strip()}
 
+    def _cut_spans(self, question: str):
+        """FMM 切分，返回被概念词典吃掉的字符区间 [(start, end)]（与 _concepts 同一走法）。"""
+        ql = (question or "").lower()
+        spans = []
+        i, n = 0, len(ql)
+        while i < n:
+            hit = 0
+            for L in range(min(self._max_concept_len, n - i), 1, -1):
+                if ql[i:i + L] in self._concept_dict:
+                    hit = L
+                    break
+            if hit:
+                spans.append((i, i + hit))
+                i += hit
+            else:
+                i += 1
+        return spans
+
+    def _uncovered_residue(self, question: str) -> str:
+        """FMM 切分后未被任何概念吃掉的字符，去填充词与标点后的实义残留。"""
+        q = question or ""
+        if not q:
+            return ""
+        covered = [False] * len(q)
+        for s, e in self._cut_spans(q):
+            for k in range(s, e):
+                covered[k] = True
+        rest = "".join(ch for k, ch in enumerate(q) if not covered[k])
+        rest = _strip_filler(rest)
+        rest = _PUNCT_RE.sub("", rest)
+        return rest
+
+    @staticmethod
+    def _residue_covered_by(residue: str, entry: dict) -> bool:
+        """残留实义词是否已被该条目答案文本涵盖（任一 2 字窗口命中即算）。"""
+        if len(residue) < 2:
+            return True
+        text = ((entry.get("answer_zh") or "")).lower()
+        if not text:
+            return False
+        r = residue.lower()
+        for i in range(len(r) - 1):
+            if r[i:i + 2] in text:
+                return True
+        return False
+
+    def unknown_topic_veto(self, question: str) -> bool:
+        """v53 未覆盖主题否决：问题中存在未被概念词典覆盖、且未被最佳条目
+        答案文本涵盖的实义片段(>=2字) -> True（不敢直接答）。
+
+        根因（2026-10-24 实测）：「怀爱伦的著作中，有哪些是关于家庭的？」里
+        「家庭」不在任何关键词中，FMM 切不出它，对覆盖率完全不可见，cov=1.00
+        误判全覆盖，直接答了「入门路线」条目（答非所问）。同为「著作中关于X」
+        的问句，问「饮食」时因「饮食」在词典中被切出、cov 降到 0.5 才正确转 RAG。
+
+        精化（防误伤）：残留词若已出现在最佳条目的答案文本中（如亚伯拉罕条目
+        的答案写明「由父亲他拉带领」），说明条目确实覆盖了该词，不否决。
+        否决后转 RAG/人工：检索仍命中相关条目作 context，只是不硬答。
+        """
+        q = question or ""
+        if not q:
+            return False
+        residue = self._uncovered_residue(q)
+        if len(residue) < 2:
+            return False
+        concepts = self._concepts(q)
+        if not concepts:
+            return False
+        # 找无否决假设下的最佳条目，检查其文本是否涵盖残留词
+        best, best_key = None, None
+        for entry in self.faq:
+            matched = self._entry_concepts(entry) & concepts
+            if not matched:
+                continue
+            score = sum(len(m) for m in matched)
+            key = (len(matched) / len(concepts), score, len(matched))
+            if best_key is None or key > best_key:
+                best_key, best = key, entry
+        if best is None:
+            return False
+        return not self._residue_covered_by(residue, best)
+
     def match_faq_full(self, question: str):
         """返回 (best_entry, score, coverage)；无命中返回 (None, 0, 0.0)。
 
         score = 命中概念的长度加权和；coverage = 被同一条目覆盖的问题概念数 /
         问题概念总数。排序键 (coverage, score, 命中数)。
+        v53：unknown_topic_veto 命中时返回 (None, 0, 0.0)——宁可转 RAG/人工，
+        不拿未覆盖主题的问句硬答。
         """
         q = self._concepts(question)
         if not q:
+            return None, 0, 0.0
+        if self.unknown_topic_veto(question):
             return None, 0, 0.0
         best, best_key = None, None
         for entry in self.faq:

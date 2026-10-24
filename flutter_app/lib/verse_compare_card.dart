@@ -29,7 +29,7 @@ const Color _diffChipBg = Color(0xFFFDE7C8);
 const Color _diffChipFg = Color(0xFF8A5A00);
 const Color _diffHiBg = Color(0xFFFFF0B3);
 
-class VerseCompareCard extends StatelessWidget {
+class VerseCompareCard extends StatefulWidget {
   final VerseView verse;
   final ComparisonNote? note;
   final bool showCuv; // 是否显示和合本参照栏
@@ -54,9 +54,58 @@ class VerseCompareCard extends StatelessWidget {
   });
 
   @override
+  State<VerseCompareCard> createState() => _VerseCompareCardState();
+}
+
+class _VerseCompareCardState extends State<VerseCompareCard> {
+  // v53：SDA 注释内联展示状态（点击按钮在本条经文下方展开，不外跳网页）
+  bool _commentaryOpen = false;
+  bool _commentaryLoading = false;
+  SdaCommentary? _commentary;
+  String? _commentaryError;
+
+  Future<void> _toggleCommentary() async {
+    if (_commentaryOpen) {
+      setState(() => _commentaryOpen = false);
+      return;
+    }
+    if (_commentary != null) {
+      setState(() => _commentaryOpen = true);
+      return;
+    }
+    setState(() {
+      _commentaryLoading = true;
+      _commentaryError = null;
+    });
+    final result = await fetchSdaCommentary(widget.verse.ref);
+    if (!mounted) return;
+    setState(() {
+      _commentaryLoading = false;
+      if (result.commentary != null) {
+        _commentary = result.commentary;
+        _commentaryOpen = true;
+      } else {
+        _commentaryError = result.error;
+        _commentaryOpen = true; // 展开以展示错误 + 外链兜底
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final hasDiff = diff != null;
-    final sdaUrl = sdaCommentaryUrl(verse.ref);
+    final hasDiff = widget.diff != null;
+    final sdaUrl = sdaCommentaryUrl(widget.verse.ref);
+    // 局部别名：StatelessWidget 改 StatefulWidget 后，原 build 体内的字段
+    // 引用经别名桥接，避免大范围加 widget. 前缀。
+    final verse = widget.verse;
+    final egw = widget.egw;
+    final note = widget.note;
+    final userNote = widget.userNote;
+    final draftMode = widget.draftMode;
+    final showCuv = widget.showCuv;
+    final diff = widget.diff;
+    final onTapNote = widget.onTapNote;
+    final onTapUserNote = widget.onTapUserNote;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
       elevation: hasDiff ? 2 : 1,
@@ -112,7 +161,7 @@ class VerseCompareCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 if (note != null)
-                  _NoteChip(note: note!, draftMode: draftMode, onTap: onTapNote),
+                  _NoteChip(note: note, draftMode: draftMode, onTap: onTapNote),
                 if (onTapUserNote != null)
                   IconButton(
                     tooltip: userNote != null ? '我的笔记' : '记一笔',
@@ -276,7 +325,7 @@ class VerseCompareCard extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 3),
                                 Text(
-                                  userNote!.text,
+                                  userNote.text,
                                   maxLines: 3,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
@@ -295,7 +344,7 @@ class VerseCompareCard extends StatelessWidget {
                 ),
               ),
             // 怀爱伦论述（EGW，离线数据，有数据才展示）
-            if (egw != null && egw!.isNotEmpty)
+            if (egw != null && egw.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Material(
@@ -322,7 +371,7 @@ class VerseCompareCard extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 6),
-                        ...egw!.map(
+                        ...egw.map(
                           (e) => Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Column(
@@ -357,16 +406,27 @@ class VerseCompareCard extends StatelessWidget {
                   ),
                 ),
               ),
-            // SDA 圣经注释外链（第三方镜像，新标签打开，不离开 App）
-            if (sdaUrl != null)
+            // SDA 圣经注释（v53：内联展开显示本条注释，不外跳网页；
+            // 保留「查看完整章节」外链作为兜底入口）
+            if (sdaUrl != null) ...[
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: OutlinedButton.icon(
-                    onPressed: () => openExternalLink(sdaUrl),
-                    icon: const Icon(Icons.menu_book_outlined, size: 16),
-                    label: const Text('SDA 圣经注释'),
+                    onPressed: _toggleCommentary,
+                    icon: _commentaryLoading
+                        ? const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            _commentaryOpen
+                                ? Icons.expand_less
+                                : Icons.menu_book_outlined,
+                            size: 16),
+                    label: Text(_commentaryOpen ? '收起注释' : 'SDA 圣经注释'),
                     style: OutlinedButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       foregroundColor: AppTheme.primary,
@@ -376,6 +436,16 @@ class VerseCompareCard extends StatelessWidget {
                   ),
                 ),
               ),
+              if (_commentaryOpen)
+                _SdaCommentaryPanel(
+                  commentary: _commentary,
+                  error: _commentaryError,
+                  loading: _commentaryLoading,
+                  ref: verse.ref,
+                  sourceUrl: sdaUrl,
+                  onRetry: _toggleCommentary,
+                ),
+            ],
           ],
         ),
       ),
@@ -528,5 +598,181 @@ class _Block extends StatelessWidget {
     final end = idx + highlight.length;
     if (end < text.length) spans.add(TextSpan(text: text.substring(end)));
     return Text.rich(TextSpan(children: spans, style: base));
+  }
+}
+
+/// v53：SDA 圣经注释内联面板（经文卡片下方展开，不跳转网页）。
+///
+/// 注释原文为英文（SDA Bible Commentary 官方英文版），标题明确标注「英文原著」；
+/// 附「查看完整章节」外链兜底（跳转源镜像页）。长文默认折叠，可展开全文。
+class _SdaCommentaryPanel extends StatefulWidget {
+  final SdaCommentary? commentary;
+  final String? error;
+  final bool loading;
+  final String ref;
+  final String sourceUrl;
+  final VoidCallback onRetry;
+
+  const _SdaCommentaryPanel({
+    required this.commentary,
+    required this.error,
+    required this.loading,
+    required this.ref,
+    required this.sourceUrl,
+    required this.onRetry,
+  });
+
+  @override
+  State<_SdaCommentaryPanel> createState() => _SdaCommentaryPanelState();
+}
+
+class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
+  bool _fullOpen = false;
+  static const int _previewChars = 420;
+
+  @override
+  Widget build(BuildContext context) {
+    final text = widget.commentary?.text ?? '';
+    final clamped = !_fullOpen && text.length > _previewChars;
+    final shown =
+        clamped ? '${text.substring(0, _previewChars)}……' : text;
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF5F0FA),
+          borderRadius: BorderRadius.circular(10),
+          border:
+              Border.all(color: const Color(0xFF6A1B9A).withOpacity(0.25)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.menu_book, size: 15, color: Color(0xFF6A1B9A)),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'SDA 圣经注释 · ${widget.ref}（英文原著）',
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF6A1B9A),
+                    ),
+                  ),
+                ),
+                if (widget.loading)
+                  const SizedBox(
+                    width: 13,
+                    height: 13,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            if (widget.loading)
+              const Text(
+                '正在按节抽取本条注释…',
+                style: TextStyle(fontSize: 12, color: AppTheme.inkSoft),
+              )
+            else if (widget.commentary != null) ...[
+              SelectableText(
+                shown,
+                style: const TextStyle(
+                  fontSize: 12.5,
+                  height: 1.6,
+                  color: AppTheme.ink,
+                ),
+              ),
+              if (text.length > _previewChars)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () =>
+                        setState(() => _fullOpen = !_fullOpen),
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: const Size(0, 30),
+                    ),
+                    child: Text(
+                      _fullOpen ? '收起全文 ▴' : '展开全文 ▾',
+                      style: const TextStyle(fontSize: 11.5),
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      '来源：${widget.commentary!.source}',
+                      style: const TextStyle(
+                        fontSize: 10.5,
+                        fontStyle: FontStyle.italic,
+                        color: AppTheme.inkSoft,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => openExternalLink(widget.sourceUrl),
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: const Size(0, 30),
+                    ),
+                    child: const Text(
+                      '查看完整章节 ↗',
+                      style: TextStyle(fontSize: 11.5),
+                    ),
+                  ),
+                ],
+              ),
+            ] else ...[
+              Text(
+                widget.error ?? '注释获取失败',
+                style: const TextStyle(fontSize: 12, color: AppTheme.inkSoft),
+              ),
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: widget.onRetry,
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: const Size(0, 30),
+                    ),
+                    child: const Text(
+                      '重试',
+                      style: TextStyle(fontSize: 11.5),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => openExternalLink(widget.sourceUrl),
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: const Size(0, 30),
+                    ),
+                    child: const Text(
+                      '打开原页面 ↗',
+                      style: TextStyle(fontSize: 11.5),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -144,6 +144,147 @@ class OfflineQaLogic {
     return l;
   }
 
+  // ---------------------------------------------------------------------------
+  // v53 未覆盖主题否决（与 kb.py unknown_topic_veto 完全一致）
+  //
+  // 根因（2026-10-24 实测）：覆盖率 = 命中概念数/问题概念数，而问题概念只能来自
+  // 词典内切分——「怀爱伦的著作中，有哪些是关于家庭的？」里「家庭」不在任何
+  // 关键词中，FMM 切不出它，对覆盖率完全不可见，cov=1.00 误判全覆盖，直接答了
+  // 「入门路线」条目（答非所问）。同为「著作中关于X」的问句，问「饮食」时因
+  // 「饮食」在词典中被切出、cov 降到 0.5 才正确转 RAG。
+  // 否决后转 RAG/人工：检索仍可命中相关条目作 context，只是不硬答。
+  //
+  // 精化（防误伤）：残留词若已出现在最佳条目的答案文本中（如亚伯拉罕条目的
+  // 答案写明「由父亲他拉带领」），说明条目确实覆盖了该词，不否决。
+  // ---------------------------------------------------------------------------
+
+  /// 疑问/功能填充词：切分后剩余的这些片段不构成「未覆盖实义主题」。
+  static const List<String> _questionFiller = [
+    '请问', '一下', '想问', '问一下', '告诉我', '讲讲', '说说', '指教', '指点',
+    '解释', '介绍', '关于', '对于', '来说', '说来', '看来', '根据', '按照',
+    '怎么样', '为什么', '能不能', '可不可以', '有没有', '是不是', '与否',
+    '什么意思', '是什么意思', '啥意思', '意思',
+    '可以', '应该', '应当', '该', '就', '够', '不够', '足以',
+    '多少', '哪些', '哪个', '哪里', '哪儿', '哪来', '哪些人', '什么', '啥', '怎么',
+    '怎样', '如何', '能否', '时候', '何时', '吗', '呢', '吧', '啊', '呀', '哦',
+    '不', '没', '无', '别', '甭',
+    '我们', '你们', '他们', '她们', '咱们', '大家', '我的', '你的', '他的',
+    '我', '你', '他', '她', '它', '咱',
+    '是', '有', '在', '和', '与', '及', '或', '而', '并', '的', '了', '着',
+    '过', '把', '被', '让', '使', '会', '能', '要', '想', '得', '这', '那',
+    '之', '其', '以', '为', '于', '从', '到', '对', '跟', '同', '向', '往',
+  ];
+
+  static final RegExp _punctRe = RegExp(
+      "[\\s\\-_,.?!;:'\"()\\[\\]{}<>/\\\\|@#\$%^&*+=~`，。？！、；：「」『』（）《》〈〉…—·0-9]+");
+
+  static String _stripFiller(String text) {
+    final fillers = List<String>.from(_questionFiller)
+      ..sort((a, b) => b.length.compareTo(a.length));
+    for (final f in fillers) {
+      if (text.contains(f)) text = text.replaceAll(f, '');
+    }
+    return text;
+  }
+
+  /// FMM 切分，返回被概念词典吃掉的字符区间（与 _concepts 同一走法）。
+  List<(int, int)> _cutSpans(String question) {
+    final ql = question.toLowerCase();
+    final spans = <(int, int)>[];
+    var i = 0;
+    while (i < ql.length) {
+      var hitLen = 0;
+      final room = ql.length - i;
+      final limit = _maxConceptLen < room ? _maxConceptLen : room;
+      for (var L = limit; L >= 2; L--) {
+        if (_conceptDict.contains(ql.substring(i, i + L))) {
+          hitLen = L;
+          break;
+        }
+      }
+      if (hitLen > 0) {
+        spans.add((i, i + hitLen));
+        i += hitLen;
+      } else {
+        i += 1;
+      }
+    }
+    return spans;
+  }
+
+  /// FMM 切分后未被任何概念吃掉的字符，去填充词与标点后的实义残留。
+  String _uncoveredResidue(String question) {
+    final q = question;
+    if (q.isEmpty) return '';
+    final covered = List<bool>.filled(q.length, false);
+    for (final (s, e) in _cutSpans(q)) {
+      for (var k = s; k < e; k++) {
+        covered[k] = true;
+      }
+    }
+    final rest = StringBuffer();
+    for (var k = 0; k < q.length; k++) {
+      if (!covered[k]) rest.write(q[k]);
+    }
+    return _stripFiller(rest.toString()).replaceAll(_punctRe, '');
+  }
+
+  /// 残留实义词是否已被该条目答案文本涵盖（任一 2 字窗口命中即算）。
+  static bool _residueCoveredBy(String residue, Map<String, dynamic> entry) {
+    if (residue.length < 2) return true;
+    final text = ((entry['answer_zh'] as String?) ?? '').toLowerCase();
+    if (text.isEmpty) return false;
+    final r = residue.toLowerCase();
+    for (var i = 0; i < r.length - 1; i++) {
+      if (text.contains(r.substring(i, i + 2))) return true;
+    }
+    return false;
+  }
+
+  /// 问题中存在未被概念词典覆盖、且未被最佳条目答案文本涵盖的实义片段(>=2字)
+  /// -> true（不敢直接答，转 RAG/人工）。
+  bool unknownTopicVeto(String question) {
+    final q = question;
+    if (q.isEmpty) return false;
+    final residue = _uncoveredResidue(q);
+    if (residue.length < 2) return false;
+    final concepts = _concepts(q);
+    if (concepts.isEmpty) return false;
+    // 找无否决假设下的最佳条目，检查其文本是否涵盖残留词
+    final best = _bestFaqIgnoringVeto(q);
+    if (best == null) return false;
+    return !_residueCoveredBy(residue, best);
+  }
+
+  /// _bestFaq 的无否决版（供 unknownTopicVeto 判断残留词是否被最佳条目覆盖）。
+  Map<String, dynamic>? _bestFaqIgnoringVeto(String question) {
+    final q = _concepts(question);
+    if (q.isEmpty) return null;
+    Map<String, dynamic>? best;
+    var bestCov = 0.0;
+    var bestScore = 0;
+    var bestN = 0;
+    for (final entry in faq) {
+      final matched = _entryConcepts(entry).intersection(q);
+      if (matched.isEmpty) continue;
+      var score = 0;
+      for (final m in matched) {
+        score += m.length;
+      }
+      final cov = matched.length / q.length;
+      if (best == null ||
+          cov > bestCov ||
+          (cov == bestCov && score > bestScore) ||
+          (cov == bestCov && score == bestScore && matched.length > bestN)) {
+        best = entry;
+        bestCov = cov;
+        bestScore = score;
+        bestN = matched.length;
+      }
+    }
+    return best;
+  }
+
   /// 正向最大匹配（FMM）切分问题中的概念集合；空集表示无已知概念。
   Set<String> _concepts(String question) {
     final ql = question.toLowerCase();
@@ -181,9 +322,12 @@ class OfflineQaLogic {
   /// 最佳 FAQ 匹配：按 (coverage, score) 双键排序。
   /// coverage = 被同一条目覆盖的问题概念数 / 问题概念总数。
   /// 返回 {'entry','score','coverage'}；无命中返回 null。
+  /// v53：unknownTopicVeto 命中（问题含未覆盖实义主题）时返回 null——
+  /// 宁可转 RAG/人工，不拿答非所问的条目硬答。
   Map<String, dynamic>? _bestFaq(String question) {
     final q = _concepts(question);
     if (q.isEmpty) return null;
+    if (unknownTopicVeto(question)) return null;
     Map<String, dynamic>? best;
     var bestCov = 0.0;
     var bestScore = 0;
