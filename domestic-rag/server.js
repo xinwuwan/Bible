@@ -29,6 +29,13 @@ const CONFIG = {
 };
 
 // ---------------------------------------------------------------------------
+// 进程级兜底：任何漏网的异步异常只记日志，绝不让进程退出（托管平台重启有延迟）
+// ---------------------------------------------------------------------------
+process.on('unhandledRejection', (reason) => {
+  console.error('unhandledRejection:', reason && reason.stack ? reason.stack : reason);
+});
+
+// ---------------------------------------------------------------------------
 // 书卷别名 -> 3 字母标准代码（与 worker.js 完全一致）
 // ---------------------------------------------------------------------------
 const BOOK = {
@@ -247,6 +254,10 @@ async function callLLM(system, user) {
     ],
     temperature: 0.2,
   });
+  // 超时保护：托管平台反向代理窗口有限，LLM 挂死必须按时返回兜底，绝不让网关 502
+  const timeoutMs = Number(process.env.RAG_TIMEOUT_MS) || 25000;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const r = await fetch(CONFIG.baseUrl + '/chat/completions', {
       method: 'POST',
@@ -255,6 +266,7 @@ async function callLLM(system, user) {
         'Content-Type': 'application/json',
       },
       body,
+      signal: ctrl.signal,
     });
     if (!r.ok) {
       const txt = await r.text();
@@ -264,7 +276,12 @@ async function callLLM(system, user) {
     const text = (d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
     return { ok: true, text };
   } catch (e) {
-    return { ok: false, error: `LLM call failed: ${(e && e.message) || e}` };
+    const msg = (e && e.name === 'AbortError')
+      ? `LLM timeout after ${timeoutMs}ms`
+      : `LLM call failed: ${(e && e.message) || e}`;
+    return { ok: false, error: msg };
+  } finally {
+    clearTimeout(timer);
   }
 }
 

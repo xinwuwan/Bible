@@ -1,0 +1,11 @@
+{
+  "name": "bible-rag-proxy",
+  "version": "1.0.0",
+  "description": "Bible/health RAG backend proxy for domestic cloud functions (Aliyun FC / Tencent SCF web function)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {},
+  "license": "MIT"
+}
