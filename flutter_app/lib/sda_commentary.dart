@@ -10,7 +10,9 @@
 //   ① sdaCommentaryUrl —— 原始外链（「查看完整章节」兜底，新标签打开）
 //   ② fetchSdaCommentary —— 经 RAG 代理服务端按节抽取，供经文卡片内联展示
 //      （用户要求不外跳；镜像无 CORS 头 + X-Frame-Options，前端直抓/iframe 均被拦，
-//        只能服务端代理。注释原文为英文，界面明确标注「英文原著」。）
+//        只能服务端代理）
+// v54：支持中英双语。en = 英文原著（bible-strong.app 镜像，界面标注「英文原著」）；
+//      zh = 简体中文（read.sdabible.org 官方中译「SDA 圣经注释」+ 怀爱伦注释）。
 import 'dart:async';
 import 'dart:convert';
 
@@ -73,15 +75,17 @@ String? sdaCommentaryUrl(String ref) {
 /// 一条按节抽取的 SDA 注释。
 class SdaCommentary {
   final String ref; // 如 "GEN 1:1"
-  final String text; // 英文原文（可能含同节多条：正文注释 + EGW 评注）
+  final String text; // 正文（可能含同节多条：正文注释 + EGW/怀爱伦评注）
   final String source; // 来源标注
-  final String url; // 原始镜像页（「查看完整章节」用）
+  final String url; // 原始页（「查看完整章节」用，与语言一致）
+  final String lang; // v54：'en' 英文原著 / 'zh' 简体中文
 
   const SdaCommentary({
     required this.ref,
     required this.text,
     required this.source,
     required this.url,
+    this.lang = 'en',
   });
 }
 
@@ -94,13 +98,15 @@ class SdaCommentaryResult {
 }
 
 /// 从 RAG 代理获取 [ref] 对应经节的 SDA 注释（内联展示用）。
+/// [lang] 'en'（默认）英文原著 / 'zh' 简体中文（含怀爱伦注释）。
 /// 网络异常 / 服务不可用 / 该节无注释 -> SdaCommentaryResult.fail。
 Future<SdaCommentaryResult> fetchSdaCommentary(
   String ref, {
+  String lang = 'en',
   http.Client? client,
   Duration timeout = const Duration(seconds: 25),
 }) async {
-  final apiUrl = sdaCommentaryApiUrl(ref);
+  final apiUrl = sdaCommentaryApiUrl(ref, lang: lang);
   if (apiUrl.isEmpty) {
     return const SdaCommentaryResult.fail('注释服务未配置');
   }
@@ -123,6 +129,7 @@ Future<SdaCommentaryResult> fetchSdaCommentary(
       text: text,
       source: (d['source'] as String?) ?? 'SDA Bible Commentary',
       url: (d['url'] as String?) ?? '',
+      lang: lang,
     ));
   } catch (e) {
     return SdaCommentaryResult.fail('网络异常，请稍后重试');

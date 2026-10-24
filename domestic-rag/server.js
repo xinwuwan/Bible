@@ -378,6 +378,129 @@ async function fetchCommentary(bookCode, chapter, verse) {
 }
 
 // ---------------------------------------------------------------------------
+// v54：SDA 圣经注释·简体中文版（read.sdabible.org tRPC 代理）
+//
+// 背景：用户要求注释可切换英文/中文。bible-strong 镜像仅英/法文；简体中文版
+// 取自复临官方阅读站 read.sdabible.org（SDA聖經註釋+）。其前端为 React SPA，
+// 数据走 tRPC v10（httpBatchLink + superjson transformer）：
+//   GET /api/trpc/bible.chapterCommentaries?batch=1
+//       &input={"0":{"json":{"book":<slug>,"chapter":N,"locale":"cn",
+//                            "sourceId":<id>,"interfaceLanguage":"cn"}}}
+// 响应：[{result:{data:{json:[{verseNumber,startVerseNumber,endVerseNumber,
+//                            sourceLabel,sourceHtml}, …]}]}}]（sourceHtml 为
+// 简单 HTML：p/strong/br，复用 htmlToText 清洗）。
+// 两类源：
+//   legacy              —— 《圣经注释》（SDA Bible Commentary 简体中译，主源）
+//   egw-<slug>-cn-sda5  —— 《怀爱伦注释》（该节相关怀著引文，与英文版结构对齐）
+// 按 [startVerse, endVerse] 区间命中即收（同节可多条；startVerse=0 为章末
+// 「补充注释」，属章级内容，不随单节返回）。
+// ---------------------------------------------------------------------------
+const SDAB_SLUG = {
+  GEN: 'genesis', EXO: 'exodus', LEV: 'leviticus', NUM: 'numbers',
+  DEU: 'deuteronomy', JOS: 'joshua', JDG: 'judges', RUT: 'ruth',
+  '1SA': '1-samuel', '2SA': '2-samuel', '1KI': '1-kings', '2KI': '2-kings',
+  '1CH': '1-chronicles', '2CH': '2-chronicles', EZR: 'ezra', NEH: 'nehemiah',
+  EST: 'esther', JOB: 'job', PSA: 'psalms', PRO: 'proverbs',
+  ECC: 'ecclesiastes', SNG: 'song-of-solomon', ISA: 'isaiah', JER: 'jeremiah',
+  LAM: 'lamentations', EZK: 'ezekiel', DAN: 'daniel', HOS: 'hosea',
+  JOL: 'joel', AMO: 'amos', OBA: 'obadiah', JON: 'jonah', MIC: 'micah',
+  NAM: 'nahum', HAB: 'habakkuk', ZEP: 'zephaniah', HAG: 'haggai',
+  ZEC: 'zechariah', MAL: 'malachi', MAT: 'matthew', MRK: 'mark',
+  LUK: 'luke', JHN: 'john', ACT: 'acts', ROM: 'romans',
+  '1CO': '1-corinthians', '2CO': '2-corinthians', GAL: 'galatians',
+  EPH: 'ephesians', PHP: 'philippians', COL: 'colossians',
+  '1TH': '1-thessalonians', '2TH': '2-thessalonians', '1TI': '1-timothy',
+  '2TI': '2-timothy', TIT: 'titus', PHM: 'philemon', HEB: 'hebrews',
+  JAS: 'james', '1PE': '1-peter', '2PE': '2-peter', '1JN': '1-john',
+  '2JN': '2-john', '3JN': '3-john', JUD: 'jude', REV: 'revelation',
+};
+
+/// 调用 read.sdabible.org 的 bible.chapterCommentaries，返回该章全部注释条目。
+async function fetchTrpcCommentary(bookSlug, chapter, sourceId, timeoutMs) {
+  const input = JSON.stringify({
+    '0': {
+      json: {
+        book: bookSlug,
+        chapter,
+        locale: 'cn',
+        sourceId,
+        interfaceLanguage: 'cn',
+      },
+    },
+  });
+  const base = process.env.SDAB_TRPC_BASE || 'https://read.sdabible.org';
+  const url = base + '/api/trpc/bible.chapterCommentaries'
+      + '?batch=1&input=' + encodeURIComponent(input);
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; bible-app/1.0)' },
+      signal: ctrl.signal,
+    });
+    if (!r.ok) return { ok: false, error: `trpc upstream ${r.status}` };
+    const data = await r.json();
+    const first = Array.isArray(data) ? data[0] : null;
+    if (!first || first.error) {
+      const msg = (first && first.error && first.error.json)
+        ? first.error.json.message : 'trpc error';
+      return { ok: false, error: String(msg).slice(0, 200) };
+    }
+    const verses = first.result && first.result.data && first.result.data.json;
+    if (!Array.isArray(verses)) return { ok: false, error: 'trpc bad payload' };
+    return { ok: true, verses };
+  } catch (e) {
+    const msg = (e && e.name === 'AbortError')
+      ? `commentary timeout after ${timeoutMs}ms`
+      : `commentary fetch failed: ${(e && e.message) || e}`;
+    return { ok: false, error: msg };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/// 从章注释条目中抽出覆盖 [verse] 的文本（跳过章级 startVerse=0 条目）。
+function collectVerseText(verses, verse) {
+  const parts = [];
+  for (const v of verses || []) {
+    const sv = Number(v.startVerseNumber);
+    const ev = Number(v.endVerseNumber);
+    if (!(sv >= 1 && verse >= sv && verse <= ev)) continue;
+    const text = htmlToText(v.sourceHtml || '');
+    if (text) parts.push(text);
+  }
+  return parts;
+}
+
+/// 简体中文注释：legacy《圣经注释》主源 + egw《怀爱伦注释》附源（失败不阻塞）。
+async function fetchChineseCommentary(bookCode, chapter, verse) {
+  const slug = SDAB_SLUG[String(bookCode || '').toUpperCase()];
+  if (!slug) return { ok: false, error: `unknown book: ${bookCode}` };
+  const timeoutMs = Number(process.env.RAG_COMM_TIMEOUT_MS) || 20000;
+  const main = await fetchTrpcCommentary(slug, chapter, 'legacy', timeoutMs);
+  if (!main.ok) return main;
+  const parts = collectVerseText(main.verses, verse);
+  if (!parts.length) {
+    return {
+      ok: false,
+      error: `no commentary section for ${bookCode} ${chapter}:${verse}`,
+    };
+  }
+  const egw = await fetchTrpcCommentary(
+    slug, chapter, `egw-${slug}-cn-sda5`, timeoutMs);
+  if (egw.ok) {
+    for (const t of collectVerseText(egw.verses, verse)) parts.push(t);
+  }
+  return {
+    ok: true,
+    ref: `${bookCode.toUpperCase()} ${chapter}:${verse}`,
+    text: parts.join('\n\n'),
+    source: 'SDA 圣经注释（简体中文 · read.sdabible.org）',
+    url: `https://read.sdabible.org/read/${slug}/${chapter}`,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // HTTP 服务
 // ---------------------------------------------------------------------------
 function jsonRes(res, status, obj, origin) {
@@ -425,7 +548,12 @@ const server = http.createServer(async (req, res) => {
       if (!bk || !Number.isFinite(chN) || !Number.isFinite(vsN)) {
         return jsonRes(res, 400, { ok: false, error: 'need book+chapter+verse (or ref=GEN 1:1)' }, origin);
       }
-      const out = await fetchCommentary(bk, chN, vsN);
+      // v54：语言切换。lang=zh/cn → 简体中文（read.sdabible.org tRPC）；
+      // 其余（默认 en）→ 英文原著（bible-strong.app 镜像）。
+      const lang = (u.searchParams.get('lang') || 'en').toLowerCase();
+      const out = (lang === 'zh' || lang === 'cn' || lang === 'zh-cn')
+        ? await fetchChineseCommentary(bk, chN, vsN)
+        : await fetchCommentary(bk, chN, vsN);
       return jsonRes(res, out.ok ? 200 : 502, out, origin);
     }
     return jsonRes(res, 200, { service: 'bible-rag-proxy', ok: true, model: CONFIG.model }, origin);

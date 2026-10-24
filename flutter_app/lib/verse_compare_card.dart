@@ -39,6 +39,9 @@ class VerseCompareCard extends StatefulWidget {
   final UserNote? userNote; // 用户本人对该节的随手笔记（本地）
   final VoidCallback? onTapUserNote; // 始终可点：无笔记则打开空白编辑器
   final List<EgwVerseRef>? egw; // 怀爱伦(EGW)对该节的论述（离线，有数据才展示）
+  /// v54：注释拉取函数（默认走服务端代理；测试可注入假实现驱动中英切换）。
+  final Future<SdaCommentaryResult> Function(String ref, {String lang})
+      commentaryFetcher;
 
   const VerseCompareCard({
     super.key,
@@ -51,6 +54,7 @@ class VerseCompareCard extends StatefulWidget {
     this.userNote,
     this.onTapUserNote,
     this.egw,
+    this.commentaryFetcher = fetchSdaCommentary,
   });
 
   @override
@@ -61,34 +65,54 @@ class _VerseCompareCardState extends State<VerseCompareCard> {
   // v53：SDA 注释内联展示状态（点击按钮在本条经文下方展开，不外跳网页）
   bool _commentaryOpen = false;
   bool _commentaryLoading = false;
-  SdaCommentary? _commentary;
-  String? _commentaryError;
+  // v54：中英双语切换。按语言分别缓存正文/错误，切回已取语言不重复请求。
+  String _commentaryLang = 'en'; // 'en' 英文原著 / 'zh' 简体中文
+  final Map<String, SdaCommentary> _commentaryByLang = {};
+  final Map<String, String> _commentaryErrByLang = {};
+
+  SdaCommentary? get _commentary => _commentaryByLang[_commentaryLang];
+  String? get _commentaryError => _commentaryErrByLang[_commentaryLang];
+
+  /// 按指定语言拉取本条注释（覆写该语言缓存）。
+  Future<void> _loadCommentary(String lang) async {
+    setState(() {
+      _commentaryLoading = true;
+      _commentaryErrByLang.remove(lang);
+    });
+    final result = await widget.commentaryFetcher(widget.verse.ref, lang: lang);
+    if (!mounted) return;
+    setState(() {
+      _commentaryLoading = false;
+      if (result.commentary != null) {
+        _commentaryByLang[lang] = result.commentary!;
+        _commentaryErrByLang.remove(lang);
+      } else {
+        _commentaryErrByLang[lang] = result.error ?? '注释获取失败';
+      }
+    });
+  }
 
   Future<void> _toggleCommentary() async {
     if (_commentaryOpen) {
       setState(() => _commentaryOpen = false);
       return;
     }
-    if (_commentary != null) {
-      setState(() => _commentaryOpen = true);
+    if (_commentary != null || _commentaryError != null) {
+      setState(() => _commentaryOpen = true); // 当前语言已有结果，直接展开
       return;
     }
-    setState(() {
-      _commentaryLoading = true;
-      _commentaryError = null;
-    });
-    final result = await fetchSdaCommentary(widget.verse.ref);
+    await _loadCommentary(_commentaryLang);
     if (!mounted) return;
-    setState(() {
-      _commentaryLoading = false;
-      if (result.commentary != null) {
-        _commentary = result.commentary;
-        _commentaryOpen = true;
-      } else {
-        _commentaryError = result.error;
-        _commentaryOpen = true; // 展开以展示错误 + 外链兜底
-      }
-    });
+    setState(() => _commentaryOpen = true);
+  }
+
+  /// v54：切换注释语言；未取过的语言立即拉取（已取则直接切显）。
+  Future<void> _switchCommentaryLang(String lang) async {
+    if (lang == _commentaryLang) return;
+    setState(() => _commentaryLang = lang);
+    final cached = _commentaryByLang.containsKey(lang) ||
+        _commentaryErrByLang.containsKey(lang);
+    if (!cached) await _loadCommentary(lang);
   }
 
   @override
@@ -443,7 +467,9 @@ class _VerseCompareCardState extends State<VerseCompareCard> {
                   loading: _commentaryLoading,
                   ref: verse.ref,
                   sourceUrl: sdaUrl,
-                  onRetry: _toggleCommentary,
+                  lang: _commentaryLang,
+                  onLangChanged: _switchCommentaryLang,
+                  onRetry: () => _loadCommentary(_commentaryLang),
                 ),
             ],
           ],
@@ -602,15 +628,16 @@ class _Block extends StatelessWidget {
 }
 
 /// v53：SDA 圣经注释内联面板（经文卡片下方展开，不跳转网页）。
-///
-/// 注释原文为英文（SDA Bible Commentary 官方英文版），标题明确标注「英文原著」；
-/// 附「查看完整章节」外链兜底（跳转源镜像页）。长文默认折叠，可展开全文。
+/// v54：支持英文原著 / 简体中文一键切换；标题按当前语言标注。
+/// 附「查看完整章节」外链兜底（优先跳当前语言源页）。长文默认折叠，可展开全文。
 class _SdaCommentaryPanel extends StatefulWidget {
   final SdaCommentary? commentary;
   final String? error;
   final bool loading;
   final String ref;
-  final String sourceUrl;
+  final String sourceUrl; // 英文兜底外链（无 commentary.url 时用）
+  final String lang; // v54：'en' / 'zh'
+  final ValueChanged<String>? onLangChanged; // v54：语言切换回调
   final VoidCallback onRetry;
 
   const _SdaCommentaryPanel({
@@ -619,6 +646,8 @@ class _SdaCommentaryPanel extends StatefulWidget {
     required this.loading,
     required this.ref,
     required this.sourceUrl,
+    this.lang = 'en',
+    this.onLangChanged,
     required this.onRetry,
   });
 
@@ -636,6 +665,10 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
     final clamped = !_fullOpen && text.length > _previewChars;
     final shown =
         clamped ? '${text.substring(0, _previewChars)}……' : text;
+    // 外链优先用当前语言源页（服务端按语言返回），缺失回退英文镜像页
+    final link = (widget.commentary?.url.isNotEmpty ?? false)
+        ? widget.commentary!.url
+        : widget.sourceUrl;
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Container(
@@ -656,7 +689,8 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    'SDA 圣经注释 · ${widget.ref}（英文原著）',
+                    'SDA 圣经注释 · ${widget.ref}'
+                    '（${widget.lang == 'zh' ? '简体中文' : '英文原著'}）',
                     style: const TextStyle(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
@@ -672,6 +706,17 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
                   ),
               ],
             ),
+            // v54：语言切换（英文原著 / 简体中文）
+            if (widget.onLangChanged != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  _langChip('英文', 'en', widget.lang, widget.onLangChanged!),
+                  const SizedBox(width: 8),
+                  _langChip('中文', 'zh', widget.lang, widget.onLangChanged!),
+                ],
+              ),
+            ],
             const SizedBox(height: 8),
             if (widget.loading)
               const Text(
@@ -719,7 +764,7 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => openExternalLink(widget.sourceUrl),
+                    onPressed: () => openExternalLink(link),
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       padding:
@@ -755,7 +800,7 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => openExternalLink(widget.sourceUrl),
+                    onPressed: () => openExternalLink(link),
                     style: TextButton.styleFrom(
                       visualDensity: VisualDensity.compact,
                       padding:
@@ -771,6 +816,37 @@ class _SdaCommentaryPanelState extends State<_SdaCommentaryPanel> {
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  /// v54：语言切换 chip（选中态紫色实底，未选描边）。
+  Widget _langChip(
+    String label,
+    String lang,
+    String current,
+    ValueChanged<String> onChanged,
+  ) {
+    final selected = current == lang;
+    return GestureDetector(
+      onTap: selected ? null : () => onChanged(lang),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xFF6A1B9A) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFF6A1B9A).withOpacity(selected ? 1 : 0.45),
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11.5,
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+            color: selected ? Colors.white : const Color(0xFF6A1B9A),
+          ),
         ),
       ),
     );
