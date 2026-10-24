@@ -12,7 +12,7 @@
         "吃得健康",
         "怎么搭配"
       ],
-      "answer_zh": "**健康饮食的核心，是把全谷、蔬果、豆类、坚果放在餐桌中心，少碰过度加工的食物。** 你可以从一餐一餐的小改变开始：用糙米换白米、把甜饮料换成白水、每餐多加一份蔬菜。饮食是陪伴一生的习惯，不必一步到位，稳比快更重要。",
+      "answer_zh": "**健康饮食的核心，是把全谷、蔬果、豆类、坚果放在餐桌中心，少碰过度加工的食物。** 你可以从一餐一餐的小改变开始：用糙米换白米、把甜饮料换成白水、每餐多加一份蔬菜。饮食是陪伴一生的习惯，不必一步到位，稳比快更重要。 怀爱伦在《论饮食》中明确劝勉：五谷、水果、坚果和蔬菜，是创造主为我们选定的饮食，用最简单自然的方式烹调，最为健康有益（参 CD 81.2）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -22,9 +22,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-81.2",
+          "ref": "Counsels on Diet and Foods, p. 81.2 (CD 81.2)",
+          "snippet": "Grains, fruits, nuts, and vegetables constitute the diet chosen for us by our Creator. These foods, prepared in as simple and natural a manner as possible, are the most healthful and nourishing. They impart a strength, a power of endurance, and a vigor of intellect, that are not afforded by a more complex and stimulating diet."
         }
       ]
     },
@@ -46,9 +46,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-81.2",
+          "ref": "Counsels on Diet and Foods, p. 81.2 (CD 81.2)",
+          "snippet": "Grains, fruits, nuts, and vegetables constitute the diet chosen for us by our Creator. These foods, prepared in as simple and natural a manner as possible, are the most healthful and nourishing. They impart a strength, a power of endurance, and a vigor of intellect, that are not afforded by a more complex and stimulating diet."
         }
       ]
     },
@@ -66,13 +66,13 @@
         "口干",
         "口干舌燥"
       ],
-      "answer_zh": "**成人每天约需要 1.5–2 升白水，天热或出汗多时再增加。** 不必强灌，口渴就是身体在提醒你；少量多次比一次猛喝更舒服。白水永远是第一选择，甜饮料不算数。",
+      "answer_zh": "**成人每天约需要 1.5–2 升白水，天热或出汗多时再增加。** 不必强灌，口渴就是身体在提醒你；少量多次比一次猛喝更舒服。白水永远是第一选择，甜饮料不算数。 怀爱伦对饮品的劝勉直截了当：远离茶、咖啡、啤酒、葡萄酒和一切烈酒，水是最好、最能清洁身体的液体（参 CD 421.3）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-421.3",
+          "ref": "Counsels on Diet and Foods, p. 421.3 (CD 421.3)",
+          "snippet": "Never take tea, coffee, beer, wine, or any spirituous liquors. Water is the best liquid possible to cleanse the tissues."
         }
       ]
     },
@@ -95,7 +95,7 @@
         "运动的好处",
         "不动会怎样"
       ],
-      "answer_zh": "**每周累计约 150 分钟中等强度运动（如快走）就很好，没整块时间也能零碎凑出来。** 爬楼、散步、做家务都算数；每周再加两次自重训练保护肌肉。动起来，比追求完美计划更重要。",
+      "answer_zh": "**每周累计约 150 分钟中等强度运动（如快走）就很好，没整块时间也能零碎凑出来。** 爬楼、散步、做家务都算数；每周再加两次自重训练保护肌肉。动起来，比追求完美计划更重要。 怀爱伦提醒我们：懒惰是极大的咒诅，神所赐的神经、器官与肌肉，要靠规律的运动来强健（参 CG 124.3）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -105,9 +105,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CG-124.3",
+          "ref": "Child Guidance, p. 124.3 (CG 124.3)",
+          "snippet": "Indolence is a great curse. God has blessed human beings with nerves, organs, and muscles; and they are not to be allowed to deteriorate because of inaction, but are to be strengthened and kept in health by exercise. To have nothing to do is a great misfortune, for idleness ever has been and ever will be a curse to the human family. 12 Manuscript 60, 1894 ."
         }
       ]
     },
@@ -131,7 +131,7 @@
         "睡眠质量差",
         "睡不好觉"
       ],
-      "answer_zh": "**成人需要 7–9 小时睡眠，规律的作息比补觉更有用。** 固定上床与起床时间、睡前少看屏幕、白天适度晒太阳，都能帮生物钟稳定。若长期失眠或情绪低落到影响生活，请寻求专业帮助，这不是软弱。",
+      "answer_zh": "**成人需要 7–9 小时睡眠，规律的作息比补觉更有用。** 固定上床与起床时间、睡前少看屏幕、白天适度晒太阳，都能帮生物钟稳定。若长期失眠或情绪低落到影响生活，请寻求专业帮助，这不是软弱。 怀爱伦称睡眠为「大自然甜美的恢复者」，它使疲倦的身体重新得力，为次日的责任作好预备（参 CG 341.4）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -141,9 +141,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CG-341.4",
+          "ref": "Child Guidance, p. 341.4 (CG 341.4)",
+          "snippet": "They may be weary, but how sweet is rest after a proper amount of labor. Sleep, nature’s sweet restorer, invigorates the tired body and prepares it for the next day’s duties. 9 The Signs of the Times, April 10, 1884 ."
         }
       ]
     },
@@ -155,13 +155,13 @@
         "日晒",
         "日晒多久"
       ],
-      "answer_zh": "**每天 10–20 分钟温和日晒，有助于合成维生素 D、强健骨骼与情绪。** 避开上午十点到下午四点的强紫外线，别晒伤；把户外活动当成一举两得的小习惯就好。",
+      "answer_zh": "**每天 10–20 分钟温和日晒，有助于合成维生素 D、强健骨骼与情绪。** 避开上午十点到下午四点的强紫外线，别晒伤；把户外活动当成一举两得的小习惯就好。 怀爱伦在疗养院观察到：对久病的人，最有助于恢复健康与喜乐的，莫过于身处宜人的乡间，坐着或躺在阳光里（参 CH 170.3）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-170.3",
+          "ref": "Counsels on Health, p. 170.3 (CH 170.3)",
+          "snippet": "For the chronic invalid nothing so tends to restore health and happiness as living amid attractive country surroundings. Here the most helpless ones can be left sitting or lying in the sunshine or in the shade of the trees. They have only to lift their eyes and they see above them the beautiful foliage. They wonder that they have never before noticed how gracefully the boughs bend, forming a living canopy over them, giving them just the shade they need."
         }
       ]
     },
@@ -172,7 +172,7 @@
         "通风",
         "负离子"
       ],
-      "answer_zh": "**新鲜的空气与适度通风，是容易被忽略却很重要的健康底色。** 每天开窗几次，周末到公园、郊外走走，让肺和心情都换换气。也请尽量远离二手烟。",
+      "answer_zh": "**新鲜的空气与适度通风，是容易被忽略却很重要的健康底色。** 每天开窗几次，周末到公园、郊外走走，让肺和心情都换换气。也请尽量远离二手烟。 怀爱伦说，纯净的新鲜空气能使血液健康地周身循环，使身体清爽强健，同时也让头脑平静安宁（参 CD 104.1）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -182,9 +182,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-104.1",
+          "ref": "Counsels on Diet and Foods, p. 104.1 (CD 104.1)",
+          "snippet": "The influence of pure, fresh air is to cause the blood to circulate healthfully through the system. It refreshes the body, and tends to render it strong and healthy, while at the same time its influence is decidedly felt upon the mind, imparting a degree of composure and serenity. It excites the appetite, and renders the digestion of food more perfect, and induces sound and sweet sleep."
         }
       ]
     },
@@ -196,7 +196,7 @@
         "戒",
         "自律"
       ],
-      "answer_zh": "**节制不是苦行，而是对有益之物适度、对有害之物勇敢说“不”的自由。** 烟酒这类可控的伤害源，越早减少越好；给屏幕和情绪也设下健康的界限，身体会慢慢回报你。",
+      "answer_zh": "**节制不是苦行，而是对有益之物适度、对有害之物勇敢说“不”的自由。** 烟酒这类可控的伤害源，越早减少越好；给屏幕和情绪也设下健康的界限，身体会慢慢回报你。 怀爱伦警戒：不节制始于我们的餐桌——不健康的饮食加上持续的放纵，消化器官会渐渐衰弱（参 CD 427.2）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -206,9 +206,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-427.2",
+          "ref": "Counsels on Diet and Foods, p. 427.2 (CD 427.2)",
+          "snippet": "Intemperance commences at our tables, in the use of unhealthful food. After a time, through continued indulgence, the digestive organs become weakened, and the food taken does not satisfy the appetite. Unhealthy conditions are established, and there is a craving for more stimulating food. Tea, coffee, and flesh meats produce an immediate effect."
         }
       ]
     },
@@ -221,7 +221,7 @@
         "平安",
         "紧张"
       ],
-      "answer_zh": "**面对压力，把重担借着祷告交托出去，是真实可行的安心之法。** 配合规律作息、可信赖的人际倾诉与适度运动，焦虑会松动。若长期陷入低落或恐慌，请务必寻求专业支持。",
+      "answer_zh": "**面对压力，把重担借着祷告交托出去，是真实可行的安心之法。** 配合规律作息、可信赖的人际倾诉与适度运动，焦虑会松动。若长期陷入低落或恐慌，请务必寻求专业支持。 怀爱伦指出，心神与身体的关系极为密切：抑郁、焦虑、不满、内疚与猜疑，会瓦解生命的力量、招来衰败（参 CH 344.1）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -231,9 +231,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-344.1",
+          "ref": "Counsels on Health, p. 344.1 (CH 344.1)",
+          "snippet": "The relation that exists between the mind and the body is very intimate. When one is affected, the other sympathizes. The condition of the mind affects the health to a far greater degree than many realize. Many of the diseases from which men suffer are the result of mental depression. Grief, anxiety, discontent, remorse, guilt, distrust, all tend to break down the life forces and to invite decay and death."
         }
       ]
     },
@@ -257,13 +257,13 @@
         "肚子大",
         "减腰围"
       ],
-      "answer_zh": "**可持续的体重管理，靠的是“吃对+动起来”的小步坚持，而不是极端节食。** 增加蔬果与全谷、减少添加糖与油炸、每天多走几步，比任何速成法都可靠。涉及用药或疾病，请听医生的。",
+      "answer_zh": "**可持续的体重管理，靠的是“吃对+动起来”的小步坚持，而不是极端节食。** 增加蔬果与全谷、减少添加糖与油炸、每天多走几步，比任何速成法都可靠。涉及用药或疾病，请听医生的。 怀爱伦劝勉：饮食上的节制，会得回心智与道德的活力，也帮助我们管住各种私欲（参 CD 126.3）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-126.3",
+          "ref": "Counsels on Diet and Foods, p. 126.3 (CD 126.3)",
+          "snippet": "Abstemiousness in diet is rewarded with mental and moral vigor; it also aids in the control of the passions."
         }
       ]
     },
@@ -281,9 +281,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-18.5",
+          "ref": "Counsels on Diet and Foods, p. 18.5 (CD 18.5)",
+          "snippet": "When men and women are truly converted, they will conscientiously regard the laws of life that God has established in their being, thus seeking to avoid physical, mental, and moral feebleness. Obedience to these laws must be made a matter of personal duty. We ourselves must suffer the ills of violated law. We must answer to God for our habits and practices. Therefore, the question for us is not, “What will the world say?”"
         }
       ]
     },
@@ -302,9 +302,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-59.1",
+          "ref": "Counsels on Diet and Foods, p. 59.1 (CD 59.1)",
+          "snippet": "As our first parents lost Eden through the indulgence of appetite, our only hope of regaining Eden is through the firm denial of appetite and passion. Abstemiousness in diet, and control of all the passions, will preserve the intellect and give mental and moral vigor, enabling men to bring all their propensities under the control of the higher powers, and to discern between right and wrong, the sacred and the common."
         }
       ]
     },
@@ -315,13 +315,13 @@
         "添加糖",
         "戒糖"
       ],
-      "answer_zh": "**减少添加糖，是性价比最高的健康改变之一，甜饮料尤其该少碰。** 用水果的天然甜味替代糕点糖果，口渴时选白水。慢慢减，舌头会重新爱上食物的本味。",
+      "answer_zh": "**减少添加糖，是性价比最高的健康改变之一，甜饮料尤其该少碰。** 用水果的天然甜味替代糕点糖果，口渴时选白水。慢慢减，舌头会重新爱上食物的本味。 关于零食，怀爱伦对父母的劝勉是：不要让孩子在两餐之间吃糖果、水果、坚果或任何食物，规律进餐才能保住消化系统的健康节奏（参 CD 229.1）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-229.1",
+          "ref": "Counsels on Diet and Foods, p. 229.1 (CD 229.1)",
+          "snippet": "Your children should not be allowed to eat candies, fruit, nuts, or anything in the line of food, between their meals. Two meals a day are better for them than three. If the parents set the example, and move from principle, the children will soon fall into line."
         }
       ]
     },
@@ -335,9 +335,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-339.2",
+          "ref": "Counsels on Diet and Foods, p. 339.2 (CD 339.2)",
+          "snippet": "Under the head of stimulants and narcotics is classed a great variety of articles that, altogether, used as food or drink irritate the stomach, poison the blood, and excite the nerves. Their use is a positive evil. Men seek the excitement of stimulants, because, for the time, the results are agreeable. But there is always a reaction."
         }
       ]
     },
@@ -351,9 +351,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-81.2",
+          "ref": "Counsels on Diet and Foods, p. 81.2 (CD 81.2)",
+          "snippet": "Grains, fruits, nuts, and vegetables constitute the diet chosen for us by our Creator. These foods, prepared in as simple and natural a manner as possible, are the most healthful and nourishing. They impart a strength, a power of endurance, and a vigor of intellect, that are not afforded by a more complex and stimulating diet."
         }
       ]
     },
@@ -367,13 +367,13 @@
         "成天没劲",
         "一直很累"
       ],
-      "answer_zh": "**一顿有蛋白和纤维的早餐，能稳住上午的血糖与专注力。** 哪怕只是一杯豆浆配全麦面包和水果，也比空着肚子撑到中午更好。",
+      "answer_zh": "**一顿有蛋白和纤维的早餐，能稳住上午的血糖与专注力。** 哪怕只是一杯豆浆配全麦面包和水果，也比空着肚子撑到中午更好。 怀爱伦纠正过一个常见误区：早餐时肠胃的状态比一天中后面几餐更好，草草吃早餐、丰盛吃晚餐的习惯是不对的（参 CD 173.2）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-173.2",
+          "ref": "Counsels on Diet and Foods, p. 173.2 (CD 173.2)",
+          "snippet": "It is the custom and order of society to take a slight breakfast. But this is not the best way to treat the stomach. At breakfast time the stomach is in a better condition to take care of more food than at the second or third meal of the day. The habit of eating a sparing breakfast and a large dinner is wrong. Make your breakfast correspond more nearly to the heartiest meal of the day."
         }
       ]
     },
@@ -390,13 +390,13 @@
         "总觉得累",
         "总累"
       ],
-      "answer_zh": "**长期疲劳、莫名疼痛或体重骤变，是身体在说话，别硬扛。** 先检查睡眠、饮食与压力，若持续不退，请及时就医排查，这不是小题大做。",
+      "answer_zh": "**长期疲劳、莫名疼痛或体重骤变，是身体在说话，别硬扛。** 先检查睡眠、饮食与压力，若持续不退，请及时就医排查，这不是小题大做。 怀爱伦劝勉每个人主动学习身体的构造与保健之道，而不是把身体完全托付给医生（参 CH 37.3）。",
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-37.3",
+          "ref": "Counsels on Health, p. 37.3 (CH 37.3)",
+          "snippet": "Men and women should inform themselves in regard to the philosophy of health. The minds of rational beings seem shrouded in darkness in regard to their own physical structure, and how to preserve it in a healthy condition. The present generation have trusted their bodies with the doctors and their souls with the ministers. Do they not pay the minister well for studying the Bible for them, that they need not be to the trouble?"
         }
       ]
     },
@@ -411,7 +411,7 @@
         "提不起劲",
         "开心不起来"
       ],
-      "answer_zh": "**情绪低落时，请记得你不必独自硬扛——信靠、倾诉与专业帮助都能托住你。** 每天记三件感恩小事、保持活动与光照，会慢慢松动阴霾。若持续两周以上，请务必寻求专业支持。",
+      "answer_zh": "**情绪低落时，请记得你不必独自硬扛——信靠、倾诉与专业帮助都能托住你。** 每天记三件感恩小事、保持活动与光照，会慢慢松动阴霾。若持续两周以上，请务必寻求专业支持。 怀爱伦长期观察证实：许多疾病的根源是心理的抑郁，忧伤、焦虑、内疚会耗损生命的力量（参 CH 344.1）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -421,9 +421,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-344.1",
+          "ref": "Counsels on Health, p. 344.1 (CH 344.1)",
+          "snippet": "The relation that exists between the mind and the body is very intimate. When one is affected, the other sympathizes. The condition of the mind affects the health to a far greater degree than many realize. Many of the diseases from which men suffer are the result of mental depression. Grief, anxiety, discontent, remorse, guilt, distrust, all tend to break down the life forces and to invite decay and death."
         }
       ]
     },
@@ -438,7 +438,7 @@
         "免疫力差",
         "总生病"
       ],
-      "answer_zh": "**NEWSTART 把健康归纳为八个支点：营养、运动、水、阳光、节制、空气、休息、信靠。** 它们彼此支撑——你不必一次全改，挑一个最想动的手边习惯开始，就很好。",
+      "answer_zh": "**NEWSTART 把健康归纳为八个支点：营养、运动、水、阳光、节制、空气、休息、信靠。** 它们彼此支撑——你不必一次全改，挑一个最想动的手边习惯开始，就很好。 怀爱伦在《论饮食》中列出真正的医治之法：纯净的空气、阳光、节制、休息、运动、适当的饮食、用水，以及信靠神的大能——这正是 NEWSTART 八大原则的出处（参 CD 301.3）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -448,9 +448,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-301.3",
+          "ref": "Counsels on Diet and Foods, p. 301.3 (CD 301.3)",
+          "snippet": "Pure air, sunlight, abstemiousness, rest, exercise, proper diet, the use of water, trust in divine power,—these are the true remedies. Every person should have a knowledge of nature’s remedial agencies and how to apply them. It is essential both to understand the principles involved in the treatment of the sick and to have a practical training that will enable one rightly to use this knowledge."
         }
       ]
     },
@@ -470,9 +470,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-229.1",
+          "ref": "Counsels on Diet and Foods, p. 229.1 (CD 229.1)",
+          "snippet": "Your children should not be allowed to eat candies, fruit, nuts, or anything in the line of food, between their meals. Two meals a day are better for them than three. If the parents set the example, and move from principle, the children will soon fall into line."
         }
       ]
     },
@@ -490,9 +490,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-301.2",
+          "ref": "Counsels on Diet and Foods, p. 301.2 (CD 301.2)",
+          "snippet": "There are many ways of practicing the healing art; but there is only one way that Heaven approves. God’s remedies are the simple agencies of nature, that will not tax or debilitate the system through their powerful properties."
         }
       ]
     },
@@ -510,9 +510,9 @@
       "citations": [
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-170.3",
+          "ref": "Counsels on Health, p. 170.3 (CH 170.3)",
+          "snippet": "For the chronic invalid nothing so tends to restore health and happiness as living amid attractive country surroundings. Here the most helpless ones can be left sitting or lying in the sunshine or in the shade of the trees. They have only to lift their eyes and they see above them the beautiful foliage. They wonder that they have never before noticed how gracefully the boughs bend, forming a living canopy over them, giving them just the shade they need."
         }
       ]
     },
@@ -528,7 +528,7 @@
         "惧怕",
         "心里不平安"
       ],
-      "answer_zh": "**心灵的平安是整体健康的一部分——把忧虑交托、常存感恩，身心会一同受益。** 若你此刻正被重担压着，我愿意陪你把难处说出口，并鼓励你寻求真实的陪伴与专业协助。",
+      "answer_zh": "**心灵的平安是整体健康的一部分——把忧虑交托、常存感恩，身心会一同受益。** 若你此刻正被重担压着，我愿意陪你把难处说出口，并鼓励你寻求真实的陪伴与专业协助。 怀爱伦始终把人引向基督的邀请：「到我这里来……我就使你们得安息」——心里的平安，是整体健康最踏实的一块基石（参 CH 319.2）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -565,9 +565,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CG-124.3",
+          "ref": "Child Guidance, p. 124.3 (CG 124.3)",
+          "snippet": "Indolence is a great curse. God has blessed human beings with nerves, organs, and muscles; and they are not to be allowed to deteriorate because of inaction, but are to be strengthened and kept in health by exercise. To have nothing to do is a great misfortune, for idleness ever has been and ever will be a curse to the human family. 12 Manuscript 60, 1894 ."
         }
       ]
     },
@@ -590,12 +590,6 @@
           "sourceId": "箴言 4:25",
           "ref": "箴言 4:25",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -617,12 +611,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -651,9 +639,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-175.2",
+          "ref": "Counsels on Diet and Foods, p. 175.2 (CD 175.2)",
+          "snippet": "The stomach, when we lie down to rest, should have its work all done, that it may enjoy rest, as well as other portions of the body. The work of digestion should not be carried on through any period of the sleeping hours. After the stomach, which has been overtaxed, has performed its task, it becomes exhausted, which causes faintness."
         }
       ]
     },
@@ -678,9 +666,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-18.5",
+          "ref": "Counsels on Diet and Foods, p. 18.5 (CD 18.5)",
+          "snippet": "When men and women are truly converted, they will conscientiously regard the laws of life that God has established in their being, thus seeking to avoid physical, mental, and moral feebleness. Obedience to these laws must be made a matter of personal duty. We ourselves must suffer the ills of violated law. We must answer to God for our habits and practices. Therefore, the question for us is not, “What will the world say?”"
         }
       ]
     },
@@ -695,7 +683,7 @@
         "怎么戒烟",
         "抽烟上瘾"
       ],
-      "answer_zh": "**戒烟永远不嫌晚，越早戒身体回报越大——可借助正规戒烟门诊与药物，别独自硬扛。** 信靠的同伴支持、替自己找替代动作，都能帮你说“不”。身体是圣灵的殿，值得你为它戒烟。",
+      "answer_zh": "**戒烟永远不嫌晚，越早戒身体回报越大——可借助正规戒烟门诊与药物，别独自硬扛。** 信靠的同伴支持、替自己找替代动作，都能帮你说“不”。身体是圣灵的殿，值得你为它戒烟。 怀爱伦对烟草的评价毫不含糊：它是一种缓慢、隐蔽、却极为恶毒的毒物，兴奋之后便是麻痹（参 MH 327.1）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -705,9 +693,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-MH-327.1",
+          "ref": "The Ministry of Healing, p. 327.1 (MH 327.1)",
+          "snippet": "Tobacco is a slow, insidious, but most malignant poison. In whatever form it is used, it tells upon the constitution; it is all the more dangerous because its effects are slow and at first hardly perceptible. It excites and then paralyzes the nerves. It weakens and clouds the brain. Often it affects the nerves in a more powerful manner than does intoxicating drink. It is more subtle, and its effects are difficult to eradicate from the system."
         }
       ]
     },
@@ -720,7 +708,7 @@
         "戒酒",
         "戒酒方法"
       ],
-      "answer_zh": "**酒最好少喝或不喝；若喝，男性每日酒精不超过 25 克、女性不超过 15 克。** 不要醉酒，那是伤害身体与判断力的事。把杯中物换成白水与好同伴，身心都更轻盈。",
+      "answer_zh": "**酒最好少喝或不喝；若喝，男性每日酒精不超过 25 克、女性不超过 15 克。** 不要醉酒，那是伤害身体与判断力的事。把杯中物换成白水与好同伴，身心都更轻盈。 关于酒，怀爱伦的劝勉没有任何余地：永远不要喝酒，水才是最好的选择（参 CD 421.3）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -730,9 +718,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-421.3",
+          "ref": "Counsels on Diet and Foods, p. 421.3 (CD 421.3)",
+          "snippet": "Never take tea, coffee, beer, wine, or any spirituous liquors. Water is the best liquid possible to cleanse the tissues."
         }
       ]
     },
@@ -756,9 +744,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-170.3",
+          "ref": "Counsels on Health, p. 170.3 (CH 170.3)",
+          "snippet": "For the chronic invalid nothing so tends to restore health and happiness as living amid attractive country surroundings. Here the most helpless ones can be left sitting or lying in the sunshine or in the shade of the trees. They have only to lift their eyes and they see above them the beautiful foliage. They wonder that they have never before noticed how gracefully the boughs bend, forming a living canopy over them, giving them just the shade they need."
         }
       ]
     },
@@ -778,12 +766,6 @@
           "sourceId": "创世记 1:29",
           "ref": "创世记 1:29",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -807,9 +789,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CH-344.1",
+          "ref": "Counsels on Health, p. 344.1 (CH 344.1)",
+          "snippet": "The relation that exists between the mind and the body is very intimate. When one is affected, the other sympathizes. The condition of the mind affects the health to a far greater degree than many realize. Many of the diseases from which men suffer are the result of mental depression. Grief, anxiety, discontent, remorse, guilt, distrust, all tend to break down the life forces and to invite decay and death."
         }
       ]
     },
@@ -831,12 +813,6 @@
           "sourceId": "诗篇 103:3",
           "ref": "诗篇 103:3",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -858,12 +834,6 @@
           "sourceId": "雅各书 5:14",
           "ref": "雅各书 5:14",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -883,12 +853,6 @@
           "sourceId": "马太福音 25:36",
           "ref": "马太福音 25:36",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -910,12 +874,6 @@
           "sourceId": "诗篇 139:14",
           "ref": "诗篇 139:14",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -938,9 +896,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-421.3",
+          "ref": "Counsels on Diet and Foods, p. 421.3 (CD 421.3)",
+          "snippet": "Never take tea, coffee, beer, wine, or any spirituous liquors. Water is the best liquid possible to cleanse the tissues."
         }
       ]
     },
@@ -960,12 +918,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -980,7 +932,7 @@
         "肚子饿",
         "饿了吃什么"
       ],
-      "answer_zh": "**两餐之间饿了，选对零食比硬扛更好：原味坚果、水果、无糖酸奶、一小把瓜子都是不错的加餐。** 避开薯片、含糖饮料与精制糕点；分量小一点，别让加餐变正餐。或吃或喝，无论作什么，都要为荣耀神而行。",
+      "answer_zh": "**两餐之间饿了，选对零食比硬扛更好：原味坚果、水果、无糖酸奶、一小把瓜子都是不错的加餐。** 避开薯片、含糖饮料与精制糕点；分量小一点，别让加餐变正餐。或吃或喝，无论作什么，都要为荣耀神而行。 关于两餐之间的加餐，怀爱伦说得非常直接：正餐之间，不要让一口食物经过你的嘴唇（参 CD 180.3）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -990,9 +942,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-180.3",
+          "ref": "Counsels on Diet and Foods, p. 180.3 (CD 180.3)",
+          "snippet": "I am astonished to learn that, after all the light that has been given in this place, many of you eat between meals! You should never let a morsel pass your lips between your regular meals. Eat what you ought, but eat it at one meal, and then wait until the next."
         }
       ]
     },
@@ -1006,7 +958,7 @@
         "喝茶好不好",
         "咖啡因太多"
       ],
-      "answer_zh": "**茶与咖啡含咖啡因，适量尚可，但过量会扰乱睡眠、加重焦虑与心悸，身体诚实记得。** 下午后改喝白水或淡茶、控制总量，对睡眠与情绪更友好；孕期与心悸者更当谨慎。或吃或喝，无论作什么，都要为荣耀神而行——包括你杯中的选择。",
+      "answer_zh": "**茶与咖啡含咖啡因，适量尚可，但过量会扰乱睡眠、加重焦虑与心悸，身体诚实记得。** 下午后改喝白水或淡茶、控制总量，对睡眠与情绪更友好；孕期与心悸者更当谨慎。或吃或喝，无论作什么，都要为荣耀神而行——包括你杯中的选择。 怀爱伦把茶、咖啡、烟草与酒并列为不同程度的人造刺激品，并特别指出咖啡暂时煽动头脑、之后留下的却是疲惫与麻痹（参 CD 421.4、421.6）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -1016,9 +968,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-421.6",
+          "ref": "Counsels on Diet and Foods, p. 421.6 (CD 421.6)",
+          "snippet": "Coffee is a hurtful indulgence. It temporarily excites the mind to unwonted action, but the aftereffect is exhaustion, prostration, paralysis of the mental, moral, and physical powers. The mind becomes enervated, and unless through determined effort the habit is overcome, the activity of the brain is permanently lessened."
         }
       ]
     },
@@ -1043,9 +995,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-81.2",
+          "ref": "Counsels on Diet and Foods, p. 81.2 (CD 81.2)",
+          "snippet": "Grains, fruits, nuts, and vegetables constitute the diet chosen for us by our Creator. These foods, prepared in as simple and natural a manner as possible, are the most healthful and nourishing. They impart a strength, a power of endurance, and a vigor of intellect, that are not afforded by a more complex and stimulating diet."
         }
       ]
     },
@@ -1068,9 +1020,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-81.2",
+          "ref": "Counsels on Diet and Foods, p. 81.2 (CD 81.2)",
+          "snippet": "Grains, fruits, nuts, and vegetables constitute the diet chosen for us by our Creator. These foods, prepared in as simple and natural a manner as possible, are the most healthful and nourishing. They impart a strength, a power of endurance, and a vigor of intellect, that are not afforded by a more complex and stimulating diet."
         }
       ]
     },
@@ -1093,12 +1045,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1112,7 +1058,7 @@
         "痛风石",
         "嘌呤高"
       ],
-      "answer_zh": "**痛风是尿酸结晶惹的祸，饮食上先砍掉高嘌呤：动物内脏、浓汤、海鲜、酒（尤其啤酒），多喝水帮助排尿酸。** 急性期请遵医嘱用药，别硬扛；控制体重、少甜饮也有帮助。你们的身体是圣灵的殿，值得被温柔对待。",
+      "answer_zh": "**痛风是尿酸结晶惹的祸，饮食上先砍掉高嘌呤：动物内脏、浓汤、海鲜、酒（尤其啤酒），多喝水帮助排尿酸。** 急性期请遵医嘱用药，别硬扛；控制体重、少甜饮也有帮助。你们的身体是圣灵的殿，值得被温柔对待。 怀爱伦在肉食问题上的结论值得我们慎重面对：牲畜的疾病越发普遍，最安全的道路就是完全不吃肉（参 CD 412.1）。",
       "citations": [
         {
           "sourceType": "bible",
@@ -1122,9 +1068,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-412.1",
+          "ref": "Counsels on Diet and Foods, p. 412.1 (CD 412.1)",
+          "snippet": "Again I will refer to the diet question. We cannot now do as we have ventured to do in the past in regard to meat eating. It has always been a curse to the human family, but now it is made particularly so in the curse which God has pronounced upon the herds of the field, because of man’s transgression and sin. The disease upon animals is becoming more and more common, and our only safety now is in leaving meat entirely alone."
         }
       ]
     },
@@ -1145,12 +1091,6 @@
           "sourceId": "利未记 17:11",
           "ref": "利未记 17:11",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1171,12 +1111,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1198,12 +1132,6 @@
           "sourceId": "诗篇 139:14",
           "ref": "诗篇 139:14",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1223,12 +1151,6 @@
           "sourceId": "箴言 16:24",
           "ref": "箴言 16:24",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1251,12 +1173,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1279,9 +1195,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-18.5",
+          "ref": "Counsels on Diet and Foods, p. 18.5 (CD 18.5)",
+          "snippet": "When men and women are truly converted, they will conscientiously regard the laws of life that God has established in their being, thus seeking to avoid physical, mental, and moral feebleness. Obedience to these laws must be made a matter of personal duty. We ourselves must suffer the ills of violated law. We must answer to God for our habits and practices. Therefore, the question for us is not, “What will the world say?”"
         }
       ]
     },
@@ -1302,12 +1218,6 @@
           "sourceId": "哥林多前书 6:19",
           "ref": "哥林多前书 6:19",
           "snippet": ""
-        },
-        {
-          "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
         }
       ]
     },
@@ -1330,9 +1240,9 @@
         },
         {
           "sourceType": "egw",
-          "sourceId": "EGW-MH",
-          "ref": "EGW-MH",
-          "snippet": "怀爱伦《医药布道/服务的价值》"
+          "sourceId": "EGW-CD-104.1",
+          "ref": "Counsels on Diet and Foods, p. 104.1 (CD 104.1)",
+          "snippet": "The influence of pure, fresh air is to cause the blood to circulate healthfully through the system. It refreshes the body, and tends to render it strong and healthy, while at the same time its influence is decidedly felt upon the mind, imparting a degree of composure and serenity. It excites the appetite, and renders the digestion of food more perfect, and induces sound and sweet sleep."
         }
       ]
     }

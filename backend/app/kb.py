@@ -81,9 +81,18 @@ BOOK_ALIASES = {
 
 # 保守同义词归一组（组内首词为规范词）。只归一根词，避免语义漂移。
 # 与 Dart 端 offline_qa_logic.dart 的 _synGroups 保持一致。
+# v51 扩充（7 组，均经 FMM 平局规则验证无回归）：只收指代同一实体的口语变体；
+# 裸「奉献」绝不入组（v49 铁律）；「称义/救恩」不并入「得救」（防 idx9 抢答 idx22）。
 SYN_GROUPS = [
     ["怀爱伦", "egw", "预言之灵", "怀师母"],
     ["医疗布道", "健康事工", "医药布道", "健康布道", "医疗宣教", "medical missionary"],
+    ["祷告", "祈祷", "祈求"],
+    ["洗礼", "受洗", "浸礼", "施洗"],
+    ["得救", "怎么能得救", "怎样得救", "咋得救"],
+    ["耶稣再来", "基督再来", "主再来", "耶稣再临"],
+    ["悔改", "忏悔"],
+    ["十一奉献", "什一", "纳什一"],
+    ["圣灵", "保惠师"],
 ]
 _CANON = {w.lower(): g[0].lower() for g in SYN_GROUPS for w in g}
 
@@ -112,9 +121,20 @@ class KnowledgeBase:
         for v in self.verses:
             key = f"{str(v.get('book_code', '')).upper()} {int(v.get('chapter', 0))}:{int(v.get('verse', 0))}".lower()
             self._verse_index[key] = v
-        # 概念词典（原始关键词 + 归一词），供正向最大匹配切分
+        # 概念词典（原始关键词 + 归一词 + 同义词组全体成员），供正向最大匹配切分。
+        # 注意：同义词组非规范变体（如「忏悔」「施洗」）须显式入词典，否则 FMM
+        # 切不出它们，归一组形同虚设。
         self._concept_dict = set()
         self._max_concept_len = 1
+        for g in SYN_GROUPS:
+            for w in g:
+                wl = (w or "").strip().lower()
+                if not wl:
+                    continue
+                cl = _canon(wl)
+                self._concept_dict.add(wl)
+                self._concept_dict.add(cl)
+                self._max_concept_len = max(self._max_concept_len, len(wl), len(cl))
         for e in self.faq:
             for kw in e.get("keywords", []):
                 kl = (kw or "").strip().lower()

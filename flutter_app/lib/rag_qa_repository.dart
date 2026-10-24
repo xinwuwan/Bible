@@ -45,8 +45,10 @@ class RagFallbackQaRepository implements QaRepository {
     final offlineAns = offline.answer(question, locale: locale);
     if (!offlineAns.needsHuman) return offlineAns;
 
-    // 离线无命中：用端侧检索的 top-K 作为 context 调 RAG
-    final entries = offline.retrieve(question, topK: 3);
+    // 离线无命中：用端侧检索的 top-K 作为 context 调 RAG。
+    // v51：topK 3→5——部分命中的跨主题问句（如「人死了会上天堂吗」）需要更全的
+    // context 才能兜住；服务端 slice(0,8) 已支持，无需服务端改动即生效。
+    final entries = offline.retrieve(question, topK: 5);
     final context = entries
         .map((e) => RagContextItem(
               kind: 'pastor',
@@ -89,7 +91,7 @@ Future<HealthQaAnswer> healthRagAnswer(
   final offline = logic.ask(question);
   if (!offline.needsHuman) return offline;
 
-  final entries = logic.retrieve(question, topK: 3);
+  final entries = logic.retrieve(question, topK: 5);
   final context = entries
       .map((e) => RagContextItem(
             kind: 'health',

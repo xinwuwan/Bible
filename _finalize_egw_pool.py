@@ -23,7 +23,8 @@ BOOK_TITLE = {
 }
 
 # 人工审定清单：code -> [ref, ...]（ref 即 API refcode_short 全串，如 "CD 81.2"）
-SELECT = {
+# v50 部分（怀著健康/教育等首批）
+SELECT_V50 = {
     "CD": ["CD 81.2", "CD 412.1", "CD 229.1", "CD 175.2", "CD 421.3", "CD 420.1",
            "CD 301.3", "CD 301.2", "CD 104.1", "CD 18.5", "CD 76.4", "CD 447.2",
            "CD 59.1", "CD 126.3", "CD 50.1", "CD 404.3", "CD 71.1", "CD 421.4",
@@ -40,6 +41,37 @@ SELECT = {
     "GC": ["GC 434.2", "GC 302.2", "GC 322.1"],
     "DA": ["DA 289.1", "DA 787.2", "DA 37.3"],
 }
+
+# v51 扩充部分（神学/伦理/末世等 25 个新专题；全部经文经 _egw_grep 定位后人工选定）
+SELECT_V51 = {
+    "DA": ["DA 324.1", "DA 21.3", "DA 818.1", "DA 827.1", "DA 111.1", "DA 233.1",
+           "DA 500.1", "DA 367.2", "DA 524.1", "DA 283.2"],
+    "AH": ["AH 96.2", "AH 350.3", "AH 177.1", "AH 43.1", "AH 47.1", "AH 474.4",
+           "AH 204.2", "AH 549.1", "AH 539.1", "AH 515.4", "AH 516.2", "AH 489.4",
+           "AH 156.1", "AH 384.2", "AH 542.2", "AH 18.1", "AH 428.1", "AH 215.1",
+           "AH 112.1"],
+    "CG": ["CG 241.1", "CG 275.1", "CG 267.3"],
+    "CD": ["CD 90.2"],
+    "MH": ["MH 245.2"],
+    "CE": ["CE 190.1", "CE 69.1", "CE 44.1"],
+    "CT": ["CT 357.1", "CT 32.3", "CT 182.4"],
+    "CH": ["CH 253.3", "CH 316.3", "CH 429.1", "CH 104.1", "CH 34.2", "CH 357.3",
+           "CH 355.3"],
+    "GC": ["GC 648.3", "GC 428.1", "GC 616.1", "GC 605.2", "GC 634.1", "GC 650.1",
+           "GC 556.2", "GC 624.2", "GC 70.2", "GC 435.2", "GC 292.3", "GC 452.1",
+           "GC 559.1"],
+    "Ed": ["Ed 95.5", "Ed 301.4", "Ed 279.3", "Ed 288.1"],
+    "MYP": ["MYP 73.3"],
+}
+
+# 合并两版（按书卷去重）
+SELECT = {}
+for _src in (SELECT_V50, SELECT_V51):
+    for _code, _refs in _src.items():
+        bucket = SELECT.setdefault(_code, [])
+        for _r in _refs:
+            if _r not in bucket:
+                bucket.append(_r)
 
 NUM_PREFIX = re.compile(r"^\d+\.\s*")
 TAIL_CITE = re.compile(r"\s*[—–-]\s*(The|A|Counsels|Testimonies|Manuscript|Special|Signs|Review|Uncopied|From|Letter|Appendix|Patriarchs|Prophets|Acts|Desire|Gospel|Ministry)[^—–-]{0,140}$")

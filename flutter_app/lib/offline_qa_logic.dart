@@ -86,9 +86,22 @@ class OfflineQaLogic {
   final Map<String, Map<String, dynamic>> verseIndex; // "gen 1:1" -> verse row
 
   /// 保守同义词归一组（组内首词为规范词）。只归一根词，避免语义漂移。
+  ///
+  /// v51 扩充（7 组，均经 FMM 平局规则验证无回归）：
+  ///   - 只收「指代同一实体的口语变体」，不收宽泛概念（防跨条目串味）；
+  ///   - 裸「奉献」绝不入组（v49 铁律：防撞 idx242 幼儿奉献礼）；
+  ///   - 「称义/救恩」不并入「得救」（idx22 因信称义条目会被 idx9 抢答）；
+  ///   - 「医治/治病」不建组（idx6 已同持，归一无增益）。
   static const List<List<String>> _synGroups = [
     ['怀爱伦', 'egw', '预言之灵', '怀师母'],
     ['医疗布道', '健康事工', '医药布道', '健康布道', '医疗宣教', 'medical missionary'],
+    ['祷告', '祈祷', '祈求'],
+    ['洗礼', '受洗', '浸礼', '施洗'],
+    ['得救', '怎么能得救', '怎样得救', '咋得救'],
+    ['耶稣再来', '基督再来', '主再来', '耶稣再临'],
+    ['悔改', '忏悔'],
+    ['十一奉献', '什一', '纳什一'],
+    ['圣灵', '保惠师'],
   ];
 
   /// 概念词典（全部条目的原始关键词 + 归一词），供正向最大匹配切分。
@@ -98,6 +111,16 @@ class OfflineQaLogic {
   OfflineQaLogic(this.faq, this.verseIndex) {
     _conceptDict = <String>{};
     var maxLen = 1;
+    // 同义词组全体成员必须先入词典：否则非规范变体（如「忏悔」「施洗」「祈求」）
+    // 若不在任何条目关键词中，FMM 永远切不出它们，归一组将形同虚设。
+    for (final g in _synGroups) {
+      for (final w in g) {
+        final wl = w.toLowerCase();
+        if (wl.isEmpty) continue;
+        _conceptDict.add(wl);
+        if (wl.length > maxLen) maxLen = wl.length;
+      }
+    }
     for (final entry in faq) {
       for (final raw in (entry['keywords'] as List<dynamic>? ?? const [])) {
         final kw = (raw as String).trim();
