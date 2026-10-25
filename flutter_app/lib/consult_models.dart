@@ -154,6 +154,21 @@ class ConsultAttachment {
     required this.extractedText,
     required this.hint,
   });
+
+  /// v58：OCR 成功后把「需手动誊写」占位升级为「已提取文字」。
+  ConsultAttachment copyWith({
+    String? status,
+    String? extractedText,
+    String? hint,
+  }) {
+    return ConsultAttachment(
+      name: name,
+      size: size,
+      status: status ?? this.status,
+      extractedText: extractedText ?? this.extractedText,
+      hint: hint ?? this.hint,
+    );
+  }
 }
 
 /// 静态数据加载 + 材料核验引擎

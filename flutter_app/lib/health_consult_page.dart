@@ -1,7 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'consult_models.dart';
+import 'consult_ocr.dart';
 import 'consult_recognizer.dart';
 
 /// 专业咨询页：面向医药布道士的「材料核验 + 疾病解读 + 医药布道建议」参考工具。
@@ -118,11 +121,8 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       for (final f in res.files) {
         final b = f.bytes;
         if (b == null) continue;
-        final att = AttachmentParser.parse(f.name, b);
-        if (!mounted) return;
-        setState(() => _attachments.add(att));
+        await attachAndOcr(f.name, b);
       }
-      _recognizeAndFill();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -131,6 +131,61 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     } finally {
       if (mounted) setState(() => _picking = false);
     }
+  }
+
+  /// 解析附件并入列表；若为图片且本地无文本，走 OCR 提取文字（v58）。
+  ///
+  /// 这是「上传即识别」的核心链路：图片过去一律返回「请手动誊写」占位，
+  /// 表单只能全部人工填写；现在图片先经后端视觉模型转录为文字，再交给
+  /// 本地识别器提取医院/诊断等字段自动填表。OCR 失败时保留手动誊写提示，
+  /// 不阻塞流程。
+  Future<void> attachAndOcr(String name, Uint8List bytes) async {
+    final att = AttachmentParser.parse(name, bytes);
+    if (!mounted) return;
+    setState(() => _attachments.add(att));
+    if (_isImageName(name) && att.status == 'need_manual') {
+      await _runOcr(_attachments.length - 1, name, bytes);
+      return; // _runOcr 末尾会触发 _recognizeAndFill
+    }
+    _recognizeAndFill();
+  }
+
+  static bool _isImageName(String name) {
+    final lower = name.toLowerCase();
+    return lower.endsWith('.png') ||
+        lower.endsWith('.jpg') ||
+        lower.endsWith('.jpeg') ||
+        lower.endsWith('.bmp') ||
+        lower.endsWith('.webp');
+  }
+
+  static String _mimeOfName(String name) {
+    final lower = name.toLowerCase();
+    if (lower.endsWith('.png')) return 'image/png';
+    if (lower.endsWith('.webp')) return 'image/webp';
+    if (lower.endsWith('.bmp')) return 'image/bmp';
+    return 'image/jpeg';
+  }
+
+  /// 对指定附件做 OCR：置「识别中」→ 成功则升级为 text_ok 并触发自动
+  /// 填写；失败退回「请手动誊写」。[index] 为 _attachments 中的下标。
+  Future<void> _runOcr(int index, String name, Uint8List bytes) async {
+    if (index < 0 || index >= _attachments.length) return;
+    if (mounted) {
+      setState(() {
+        _attachments[index] =
+            _attachments[index].copyWith(status: 'ocr_pending');
+      });
+    }
+    final text = await ConsultOcr.recognizeImage(bytes, _mimeOfName(name));
+    if (!mounted) return;
+    setState(() {
+      _attachments[index] = text != null
+          ? _attachments[index].copyWith(
+              status: 'text_ok', extractedText: text, hint: '')
+          : _attachments[index].copyWith(status: 'need_manual');
+    });
+    _recognizeAndFill();
   }
 
   void _verify() {
@@ -165,7 +220,8 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                   title: '① 上传材料 / 填写关键信息',
                   children: [
                     const Text(
-                      '上传病历、诊断证明、检验报告等材料（txt 自动读取；PDF/图片需手动誊写关键信息）。',
+                      '上传病历、诊断证明、检验报告等材料：图片自动 OCR 识别文字并尝试填写下方信息（需联网）；'
+                      'txt 直接读取；PDF 或识别不清的图片可手动誊写。自动填入的内容请核实后再提交。',
                       style: TextStyle(fontSize: 12.5, color: Colors.black54),
                     ),
                     const SizedBox(height: 8),
@@ -410,9 +466,11 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
 
   Widget _attachmentChip(ConsultAttachment a) {
     final (IconData icon, Color color, String label) = switch (a.status) {
-      'text_ok' => (Icons.check_circle, const Color(0xFF2E7D32), '已读取文本'),
+      'text_ok' => (Icons.check_circle, const Color(0xFF2E7D32), '已识别文字'),
+      'ocr_pending' =>
+        (Icons.hourglass_top, const Color(0xFF1565C0), '文字识别中…'),
       'failed' => (Icons.error, Colors.red, '无法读取'),
-      _ => (Icons.edit_note, const Color(0xFFEF6C00), '请手动誊写'),
+      _ => (Icons.edit_note, const Color(0xFFEF6C00), '识别失败，请手动誊写'),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),

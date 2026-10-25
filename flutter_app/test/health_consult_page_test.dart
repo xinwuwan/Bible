@@ -1,7 +1,13 @@
 // health_consult_page_test.dart
 // v57：医药布道页测试——材料自动识别填写提示、疾病知识库内联检索、
 // 综合参考报告零外链（用户明确要求：所有信息当前页查看、无外部网址跳转）。
+// v58：上传诊断证明图片 → OCR 转录 → 自动填写表单的链路测试
+// （用户实报：上传图片后四个字段全空、未自动识别）。
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:faith_compare_app/consult_models.dart';
+import 'package:faith_compare_app/consult_ocr.dart';
 import 'package:faith_compare_app/health_consult_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -106,5 +112,80 @@ void main() {
     // v57 起：移除百度检索外链按钮
     expect(find.byIcon(Icons.travel_explore), findsNothing);
     expect(find.textContaining('检索权威医学科普（百度健康等）'), findsNothing);
+  });
+
+  // ---- v58：上传图片 → OCR → 自动填写 ----
+
+  TextEditingController _ctrlOf(WidgetTester tester, String labelPart) {
+    final f = find.byWidgetPredicate((w) =>
+        w is TextField &&
+        (w.decoration?.labelText ?? '').contains(labelPart));
+    expect(f, findsOneWidget, reason: '找不到字段：$labelPart');
+    return tester.widget<TextField>(f).controller!;
+  }
+
+  testWidgets('上传诊断证明图片 → OCR 成功 → 自动填写表单并标注待核实', (tester) async {
+    // mock OCR 转录（模拟后端返回的诊断证明全文）
+    ConsultOcr.fetcherForTest = (bytes, mime) async => 'XX市中心医院\n'
+        '诊断证明书\n'
+        '临床诊断：2型糖尿病\n'
+        '主诉：多饮、多尿、体重下降 3 月余';
+    addTearDown(() => ConsultOcr.fetcherForTest = null);
+
+    await _pumpPage(tester);
+    final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
+    await page.attachAndOcr('诊断证明.jpg', Uint8List.fromList([1, 2, 3]));
+    await tester.pumpAndSettle();
+
+    // 附件 chip：已识别文字（不再是「请手动誊写」）
+    expect(find.textContaining('已识别文字'), findsOneWidget);
+    expect(find.textContaining('请手动誊写'), findsNothing);
+
+    // 自动填写横幅：说明填了什么、要求核实
+    expect(find.textContaining('已根据材料自动识别并填入'), findsOneWidget);
+    expect(find.textContaining('请逐项核实修改后再核验'), findsOneWidget);
+
+    // 四个字段被自动填写
+    expect(_ctrlOf(tester, '诊断名称').text, '2型糖尿病');
+    expect(_ctrlOf(tester, '医院名称').text, 'XX市中心医院');
+    expect(_ctrlOf(tester, '病人症状与病史描述').text, contains('多饮'));
+
+    // 自动填入的字段带「已自动识别」标记（绿星标 + helperText）
+    expect(find.byIcon(Icons.auto_awesome), findsWidgets);
+    expect(find.textContaining('根据材料自动填入，请核实后再提交'), findsWidgets);
+  });
+
+  testWidgets('上传图片 OCR 失败 → 保留手动誊写提示、不自动填写', (tester) async {
+    // OCR 不可用（网络失败/服务关闭）时应退回手动誊写，不阻塞流程
+    ConsultOcr.fetcherForTest = (bytes, mime) async => null;
+    addTearDown(() => ConsultOcr.fetcherForTest = null);
+
+    await _pumpPage(tester);
+    final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
+    await page.attachAndOcr('报告.jpg', Uint8List.fromList([9]));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('识别失败，请手动誊写'), findsOneWidget);
+    expect(find.textContaining('已根据材料自动识别并填入'), findsNothing);
+    // 表单保持空白
+    expect(_ctrlOf(tester, '诊断名称').text, '');
+    expect(_ctrlOf(tester, '医院名称').text, '');
+  });
+
+  testWidgets('上传 txt 不走 OCR、直接读取并自动填写', (tester) async {
+    // txt 有本地文本，不应触发 OCR（fetcher 被调用即失败）
+    ConsultOcr.fetcherForTest = (bytes, mime) async => '不应被调用';
+    addTearDown(() => ConsultOcr.fetcherForTest = null);
+
+    await _pumpPage(tester);
+    final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
+    final txt = '门诊病历\n诊断：急性支气管炎\n主诉：咳嗽 5 天';
+    await page.attachAndOcr(
+        '病历.txt', Uint8List.fromList(utf8.encode(txt)));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('已识别文字'), findsOneWidget);
+    expect(_ctrlOf(tester, '诊断名称').text, '急性支气管炎');
+    expect(find.textContaining('识别失败'), findsNothing);
   });
 }

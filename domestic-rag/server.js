@@ -9,6 +9,7 @@
 //   3. 调大模型（默认智谱 glm-4-flash，国内直连）
 //   4. 后处理合规审计：CUV 检测 + 引用越界审计
 //   5. 返回 { answer, refs_used, flags, fallback }
+//   6. v58：诊断材料图片 OCR（/api/ocr，视觉模型纯转录，不解读不诊断）
 //
 // 部署形态：Web函数 / 自定义运行时，监听端口 9000（阿里云/腾讯云默认均为 9000）。
 // 本地运行：RAG_API_KEY=xxx node server.js
@@ -279,6 +280,73 @@ async function callLLM(system, user) {
     const msg = (e && e.name === 'AbortError')
       ? `LLM timeout after ${timeoutMs}ms`
       : `LLM call failed: ${(e && e.message) || e}`;
+    return { ok: false, error: msg };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// v58：诊断材料图片 OCR（POST /api/ocr）
+//
+// 背景：医药布道模块上传诊断证明图片后，附件解析层对图片一律返回「需手动
+// 誊写」占位（extractedText 为空），导致材料识别器无文本可处理、表单无法
+// 自动填写。这里补上图片文字提取环节：调用智谱视觉模型（glm-4v-plus）把
+// 图片文字逐字转录为纯文本。
+//
+// 合规铁律：**只转录、不解读**——模型不得输出任何诊断、医学解读或建议，
+// 不得推测补全看不清的文字。转录文本回传前端后，交由本地识别器
+// （MaterialRecognizer）提取字段，最终由用户核实后提交。
+// ---------------------------------------------------------------------------
+const OCR_SYSTEM_PROMPT = `你是医疗材料文字转录引擎。唯一任务：把用户图片中的文字逐字转录为纯文本。
+严格遵守：
+1. 只转录图片中真实可见的文字，不得推测、补全、改写、翻译或总结；
+2. 保持原有换行与段落顺序；无法辨认的字用「□」代替，绝不允许猜测其内容；
+3. 不得输出任何诊断结论、医学解读、治疗建议或其他图片之外的文字；
+4. 不要客套话，直接输出转录文本。`;
+
+async function callVisionLLM(imageUrl) {
+  const model = process.env.OCR_MODEL || 'glm-4v-plus';
+  const body = JSON.stringify({
+    model,
+    messages: [
+      { role: 'system', content: OCR_SYSTEM_PROMPT },
+      {
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: imageUrl } },
+          { type: 'text', text: '请转录这张医疗材料图片中的全部文字。' },
+        ],
+      },
+    ],
+    temperature: 0.1,
+  });
+  // 超时保护：托管平台反向代理窗口有限，视觉模型挂死必须按时返回错误，
+  // 绝不让网关 502（服务本身 400/502 正常，别误判挂了）。
+  const timeoutMs = Number(process.env.OCR_TIMEOUT_MS) || 30000;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(CONFIG.baseUrl + '/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${CONFIG.apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body,
+      signal: ctrl.signal,
+    });
+    if (!r.ok) {
+      const txt = await r.text();
+      return { ok: false, error: `OCR LLM ${r.status}: ${txt.slice(0, 200)}` };
+    }
+    const d = await r.json();
+    const text = (d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
+    return { ok: true, text: String(text).slice(0, 8000) };
+  } catch (e) {
+    const msg = (e && e.name === 'AbortError')
+      ? `OCR timeout after ${timeoutMs}ms`
+      : `OCR call failed: ${(e && e.message) || e}`;
     return { ok: false, error: msg };
   } finally {
     clearTimeout(timer);
@@ -572,9 +640,12 @@ const server = http.createServer(async (req, res) => {
   }
 
   let body = '';
+  // v58：/api/ocr 携带 base64 图片（几 MB 量级），单独放宽上限；其余维持 256KB
+  const isOcrPath = req.url && req.url.split('?')[0].replace(/\/+$/, '') === '/api/ocr';
+  const bodyLimit = isOcrPath ? 8 * 1024 * 1024 : 256 * 1024;
   req.on('data', (chunk) => {
     body += chunk;
-    if (body.length > 256 * 1024) req.destroy(); // 256KB 上限
+    if (body.length > bodyLimit) req.destroy();
   });
   req.on('error', () => {});
   req.on('end', async () => {
@@ -583,6 +654,28 @@ const server = http.createServer(async (req, res) => {
       parsed = JSON.parse(body || '{}');
     } catch {
       return jsonRes(res, 400, { error: 'invalid json' }, origin);
+    }
+
+    // v58：图片 OCR（先于 RAG 分支处理：入参是 image 而非 question）
+    if (isOcrPath) {
+      let image = String(parsed.image || '').trim();
+      if (!image) {
+        return jsonRes(res, 400, { ok: false, error: 'missing image (base64)' }, origin);
+      }
+      const mime = String(parsed.mime || 'image/jpeg').toLowerCase();
+      if (!/^image\/(jpeg|jpg|png|webp|bmp)$/.test(mime)) {
+        return jsonRes(res, 400, { ok: false, error: `unsupported mime: ${mime}` }, origin);
+      }
+      if (!image.startsWith('data:')) image = `data:${mime};base64,${image}`;
+      const llmResp = await callVisionLLM(image);
+      if (!llmResp.ok) {
+        return jsonRes(res, 502, { ok: false, error: llmResp.error }, origin);
+      }
+      const text = String(llmResp.text || '').trim();
+      if (!text) {
+        return jsonRes(res, 502, { ok: false, error: 'OCR returned empty text' }, origin);
+      }
+      return jsonRes(res, 200, { ok: true, text }, origin);
     }
 
     const question = String(parsed.question || '').trim();
