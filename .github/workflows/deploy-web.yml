@@ -79,6 +79,10 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: dart run verify_consult_dialog.dart
 
+      - name: Test gate — disease knowledge base (verify_disease_kb)
+        working-directory: ${{ github.workspace }}
+        run: dart run verify_disease_kb.dart
+
       - name: Test gate — backend contract (no deps)
         working-directory: ${{ github.workspace }}
         run: python3 backend/tests/test_contract.py
