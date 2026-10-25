@@ -19,6 +19,12 @@ void main() {
     for (final name in ['营养', '运动', '水', '阳光', '节制', '空气', '休息', '信靠']) {
       expect(find.text(name), findsWidgets, reason: '应展示支柱：$name');
     }
+    // 免责声明已改为页尾一行小字（Sliver 懒加载，需滚动到可见再断言）
+    await tester.scrollUntilVisible(
+      find.textContaining('不替代专业医疗诊断'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.textContaining('不替代专业医疗诊断'), findsWidgets);
   });
 

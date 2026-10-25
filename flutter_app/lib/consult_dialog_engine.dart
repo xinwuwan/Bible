@@ -1,5 +1,5 @@
 // consult_dialog_engine.dart
-// AI 医生助手 —— 多轮问诊对话引擎（纯 Dart：不依赖 Flutter，可被 dart run 直接测试）。
+// AI 医生 —— 多轮问诊对话引擎（纯 Dart：不依赖 Flutter，可被 dart run 直接测试）。
 //
 // 设计原则（合规边界，不可逾越）：
 // - 系统不做确定性诊断：只给出「可能性判断 + 依据 + 需排除疾病 + 建议检查」；

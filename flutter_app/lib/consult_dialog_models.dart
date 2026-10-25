@@ -1,5 +1,5 @@
 // consult_dialog_models.dart
-// AI 医生助手 —— 问诊数据模型（纯 Dart：无 Flutter 依赖，可被 dart run 直接测试）。
+// AI 医生 —— 问诊数据模型（纯 Dart：无 Flutter 依赖，可被 dart run 直接测试）。
 // 数据来源：flutter_app/assets/web/consult_scripts.json（问诊剧本）
 //         + disease_profiles*.json（疾病完整资料，页面负责合并为 DiseaseKnowledge）
 //         + hospital_tier_a.json（材料级别识别关键词）

@@ -109,6 +109,8 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
           ? ListView(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),
               children: [
+                const _ScenarioBanner(),
+                const SizedBox(height: 10),
                 const _ComplianceBanner(),
                 const SizedBox(height: 10),
                 _sectionCard(
@@ -519,6 +521,37 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       style: TextStyle(fontSize: 12, color: Colors.black54, height: 1.6),
     ));
     return children;
+  }
+}
+
+class _ScenarioBanner extends StatelessWidget {
+  const _ScenarioBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3E5F5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF6A1B9A).withOpacity(0.4)),
+      ),
+      child: const Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline, size: 16, color: Color(0xFF6A1B9A)),
+          SizedBox(width: 6),
+          Expanded(
+            child: Text(
+              '适用场景：已持有病历、报告、检验单等诊断材料时使用。'
+              '如还没有材料、说不清是什么问题，可先用「AI 医生 · 多轮问诊」梳理主要不适。',
+              style: TextStyle(
+                  fontSize: 12, height: 1.5, color: Color(0xFF6A1B9A)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

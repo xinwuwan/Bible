@@ -42,7 +42,10 @@ class _HealthPageState extends State<HealthPage> {
   @override
   void initState() {
     super.initState();
-    _loadFavs().then((_) => _load());
+    // 收藏偏好与内容加载解耦：偏好读取（SharedPreferences）挂起或失败时，
+    // 绝不允许阻塞健康内容的主加载链路（v56 修 widget 测试无限转圈）。
+    _load();
+    _loadFavs();
   }
 
   Future<void> _loadFavs() async {
@@ -233,7 +236,7 @@ class _HealthPageState extends State<HealthPage> {
                             ),
                           ),
                           // 专业咨询整合模块入口（v55：原「专业咨询·医药布道」
-                          // 与「AI 医生助手·多轮问诊」两个平铺入口合并为一个模块，
+                          // 与「AI 医生·多轮问诊」两个平铺入口合并为一个模块，
                           // 进入后再分两个子功能）
                           SliverToBoxAdapter(
                             child: _ConsultEntry(

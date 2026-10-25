@@ -85,7 +85,7 @@ void main() {
     await pumpQa(tester);
     await ask(tester, '无引用');
 
-    expect(find.textContaining('已拦截'), findsOneWidget);
+    expect(find.text('已拦截（未通过校验闸门）'), findsOneWidget);
     expect(find.textContaining('引用缺失'), findsOneWidget);
     // 关键：无来源的回答正文绝不能露出
     expect(find.text('不应展示的无来源回答。'), findsNothing);
@@ -96,7 +96,7 @@ void main() {
     await pumpQa(tester);
     await ask(tester, '和合本');
 
-    expect(find.textContaining('已拦截'), findsOneWidget);
+    expect(find.text('已拦截（未通过校验闸门）'), findsOneWidget);
     expect(find.textContaining('来源非法'), findsOneWidget);
     expect(find.text('引用了和合本的回答，必须被拦截。'), findsNothing);
   });

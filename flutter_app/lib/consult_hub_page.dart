@@ -1,5 +1,5 @@
 // consult_hub_page.dart
-// v55：专业咨询整合模块——原「专业咨询·医药布道」与「AI 医生助手·多轮问诊」
+// v55：专业咨询整合模块——原「专业咨询·医药布道」与「AI 医生·多轮问诊」
 // 两个平铺入口合并为一个模块，进入后再分两个子功能：
 //   ① 材料核验（上传诊断材料 → 核验级别 → 疾病解读 + 医药布道建议）
 //   ② AI 多轮问诊（像真人医生一样逐步询问 → 结合上传报告综合分析）
@@ -56,6 +56,7 @@ class ConsultHubPage extends StatelessWidget {
             iconColor: const Color(0xFF6A1B9A),
             title: '材料核验 · 医药布道',
             subtitle: '上传诊断材料 → 核验级别 → 疾病解读 + 医药布道建议（不替代医生）',
+            scenario: '适用场景：已持有病历 / 报告 / 检验单等诊断材料',
             steps: const ['上传病历 / 报告', '提取诊断与医院信息', '分级与多家一致性核验', '解读 + 布道建议'],
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const HealthConsultPage()),
@@ -67,9 +68,10 @@ class ConsultHubPage extends StatelessWidget {
             borderColor: const Color(0xFF1565C0),
             icon: Icons.forum,
             iconColor: const Color(0xFF1565C0),
-            title: 'AI 医生助手 · 多轮问诊',
+            title: 'AI 医生 · 多轮问诊',
             subtitle: '像真人医生一样逐步询问症状病史 → 结合上传报告综合分析 → '
                 '可能性判断 + 依据 + 检查建议（不替代医生）',
+            scenario: '适用场景：还没有明确诊断，说不清是什么问题时',
             steps: const ['描述主要不适', '逐题回答追问', '上传报告辅助分析', '可能性 + 依据 + 检查建议'],
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const ConsultChatPage()),
@@ -115,6 +117,7 @@ class _ConsultFunctionCard extends StatelessWidget {
   final Color iconColor;
   final String title;
   final String subtitle;
+  final String scenario;
   final List<String> steps;
   final VoidCallback onTap;
 
@@ -125,6 +128,7 @@ class _ConsultFunctionCard extends StatelessWidget {
     required this.iconColor,
     required this.title,
     required this.subtitle,
+    required this.scenario,
     required this.steps,
     required this.onTap,
   });
@@ -164,6 +168,21 @@ class _ConsultFunctionCard extends StatelessWidget {
                 subtitle,
                 style: const TextStyle(
                     fontSize: 12, height: 1.5, color: Colors.black54),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.info_outline, size: 14, color: borderColor),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      scenario,
+                      style: TextStyle(
+                          fontSize: 11.5, height: 1.4, color: borderColor),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Wrap(

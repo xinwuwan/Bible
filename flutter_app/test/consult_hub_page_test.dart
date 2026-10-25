@@ -26,9 +26,14 @@ void main() {
     expect(find.textContaining('分级与多家一致性核验'), findsOneWidget);
 
     // 子功能卡 2：多轮问诊
-    expect(find.text('AI 医生助手 · 多轮问诊'), findsOneWidget);
+    expect(find.text('AI 医生 · 多轮问诊'), findsOneWidget);
     expect(find.textContaining('描述主要不适'), findsOneWidget);
     expect(find.textContaining('可能性 + 依据 + 检查建议'), findsOneWidget);
+
+    // 两张卡各自的适用场景标注
+    expect(find.textContaining('适用场景'), findsNWidgets(2));
+    expect(find.textContaining('已持有病历'), findsOneWidget);
+    expect(find.textContaining('说不清是什么问题'), findsOneWidget);
 
     // 两个进入箭头（每张卡一个）
     expect(find.byIcon(Icons.arrow_forward_ios), findsNWidgets(2));

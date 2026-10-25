@@ -8,7 +8,7 @@ import 'consult_dialog_engine.dart';
 import 'consult_dialog_models.dart';
 import 'consult_models.dart' show AttachmentParser;
 
-/// AI 医生助手 —— 多轮对话式问诊页。
+/// AI 医生 —— 多轮对话式问诊页。
 ///
 /// 合规边界（不可逾越）：
 /// - 系统不做确定性诊断：只给「可能性判断 + 依据 + 需排除 + 建议检查」；
@@ -205,7 +205,7 @@ class _ConsultChatPageState extends State<ConsultChatPage> {
     final e = _engine;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI 医生助手'),
+        title: const Text('AI 医生'),
         actions: [
           if (_loaded)
             IconButton(
@@ -219,6 +219,7 @@ class _ConsultChatPageState extends State<ConsultChatPage> {
           ? Column(
               children: [
                 const _ChatBanner(),
+                const _ScenarioBanner(),
                 if (e != null && e.phase == ConsultPhase.interviewing)
                   _ProgressBar(done: e.answeredCount, total: e.totalQuestions),
                 Expanded(
@@ -381,6 +382,32 @@ class _AttachmentTag extends StatelessWidget {
                 name,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontSize: 11.5, color: Color(0xFF6A1B9A)),
+              ),
+            ),
+          ],
+        ),
+      );
+}
+
+class _ScenarioBanner extends StatelessWidget {
+  const _ScenarioBanner();
+
+  @override
+  Widget build(BuildContext context) => Container(
+        width: double.infinity,
+        color: const Color(0xFFE3F2FD),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        child: const Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.info_outline, size: 15, color: Color(0xFF1565C0)),
+            SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                '适用场景：还没有明确诊断、说不清是什么问题时使用。'
+                '如已持有报告，可先在「材料核验 · 医药布道」中上传，再带着报告进来一起分析。',
+                style: TextStyle(
+                    fontSize: 11.5, height: 1.4, color: Color(0xFF0D47A1)),
               ),
             ),
           ],
