@@ -27,6 +27,10 @@ class DiseaseProfile {
   final List<String> impacts;
   final String prognosis;
   final List<Map<String, String>> advice; // {pillar, text}
+  final List<String> differential; // 需要排除的疾病
+  final List<String> furtherExams; // 建议进一步检查
+  final List<String> seeDoctor; // 出现这些情况尽快就医
+  final List<String> sources; // 权威来源（纯文本引用，无外链）
 
   const DiseaseProfile({
     required this.id,
@@ -39,6 +43,10 @@ class DiseaseProfile {
     required this.impacts,
     required this.prognosis,
     required this.advice,
+    this.differential = const [],
+    this.furtherExams = const [],
+    this.seeDoctor = const [],
+    this.sources = const [],
   });
 
   factory DiseaseProfile.fromJson(Map<String, dynamic> j) => DiseaseProfile(
@@ -59,6 +67,10 @@ class DiseaseProfile {
                     })
                 .toList() ??
             const [],
+        differential: (j['differential'] as List?)?.cast<String>() ?? const [],
+        furtherExams: (j['furtherExams'] as List?)?.cast<String>() ?? const [],
+        seeDoctor: (j['seeDoctor'] as List?)?.cast<String>() ?? const [],
+        sources: (j['sources'] as List?)?.cast<String>() ?? const [],
       );
 }
 
@@ -157,6 +169,7 @@ class ConsultData {
     for (final p in const [
       'assets/web/disease_profiles.json',
       'assets/web/disease_profiles_2.json',
+      'assets/web/disease_profiles_3.json',
     ]) {
       final raw = await rootBundle.loadString(p);
       final j = jsonDecode(raw) as Map<String, dynamic>;
@@ -169,19 +182,26 @@ class ConsultData {
     loaded = true;
   }
 
-  /// 按诊断名称匹配疾病科普条目（别名包含优先）
+  /// 按诊断名称匹配疾病科普条目：别名命中最长者优先（避免「瘤」类短别名
+  /// 抢先匹配具体病名）。系统不自行诊断：仅做知识库检索。
   static DiseaseProfile? findProfile(String diagnosis) {
     final d = diagnosis.trim();
     if (d.isEmpty) return null;
+    DiseaseProfile? best;
+    var bestLen = 0;
     for (final p in diseases) {
       for (final a in p.aliases) {
-        if (a.isNotEmpty && d.contains(a)) return p;
+        if (a.isNotEmpty && d.contains(a) && a.length > bestLen) {
+          best = p;
+          bestLen = a.length;
+        }
+      }
+      if (d.contains(p.name) && p.name.length > bestLen) {
+        best = p;
+        bestLen = p.name.length;
       }
     }
-    for (final p in diseases) {
-      if (d.contains(p.name)) return p;
-    }
-    return null;
+    return best;
   }
 
   // ---------- 材料核验 ----------
