@@ -104,6 +104,7 @@ _CANON = {w.lower(): g[0].lower() for g in SYN_GROUPS for w in g}
 QUESTION_FILLER = [
     "请问", "一下", "想问", "问一下", "告诉我", "讲讲", "说说", "指教", "指点",
     "解释", "介绍", "关于", "对于", "来说", "说来", "看来", "根据", "按照",
+    "方面", "层面", "角度", "领域", "范畴", "范畴内",
     "怎么样", "为什么", "能不能", "可不可以", "有没有", "是不是", "与否",
     "什么意思", "是什么意思", "啥意思", "意思",
     "可以", "应该", "应当", "该", "就", "够", "不够", "足以",
@@ -120,6 +121,28 @@ _FILLER_SORTED = sorted(set(QUESTION_FILLER), key=len, reverse=True)
 _PUNCT_RE = re.compile(
     r"[\s\-_,.?!;:'\"()\[\]{}<>/\\|@#$%^&*+=~`，。？！、；：「」『』（）《》〈〉…—·\d]+"
 )
+
+# ---------------------------------------------------------------------------
+# 上位词表（v55）：文档/载体类型的泛化概念。第四决胜键用——
+# 覆盖率/分数/命中数三项全平局时，命中上位词更少的一方胜。
+#
+# 根因（2026-10-25 实测）：「怀爱伦对于家庭的著作有哪些」被 FMM 切成
+# {怀爱伦, 家庭, 著作}：家庭条目命中 {怀爱伦, 家庭}，入门路线条目命中
+# {怀爱伦, 著作}，cov/score/hits 三项全平（0.667, 5, 2）→ 按「平局取队首」
+# 队尾新条目落败，答成著作总览。语义上「著作」只是载体（上位词），
+# 「家庭」才是问题真正问的主题——持主题词的具体条目才该赢。
+# 匹配用精确相等（「预言之灵的著作」这类长主题词不降权）。
+# ---------------------------------------------------------------------------
+HYPERNYMS = {
+    "著作", "书籍", "书本", "文章", "文献", "作品", "文集", "选集",
+    "读物", "材料", "资料", "内容", "说法", "观点", "教导", "论述",
+    "看法", "见解", "信息", "文字", "篇章", "页面", "卷", "部", "篇",
+}
+
+
+def _hypernym_hits(matched) -> int:
+    """matched 概念中命中上位词表的个数（第四决胜键取负后比较）。"""
+    return sum(1 for m in matched if m in HYPERNYMS)
 
 
 def _strip_filler(text: str) -> str:
@@ -279,7 +302,9 @@ class KnowledgeBase:
             if not matched:
                 continue
             score = sum(len(m) for m in matched)
-            key = (len(matched) / len(concepts), score, len(matched))
+            # v55 第四决胜键：三项平局时，命中上位词少者胜（主题词 > 载体词）
+            key = (len(matched) / len(concepts), score, len(matched),
+                   -_hypernym_hits(matched))
             if best_key is None or key > best_key:
                 best_key, best = key, entry
         if best is None:
@@ -290,9 +315,11 @@ class KnowledgeBase:
         """返回 (best_entry, score, coverage)；无命中返回 (None, 0, 0.0)。
 
         score = 命中概念的长度加权和；coverage = 被同一条目覆盖的问题概念数 /
-        问题概念总数。排序键 (coverage, score, 命中数)。
+        问题概念总数。排序键 (coverage, score, 命中数, -上位词命中数)。
         v53：unknown_topic_veto 命中时返回 (None, 0, 0.0)——宁可转 RAG/人工，
         不拿未覆盖主题的问句硬答。
+        v55：第四决胜键修「怀爱伦对于家庭的著作有哪些」平局败给队首泛条目的
+        问题——三项平局时命中上位词（著作/书籍/文章…）少的一方胜。
         """
         q = self._concepts(question)
         if not q:
@@ -305,7 +332,9 @@ class KnowledgeBase:
             if not matched:
                 continue
             score = sum(len(m) for m in matched)
-            key = (len(matched) / len(q), score, len(matched))
+            # v55 第四决胜键：三项平局时，命中上位词少者胜（主题词 > 载体词）
+            key = (len(matched) / len(q), score, len(matched),
+                   -_hypernym_hits(matched))
             if best_key is None or key > best_key:
                 best_key, best = key, entry
         if best is None:

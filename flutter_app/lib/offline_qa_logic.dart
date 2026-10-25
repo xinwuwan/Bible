@@ -145,6 +145,26 @@ class OfflineQaLogic {
   }
 
   // ---------------------------------------------------------------------------
+  // v55 上位词表 + 第四决胜键（与 kb.py HYPERNYMS / _hypernym_hits 完全一致）
+  //
+  // 根因（2026-10-25 实测）：「怀爱伦对于家庭的著作有哪些」被 FMM 切成
+  // {怀爱伦, 家庭, 著作} 三个裸词：家庭条目命中 {怀爱伦, 家庭}，入门路线条目
+  // 命中 {怀爱伦, 著作}，cov/score/命中数三项全平（0.667, 5, 2）→ 按「平局取
+  // 队首」，队尾新条目落败，答成著作总览（答非所问）。语义上「著作」只是载体
+  // （上位词），「家庭」才是问题真正问的主题——持主题词的具体条目才该赢。
+  // 匹配用精确相等（「预言之灵的著作」这类长主题词不降权）。
+  // ---------------------------------------------------------------------------
+  static const Set<String> _hypernyms = {
+    '著作', '书籍', '书本', '文章', '文献', '作品', '文集', '选集',
+    '读物', '材料', '资料', '内容', '说法', '观点', '教导', '论述',
+    '看法', '见解', '信息', '文字', '篇章', '页面', '卷', '部', '篇',
+  };
+
+  /// matched 概念中命中上位词表的个数（第四决胜键取负后比较）。
+  static int _hypernymHits(Set<String> matched) =>
+      matched.where(_hypernyms.contains).length;
+
+  // ---------------------------------------------------------------------------
   // v53 未覆盖主题否决（与 kb.py unknown_topic_veto 完全一致）
   //
   // 根因（2026-10-24 实测）：覆盖率 = 命中概念数/问题概念数，而问题概念只能来自
@@ -162,6 +182,7 @@ class OfflineQaLogic {
   static const List<String> _questionFiller = [
     '请问', '一下', '想问', '问一下', '告诉我', '讲讲', '说说', '指教', '指点',
     '解释', '介绍', '关于', '对于', '来说', '说来', '看来', '根据', '按照',
+    '方面', '层面', '角度', '领域', '范畴', '范畴内',
     '怎么样', '为什么', '能不能', '可不可以', '有没有', '是不是', '与否',
     '什么意思', '是什么意思', '啥意思', '意思',
     '可以', '应该', '应当', '该', '就', '够', '不够', '足以',
@@ -264,6 +285,7 @@ class OfflineQaLogic {
     var bestCov = 0.0;
     var bestScore = 0;
     var bestN = 0;
+    var bestHyper = 0;
     for (final entry in faq) {
       final matched = _entryConcepts(entry).intersection(q);
       if (matched.isEmpty) continue;
@@ -272,14 +294,21 @@ class OfflineQaLogic {
         score += m.length;
       }
       final cov = matched.length / q.length;
+      // v55 第四决胜键：三项平局时，命中上位词少者胜（主题词 > 载体词）
+      final hyper = _hypernymHits(matched);
       if (best == null ||
           cov > bestCov ||
           (cov == bestCov && score > bestScore) ||
-          (cov == bestCov && score == bestScore && matched.length > bestN)) {
+          (cov == bestCov && score == bestScore && matched.length > bestN) ||
+          (cov == bestCov &&
+              score == bestScore &&
+              matched.length == bestN &&
+              hyper < bestHyper)) {
         best = entry;
         bestCov = cov;
         bestScore = score;
         bestN = matched.length;
+        bestHyper = hyper;
       }
     }
     return best;
@@ -324,6 +353,8 @@ class OfflineQaLogic {
   /// 返回 {'entry','score','coverage'}；无命中返回 null。
   /// v53：unknownTopicVeto 命中（问题含未覆盖实义主题）时返回 null——
   /// 宁可转 RAG/人工，不拿答非所问的条目硬答。
+  /// v55：三项平局时加第四决胜键——命中上位词（著作/书籍/文章…）少的一方胜，
+  /// 修「怀爱伦对于家庭的著作有哪些」平局败给队首泛条目的答非所问。
   Map<String, dynamic>? _bestFaq(String question) {
     final q = _concepts(question);
     if (q.isEmpty) return null;
@@ -332,6 +363,7 @@ class OfflineQaLogic {
     var bestCov = 0.0;
     var bestScore = 0;
     var bestN = 0;
+    var bestHyper = 0;
     for (final entry in faq) {
       final matched = _entryConcepts(entry).intersection(q);
       if (matched.isEmpty) continue;
@@ -340,14 +372,21 @@ class OfflineQaLogic {
         score += m.length;
       }
       final cov = matched.length / q.length;
+      // v55 第四决胜键：三项平局时，命中上位词少者胜（主题词 > 载体词）
+      final hyper = _hypernymHits(matched);
       if (best == null ||
           cov > bestCov ||
           (cov == bestCov && score > bestScore) ||
-          (cov == bestCov && score == bestScore && matched.length > bestN)) {
+          (cov == bestCov && score == bestScore && matched.length > bestN) ||
+          (cov == bestCov &&
+              score == bestScore &&
+              matched.length == bestN &&
+              hyper < bestHyper)) {
         best = entry;
         bestCov = cov;
         bestScore = score;
         bestN = matched.length;
+        bestHyper = hyper;
       }
     }
     if (best == null) return null;
