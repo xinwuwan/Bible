@@ -55,7 +55,8 @@ def check_list(eid, field, lst, minlen):
     return lst
 
 
-def validate_entry(d, existing_ids, existing_names, existing_aliases):
+def validate_entry(d, existing_ids, existing_names, existing_aliases,
+                   require_new_fields=False):
     eid = d.get('id', '?')
     if not re.fullmatch(r'[a-z][a-z0-9_]*', eid):
         err(eid, 'id 格式非法')
@@ -103,6 +104,11 @@ def validate_entry(d, existing_ids, existing_names, existing_aliases):
     check_list(eid, 'differential', d.get('differential'), 2)
     check_list(eid, 'furtherExams', d.get('furtherExams'), 3)
     check_list(eid, 'seeDoctor', d.get('seeDoctor'), 3)
+    # 新增字段（v59）：临床表现 / 诊断标准——仅第四批(D)新条目强制填写，
+    # 既有 65 条(legacy)逐步补全，不在此阻断生成。
+    if require_new_fields:
+        check_list(eid, 'clinical', d.get('clinical'), 2)
+        check_list(eid, 'diagnostic', d.get('diagnostic'), 2)
 
     # 外链检查：所有字符串值都不得含网址形态（用户要求：全部内联、零外链）
     def walk(v, path):
@@ -120,18 +126,22 @@ def validate_entry(d, existing_ids, existing_names, existing_aliases):
 
 
 def main():
-    new = []
-    for path, var in [
+    modules = [
         ('_kb_data_a.py', 'DISEASES_A'),
         ('_kb_data_b.py', 'DISEASES_B'),
         ('_kb_data_c1.py', 'DISEASES_C1'),
         ('_kb_data_c2.py', 'DISEASES_C2'),
-    ]:
+        ('_kb_data_d.py', 'DISEASES_D'),
+    ]
+    new = []
+    for path, var in modules:
         ds = load_module(path, var)
         print(f'loaded {path}: {len(ds)} entries')
         new.extend(ds)
 
-    # 既有条目（交叉校验 id/name/alias 冲突）
+    # 既有条目（file1/2 仅参与交叉校验 id/name/alias 冲突）。
+    # 注意：file3 是 a/b/c1/c2 的生成产物，不能再作为「既有」种子，
+    # 否则 c1/c2 自身会与自己冲突；file3 与 D 的冲突在累积校验中捕获。
     existing_ids, existing_names, existing_aliases = set(), set(), set()
     for f in ['disease_profiles.json', 'disease_profiles_2.json']:
         j = json.load(io.open(f'{BASE}/{f}', encoding='utf-8'))
@@ -140,8 +150,11 @@ def main():
             existing_names.add(d['name'])
             existing_aliases.update(d.get('aliases', []))
 
-    for d in new:
-        validate_entry(d, existing_ids, existing_names, existing_aliases)
+    for path, var in modules:
+        ds = load_module(path, var)
+        for d in ds:
+            validate_entry(d, existing_ids, existing_names, existing_aliases,
+                           require_new_fields=(path == '_kb_data_d.py'))
 
     # 关键疾病可检索性（覆盖用户实际遇到的诊断）
     all_profiles = []

@@ -31,6 +31,8 @@ class DiseaseProfile {
   final List<String> furtherExams; // 建议进一步检查
   final List<String> seeDoctor; // 出现这些情况尽快就医
   final List<String> sources; // 权威来源（纯文本引用，无外链）
+  final List<String> clinical; // 临床表现（症状/体征）
+  final List<String> diagnostic; // 诊断标准（要点）
 
   const DiseaseProfile({
     required this.id,
@@ -47,6 +49,8 @@ class DiseaseProfile {
     this.furtherExams = const [],
     this.seeDoctor = const [],
     this.sources = const [],
+    this.clinical = const [],
+    this.diagnostic = const [],
   });
 
   factory DiseaseProfile.fromJson(Map<String, dynamic> j) => DiseaseProfile(
@@ -71,6 +75,8 @@ class DiseaseProfile {
         furtherExams: (j['furtherExams'] as List?)?.cast<String>() ?? const [],
         seeDoctor: (j['seeDoctor'] as List?)?.cast<String>() ?? const [],
         sources: (j['sources'] as List?)?.cast<String>() ?? const [],
+        clinical: (j['clinical'] as List?)?.cast<String>() ?? const [],
+        diagnostic: (j['diagnostic'] as List?)?.cast<String>() ?? const [],
       );
 }
 
@@ -197,23 +203,60 @@ class ConsultData {
     loaded = true;
   }
 
+  /// 诊断名 OCR/手写识别常见形近字误认映射：仅用于检索容错，不改变页面展示的原文。
+  /// 例：诊断证明 OCR 出「颅立性纤维性肿瘤」→ 归一为「孤立性纤维性肿瘤」即可命中。
+  static const Map<String, String> _ocrConfusion = {
+    '颅': '孤',
+    '胂': '肿',
+    '痿': '萎',
+    '瘜': '息',
+    '疸': '胆',
+    '嗝': '隔',
+    '痈': '拥',
+    '癜': '癫',
+    '痫': '闲',
+    '痔': '峙',
+    '疱': '泡',
+    '荨': '寻',
+    '裂': '烈',
+    '痹': '弊',
+    '瘫': '滩',
+    '痪': '焕',
+    '憩': '息',
+    '癣': '鲜',
+    '亢': '冗',
+  };
+
+  /// 将诊断名中的形近误认字归一为规范字（用于容错检索）。
+  static String _normOcr(String s) {
+    if (s.isEmpty) return s;
+    var out = s;
+    for (final e in _ocrConfusion.entries) {
+      if (out.contains(e.key)) out = out.replaceAll(e.key, e.value);
+    }
+    return out;
+  }
+
   /// 按诊断名称匹配疾病科普条目：别名命中最长者优先（避免「瘤」类短别名
   /// 抢先匹配具体病名）。系统不自行诊断：仅做知识库检索。
+  /// 检索时对诊断与别名均做 OCR 形近字归一，容忍扫描件/手写件的识别误差。
   static DiseaseProfile? findProfile(String diagnosis) {
-    final d = diagnosis.trim();
+    final d = _normOcr(diagnosis.trim());
     if (d.isEmpty) return null;
     DiseaseProfile? best;
     var bestLen = 0;
     for (final p in diseases) {
       for (final a in p.aliases) {
-        if (a.isNotEmpty && d.contains(a) && a.length > bestLen) {
+        final na = _normOcr(a);
+        if (na.isNotEmpty && d.contains(na) && na.length > bestLen) {
           best = p;
-          bestLen = a.length;
+          bestLen = na.length;
         }
       }
-      if (d.contains(p.name) && p.name.length > bestLen) {
+      final nn = _normOcr(p.name);
+      if (d.contains(nn) && nn.length > bestLen) {
         best = p;
-        bestLen = p.name.length;
+        bestLen = nn.length;
       }
     }
     return best;

@@ -39,7 +39,41 @@ class Entry {
   List<String> get causes => (j['causes'] as List?)?.cast<String>() ?? const [];
   List<String> get impacts => (j['impacts'] as List?)?.cast<String>() ?? const [];
   List<String> get sources => (j['sources'] as List?)?.cast<String>() ?? const [];
+  List<String> get clinical => (j['clinical'] as List?)?.cast<String>() ?? const [];
+  List<String> get diagnostic =>
+      (j['diagnostic'] as List?)?.cast<String>() ?? const [];
   List<dynamic> get advice => (j['advice'] as List?) ?? const [];
+}
+
+/// 与 app 端 consult_models 一致的 OCR 形近字归一（检索容错）。
+const _ocrConfusion = <String, String>{
+  '颅': '孤',
+  '胂': '肿',
+  '痿': '萎',
+  '瘜': '息',
+  '疸': '胆',
+  '嗝': '隔',
+  '痈': '拥',
+  '癜': '癫',
+  '痫': '闲',
+  '痔': '峙',
+  '疱': '泡',
+  '荨': '寻',
+  '裂': '烈',
+  '痹': '弊',
+  '瘫': '滩',
+  '痪': '焕',
+  '憩': '息',
+  '癣': '鲜',
+  '亢': '冗',
+};
+
+String _normOcr(String s) {
+  var out = s;
+  for (final e in _ocrConfusion.entries) {
+    if (out.contains(e.key)) out = out.replaceAll(e.key, e.value);
+  }
+  return out;
 }
 
 bool hasUrl(String s) =>
@@ -61,13 +95,15 @@ List<Entry> loadAll() {
 }
 
 /// 最长别名匹配（双向包含：诊断含别名，或别名含诊断简称）
+/// 检索前对诊断与别名均做 OCR 形近字归一，容忍扫描件/手写件识别误差。
 Entry? find(List<Entry> all, String diag) {
+  final d = _normOcr(diag);
   Entry? best;
   var bestLen = 0;
   for (final p in all) {
-    for (final a in [p.name, ...p.aliases]) {
+    for (final a in [_normOcr(p.name), ...p.aliases.map(_normOcr)]) {
       if (a.isEmpty) continue;
-      final hit = diag.contains(a) || a.contains(diag);
+      final hit = d.contains(a) || a.contains(d);
       if (hit && a.length > bestLen) {
         best = p;
         bestLen = a.length;
@@ -152,7 +188,27 @@ void main() {
     '肠易激', '胆石症', '胰腺炎', '痔疮', '幽门螺杆菌', '慢性肾炎',
     '尿路感染', '前列腺增生', '血小板减少', '甲减', '肥胖', '代谢综合征',
     '肝癌', '食管癌', '胰腺癌', '甲状腺癌', '卵巢癌', '手足口', '流感',
-    '湿疹', '银屑病', '白内障', '颈椎病', '多囊卵巢', '乳腺纤维腺瘤',
+    '湿疹', '银屑病', '白内障', '颈椎病', '多囊卵巢',         '乳腺纤维腺瘤',
+      ]) {
+    final p = find(all, diag);
+    check('检索「$diag」', p != null, p?.name ?? 'NOT FOUND');
+  }
+
+  print('== 第四批新增疾病可检索（v59 扩充） ==');
+  for (final diag in const <String>[
+    '主动脉夹层', '肺栓塞', '下肢深静脉血栓', '心肌病', '脑出血',
+    '蛛网膜下腔出血', '重症肌无力', '多发性硬化', '面神经麻痹', '坐骨神经痛',
+    '肺结节', '胸膜炎', '肺纤维化', '鼻窦炎', '胃肠炎', '便秘', '肠息肉',
+    '肛瘘', '结肠炎', '胆囊炎', '尿毒症', '慢性肾功能衰竭', '肾病综合征',
+    '膀胱炎', '白细胞减少', '地中海贫血', '血友病', '库欣综合征',
+    '嗜铬细胞瘤', '低血糖', '甲状旁腺功能亢进', '干燥综合征', '硬皮病',
+    '纵隔肿瘤', '胸腺瘤', '神经内分泌肿瘤', '骨肿瘤', '痤疮', '白癜风',
+    '手足癣', '脱发', '黄斑变性', '结膜炎', '角膜炎', '干眼症', '中耳炎',
+    '扁桃体炎', '咽炎', '梅尼埃病', '突发性耳聋', '肩周炎', '网球肘',
+    '腱鞘炎', '股骨头坏死', '半月板损伤', '阴道炎', '盆腔炎', '宫颈炎',
+    '子宫内膜异位症', '乳腺增生', '更年期综合征', '痛经', '卵巢早衰',
+    '新生儿黄疸', '小儿肺炎', '小儿腹泻', '腺样体肥大', '佝偻病',
+    '新型冠状病毒感染', '支原体肺炎', '艾滋病', '梅毒', '强迫症', '营养不良',
   ]) {
     final p = find(all, diag);
     check('检索「$diag」', p != null, p?.name ?? 'NOT FOUND');
@@ -167,7 +223,13 @@ void main() {
     check('SFT 含健康影响（>=3 条）', sft.impacts.length >= 3);
     check('SFT 含权威来源（>=2 条）', sft.sources.length >= 2);
     check('SFT 别名覆盖 SFT', sft.aliases.contains('SFT'));
+    check('SFT 含临床表现（>=2 条）', sft.clinical.length >= 2);
+    check('SFT 含诊断标准（>=2 条）', sft.diagnostic.length >= 2);
   }
+  // OCR 形近字容错：诊断证明被识别成「颅立性纤维性肿瘤」仍应命中 SFT
+  final ocr = find(all, '颅立性纤维性肿瘤');
+  check('OCR 误识「颅立性纤维性肿瘤」可检索', ocr != null && ocr.id == 'sft',
+      ocr?.id ?? 'NOT FOUND');
 
   print('');
   if (failed > 0) {

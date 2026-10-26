@@ -665,6 +665,11 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       for (final i in p.impacts) children.add(_Bullet(i));
       children.add(const SizedBox(height: 10));
     }
+    if (p.clinical.isNotEmpty) {
+      children.add(const _SubTitle('临床表现（常见症状与体征）'));
+      for (final c in p.clinical) children.add(_Bullet(c));
+      children.add(const SizedBox(height: 10));
+    }
     if (p.prognosis.isNotEmpty) {
       children.add(const _SubTitle('后续可能的发展'));
       children.add(Text(p.prognosis,
@@ -674,6 +679,11 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     if (p.differential.isNotEmpty) {
       children.add(const _SubTitle('需要排除的疾病'));
       for (final d in p.differential) children.add(_Bullet(d));
+      children.add(const SizedBox(height: 10));
+    }
+    if (p.diagnostic.isNotEmpty) {
+      children.add(const _SubTitle('诊断标准（要点）'));
+      for (final d in p.diagnostic) children.add(_Bullet(d));
       children.add(const SizedBox(height: 10));
     }
     if (p.furtherExams.isNotEmpty) {
