@@ -304,15 +304,25 @@ class ConsultData {
         r'(诊断|诊断为|初步诊断|入院诊断|出院诊断|临床诊断|确诊|印象|检查结论|病理诊断)[:：]?\s*([^\n，。；,;]{2,40})');
     for (final m in dRe.allMatches(text)) {
       final seg = m.group(2)?.trim() ?? '';
-      if (seg.isNotEmpty && !_looksLikeNoise(seg)) diagnoses.add(seg);
+      if (seg.isNotEmpty &&
+          !_looksLikeNoise(seg) &&
+          !_isDiagStopWord(seg)) {
+        diagnoses.add(seg);
+      }
     }
     final declaredD = declaredDiagnosis.trim();
-    if (declaredD.isNotEmpty) diagnoses.add(declaredD);
+    if (declaredD.isNotEmpty && !_isDiagStopWord(declaredD)) {
+      diagnoses.add(declaredD);
+    }
     final diagnosisList = diagnoses.toList();
+    // 剔除文档型假阳性（证明书/门诊/报告…），用于分级、主诊断与一致性判定，
+    // 避免「诊断证明书」被误抓成「证明书」而遮蔽真实诊断、并误报多家不一致。
+    final cleanDiagnoses =
+        diagnosisList.where((d) => !_isDiagStopWord(d)).toList();
 
     // 3) 分级（按诊断关键词；不按症状自行推断疾病）
     DiseaseLevel level = DiseaseLevel.unknown;
-    final joined = diagnosisList.join('；');
+    final joined = cleanDiagnoses.join('；');
     if (diagnosisList.isNotEmpty) {
       if (_hitAny(joined, rules.majorDiseaseKeywords)) {
         level = DiseaseLevel.major;
@@ -351,11 +361,17 @@ class ConsultData {
       }
     }
 
-    // 5) 多家诊断一致性（归一化后去重）
-    final norm = diagnosisList.map(_normDiag).toSet();
-    final consistent = norm.length <= 1;
+    // 5) 多家诊断一致性：在 cleanDiagnoses 上做归一；并进一步按知识库命中 id
+    // 判定——同名不同写法（如「孤立性纤维性肿瘤」与「孤立性纤维性肿瘤（额、顶部）」）
+    // 视为一致，避免误报不一致。
+    final norm = cleanDiagnoses.map(_normDiag).toSet();
+    final ids = cleanDiagnoses
+        .map((d) => findProfile(d)?.id)
+        .whereType<String>()
+        .toSet();
+    final consistent = norm.length <= 1 || ids.length <= 1;
     if (!consistent) {
-      notes.add('识别到多家医院诊断表述不一致：${diagnosisList.join(' / ')}。'
+      notes.add('识别到多家医院诊断表述不一致：${cleanDiagnoses.join(' / ')}。'
           '请以病理诊断或上级医院诊断为准，并回原医院复诊确认');
     }
     if (symptoms.trim().isNotEmpty && level == DiseaseLevel.unknown) {
@@ -373,7 +389,8 @@ class ConsultData {
       passed: passed,
       missing: missing,
       consistent: consistent,
-      primaryDiagnosis: diagnosisList.isNotEmpty ? diagnosisList.first : '',
+      primaryDiagnosis: _selectPrimaryDiagnosis(
+          cleanDiagnoses.isNotEmpty ? cleanDiagnoses : diagnosisList),
       notes: notes,
     );
   }
@@ -391,6 +408,47 @@ class ConsultData {
   static bool _looksLikeNoise(String s) {
     final hasCjk = RegExp(r'[\u4e00-\u9fff]').hasMatch(s);
     return !hasCjk && s.length < 4;
+  }
+
+  /// 诊断抽取时的文档型假阳性词：常因「诊断证明书」「门诊病历」「检查报告」
+  /// 等被正则误抓成「诊断」片段，并非真实疾病名，须排除。
+  static const Set<String> _diagStopWords = {
+    '证明书', '诊断证明', '证明', '门诊', '门诊病历', '病历', '出院', '出院记录',
+    '入院', '入院记录', '检查报告', '诊断报告', '报告', '报告单', '影像报告',
+    '记录', '小结', '随访', '复诊', '建议', '医嘱', '查体', '体检', '就诊',
+    '材料', '附件', '说明', '备注', '意见', '处理', '首页', '申请单', '预约',
+    '转诊', '咨询', '登记',
+  };
+  /// 以这些词开头的片段通常是文档说明而非诊断（如「建议复查」「请随访」）。
+  static const Set<String> _diagStopPrefix = {
+    '建议', '请', '可', '需', '待', '宜', '门诊', '报告', '记录', '随访',
+    '复诊', '查体', '体检', '就诊', '材料', '附件', '说明', '备注', '意见',
+    '处理', '预约', '转诊', '咨询', '登记', '注', '详见', '见', '结合',
+  };
+  static bool _isDiagStopWord(String s) {
+    final t = s.trim();
+    if (t.isEmpty) return true;
+    if (_diagStopWords.contains(t)) return true;
+    for (final p in _diagStopPrefix) {
+      if (t.startsWith(p)) return true;
+    }
+    return false;
+  }
+
+  /// 主诊断选择：优先采用能命中知识库的疾病名（确保有结论可展示），
+  /// 否则取最长片段（通常信息最具体），否则取首个。
+  static String _selectPrimaryDiagnosis(List<String> list) {
+    if (list.isEmpty) return '';
+    String best = list.first;
+    var bestLen = 0;
+    for (final d in list) {
+      if (findProfile(d) != null) return d;
+      if (d.length > bestLen) {
+        bestLen = d.length;
+        best = d;
+      }
+    }
+    return best;
   }
 
   static bool _hitAny(String text, List<String> kws) {

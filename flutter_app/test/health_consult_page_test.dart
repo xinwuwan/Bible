@@ -188,4 +188,28 @@ void main() {
     expect(_ctrlOf(tester, '诊断名称').text, '急性支气管炎');
     expect(find.textContaining('识别失败'), findsNothing);
   });
+
+  // v60：修正「诊断证明书」被误抓为「证明书」导致主诊断失效、知识库误报「未收录」
+  // 真实用户截图案例：材料含「诊断证明书」+「诊断：孤立性纤维性肿瘤（额、顶部）」，
+  // 系统必须把真实疾病名选为主诊断并命中知识库，而非把「证明书」当诊断。
+  testWidgets('材料含「诊断证明书」时主诊断应选真实疾病并命中知识库', (tester) async {
+    await _pumpPage(tester); // 预加载 ConsultData.diseases
+
+    const material = '首都医科大学三博脑科医院\n'
+        '诊断证明书\n'
+        '姓名：马玉梅\n'
+        '诊断：孤立性纤维性肿瘤（额、顶部）\n'
+        '免疫组化：STAT6 阳性';
+    final r = ConsultData.verify(materialText: material, symptoms: '');
+
+    // 主诊断不得是文档型假阳性「证明书」
+    expect(r.primaryDiagnosis, isNot(equals('证明书')));
+    expect(r.primaryDiagnosis, contains('孤立性纤维性肿瘤'));
+    // 主诊断应能命中知识库 SFT
+    final profile = ConsultData.findProfile(r.primaryDiagnosis);
+    expect(profile, isNotNull);
+    expect(profile!.id, equals('sft'));
+    // 干净后的诊断仅一条，不应误报多家不一致
+    expect(r.consistent, isTrue);
+  });
 }

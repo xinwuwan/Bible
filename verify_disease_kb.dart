@@ -230,6 +230,13 @@ void main() {
   final ocr = find(all, '颅立性纤维性肿瘤');
   check('OCR 误识「颅立性纤维性肿瘤」可检索', ocr != null && ocr.id == 'sft',
       ocr?.id ?? 'NOT FOUND');
+  // 带部位后缀/被截断的诊断串（诊断证明书 + 影像部位标注场景）仍应命中 SFT
+  final paren = find(all, '孤立性纤维性肿瘤（额、顶部）');
+  check('带部位后缀「孤立性纤维性肿瘤（额、顶部）」可检索',
+      paren != null && paren.id == 'sft', paren?.id ?? 'NOT FOUND');
+  final trunc = find(all, '孤立性纤维性肿瘤（额、顶');
+  check('截断诊断串仍可检索', trunc != null && trunc.id == 'sft',
+      trunc?.id ?? 'NOT FOUND');
 
   print('');
   if (failed > 0) {
