@@ -212,4 +212,50 @@ void main() {
     // 干净后的诊断仅一条，不应误报多家不一致
     expect(r.consistent, isTrue);
   });
+
+  // v61：医药布道建议须给出可量化执行标准（用户反馈"过于笼统、缺少具体操作/执行标准"）
+  testWidgets('医药布道建议随每条建议展示可量化执行标准', (tester) async {
+    // txt 有本地文本，不走 OCR
+    ConsultOcr.fetcherForTest = (bytes, mime) async => '不应被调用';
+    addTearDown(() => ConsultOcr.fetcherForTest = null);
+
+    // 放大测试视口，使「核验材料」按钮在首屏可见，避免滚动命中错误 Scrollable
+    tester.binding.window.physicalSizeTestValue = const Size(900, 2400);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    addTearDown(() {
+      tester.binding.window.clearPhysicalSizeTestValue();
+      tester.binding.window.clearDevicePixelRatioTestValue();
+    });
+
+    await _pumpPage(tester);
+    final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
+    final txt = 'XX市第一医院\nYY大学医学院附属第二医院\n'
+        '门诊病历\n诊断：偏头痛\n主诉：反复头痛 2 月';
+    await page.attachAndOcr(
+        '病历.txt', Uint8List.fromList(utf8.encode(txt)));
+    await tester.pumpAndSettle();
+
+    // 表单已自动填写诊断与医院
+    expect(_ctrlOf(tester, '诊断名称').text, contains('偏头痛'));
+    expect(_ctrlOf(tester, '医院名称').text, isNotEmpty);
+
+    // 触发核验（两家医院可满足 major/severe 级通过门槛）
+    // 视口已放大，按钮在首屏可见，直接点按
+    await tester.tap(find.text('核验材料'));
+    await tester.pumpAndSettle();
+
+    // 综合参考报告出现
+    await _scrollTo(tester, find.textContaining('③ 综合参考报告'));
+    expect(find.textContaining('③ 综合参考报告'), findsOneWidget);
+
+    // 医药布道建议板块出现
+    await _scrollTo(tester, find.text('医药布道建议（怀著 · NEWSTART）'));
+    expect(find.text('医药布道建议（怀著 · NEWSTART）'), findsOneWidget);
+
+    // 量化执行标准随建议呈现（每条建议一个；取首个定位滚动）
+    await _scrollTo(tester, find.text('可量化执行标准').first);
+    expect(find.text('可量化执行标准'), findsWidgets);
+    // 量化指标文本确实随建议呈现（运动支柱：≥150分钟/周）
+    expect(find.textContaining('≥150分钟'), findsWidgets);
+  });
 }

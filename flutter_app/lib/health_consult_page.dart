@@ -342,16 +342,21 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                 const SizedBox(height: 10),
                 _sectionCard(
                   icon: Icons.self_improvement,
-                  title: '通用健康原则（NEWSTART 八大自然疗法）',
+                  title: 'NEWSTART 八大自然疗法 · 量化执行标准',
                   children: const [
-                    _Bullet('营养：全谷物、蔬果、豆类、坚果为主，少油腻少糖'),
-                    _Bullet('运动：每日适量活动，户外步行最有益'),
-                    _Bullet('水：每日足量洁净饮水，少喝含糖饮料'),
-                    _Bullet('阳光：适度日晒，愉悦心情'),
-                    _Bullet('节制：戒烟限酒，饮食作息有节'),
-                    _Bullet('空气：深呼吸新鲜空气，居室常通风'),
-                    _Bullet('休息：充足睡眠，每周有一日安息'),
-                    _Bullet('信靠：信靠上帝，喜乐平安是健康之基'),
+                    Text(
+                      '以下为可量化、可执行的生活方式标准，作为日常参考，不替代医生的个体化医嘱：',
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                    SizedBox(height: 6),
+                    _Bullet('营养：每日蔬菜≥400g、水果200–350g；全谷物占主食≥1/3；BMI 目标 18.5–24'),
+                    _Bullet('运动：每周中等强度有氧≥150分钟（快走每次≥30分钟×5天），每周≥2次力量训练'),
+                    _Bullet('水：每日饮水1.5–2.0L（约7–8杯），含糖饮料≤1份/周；以尿色淡黄为指标'),
+                    _Bullet('阳光：每日户外日晒15–30分钟（避开10–16点），帮助合成维D与作息节律'),
+                    _Bullet('节制：完全戒烟酒；睡眠7–8小时/晚、固定作息；睡前1小时停用屏幕'),
+                    _Bullet('空气：每日通风≥2次×15分钟；户外深呼吸/散步≥15分钟/天'),
+                    _Bullet('休息：每晚睡眠7–8小时；每周至少1天完全休息/安息'),
+                    _Bullet('信靠：每日灵修/祷告15–30分钟；每周聚会≥1次；每天记1件感恩的事'),
                   ],
                 ),
                 const SizedBox(height: 12),
@@ -705,8 +710,12 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       ));
       children.add(const SizedBox(height: 6));
       for (final a in p.advice) {
+        final code = a['pillar'] ?? '';
         children.add(_AdviceRow(
-            pillar: a['pillar'] ?? '', text: a['text'] ?? ''));
+          pillar: code,
+          text: a['text'] ?? '',
+          targets: _AdviceRow._pillarTargets[code] ?? const [],
+        ));
       }
       children.add(const SizedBox(height: 10));
     }
@@ -853,7 +862,12 @@ class _Bullet extends StatelessWidget {
 class _AdviceRow extends StatelessWidget {
   final String pillar;
   final String text;
-  const _AdviceRow({required this.pillar, required this.text});
+  final List<String> targets;
+  const _AdviceRow({
+    required this.pillar,
+    required this.text,
+    this.targets = const [],
+  });
 
   static const _pillarNames = {
     'NUT': '营养',
@@ -876,32 +890,126 @@ class _AdviceRow extends StatelessWidget {
     'TRU': Color(0xFF8D6E63),
   };
 
+  /// 各支柱「可量化执行标准」：通用生活方式参考，锚定 NEWSTART 八大自然疗法与
+  /// 圣经/怀著健康原则（身体是圣灵的殿、但7:1 菜蔬为食等），不替代医生个体化医嘱。
+  /// 任一支柱缺失时该条建议不展示量化块，保持健壮。
+  static const Map<String, List<String>> _pillarTargets = {
+    'NUT': [
+      '每日蔬菜≥400g（双手捧约2捧）、水果200–350g（1–2个）',
+      '全谷物占主食≥1/3（糙米、燕麦、全麦等）',
+      '每周红肉≤2次，加工肉（香肠、培根）尽量不吃',
+      'BMI 目标 18.5–24.0；每日盐<5g、添加糖<25g',
+    ],
+    'EXE': [
+      '每周中等强度有氧≥150分钟（快走每次≥30分钟×5天）',
+      '每周≥2次力量/抗阻训练（每次15–20分钟）',
+      '每坐1小时起身活动3–5分钟',
+      '从每天10–15分钟起步，逐步加量、贵在坚持',
+    ],
+    'WAT': [
+      '每日饮水1.5–2.0L（约7–8杯，少量多次）',
+      '运动/出汗后每30分钟补200–300ml',
+      '含糖饮料≤1份/周（最好为0）',
+      '以尿色淡黄作为补水充足的简易指标',
+    ],
+    'SUN': [
+      '每日户外日晒15–30分钟（避开10:00–16:00强紫外线）',
+      '暴露面部/手臂合成维D，之后再涂防晒',
+      '每日自然光接触≥1小时，帮助睡眠节律',
+    ],
+    'TEM': [
+      '完全戒烟（含二手烟）；酒精摄入=0',
+      '睡眠7–8小时/晚，固定作息（入睡时间±30分钟）',
+      '睡前1小时停用屏幕，卧室不放电子产品',
+      '咖啡因下午14点后不再饮用',
+    ],
+    'AIR': [
+      '每日开窗通风≥2次、每次≥15分钟',
+      '户外深呼吸/散步≥15分钟/天',
+      '卧室夜间保持通风，避免密闭环境',
+    ],
+    'RES': [
+      '每晚睡眠7–8小时（深睡约占15–25%）',
+      '每周至少1天完全休息/安息，不处理工作',
+      '午休≤30分钟，避免影响夜间睡眠',
+    ],
+    'TRU': [
+      '每日灵修/祷告15–30分钟（晨间为佳）',
+      '每周参与聚会/团契至少1次',
+      '每天记录1件值得感恩的事，操练交托',
+    ],
+  };
+
   @override
   Widget build(BuildContext context) {
     final color = _pillarColors[pillar] ?? const Color(0xFF6A1B9A);
     final name = _pillarNames[pillar] ?? pillar;
+    final targets = _pillarTargets[pillar] ?? const <String>[];
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
-      child: Row(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(name,
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: color,
+                        fontWeight: FontWeight.w600)),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(text,
+                    style: const TextStyle(fontSize: 12.5, height: 1.55)),
+              ),
+            ],
+          ),
+          if (targets.isNotEmpty) ...[
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.only(left: 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('可量化执行标准',
+                      style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF6A1B9A))),
+                  const SizedBox(height: 3),
+                  for (final t in targets)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 5, right: 5),
+                            child: Icon(Icons.circle,
+                                size: 4, color: Color(0xFF6A1B9A)),
+                          ),
+                          Expanded(
+                            child: Text(t,
+                                style: const TextStyle(
+                                    fontSize: 11.5,
+                                    height: 1.45,
+                                    color: Colors.black54)),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
-            child: Text(name,
-                style: TextStyle(
-                    fontSize: 11,
-                    color: color,
-                    fontWeight: FontWeight.w600)),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(text,
-                style: const TextStyle(fontSize: 12.5, height: 1.55)),
-          ),
+          ],
         ],
       ),
     );
