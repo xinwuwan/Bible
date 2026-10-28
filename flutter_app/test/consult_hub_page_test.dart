@@ -30,13 +30,18 @@ void main() {
     expect(find.textContaining('描述主要不适'), findsOneWidget);
     expect(find.textContaining('可能性 + 依据 + 检查建议'), findsOneWidget);
 
-    // 两张卡各自的适用场景标注
-    expect(find.textContaining('适用场景'), findsNWidgets(2));
+    // 子功能卡 3（v63 新增）：疾病知识库独立入口
+    expect(find.text('疾病知识库 · 通识解读'), findsOneWidget);
+    expect(find.textContaining('想了解某疾病的基本医学常识'), findsOneWidget);
+
+    // 三张卡各自的适用场景标注
+    expect(find.textContaining('适用场景'), findsNWidgets(3));
     expect(find.textContaining('已持有病历'), findsOneWidget);
     expect(find.textContaining('说不清是什么问题'), findsOneWidget);
+    expect(find.textContaining('想了解某疾病的基本医学常识'), findsOneWidget);
 
-    // 两个进入箭头（每张卡一个）
-    expect(find.byIcon(Icons.arrow_forward_ios), findsNWidgets(2));
+    // 三个进入箭头（每张卡一个）
+    expect(find.byIcon(Icons.arrow_forward_ios), findsNWidgets(3));
 
     // 配合使用小贴士
     expect(find.textContaining('小贴士'), findsOneWidget);

@@ -149,9 +149,10 @@ class VerifyResult {
 class ConsultAttachment {
   final String name;
   final int size;
-  final String status; // text_ok / need_manual / failed
+  final String status; // text_ok / need_manual / ocr_pending / failed
   final String extractedText;
   final String hint;
+  final Uint8List? bytes; // v63: 原始字节，供批量 OCR 复用（图片/扫描件识别后保留）
 
   const ConsultAttachment({
     required this.name,
@@ -159,6 +160,7 @@ class ConsultAttachment {
     required this.status,
     required this.extractedText,
     required this.hint,
+    this.bytes,
   });
 
   /// v58：OCR 成功后把「需手动誊写」占位升级为「已提取文字」。
@@ -166,6 +168,7 @@ class ConsultAttachment {
     String? status,
     String? extractedText,
     String? hint,
+    Uint8List? bytes,
   }) {
     return ConsultAttachment(
       name: name,
@@ -173,6 +176,7 @@ class ConsultAttachment {
       status: status ?? this.status,
       extractedText: extractedText ?? this.extractedText,
       hint: hint ?? this.hint,
+      bytes: bytes ?? this.bytes,
     );
   }
 }
@@ -474,9 +478,10 @@ class AttachmentParser {
       return ConsultAttachment(
         name: name,
         size: bytes.length,
-        status: 'need_manual',
+        status: 'pending',
         extractedText: '',
-        hint: '图片/扫描件需手动誊写：请在下方「材料关键信息」填写医院名称、诊断名称',
+        hint: '已加入待识别队列：点击下方「统一识别与分析」批量提取文字',
+        bytes: bytes,
       );
     }
     final isText = lower.endsWith('.txt') || lower.endsWith('.md') ||
@@ -490,6 +495,7 @@ class AttachmentParser {
         status: ok ? 'text_ok' : 'failed',
         extractedText: ok ? t : '',
         hint: ok ? '' : '文件内容为空或无法识别',
+        bytes: bytes,
       );
     }
     if (lower.endsWith('.pdf')) {
@@ -502,6 +508,7 @@ class AttachmentParser {
           status: 'text_ok',
           extractedText: t,
           hint: '',
+          bytes: bytes,
         );
       }
       return ConsultAttachment(
@@ -510,6 +517,7 @@ class AttachmentParser {
         status: 'need_manual',
         extractedText: '',
         hint: '该 PDF 为扫描件或图片型文字，无法自动读取。请手动誊写关键信息（医院、诊断）',
+        bytes: bytes,
       );
     }
     return ConsultAttachment(
@@ -518,6 +526,7 @@ class AttachmentParser {
       status: 'need_manual',
       extractedText: '',
       hint: '暂不支持自动读取该格式，请手动誊写关键信息',
+      bytes: bytes,
     );
   }
 

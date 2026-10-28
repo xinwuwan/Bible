@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import 'health_consult_page.dart';
 import 'consult_chat_page.dart';
+import 'disease_library_page.dart';
 
 class ConsultHubPage extends StatelessWidget {
   const ConsultHubPage({super.key});
@@ -75,6 +76,20 @@ class ConsultHubPage extends StatelessWidget {
             steps: const ['描述主要不适', '逐题回答追问', '上传报告辅助分析', '可能性 + 依据 + 检查建议'],
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => const ConsultChatPage()),
+            ),
+          ),
+          const SizedBox(height: 10),
+          _ConsultFunctionCard(
+            color: const Color(0xFFE8F5E9),
+            borderColor: const Color(0xFF2E7D32),
+            icon: Icons.local_library,
+            iconColor: const Color(0xFF2E7D32),
+            title: '疾病知识库 · 通识解读',
+            subtitle: '按名称 / 别名 / 分类检索常见疾病：形成机制、临床表现、诊断标准、鉴别要点与就医信号',
+            scenario: '适用场景：想了解某疾病的基本医学常识与生活方式参考',
+            steps: const ['检索疾病', '选择分类', '展开完整解读'],
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const DiseaseLibraryPage()),
             ),
           ),
           const SizedBox(height: 12),

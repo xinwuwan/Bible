@@ -68,6 +68,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
   }
 
   bool _filling = false;
+  bool _analyzing = false;
 
   /// 上传材料后：识别关键信息并自动填写空白字段（已有用户输入不覆盖）
   void _recognizeAndFill({bool force = false}) {
@@ -110,6 +111,11 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       .map((a) => a.extractedText)
       .join('\n');
 
+  /// 待统一识别的图片附件数量（驱动「统一识别与分析」按钮显隐）
+  int get _pendingImageCount => _attachments
+      .where((a) => _isImageName(a.name) && a.status == 'pending')
+      .length;
+
   Future<void> _pickFiles() async {
     setState(() => _picking = true);
     try {
@@ -121,7 +127,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       for (final f in res.files) {
         final b = f.bytes;
         if (b == null) continue;
-        await attachAndOcr(f.name, b);
+        await addAttachment(f.name, b);
       }
     } catch (e) {
       if (!mounted) return;
@@ -133,21 +139,15 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     }
   }
 
-  /// 解析附件并入列表；若为图片且本地无文本，走 OCR 提取文字（v58）。
-  ///
-  /// 这是「上传即识别」的核心链路：图片过去一律返回「请手动誊写」占位，
-  /// 表单只能全部人工填写；现在图片先经后端视觉模型转录为文字，再交给
-  /// 本地识别器提取医院/诊断等字段自动填表。OCR 失败时保留手动誊写提示，
-  /// 不阻塞流程。
-  Future<void> attachAndOcr(String name, Uint8List bytes) async {
+  /// v63：解析附件并入列表（仅入列，不即时 OCR）。公开方法，供测试直接注入。
+  /// 文本类材料（txt / 可读 PDF）入列即纳入分析；图片保持「待识别」(pending)，
+  /// 待用户点「统一识别与分析」后批量 OCR —— 适配多页报告 / 多文档场景。
+  Future<void> addAttachment(String name, Uint8List bytes) async {
     final att = AttachmentParser.parse(name, bytes);
     if (!mounted) return;
     setState(() => _attachments.add(att));
-    if (_isImageName(name) && att.status == 'need_manual') {
-      await _runOcr(_attachments.length - 1, name, bytes);
-      return; // _runOcr 末尾会触发 _recognizeAndFill
-    }
-    _recognizeAndFill();
+    // 文本类无需 OCR，入列即纳入关键字段提取
+    if (att.status == 'text_ok') _recognizeAndFill();
   }
 
   static bool _isImageName(String name) {
@@ -201,6 +201,27 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     });
   }
 
+  /// v63：统一识别全部「待识别」图片附件并提取关键信息。
+  /// 多页报告 / 多文档场景下，等用户把所有附件上传后一次性批量 OCR，
+  /// 再从合并文本中识别诊断名称、医院等填入表单（txt / 可读 PDF 已自动纳入）。
+  Future<void> _analyzeAll() async {
+    if (_analyzing) return;
+    setState(() => _analyzing = true);
+    for (int i = 0; i < _attachments.length; i++) {
+      if (!mounted) {
+        setState(() => _analyzing = false);
+        return;
+      }
+      final a = _attachments[i];
+      if (_isImageName(a.name) && a.status == 'pending' && a.bytes != null) {
+        await _runOcr(i, a.name, a.bytes!);
+      }
+    }
+    if (!mounted) return;
+    _recognizeAndFill(); // 从合并文本统一提取诊断 / 医院 / 症状
+    setState(() => _analyzing = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -220,8 +241,9 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                   title: '① 上传材料 / 填写关键信息',
                   children: [
                     const Text(
-                      '上传病历、诊断证明、检验报告等材料：图片自动 OCR 识别文字并尝试填写下方信息（需联网）；'
-                      'txt 直接读取；PDF 或识别不清的图片可手动誊写。自动填入的内容请核实后再提交。',
+                      '可一次选择多份材料（多页报告 / 住院小结等）：文本类（txt、可读 PDF）自动读取，'
+                      '图片先入列、待点击「统一识别与分析」后批量 OCR 提取文字并尝试填写下方信息（需联网）。'
+                      '自动填入的内容请核实后再提交。',
                       style: TextStyle(fontSize: 12.5, color: Colors.black54),
                     ),
                     const SizedBox(height: 8),
@@ -232,13 +254,32 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                         OutlinedButton.icon(
                           onPressed: _picking ? null : _pickFiles,
                           icon: const Icon(Icons.attach_file, size: 16),
-                          label: Text(_picking ? '读取中…' : '选择附件'),
+                          label: Text(_picking ? '读取中…' : '选择附件（可多选）'),
                         ),
                       ],
                     ),
                     if (_attachments.isNotEmpty) ...[
                       const SizedBox(height: 8),
                       for (final a in _attachments) _attachmentChip(a),
+                      if (_pendingImageCount > 0) ...[
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: FilledButton.icon(
+                            onPressed: _analyzing ? null : _analyzeAll,
+                            icon: _analyzing
+                                ? const SizedBox(
+                                    width: 14,
+                                    height: 14,
+                                    child: CircularProgressIndicator(
+                                        strokeWidth: 2, color: Colors.white))
+                                : const Icon(Icons.auto_awesome, size: 16),
+                            label: Text(_analyzing
+                                ? '识别中…'
+                                : '统一识别与分析（$_pendingImageCount）'),
+                          ),
+                        ),
+                      ],
                       if (_recognized != null && _recognized!.hasAny) ...[
                         const SizedBox(height: 8),
                         _autoFillBanner(),
@@ -326,19 +367,6 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                   ),
                 ],
                 const SizedBox(height: 10),
-                _sectionCard(
-                  icon: Icons.local_library,
-                  title: '④ 疾病知识库（可检索，全部内容本页查看）',
-                  children: const [
-                    Text(
-                      '收录常见疾病的形成机制、对健康的影响、检查方向与就医信号。'
-                      '在上方检索或选择分类查看；所有解读均在本页内展示，无外部链接。',
-                      style: TextStyle(fontSize: 12.5, color: Colors.black54),
-                    ),
-                    SizedBox(height: 10),
-                    _DiseaseBrowser(),
-                  ],
-                ),
                 const SizedBox(height: 10),
                 _sectionCard(
                   icon: Icons.self_improvement,
@@ -474,6 +502,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       'text_ok' => (Icons.check_circle, const Color(0xFF2E7D32), '已识别文字'),
       'ocr_pending' =>
         (Icons.hourglass_top, const Color(0xFF1565C0), '文字识别中…'),
+      'pending' => (Icons.schedule, Colors.grey, '待识别'),
       'failed' => (Icons.error, Colors.red, '无法读取'),
       _ => (Icons.edit_note, const Color(0xFFEF6C00), '识别失败，请手动誊写'),
     };
@@ -630,12 +659,12 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     children.add(const SizedBox(height: 10));
 
     if (p != null) {
-      children.addAll(_profileSections(p));
+      children.addAll(consultProfileSections(p));
     } else {
       children.add(const _SubTitle('知识库暂未收录该诊断'));
       children.add(const Text(
         '内置疾病知识库暂未覆盖此病名（可能为罕见病或写法不同）。'
-        '你仍可在下方「④ 疾病知识库」中检索相近疾病查看通识解读；'
+        '你也可在「疾病知识库」（专业咨询页独立入口）中检索相近疾病查看通识解读；'
         '该诊断的具体诊疗，请引导病人携带材料至正规医院复诊确认。',
         style: TextStyle(fontSize: 13, height: 1.6),
       ));
@@ -733,6 +762,11 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     return children;
   }
 }
+
+/// 公开转发：疾病解读详情板块（供疾病知识库独立页面复用，跨文件可调用）。
+/// 原实现保留为 _HealthConsultPageState 的私有静态方法，此处仅做可见性提升。
+List<Widget> consultProfileSections(DiseaseProfile p) =>
+    _HealthConsultPageState._profileSections(p);
 
 class _ScenarioBanner extends StatelessWidget {
   const _ScenarioBanner();
@@ -1016,219 +1050,6 @@ class _AdviceRow extends StatelessWidget {
   }
 }
 
-/// 疾病知识库浏览器：按名称/别名/分类检索，完整解读在本页内联展开。
-/// 数据来自 ConsultData.diseases（离线 JSON），无任何外部链接。
-class _DiseaseBrowser extends StatefulWidget {
-  const _DiseaseBrowser();
-
-  @override
-  State<_DiseaseBrowser> createState() => _DiseaseBrowserState();
-}
-
-class _DiseaseBrowserState extends State<_DiseaseBrowser> {
-  String _query = '';
-  String _category = 'all';
-  String? _expandedId;
-
-  static const _categoryLabels = {
-    'cardio': '心血管', 'neuro': '神经', 'resp': '呼吸', 'gi': '消化',
-    'renal': '泌尿', 'blood': '血液', 'immune': '风湿免疫', 'endo': '内分泌',
-    'metabolic': '代谢', 'tumor': '肿瘤', 'mental': '精神心理', 'derm': '皮肤',
-    'eye': '眼科', 'ent': '耳鼻喉', 'ortho': '骨科', 'gyne': '妇科',
-    'peds': '儿科', 'infect': '感染', 'other': '其他',
-  };
-
-  static const _severityLabels = {
-    'major': ('重大', Color(0xFFB71C1C)),
-    'severe': ('严重', Color(0xFFEF6C00)),
-    'common': ('常见', Color(0xFF1565C0)),
-  };
-
-  List<DiseaseProfile> get _filtered {
-    final q = _query.trim();
-    return ConsultData.diseases.where((d) {
-      if (_category != 'all' && d.category != _category) return false;
-      if (q.isEmpty) return true;
-      if (d.name.contains(q)) return true;
-      for (final a in d.aliases) {
-        if (a.contains(q)) return true;
-      }
-      final label = _categoryLabels[d.category] ?? '';
-      return label.contains(q);
-    }).toList();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (ConsultData.diseases.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        child: Text('知识库加载中…', style: TextStyle(fontSize: 12.5)),
-      );
-    }
-    // 分类计数（按出现顺序）
-    final counts = <String, int>{};
-    for (final d in ConsultData.diseases) {
-      counts[d.category] = (counts[d.category] ?? 0) + 1;
-    }
-    final results = _filtered;
-    final shown = results.take(30).toList();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextField(
-          onChanged: (v) => setState(() => _query = v),
-          decoration: InputDecoration(
-            hintText: '检索疾病名称 / 别名 / 分类，如「糖尿病」「肿瘤」「甲亢」',
-            prefixIcon: const Icon(Icons.search, size: 20),
-            isDense: true,
-            border: const OutlineInputBorder(),
-            suffixIcon: _query.isEmpty
-                ? null
-                : IconButton(
-                    icon: const Icon(Icons.close, size: 16),
-                    onPressed: () => setState(() => _query = ''),
-                  ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _catChip('全部', ConsultData.diseases.length, 'all'),
-              for (final e in counts.entries)
-                _catChip(_categoryLabels[e.key] ?? e.key, e.value, e.key),
-            ],
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          _query.isEmpty && _category == 'all'
-              ? '共收录 ${ConsultData.diseases.length} 种疾病'
-              : '找到 ${results.length} 种疾病',
-          style: const TextStyle(fontSize: 11.5, color: Colors.black54),
-        ),
-        const SizedBox(height: 6),
-        if (results.isEmpty)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text('未找到匹配疾病，请换个关键词或分类试试。',
-                style: TextStyle(fontSize: 12.5)),
-          ),
-        for (final d in shown) _diseaseCard(d),
-        if (results.length > shown.length)
-          const Padding(
-            padding: EdgeInsets.only(top: 4),
-            child: Text('结果较多，仅显示前 30 种，请细化检索条件。',
-                style: TextStyle(fontSize: 11.5, color: Colors.black54)),
-          ),
-      ],
-    );
-  }
-
-  Widget _catChip(String label, int count, String key) {
-    final selected = _category == key;
-    return Padding(
-      padding: const EdgeInsets.only(right: 6),
-      child: ChoiceChip(
-        label: Text('$label $count', style: const TextStyle(fontSize: 11.5)),
-        selected: selected,
-        visualDensity: VisualDensity.compact,
-        onSelected: (_) => setState(() => _category = key),
-      ),
-    );
-  }
-
-  Widget _diseaseCard(DiseaseProfile d) {
-    final expanded = _expandedId == d.id;
-    final sev = _severityLabels[d.severityHint] ??
-        const ('', Color(0xFF1565C0));
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: expanded ? const Color(0xFFF3E5F5).withOpacity(0.4) : Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-            color: expanded
-                ? const Color(0xFF6A1B9A).withOpacity(0.4)
-                : Colors.black12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(d.name,
-                    style: const TextStyle(
-                        fontSize: 13.5, fontWeight: FontWeight.w700)),
-              ),
-              _tag('${_categoryLabels[d.category] ?? d.category}', Colors.blueGrey),
-              const SizedBox(width: 4),
-              _tag(sev.$1, sev.$2),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(d.overview,
-              maxLines: expanded ? null : 2,
-              overflow: expanded ? TextOverflow.visible : TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 12, height: 1.5)),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: () =>
-                  setState(() => _expandedId = expanded ? null : d.id),
-              style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(0, 32),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-              child: Text(
-                expanded ? '收起 ▲' : '展开完整解读 ▼',
-                style: const TextStyle(fontSize: 12),
-              ),
-            ),
-          ),
-          if (expanded) ...[
-            const Divider(height: 12),
-            // _profileSections 已含「权威来源」小节，这里不重复渲染
-            ..._HealthConsultPageState._profileSections(d),
-            if (d.aliases.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 6),
-                child: Text('别称：${d.aliases.join('、')}',
-                    style: TextStyle(
-                        fontSize: 11, color: Colors.grey.shade600)),
-              ),
-            const SizedBox(height: 6),
-            Text(
-              '以上为医学科普通识，不构成诊疗建议；诊断与治疗请以正规医院和医生意见为准。',
-              style: TextStyle(
-                  fontSize: 10.5,
-                  height: 1.4,
-                  color: Colors.grey.shade600),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _tag(String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.10),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Text(text,
-          style: TextStyle(
-              fontSize: 10.5, color: color, fontWeight: FontWeight.w600)),
-    );
-  }
-}
 
 /// 常驻免责声明
 class HealthConsultDisclaimer {
@@ -1236,3 +1057,4 @@ class HealthConsultDisclaimer {
       '本工具不提供医疗诊断，所有信息仅供参考；'
       '疾病的诊断与治疗请以正规医院和医生意见为准。';
 }
+

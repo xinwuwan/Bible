@@ -1,8 +1,10 @@
 // health_consult_page_test.dart
-// v57：医药布道页测试——材料自动识别填写提示、疾病知识库内联检索、
-// 综合参考报告零外链（用户明确要求：所有信息当前页查看、无外部网址跳转）。
+// v57：医药布道页测试——材料自动识别填写提示、综合参考报告零外链。
 // v58：上传诊断证明图片 → OCR 转录 → 自动填写表单的链路测试
 // （用户实报：上传图片后四个字段全空、未自动识别）。
+// v63：附件改为「批量入列 + 统一识别」流程——图片先入列（待识别），
+// 点「统一识别与分析」后批量 OCR 并从合并文本统一提取诊断；txt 入列即读取。
+// 疾病知识库已拆为独立页（disease_library_page_test.dart 单独覆盖）。
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -26,8 +28,19 @@ Future<void> _scrollTo(WidgetTester tester, Finder finder) async {
   await tester.pumpAndSettle();
 }
 
+/// 点「统一识别与分析（N）」按钮（v63 批量 OCR 入口；真实用户流程）
+/// 按钮文案带数量括号，用包含「统一识别与分析（」定位其标签文本并直接点按
+/// （文本处于按钮可点区域内，点按即触发 onPressed）。
+Future<void> _tapAnalyzeAll(WidgetTester tester) async {
+  final label = find.textContaining('统一识别与分析（');
+  expect(label, findsOneWidget, reason: '未找到「统一识别与分析（N）」按钮');
+  await tester.tap(label);
+  await tester.pumpAndSettle();
+}
+
 void main() {
-  testWidgets('医药布道页：场景横幅 + 合规横幅 + 四个板块标题', (tester) async {
+  testWidgets('医药布道页：场景横幅 + 合规横幅 + 三个板块标题（疾病库已拆出）',
+      (tester) async {
     await _pumpPage(tester);
 
     expect(find.text('专业咨询 · 医药布道'), findsOneWidget);
@@ -37,95 +50,67 @@ void main() {
     expect(find.textContaining('不诊断、不替代医生'), findsOneWidget);
     // 板块①（首屏可见）
     expect(find.textContaining('① 上传材料 / 填写关键信息'), findsOneWidget);
-    // ②/④ 在屏外，分别滚动后再断言
+    // ② 在屏外，滚动后再断言
     await _scrollTo(tester, find.textContaining('② 材料级别核验'));
     expect(find.textContaining('② 材料级别核验'), findsOneWidget);
-    await _scrollTo(tester, find.textContaining('④ 疾病知识库'));
-    expect(find.textContaining('④ 疾病知识库'), findsOneWidget);
-    // 未提交前不显示综合报告
+    // ③ 综合参考报告：未提交前不显示
     expect(find.textContaining('③ 综合参考报告'), findsNothing);
+    // v63：疾病知识库已从本页拆出，本页不应再内联展示知识库浏览器
+    expect(find.textContaining('共收录'), findsNothing);
+    expect(find.textContaining('④ 疾病知识库'), findsNothing);
   });
 
-  testWidgets('疾病知识库：默认展示全部病种计数', (tester) async {
+  testWidgets('多文件上传入口可见，文案提示可多选', (tester) async {
     await _pumpPage(tester);
-    await _scrollTo(tester, find.textContaining('④ 疾病知识库'));
-    expect(find.textContaining('共收录'), findsOneWidget);
-    // 规模达到 v57 预期（>= 80 种）
-    final text = tester.widget<Text>(find.textContaining('共收录')).data ?? '';
-    expect(text.contains('共收录'), true);
-    final n = int.tryParse(RegExp(r'\d+').firstMatch(text)?.group(0) ?? '0') ?? 0;
-    expect(n, greaterThanOrEqualTo(80), reason: '知识库规模: $text');
+    // 选附件按钮（提示可多选）
+    expect(find.textContaining('选择附件（可多选）'), findsOneWidget);
+    // 多文件说明
+    expect(find.textContaining('可一次选择多份材料'), findsOneWidget);
   });
 
-  testWidgets('疾病知识库：检索孤立性纤维性肿瘤并内联展开完整解读', (tester) async {
-    await _pumpPage(tester);
-    await _scrollTo(tester, find.textContaining('④ 疾病知识库'));
+  testWidgets('上传多份图片 → 统一识别与分析 → 合并文本提取诊断/医院',
+      (tester) async {
+    // mock OCR 转录（模拟两份报告首页 + 次页）
+    ConsultOcr.fetcherForTest = (bytes, mime) async {
+      // 用字节长度区分两张图（测试用伪字节）
+      if (bytes.length == 3) {
+        return 'XX市中心医院\n诊断证明书\n临床诊断：2型糖尿病\n'
+            '主诉：多饮、多尿、体重下降 3 月余';
+      }
+      return 'XX市中心医院\n出院小结（续）\n复查空腹血糖 8.6 mmol/L';
+    };
+    addTearDown(() => ConsultOcr.fetcherForTest = null);
 
-    // 输入检索词
-    final search = find.byWidgetPredicate((w) =>
-        w is TextField &&
-        (w.decoration?.hintText ?? '').contains('检索疾病'));
-    expect(search, findsOneWidget);
-    await tester.enterText(search, '孤立性纤维性肿瘤');
+    await _pumpPage(tester);
+    final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
+
+    // 模拟一次选多份（页面只暴露单文件注入，循环调用等价于多选）
+    await page.addAttachment('诊断证明.jpg', Uint8List.fromList([1, 2, 3]));
+    await page.addAttachment('出院小结.jpg', Uint8List.fromList([9, 9]));
     await tester.pumpAndSettle();
 
-    // 命中卡片（病名同时出现在检索输入框与结果卡片，放宽为 findsWidgets）
-    expect(find.text('孤立性纤维性肿瘤'), findsWidgets);
-    expect(find.textContaining('找到 1 种疾病'), findsOneWidget);
+    // 两张图片均为「待识别」，按钮显示待识别数量（2）
+    expect(find.textContaining('待识别'), findsNWidgets(2));
+    expect(find.textContaining('统一识别与分析（2）'), findsOneWidget);
 
-    // 展开完整解读（本页内联，无跳转）
-    await tester.tap(find.text('展开完整解读 ▼'));
-    await tester.pumpAndSettle();
+    // 点「统一识别与分析」批量 OCR
+    await _tapAnalyzeAll(tester);
 
-    expect(find.text('怎么形成的（形成机制与诱因）'), findsOneWidget);
-    expect(find.text('对身体健康的影响'), findsOneWidget);
-    expect(find.text('需要排除的疾病'), findsOneWidget);
-    expect(find.text('建议进一步检查'), findsOneWidget);
-    expect(find.text('出现这些情况，请尽快就医'), findsOneWidget);
-    expect(find.text('权威来源（文本引用，无外部链接）'), findsOneWidget);
-    expect(find.textContaining('世界卫生组织（WHO）软组织与骨肿瘤分类'),
-        findsOneWidget);
-    // 免责
-    expect(find.textContaining('不构成诊疗建议'), findsOneWidget);
+    // 附件升级为「已识别文字」（不再是「请手动誊写」）
+    expect(find.textContaining('已识别文字'), findsNWidgets(2));
+    expect(find.textContaining('请手动誊写'), findsNothing);
 
-    // 收起
-    await tester.tap(find.text('收起 ▲'));
-    await tester.pumpAndSettle();
-    expect(find.text('怎么形成的（形成机制与诱因）'), findsNothing);
+    // 自动填写横幅：说明填了什么、要求核实
+    expect(find.textContaining('已根据材料自动识别并填入'), findsOneWidget);
+    expect(find.textContaining('请逐项核实修改后再核验'), findsOneWidget);
+
+    // 合并两份文本后，诊断与医院均被提取（取首份主诊断）
+    expect(_ctrlOf(tester, '诊断名称').text, '2型糖尿病');
+    expect(_ctrlOf(tester, '医院名称').text, 'XX市中心医院');
   });
 
-  testWidgets('疾病知识库：分类筛选可用', (tester) async {
-    await _pumpPage(tester);
-    await _scrollTo(tester, find.textContaining('④ 疾病知识库'));
-    // 肿瘤分类 chip
-    final tumorChip = find.text('肿瘤 16');
-    if (tumorChip.evaluate().isNotEmpty) {
-      await tester.tap(tumorChip);
-      await tester.pumpAndSettle();
-      expect(find.textContaining('找到'), findsOneWidget);
-    }
-  });
-
-  testWidgets('医药布道模块全页零外部链接按钮', (tester) async {
-    await _pumpPage(tester);
-    await _scrollTo(tester, find.textContaining('④ 疾病知识库'));
-    // v57 起：移除百度检索外链按钮
-    expect(find.byIcon(Icons.travel_explore), findsNothing);
-    expect(find.textContaining('检索权威医学科普（百度健康等）'), findsNothing);
-  });
-
-  // ---- v58：上传图片 → OCR → 自动填写 ----
-
-  TextEditingController _ctrlOf(WidgetTester tester, String labelPart) {
-    final f = find.byWidgetPredicate((w) =>
-        w is TextField &&
-        (w.decoration?.labelText ?? '').contains(labelPart));
-    expect(f, findsOneWidget, reason: '找不到字段：$labelPart');
-    return tester.widget<TextField>(f).controller!;
-  }
-
-  testWidgets('上传诊断证明图片 → OCR 成功 → 自动填写表单并标注待核实', (tester) async {
-    // mock OCR 转录（模拟后端返回的诊断证明全文）
+  testWidgets('上传诊断证明图片 → 统一识别 → 自动填写表单并标注待核实',
+      (tester) async {
     ConsultOcr.fetcherForTest = (bytes, mime) async => 'XX市中心医院\n'
         '诊断证明书\n'
         '临床诊断：2型糖尿病\n'
@@ -134,8 +119,15 @@ void main() {
 
     await _pumpPage(tester);
     final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
-    await page.attachAndOcr('诊断证明.jpg', Uint8List.fromList([1, 2, 3]));
+    await page.addAttachment('诊断证明.jpg', Uint8List.fromList([1, 2, 3]));
     await tester.pumpAndSettle();
+
+    // 入列后为「待识别」，按钮出现
+    expect(find.textContaining('待识别'), findsOneWidget);
+    expect(find.textContaining('统一识别与分析（1）'), findsOneWidget);
+
+    // 点「统一识别与分析」
+    await _tapAnalyzeAll(tester);
 
     // 附件 chip：已识别文字（不再是「请手动誊写」）
     expect(find.textContaining('已识别文字'), findsOneWidget);
@@ -145,7 +137,7 @@ void main() {
     expect(find.textContaining('已根据材料自动识别并填入'), findsOneWidget);
     expect(find.textContaining('请逐项核实修改后再核验'), findsOneWidget);
 
-    // 四个字段被自动填写
+    // 字段被自动填写
     expect(_ctrlOf(tester, '诊断名称').text, '2型糖尿病');
     expect(_ctrlOf(tester, '医院名称').text, 'XX市中心医院');
     expect(_ctrlOf(tester, '病人症状与病史描述').text, contains('多饮'));
@@ -156,14 +148,19 @@ void main() {
   });
 
   testWidgets('上传图片 OCR 失败 → 保留手动誊写提示、不自动填写', (tester) async {
-    // OCR 不可用（网络失败/服务关闭）时应退回手动誊写，不阻塞流程
     ConsultOcr.fetcherForTest = (bytes, mime) async => null;
     addTearDown(() => ConsultOcr.fetcherForTest = null);
 
     await _pumpPage(tester);
     final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
-    await page.attachAndOcr('报告.jpg', Uint8List.fromList([9]));
+    await page.addAttachment('报告.jpg', Uint8List.fromList([9]));
     await tester.pumpAndSettle();
+
+    // 入列后待识别
+    expect(find.textContaining('待识别'), findsOneWidget);
+
+    // 点「统一识别与分析」
+    await _tapAnalyzeAll(tester);
 
     expect(find.textContaining('识别失败，请手动誊写'), findsOneWidget);
     expect(find.textContaining('已根据材料自动识别并填入'), findsNothing);
@@ -173,25 +170,23 @@ void main() {
   });
 
   testWidgets('上传 txt 不走 OCR、直接读取并自动填写', (tester) async {
-    // txt 有本地文本，不应触发 OCR（fetcher 被调用即失败）
     ConsultOcr.fetcherForTest = (bytes, mime) async => '不应被调用';
     addTearDown(() => ConsultOcr.fetcherForTest = null);
 
     await _pumpPage(tester);
     final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
     final txt = '门诊病历\n诊断：急性支气管炎\n主诉：咳嗽 5 天';
-    await page.attachAndOcr(
-        '病历.txt', Uint8List.fromList(utf8.encode(txt)));
+    await page.addAttachment('病历.txt', Uint8List.fromList(utf8.encode(txt)));
     await tester.pumpAndSettle();
 
     expect(find.textContaining('已识别文字'), findsOneWidget);
     expect(_ctrlOf(tester, '诊断名称').text, '急性支气管炎');
     expect(find.textContaining('识别失败'), findsNothing);
+    // 文本类无需统一识别，不应出现「统一识别与分析（N）」按钮
+    expect(find.textContaining('统一识别与分析（'), findsNothing);
   });
 
   // v60：修正「诊断证明书」被误抓为「证明书」导致主诊断失效、知识库误报「未收录」
-  // 真实用户截图案例：材料含「诊断证明书」+「诊断：孤立性纤维性肿瘤（额、顶部）」，
-  // 系统必须把真实疾病名选为主诊断并命中知识库，而非把「证明书」当诊断。
   testWidgets('材料含「诊断证明书」时主诊断应选真实疾病并命中知识库', (tester) async {
     await _pumpPage(tester); // 预加载 ConsultData.diseases
 
@@ -202,24 +197,19 @@ void main() {
         '免疫组化：STAT6 阳性';
     final r = ConsultData.verify(materialText: material, symptoms: '');
 
-    // 主诊断不得是文档型假阳性「证明书」
     expect(r.primaryDiagnosis, isNot(equals('证明书')));
     expect(r.primaryDiagnosis, contains('孤立性纤维性肿瘤'));
-    // 主诊断应能命中知识库 SFT
     final profile = ConsultData.findProfile(r.primaryDiagnosis);
     expect(profile, isNotNull);
     expect(profile!.id, equals('sft'));
-    // 干净后的诊断仅一条，不应误报多家不一致
     expect(r.consistent, isTrue);
   });
 
-  // v61：医药布道建议须给出可量化执行标准（用户反馈"过于笼统、缺少具体操作/执行标准"）
+  // v61：医药布道建议须给出可量化执行标准
   testWidgets('医药布道建议随每条建议展示可量化执行标准', (tester) async {
-    // txt 有本地文本，不走 OCR
     ConsultOcr.fetcherForTest = (bytes, mime) async => '不应被调用';
     addTearDown(() => ConsultOcr.fetcherForTest = null);
 
-    // 放大测试视口，使「核验材料」按钮在首屏可见，避免滚动命中错误 Scrollable
     tester.view.physicalSize = const Size(900, 2400);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
@@ -231,31 +221,32 @@ void main() {
     final page = tester.state(find.byType(HealthConsultPage)) as dynamic;
     final txt = 'XX市第一医院\nYY大学医学院附属第二医院\n'
         '门诊病历\n诊断：偏头痛\n主诉：反复头痛 2 月';
-    await page.attachAndOcr(
+    await page.addAttachment(
         '病历.txt', Uint8List.fromList(utf8.encode(txt)));
     await tester.pumpAndSettle();
 
-    // 表单已自动填写诊断与医院
     expect(_ctrlOf(tester, '诊断名称').text, contains('偏头痛'));
     expect(_ctrlOf(tester, '医院名称').text, isNotEmpty);
 
-    // 触发核验（两家医院可满足 major/severe 级通过门槛）
-    // 视口已放大，按钮在首屏可见，直接点按
     await tester.tap(find.text('核验材料'));
     await tester.pumpAndSettle();
 
-    // 综合参考报告出现
     await _scrollTo(tester, find.textContaining('③ 综合参考报告'));
     expect(find.textContaining('③ 综合参考报告'), findsOneWidget);
 
-    // 医药布道建议板块出现
     await _scrollTo(tester, find.text('医药布道建议（怀著 · NEWSTART）'));
     expect(find.text('医药布道建议（怀著 · NEWSTART）'), findsOneWidget);
 
-    // 量化执行标准随建议呈现（每条建议一个；取首个定位滚动）
     await _scrollTo(tester, find.text('可量化执行标准').first);
     expect(find.text('可量化执行标准'), findsWidgets);
-    // 量化指标文本确实随建议呈现（运动支柱：≥150分钟/周）
     expect(find.textContaining('≥150分钟'), findsWidgets);
   });
+}
+
+TextEditingController _ctrlOf(WidgetTester tester, String labelPart) {
+  final f = find.byWidgetPredicate((w) =>
+      w is TextField &&
+      (w.decoration?.labelText ?? '').contains(labelPart));
+  expect(f, findsOneWidget, reason: '找不到字段：$labelPart');
+  return tester.widget<TextField>(f).controller!;
 }
