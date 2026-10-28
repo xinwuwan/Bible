@@ -220,11 +220,11 @@ void main() {
     addTearDown(() => ConsultOcr.fetcherForTest = null);
 
     // 放大测试视口，使「核验材料」按钮在首屏可见，避免滚动命中错误 Scrollable
-    tester.binding.window.physicalSizeTestValue = const Size(900, 2400);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    tester.view.physicalSize = const Size(900, 2400);
+    tester.view.devicePixelRatio = 1.0;
     addTearDown(() {
-      tester.binding.window.clearPhysicalSizeTestValue();
-      tester.binding.window.clearDevicePixelRatioTestValue();
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
     });
 
     await _pumpPage(tester);
