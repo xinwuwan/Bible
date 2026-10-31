@@ -19,6 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app_models.dart';
 import 'app_theme.dart';
 import 'comparison_page.dart';
+import 'egw_compare_page.dart';
+import 'egw_works.dart';
 import 'health_page.dart';
 import 'health_repository.dart';
 import 'note_repository.dart';
@@ -314,6 +316,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+/// 首页内容模式：圣经书卷目录 / 怀爱伦著作（怀著）目录
+enum _HomeMode { bible, egw }
+
 /// 模块 A 首页（对照 Tab 的根页面）：书卷目录 + 搜索入口
 class HomeScreen extends StatefulWidget {
   final NoteRepository notes;
@@ -335,6 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<BookMeta> _books = [];
   String? _initError;
   bool _unsupported = false;
+  _HomeMode _mode = _HomeMode.bible;
 
   @override
   void initState() {
@@ -414,86 +420,207 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // 搜索入口（点按进入经文搜索页）
+          // 内容模式切换：圣经 / 怀著（怀爱伦著作）
           Padding(
-            padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(14),
-              onTap: _unsupported ? null : _openSearch,
-              child: Container(
-                // minHeight 而非 height：大字号时文字换行/变高，容器随之长高，
-                // 不再把文字挤出 50px 的固定盒子
-                constraints: const BoxConstraints(minHeight: 50),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppTheme.line),
+            padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
+            child: SegmentedButton<_HomeMode>(
+              selected: {_mode},
+              onSelectionChanged: (s) => setState(() => _mode = s.first),
+              segments: const [
+                ButtonSegment<_HomeMode>(
+                  value: _HomeMode.bible,
+                  label: Text('圣经'),
+                  icon: Icon(Icons.auto_stories_outlined),
                 ),
-                child: Row(
-                  children: [
-                    Icon(Icons.search, size: 20, color: AppTheme.inkSoft),
-                    const SizedBox(width: 10),
-                    Text(
-                      '搜索经文、章节…',
-                      style: TextStyle(fontSize: 14, color: AppTheme.inkSoft),
-                    ),
-                  ],
+                ButtonSegment<_HomeMode>(
+                  value: _HomeMode.egw,
+                  label: Text('怀著'),
+                  icon: Icon(Icons.menu_book_outlined),
                 ),
-              ),
+              ],
             ),
           ),
           Expanded(
-            child: _books.isEmpty
-                ? Center(
-                    child: Text(
-                      '离线库暂无书卷数据',
-                      style: TextStyle(color: AppTheme.inkSoft, fontSize: 14),
-                    ),
-                  )
-                : ListView(
-                    padding: const EdgeInsets.only(bottom: 24),
-                    children: [
-                      _SectionTitle('旧约 · Old Testament', count: ot.length),
-                      _BookGrid(books: ot, onTap: (b) => widget.onOpenBook(context, b, 1)),
-                      _SectionTitle('新约 · New Testament', count: nt.length),
-                      _BookGrid(books: nt, onTap: (b) => widget.onOpenBook(context, b, 1)),
-                      const SizedBox(height: 8),
-                      // 权威层级说明（合规：始终让用户知道什么是权威、什么是参照）
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppTheme.line),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(Icons.verified_user_outlined,
-                                  size: 16, color: AppTheme.gold),
-                              const SizedBox(width: 8),
-                              const Expanded(
-                                child: Text(
-                                  '权威依据：KJV 英文原文（唯一底本）。本应用中文译文为独立产出（非任何现有中文译本）；和合本仅作参照展示。',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppTheme.inkSoft,
-                                    height: 1.5,
-                                  ),
+            child: _mode == _HomeMode.bible
+                ? _buildBibleBody(ot, nt)
+                : _buildEgwBody(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 圣经模式：搜索入口 + 旧约/新约书卷网格 + 权威说明
+  Widget _buildBibleBody(List<BookMeta> ot, List<BookMeta> nt) {
+    return Column(
+      children: [
+        // 搜索入口（点按进入经文搜索页）
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: _unsupported ? null : _openSearch,
+            child: Container(
+              // minHeight 而非 height：大字号时文字换行/变高，容器随之长高，
+              // 不再把文字挤出 50px 的固定盒子
+              constraints: const BoxConstraints(minHeight: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppTheme.line),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.search, size: 20, color: AppTheme.inkSoft),
+                  const SizedBox(width: 10),
+                  Text(
+                    '搜索经文、章节…',
+                    style: TextStyle(fontSize: 14, color: AppTheme.inkSoft),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: _books.isEmpty
+              ? Center(
+                  child: Text(
+                    '离线库暂无书卷数据',
+                    style: TextStyle(color: AppTheme.inkSoft, fontSize: 14),
+                  ),
+                )
+              : ListView(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  children: [
+                    _SectionTitle('旧约 · Old Testament', count: ot.length),
+                    _BookGrid(books: ot, onTap: (b) => widget.onOpenBook(context, b, 1)),
+                    _SectionTitle('新约 · New Testament', count: nt.length),
+                    _BookGrid(books: nt, onTap: (b) => widget.onOpenBook(context, b, 1)),
+                    const SizedBox(height: 8),
+                    // 权威层级说明（合规：始终让用户知道什么是权威、什么是参照）
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppTheme.line),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.verified_user_outlined,
+                                size: 16, color: AppTheme.gold),
+                            const SizedBox(width: 8),
+                            const Expanded(
+                              child: Text(
+                                '权威依据：KJV 英文原文（唯一底本）。本应用中文译文为独立产出（非任何现有中文译本）；和合本仅作参照展示。',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.inkSoft,
+                                  height: 1.5,
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+        ),
+      ],
+    );
+  }
+
+  /// 怀著模式：怀爱伦著作目录 + 中英对照入口
+  Widget _buildEgwBody() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.line),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.menu_book_outlined, size: 16, color: AppTheme.zhTeal),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    '怀爱伦著作（EGW）中英对照：英文原著为基准，逐段对照中文译本，并附已核实的译校差异备注。已收录的著作可直接点开阅读。',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppTheme.inkSoft,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.only(bottom: 24),
+            children: [
+              _SectionTitle('怀爱伦著作 · Ellen G. White', count: kEgwWorks.length),
+              _EgwGrid(works: kEgwWorks, onTap: _openEgwWork),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppTheme.line),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.verified_user_outlined,
+                          size: 16, color: AppTheme.gold),
+                      const SizedBox(width: 8),
+                      const Expanded(
+                        child: Text(
+                          '英文原著与中文译本均取自 egwwritings.org 官方标准版（公有领域）。更多著作的中英对照数据正在逐步收录。',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.inkSoft,
+                            height: 1.5,
                           ),
                         ),
                       ),
                     ],
                   ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  /// 打开怀著阅读器；未收录的著作给出友好提示
+  void _openEgwWork(EgwWork w) {
+    if (!w.ready || w.asset == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('《${w.nameZh}》中英对照数据准备中，敬请期待')),
+      );
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => EgwComparePage(work: w)),
     );
   }
 }
@@ -616,6 +743,120 @@ class _BookGrid extends StatelessWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+/// 怀著卡片网格：复用圣经网格的弹性列宽思路（Wrap + 自适应列数）
+class _EgwGrid extends StatelessWidget {
+  final List<EgwWork> works;
+  final ValueChanged<EgwWork> onTap;
+
+  const _EgwGrid({required this.works, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: LayoutBuilder(
+        builder: (context, c) {
+          const spacing = 8.0;
+          final columns = (c.maxWidth / 168).floor().clamp(2, 6);
+          final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
+          return Wrap(
+            spacing: spacing,
+            runSpacing: spacing,
+            children: [
+              for (final w in works)
+                SizedBox(width: itemWidth, child: _EgwCard(work: w, onTap: onTap)),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// 怀著卡片：中文名 + 英文名 + 简介 + 收录状态徽标
+class _EgwCard extends StatelessWidget {
+  final EgwWork work;
+  final ValueChanged<EgwWork> onTap;
+
+  const _EgwCard({required this.work, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final ready = work.ready;
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () => onTap(work),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: ready ? AppTheme.zhTeal.withOpacity(0.5) : AppTheme.line,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                work.nameZh,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.ink,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                work.nameEn,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                children: [
+                  if (work.blurb != null && work.blurb!.isNotEmpty)
+                    Expanded(
+                      child: Text(
+                        work.blurb!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft),
+                      ),
+                    ),
+                  const SizedBox(width: 6),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                    decoration: BoxDecoration(
+                      color: ready
+                          ? AppTheme.zhTeal.withOpacity(0.12)
+                          : Colors.grey.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      ready ? '已收录' : '准备中',
+                      style: TextStyle(
+                        fontSize: 10.5,
+                        color: ready ? AppTheme.zhTeal : Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
