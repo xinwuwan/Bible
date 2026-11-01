@@ -3,13 +3,17 @@
 //
 // 重要事实：英文原著与中文译本分属 egwwritings.org 上两个相互独立的版本（不同书号、不同
 // 分段、不同章节划分）。二者之间没有可靠的段落级对齐主键（英文 refcode 如 "MH 17.1" 与
-// 中文 "MHF 1.9" 无法对应；且中文版 API 对部分英文章节仅暴露碎片段段）。因此本页**不强求
-// 逐段 1:1 配对**，而是把英文原著与中文译本各自按原文顺序忠实呈现于独立栏，避免任何错配、
-// 误译对照，确保「所见的英文即英文原文、所见的译文即中文译文」的准确性。
+// 中文 "MHF 1.9" 无法对应）。因此本页采用**「内容长度平衡对齐」**：按原文顺序同时推进
+// 英、中两侧，每当两侧累计字数接近时归为一组「对应单元」，逐组呈现。这样每一组英文块与
+// 中文块都明确成组（宽屏左右并排、窄屏上下堆叠），用户一眼即可看出「这段英文 ↔ 这段中文」，
+// 同时在无法严格逐句对应的地方保持诚实标注。
 //
 // 数据：assets/web/*.json（kEgwWorks 中 ready=true 的著作），结构为
 //   [{ sec, kind, chapter, en_title, zh_title, en_count, zh_count,
-//      en_paras:[{pid,etype,text}], zh_paras:[{pid,etype,text}] }, ...]
+//      en_paras:[{pid,etype,text}], zh_paras:[{pid,etype,text}],
+//      pairs:[[en_idx...],[zh_idx...]], ... }]
+// 其中 pairs 为「对应单元」：每组含英文侧若干段索引与中文侧若干段索引，均指向清洗后的
+// en_paras / zh_paras 数组。
 //
 // 合规：英文原著与中文译本均取自 egwwritings.org 官方标准版（公有领域）；
 // 译校备注仅客观标注偏差，不改动原文。
@@ -53,7 +57,6 @@ class _EgwComparePageState extends State<EgwComparePage> {
   int _secIndex = 1; // 默认进入第 1 章（索引 1 为 Chapter 1；索引 0 为前言）
   bool _loading = true;
   String? _error;
-  bool _showEn = false; // 窄屏单语模式下默认显示中文（用户主语言）
 
   @override
   void initState() {
@@ -79,23 +82,6 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 
   Map<String, dynamic> get _section => _sections[_secIndex];
-
-  /// 归一化某一侧的段落列表：剔除标题类（etype 以 h 开头）、空文本，以及中文侧过短、
-  /// 无句末标点的小节标题行（如「我们的榜样」「弟兄之爱」），避免它们造成偏移或孤立显示。
-  List<dynamic> _cleanBody(List? paras) {
-    final list = paras ?? [];
-    final out = <dynamic>[];
-    for (final p in list) {
-      final et = (p['etype'] ?? 'p').toString();
-      if (et.startsWith('h')) continue; // 标题不计入正文栏
-      final t = (p['text'] ?? '').toString().trim();
-      if (t.isEmpty) continue;
-      // 中文短标题行：长度 <= 8 且无中文句末标点 → 视为小节标题，剔除
-      if (t.length <= 8 && !RegExp(r'[。！？；：、，]').hasMatch(t)) continue;
-      out.add(p);
-    }
-    return out;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +115,6 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 
   Widget _buildBody() {
-    final sec = _section;
-    final enBody = _cleanBody(sec['en_paras'] as List?);
-    final zhBody = _cleanBody(sec['zh_paras'] as List?);
-
     return Column(
       children: [
         // 章节选择
@@ -178,112 +160,81 @@ class _EgwComparePageState extends State<EgwComparePage> {
             ),
           ),
         ),
-        // 图例 + 窄屏语言切换
+        // 图例
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 2),
-          child: Row(
+          child: Wrap(
+            spacing: 12,
+            runSpacing: 4,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Expanded(
-                child: Wrap(
-                  spacing: 12,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    _LegendDot(color: AppTheme.scriptureBlue, text: '英文原著'),
-                    _LegendDot(color: AppTheme.zhTeal, text: '中文译本'),
-                  ],
-                ),
-              ),
-              LayoutBuilder(
-                builder: (ctx, c) {
-                  if (c.maxWidth >= 720) return const SizedBox.shrink();
-                  return ToggleButtons(
-                    isSelected: [!_showEn, _showEn],
-                    onPressed: (i) => setState(() => _showEn = i == 1),
-                    constraints: const BoxConstraints(minWidth: 48, minHeight: 32),
-                    borderRadius: BorderRadius.circular(8),
-                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-                    selectedColor: Colors.white,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text('中文', style: TextStyle(color: _showEn ? Colors.grey : AppTheme.zhTeal)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text('英文', style: TextStyle(color: _showEn ? AppTheme.scriptureBlue : Colors.grey)),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              _LegendDot(color: AppTheme.scriptureBlue, text: '英文原著'),
+              _LegendDot(color: AppTheme.zhTeal, text: '中文译本'),
             ],
           ),
         ),
-        // 版本独立性说明（诚实提示：两版结构不同，按原文顺序并排，不强行逐段配对）
+        // 对齐说明（诚实提示：两组文本源自不同版本，按内容长度平衡归组，非严格逐句对应）
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
           child: Text(
-            '英文原著与中文译本分属不同版本，段落结构独立；此处按各自原文顺序并排呈现，便于对照，不作强行逐段配对。',
+            '英文原著与中文译本分属不同版本、段落结构独立。此处按内容长度平衡，将大致对应的英文与中文归为同一「对应组」逐组呈现；两组并非严格逐句对应，仅供对照阅读。',
             style: TextStyle(fontSize: 11, color: Colors.grey.shade600, height: 1.4),
           ),
         ),
         const Divider(height: 8),
-        Expanded(
-          child: LayoutBuilder(
-            builder: (context, c) {
-              if (c.maxWidth >= 720) {
-                return _buildTwoColumns(enBody, zhBody);
-              }
-              return _buildNarrow(enBody, zhBody);
-            },
-          ),
-        ),
+        Expanded(child: _buildPairs()),
       ],
     );
   }
 
-  /// 宽屏：左右双栏，各自按原文顺序忠实呈现，整页同步滚动（无逐段配对，杜绝错配）。
-  Widget _buildTwoColumns(List<dynamic> enBody, List<dynamic> zhBody) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: _langColumn('英文原著', AppTheme.scriptureBlue, enBody)),
-          const SizedBox(width: 12),
-          Expanded(child: _langColumn('中文译本', AppTheme.zhTeal, zhBody)),
-        ],
-      ),
-    );
-  }
+  /// 以「对应单元」为单位，逐组呈现英文与中文的明确配对。
+  Widget _buildPairs() {
+    final sec = _section;
+    final en = (sec['en_paras'] as List?) ?? [];
+    final zh = (sec['zh_paras'] as List?) ?? [];
+    final rawPairs = (sec['pairs'] as List?) ?? [];
 
-  Widget _langColumn(String label, Color color, List<dynamic> body) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _ColHeader(label: label, color: color),
-        const SizedBox(height: 6),
-        for (final p in body) _LangBlock(para: p, color: color),
-      ],
-    );
-  }
+    // 退化处理：若数据缺少 pairs（旧格式），退化为整体两段并排。
+    final pairs = <List<dynamic>>[];
+    for (final p in rawPairs) {
+      if (p is List && p.length == 2) pairs.add(p);
+    }
 
-  /// 窄屏：按语言切换，整章以该语言原文顺序呈现（默认中文）。
-  Widget _buildNarrow(List<dynamic> enBody, List<dynamic> zhBody) {
-    final body = _showEn ? enBody : zhBody;
-    final color = _showEn ? AppTheme.scriptureBlue : AppTheme.zhTeal;
-    final label = _showEn ? '英文原著' : '中文译本';
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _ColHeader(label: label, color: color),
-          const SizedBox(height: 6),
-          for (final p in body) _LangBlock(para: p, color: color),
-        ],
-      ),
+    if (pairs.isEmpty) {
+      pairs.add([
+        [for (int i = 0; i < en.length; i++) i],
+        [for (int i = 0; i < zh.length; i++) i],
+      ]);
+    }
+
+    return LayoutBuilder(
+      builder: (ctx, c) {
+        final wide = c.maxWidth >= 720;
+        return ListView.separated(
+          padding: const EdgeInsets.fromLTRB(12, 8, 12, 28),
+          itemCount: pairs.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          itemBuilder: (ctx, i) {
+            final pair = pairs[i];
+            final enIdx = (pair[0] as List?) ?? [];
+            final zhIdx = (pair[1] as List?) ?? [];
+            final enParas = <dynamic>[
+              for (final ix in enIdx)
+                if (ix is int && ix >= 0 && ix < en.length) en[ix]
+            ];
+            final zhParas = <dynamic>[
+              for (final ix in zhIdx)
+                if (ix is int && ix >= 0 && ix < zh.length) zh[ix]
+            ];
+            return _PairCard(
+              index: i,
+              wide: wide,
+              enParas: enParas,
+              zhParas: zhParas,
+            );
+          },
+        );
+      },
     );
   }
 
@@ -348,50 +299,115 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 }
 
-/// 章节栏目标题（英文原著 / 中文译本）。
-class _ColHeader extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _ColHeader({required this.label, required this.color});
+/// 单个「对应组」卡片：英文块与中文块明确成组（宽屏左右并排、窄屏上下堆叠）。
+class _PairCard extends StatelessWidget {
+  final int index;
+  final bool wide;
+  final List<dynamic> enParas;
+  final List<dynamic> zhParas;
+
+  const _PairCard({
+    required this.index,
+    required this.wide,
+    required this.enParas,
+    required this.zhParas,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Row(
+    final enSide = _unitSide('英文', AppTheme.scriptureBlue, enParas);
+    final zhSide = _unitSide('中文', AppTheme.zhTeal, zhParas);
+
+    final card = Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppTheme.line),
+      ),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(width: 4, height: 16, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
-          const SizedBox(width: 6),
-          Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: color)),
+          // 组号标签
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text('对应 ${index + 1}',
+                    style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
+              ),
+              const Spacer(),
+              const Icon(Icons.compare_arrows_rounded, size: 14, color: Colors.grey),
+            ],
+          ),
+          const SizedBox(height: 8),
+          if (wide)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: enSide),
+                Container(width: 1, color: AppTheme.line, margin: const EdgeInsets.symmetric(horizontal: 10)),
+                Expanded(child: zhSide),
+              ],
+            )
+          else
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                enSide,
+                const SizedBox(height: 10),
+                Container(height: 1, color: AppTheme.line),
+                const SizedBox(height: 10),
+                zhSide,
+              ],
+            ),
         ],
       ),
     );
+
+    return card;
   }
-}
 
-/// 单语块：正文用带左侧色条的卡片并标注语言。
-class _LangBlock extends StatelessWidget {
-  final dynamic para;
-  final Color color;
-
-  const _LangBlock({required this.para, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    final text = (para['text'] ?? '').toString();
-    return Container(
-      margin: const EdgeInsets.fromLTRB(14, 4, 14, 4),
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppTheme.line),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
+  /// 一侧（英文或中文）的段落堆：顶部小标签 + 左侧色条 + 正文。
+  Widget _unitSide(String label, Color color, List<dynamic> paras) {
+    final children = <Widget>[];
+    children.add(
+      Padding(
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Row(
+          children: [
+            Container(width: 4, height: 14, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
+            const SizedBox(width: 6),
+            Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: color)),
+          ],
+        ),
       ),
     );
+    if (paras.isEmpty) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6),
+          child: Text('（本组无${label == '英文' ? '英文原文' : '对应中译'}）',
+              style: TextStyle(fontSize: 13, color: Colors.grey.shade400, fontStyle: FontStyle.italic)),
+        ),
+      );
+    } else {
+      for (int i = 0; i < paras.length; i++) {
+        if (i > 0) children.add(const SizedBox(height: 8));
+        final text = (paras[i] is Map ? (paras[i]['text'] ?? '') : '').toString();
+        children.add(
+          Text(
+            text,
+            style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
+          ),
+        );
+      }
+    }
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
   }
 }
 
