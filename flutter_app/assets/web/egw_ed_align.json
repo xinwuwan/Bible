@@ -3,20 +3,15 @@
   "sec": 0,
   "kind": "foreword",
   "chapter": 0,
-  "en_title": "Foreword",
+  "en_title": "",
   "zh_title": "序言",
-  "en_count": 12,
+  "en_count": 13,
   "zh_count": 11,
   "en_paras": [
    {
     "pid": "29.5",
     "etype": "h1",
     "text": "Education"
-   },
-   {
-    "pid": "29.9",
-    "etype": "h3",
-    "text": "Foreword"
    },
    {
     "pid": "29.10",
@@ -67,6 +62,16 @@
     "pid": "29.1704",
     "etype": "p",
     "text": "Education Study Guide. A complete chapter by chapter guide with questions to aid in your reading and understanding of the book."
+   },
+   {
+    "pid": "29.28",
+    "etype": "h2",
+    "text": "First Principles"
+   },
+   {
+    "pid": "29.1629",
+    "etype": "p",
+    "text": "“We all, with unveiled face reflecting as a mirror the glory of the Lord, are transformed into the same image from glory to glory.”"
    }
   ],
   "zh_paras": [
@@ -133,14 +138,9 @@
   "chapter": 1,
   "en_title": "Chapter 1—Source and Aim of True Education",
   "zh_title": "第01章 真教育的根源与目的",
-  "en_count": 21,
+  "en_count": 20,
   "zh_count": 21,
   "en_paras": [
-   {
-    "pid": "29.29",
-    "etype": "h3",
-    "text": "Chapter 1—Source and Aim of True Education"
-   },
    {
     "pid": "29.1630",
     "etype": "p",
@@ -356,14 +356,9 @@
   "chapter": 2,
   "en_title": "Chapter 2—The Eden School",
   "zh_title": "第02章 伊甸的学校",
-  "en_count": 10,
+  "en_count": 9,
   "zh_count": 11,
   "en_paras": [
-   {
-    "pid": "29.62",
-    "etype": "h3",
-    "text": "Chapter 2—The Eden School"
-   },
    {
     "pid": "29.1631",
     "etype": "p",
@@ -474,14 +469,9 @@
   "chapter": 3,
   "en_title": "Chapter 3—The Knowledge of Good and Evil",
   "zh_title": "第03章 善与恶的知识",
-  "en_count": 18,
+  "en_count": 17,
   "zh_count": 19,
   "en_paras": [
-   {
-    "pid": "29.75",
-    "etype": "h3",
-    "text": "Chapter 3—The Knowledge of Good and Evil"
-   },
    {
     "pid": "29.1632",
     "etype": "p",
@@ -672,14 +662,9 @@
   "chapter": 4,
   "en_title": "Chapter 4—Relation of Education to Redemption",
   "zh_title": "第04章 教育与救赎的关系",
-  "en_count": 11,
+  "en_count": 12,
   "zh_count": 12,
   "en_paras": [
-   {
-    "pid": "29.100",
-    "etype": "h3",
-    "text": "Chapter 4—Relation of Education to Redemption"
-   },
    {
     "pid": "29.1633",
     "etype": "p",
@@ -729,6 +714,16 @@
     "pid": "29.113",
     "etype": "p",
     "text": "The great principles of education are unchanged. “They stand fast for ever and ever” ([Psalm 111:8]Psalm 111:8); for they are the principles of the character of God. To aid the student in comprehending these principles, and in entering into that relation with Christ which will make them a controlling power in the life, should be the teacher’s first effort and his constant aim. The teacher who accepts this aim is in truth a co-worker with Christ, a laborer together with God."
+   },
+   {
+    "pid": "29.117",
+    "etype": "h2",
+    "text": "Illustrations"
+   },
+   {
+    "pid": "29.1634",
+    "etype": "p",
+    "text": "“Whatsoever things were written aforetime were written for our learning.”"
    }
   ],
   "zh_paras": [
@@ -800,14 +795,9 @@
   "chapter": 5,
   "en_title": "Chapter 5—The Education of Israel",
   "zh_title": "第05章 以色列人的教育",
-  "en_count": 44,
+  "en_count": 43,
   "zh_count": 45,
   "en_paras": [
-   {
-    "pid": "29.118",
-    "etype": "h3",
-    "text": "Chapter 5—The Education of Israel"
-   },
    {
     "pid": "29.1635",
     "etype": "p",
@@ -1258,14 +1248,9 @@
   "chapter": 6,
   "en_title": "Chapter 6—The Schools of the Prophets",
   "zh_title": "第06章 先知学校",
-  "en_count": 17,
+  "en_count": 16,
   "zh_count": 18,
   "en_paras": [
-   {
-    "pid": "29.181",
-    "etype": "h3",
-    "text": "Chapter 6—The Schools of the Prophets"
-   },
    {
     "pid": "29.1636",
     "etype": "p",
@@ -1446,14 +1431,9 @@
   "chapter": 7,
   "en_title": "Chapter 7—Lives of Great Men",
   "zh_title": "第07章 伟人的生平",
-  "en_count": 14,
+  "en_count": 80,
   "zh_count": 97,
   "en_paras": [
-   {
-    "pid": "29.207",
-    "etype": "h3",
-    "text": "Chapter 7—Lives of Great Men"
-   },
    {
     "pid": "29.1637",
     "etype": "p",
@@ -1518,6 +1498,341 @@
     "pid": "29.224",
     "etype": "p",
     "text": "“The arms of his hands were made strong By the hands of the mighty God of Jacob.”"
+   },
+   {
+    "pid": "29.225",
+    "etype": "h4",
+    "text": "Daniel, an Ambassador of Heaven"
+   },
+   {
+    "pid": "29.226",
+    "etype": "p",
+    "text": "Daniel and his companions in Babylon were, in their youth, apparently more favored of fortune than was Joseph in the earlier years of his life in Egypt; yet they were subjected to tests of character scarcely less severe. From the comparative simplicity of their Judean home these youth of royal line were transported to the most magnificent of cities, to the court of its greatest monarch, and were singled out to be trained for the king’s special service. Strong were the temptations surrounding them in that corrupt and luxurious court. The fact that they, the worshipers of Jehovah, were captives to Babylon; that the vessels of God’s house had been placed in the temple of the gods of Babylon; that the king of Israel was himself a prisoner in the hands of the Babylonians, was boastfully cited by the victors as evidence that their religion and customs were superior to the religion and customs of the Hebrews. Under such circumstances, through the very humiliations that Israel’s departure from His commandments had invited, God gave to Babylon evidence of His supremacy, of the holiness of His requirements, and of the sure result of obedience. And this testimony He gave, as alone it could be given, through those who still held fast their loyalty."
+   },
+   {
+    "pid": "29.227",
+    "etype": "p",
+    "text": "To Daniel and his companions, at the very outset of their career, there came a decisive test. The direction that their food should be supplied from the royal table was an expression both of the king’s favor and of his solicitude for their welfare. But a portion having been offered to idols, the food from the king’s table was consecrated to idolatry; and in partaking of the king’s bounty these youth would be regarded as uniting in his homage to false gods. In such homage loyalty to Jehovah forbade them to participate. Nor dared they risk the enervating effect of luxury and dissipation on physical, mental, and spiritual development."
+   },
+   {
+    "pid": "29.230",
+    "etype": "p",
+    "text": "Daniel and his companions had been faithfully instructed in the principles of the word of God. They had learned to sacrifice the earthly to the spiritual, to seek the highest good. And they reaped the reward. Their habits of temperance and their sense of responsibility as representatives of God called to noblest development the powers of body, mind, and soul. At the end of their training, in their examination with other candidates for the honors of the kingdom, there was “found none like Daniel, Hananiah, Mishael, and Azariah.” [Daniel 1:19]Daniel 1:19."
+   },
+   {
+    "pid": "29.231",
+    "etype": "p",
+    "text": "At the court of Babylon were gathered representatives from all lands, men of the choicest talents, men the most richly endowed with natural gifts, and possessed of the highest culture this world could bestow; yet amidst them all, the Hebrew captives were without a peer. In physical strength and beauty, in mental vigor and literary attainment, they stood unrivaled. “In all matters of wisdom and understanding, that the king inquired of them, he found them ten times better than all the magicians and astrologers that were in all his realm.” [Daniel 1:20]Daniel 1:20."
+   },
+   {
+    "pid": "29.232",
+    "etype": "p",
+    "text": "Unwavering in allegiance to God, unyielding in the mastery of himself, Daniel’s noble dignity and courteous deference won for him in his youth the “favor and tender love” of the heathen officer in whose charge he was. The same characteristics marked his life. Speedily he rose to the position of prime minister of the kingdom. Throughout the reign of successive monarchs, the downfall of the nation, and the establishment of a rival kingdom, such were his wisdom and statesmanship, so perfect his tact, his courtesy, and his genuine goodness of heart, combined with fidelity to principle, that even his enemies were forced to the confession that “they could find none occasion nor fault; forasmuch as he was faithful.” [Daniel 6:4]Daniel 6:4."
+   },
+   {
+    "pid": "29.235",
+    "etype": "p",
+    "text": "While Daniel clung to God with unwavering trust, the spirit of prophetic power came upon him. While honored by men with the responsibilities of the court and the secrets of the kingdom, he was honored by God as His ambassador, and taught to read the mysteries of ages to come. Heathen monarchs, through association with Heaven’s representative, were constrained to acknowledge the God of Daniel. “Of a truth it is,” declared Nebuchadnezzar, “that your God is a God of gods, and a Lord of kings, and a revealer of secrets.” And Darius, in his proclamation “unto all people, nations, and languages, that dwell in all the earth,” exalted the “God of Daniel” as “the living God, and steadfast forever, and His kingdom that which shall not be destroyed;” who “delivereth and rescueth, and ... worketh signs and wonders in heaven and in earth.” [Daniel 2:47]Daniel 2:47; [Daniel 6:25]6:25-27."
+   },
+   {
+    "pid": "29.236",
+    "etype": "h4",
+    "text": "True and Honest Men"
+   },
+   {
+    "pid": "29.237",
+    "etype": "p",
+    "text": "By their wisdom and justice, by the purity and benevolence of their daily life, by their devotion to the interests of the people,—and they, idolaters,—Joseph and Daniel proved themselves true to the principles of their early training, true to Him whose representatives they were. These men, both in Egypt and in Babylon, the whole nation honored; and in them a heathen people, and all the nations with which they were connected, beheld an illustration of the goodness and beneficence of God, an illustration of the love of Christ."
+   },
+   {
+    "pid": "29.240",
+    "etype": "p",
+    "text": "What a lifework was that of these noble Hebrews! As they bade farewell to their childhood home, how little did they dream of their high destiny! Faithful and steadfast, they yielded themselves to the divine guiding, so that through them God could fulfill His purpose."
+   },
+   {
+    "pid": "29.241",
+    "etype": "p",
+    "text": "The same mighty truths that were revealed through these men, God desires to reveal through the youth and the children of today. The history of Joseph and Daniel is an illustration of what He will do for those who yield themselves to Him and with the whole heart seek to accomplish His purpose."
+   },
+   {
+    "pid": "29.242",
+    "etype": "p",
+    "text": "The greatest want of the world is the want of men—men who will not be bought or sold, men who in their inmost souls are true and honest, men who do not fear to call sin by its right name, men whose conscience is as true to duty as the needle to the pole, men who will stand for the right though the heavens fall."
+   },
+   {
+    "pid": "29.243",
+    "etype": "p",
+    "text": "But such a character is not the result of accident; it is not due to special favors or endowments of Providence. A noble character is the result of self-discipline, of the subjection of the lower to the higher nature—the surrender of self for the service of love to God and man."
+   },
+   {
+    "pid": "29.244",
+    "etype": "p",
+    "text": "The youth need to be impressed with the truth that their endowments are not their own. Strength, time, intellect, are but lent treasures. They belong to God, and it should be the resolve of every youth to put them to the highest use. He is a branch, from which God expects fruit; a steward, whose capital must yield increase; a light, to illuminate the world’s darkness."
+   },
+   {
+    "pid": "29.247",
+    "etype": "p",
+    "text": "Every youth, every child, has a work to do for the honor of God and the uplifting of humanity."
+   },
+   {
+    "pid": "29.248",
+    "etype": "h4",
+    "text": "Elisha, Faithful in Little Things"
+   },
+   {
+    "pid": "29.249",
+    "etype": "p",
+    "text": "The early years of the prophet Elisha were passed in the quietude of country life, under the teaching of God and nature and the discipline of useful work. In a time of almost universal apostasy his father’s household were among the number who had not bowed the knee to Baal. Theirs was a home where God was honored and where faithfulness to duty was the rule of daily life."
+   },
+   {
+    "pid": "29.250",
+    "etype": "p",
+    "text": "The son of a wealthy farmer, Elisha had taken up the work that lay nearest. While possessing the capabilities of a leader among men, he received a training in life’s common duties. In order to direct wisely, he must learn to obey. By faithfulness in little things, he was prepared for weightier trusts."
+   },
+   {
+    "pid": "29.251",
+    "etype": "p",
+    "text": "Of a meek and gentle spirit, Elisha possessed also energy and steadfastness. He cherished the love and fear of God, and in the humble round of daily toil he gained strength of purpose and nobleness of character, growing in divine grace and knowledge. While co-operating with his father in the home duties, he was learning to co-operate with God."
+   },
+   {
+    "pid": "29.252",
+    "etype": "p",
+    "text": "The prophetic call came to Elisha while with his father’s servants he was plowing in the field. As Elijah, divinely directed in seeking a successor, cast his mantle upon the young man’s shoulders, Elisha recognized and obeyed the summons. He “went after Elijah, and ministered unto him.” [1 Kings 19:21]1 Kings 19:21. It was no great work that was at first required of Elisha; commonplace duties still constituted his discipline. He is spoken of as pouring water on the hands of Elijah, his master. As the prophet’s personal attendant, he continued to prove faithful in little things, while with daily strengthening purpose he devoted himself to the mission appointed him by God."
+   },
+   {
+    "pid": "29.255",
+    "etype": "p",
+    "text": "When he was first summoned, his resolution had been tested. As he turned to follow Elijah he was bidden by the prophet to return home. He must count the cost—decide for himself to accept or reject the call. But Elisha understood the value of his opportunity. Not for any worldly advantage would he forgo the possibility of becoming God’s messenger, or sacrifice the privilege of association with His servant."
+   },
+   {
+    "pid": "29.256",
+    "etype": "p",
+    "text": "As time passed, and Elijah was prepared for translation, so Elisha was prepared to become his successor. And again his faith and resolution were tested. Accompanying Elijah in his round of service, knowing the change soon to come, he was at each place invited by the prophet to turn back. “Tarry here, I pray thee,” Elijah said; “for the Lord hath sent me to Bethel.” But in his early labor of guiding the plow, Elisha had learned not to fail or to become discouraged; and now that he had set his hand to the plow in another line of duty, he would not be diverted from his purpose. As often as the invitation to turn back was given, his answer was, “As the Lord liveth, and as thy soul liveth, I will not leave thee.” [2 Kings 2:2]2 Kings 2:2."
+   },
+   {
+    "pid": "29.257",
+    "etype": "p",
+    "text": "“And they two went on.... And they two stood by Jordan. And Elijah took his mantle, and wrapped it together, and smote the waters, and they were divided hither and thither, so that they two went over on dry ground. And it came to pass, when they were gone over, that Elijah said unto Elisha, Ask what I shall do for thee, before I be taken away from thee. And Elisha said, I pray thee, let a double portion of thy spirit be upon me. And he said, Thou hast asked a hard thing: nevertheless, if thou see me when I am taken from thee, it shall be so unto thee; but if not, it shall not be so. And it came to pass, as they still went on, and talked, that, behold, there appeared a chariot of fire, and horses of fire, and parted them both asunder; and Elijah went up by a whirlwind into heaven."
+   },
+   {
+    "pid": "29.260",
+    "etype": "p",
+    "text": "“And Elisha saw it, and he cried, My father, my father, the chariot of Israel, and the horsemen thereof. And he saw him no more: and he took hold of his own clothes, and rent them in two pieces. He took up also the mantle of Elijah that fell from him, and went back, and stood by the bank of Jordan; and he took the mantle of Elijah that fell from him, and smote the waters, and said, Where is the Lord God of Elijah? and when he also had smitten the waters, they parted hither and thither: and Elisha went over. And when the sons of the prophets which were to view at Jericho saw him, they said, The spirit of Elijah doth rest on Elisha. And they came to meet him, and bowed themselves to the ground before him.” [2 Kings 2:6]2 Kings 2:6-15."
+   },
+   {
+    "pid": "29.261",
+    "etype": "p",
+    "text": "Henceforth Elisha stood in Elijah’s place. And he who had been faithful in that which was least, proved himself faithful also in much."
+   },
+   {
+    "pid": "29.262",
+    "etype": "p",
+    "text": "Elijah, the man of power, had been God’s instrument for the overthrow of gigantic evils. Idolatry, which, supported by Ahab and the heathen Jezebel, had seduced the nation, had been cast down. Baal’s prophets had been slain. The whole people of Israel had been deeply stirred, and many were returning to the worship of God. As successor to Elijah was needed one who by careful, patient instruction could guide Israel in safe paths. For this work Elisha’s early training under God’s direction had prepared him."
+   },
+   {
+    "pid": "29.265",
+    "etype": "p",
+    "text": "The lesson is for all. None can know what may be God’s purpose in His discipline; but all may be certain that faithfulness in little things is the evidence of fitness for greater responsibilities. Every act of life is a revelation of character, and he only who in small duties proves himself “a workman that needeth not to be ashamed” ([2 Timothy 2:15]2 Timothy 2:15) will be honored by God with weightier trusts."
+   },
+   {
+    "pid": "29.266",
+    "etype": "h4",
+    "text": "Moses, Powerful Through Faith"
+   },
+   {
+    "pid": "29.267",
+    "etype": "p",
+    "text": "Younger than Joseph or Daniel was Moses when removed from the sheltering care of his childhood home; yet already the same agencies that shaped their lives had molded his. Only twelve years did he spend with his Hebrew kindred; but during these years was laid the foundation of his greatness; it was laid by the hand of one little known to fame."
+   },
+   {
+    "pid": "29.268",
+    "etype": "p",
+    "text": "Jochebed was a woman and a slave. Her lot in life was humble, her burden heavy. But through no other woman, save Mary of Nazareth, has the world received greater blessing. Knowing that her child must soon pass beyond her care, to the guardianship of those who knew not God, she the more earnestly endeavored to link his soul with heaven. She sought to implant in his heart love and loyalty to God. And faithfully was the work accomplished. Those principles of truth that were the burden of his mother’s teaching and the lesson of her life, no after influence could induce Moses to renounce."
+   },
+   {
+    "pid": "29.270",
+    "etype": "p",
+    "text": "From the humble home in Goshen the son of Jochebed passed to the palace of the Pharaohs, to the Egyptian princess, by her to be welcomed as a loved and cherished son. In the schools of Egypt, Moses received the highest civil and military training. Of great personal attractions, noble in form and stature, of cultivated mind and princely bearing, and renowned as a military leader, he became the nation’s pride. The king of Egypt was also a member of the priesthood; and Moses, though refusing to participate in the heathen worship, was initiated into all the mysteries of the Egyptian religion. Egypt at this time being still the most powerful and most highly civilized of nations, Moses, as its prospective sovereign, was heir to the highest honors this world could bestow. But his was a nobler choice. For the honor of God and the deliverance of His downtrodden people, Moses sacrificed the honors of Egypt. Then, in a special sense, God undertook his training."
+   },
+   {
+    "pid": "29.271",
+    "etype": "p",
+    "text": "Not yet was Moses prepared for his lifework. He had yet to learn the lesson of dependence upon divine power. He had mistaken God’s purpose. It was his hope to deliver Israel by force of arms. For this he risked all, and failed. In defeat and disappointment he became a fugitive and exile in a strange land."
+   },
+   {
+    "pid": "29.272",
+    "etype": "p",
+    "text": "In the wilds of Midian, Moses spent forty years as a keeper of sheep. Apparently cut off forever from his life’s mission, he was receiving the discipline essential for its fulfillment. Wisdom to govern an ignorant and undisciplined multitude must be gained through self-mastery. In the care of the sheep and the tender lambs he must obtain the experience that would make him a faithful, long-suffering shepherd to Israel. That he might become a representative of God, he must learn of Him."
+   },
+   {
+    "pid": "29.275",
+    "etype": "p",
+    "text": "The influences that had surrounded him in Egypt, the affection of his foster mother, his own position as the grandson of the king, the luxury and vice that allured in ten thousand forms, the refinement, the subtlety, and the mysticism of a false religion, had made an impression on his mind and character. In the stern simplicity of the wilderness all this disappeared."
+   },
+   {
+    "pid": "29.276",
+    "etype": "p",
+    "text": "Amidst the solemn majesty of the mountain solitudes Moses was alone with God. Everywhere the Creator’s name was written. Moses seemed to stand in His presence and to be overshadowed by His power. Here his self-sufficiency was swept away. In the presence of the Infinite One he realized how weak, how inefficient, how short-sighted, is man."
+   },
+   {
+    "pid": "29.277",
+    "etype": "p",
+    "text": "Here Moses gained that which went with him throughout the years of his toilsome and care-burdened life—a sense of the personal presence of the Divine One. Not merely did he look down the ages for Christ to be made manifest in the flesh; he saw Christ accompanying the host of Israel in all their travels. When misunderstood and misrepresented, when called to bear reproach and insult, to face danger and death, he was able to endure “as seeing Him who is invisible.” [Hebrews 11:27]Hebrews 11:27."
+   },
+   {
+    "pid": "29.278",
+    "etype": "p",
+    "text": "Moses did not merely think of God, he saw Him. God was the constant vision before him. Never did he lose sight of His face."
+   },
+   {
+    "pid": "29.279",
+    "etype": "p",
+    "text": "To Moses faith was no guesswork; it was a reality. He believed that God ruled his life in particular; and in all its details he acknowledged Him. For strength to withstand every temptation, he trusted in Him."
+   },
+   {
+    "pid": "29.280",
+    "etype": "p",
+    "text": "The great work assigned him he desired to make in the highest degree successful, and he placed his whole dependence upon divine power. He felt his need of help, asked for it, by faith grasped it, and in the assurance of sustaining strength went forward."
+   },
+   {
+    "pid": "29.283",
+    "etype": "p",
+    "text": "Such was the experience that Moses gained by his forty years of training in the desert. To impart such an experience, Infinite Wisdom counted not the period too long or the price too great."
+   },
+   {
+    "pid": "29.284",
+    "etype": "p",
+    "text": "The results of that training, of the lessons there taught, are bound up, not only with the history of Israel, but with all which from that day to this has told for the world’s progress. The highest testimony to the greatness of Moses, the judgment passed upon his life by Inspiration, is, “There arose not a prophet since in Israel like unto Moses, whom the Lord knew face to face.” [Deuteronomy 34:10]Deuteronomy 34:10."
+   },
+   {
+    "pid": "29.285",
+    "etype": "h4",
+    "text": "Paul, Joyful in Service"
+   },
+   {
+    "pid": "29.286",
+    "etype": "p",
+    "text": "With the faith and experience of the Galilean disciples who had companied with Jesus were united, in the work of the gospel, the fiery vigor and intellectual power of a rabbi of Jerusalem. A Roman citizen, born in a Gentile city; a Jew, not only by descent but by lifelong training, patriotic devotion, and religious faith; educated in Jerusalem by the most eminent of the rabbis, and instructed in all the laws and traditions of the fathers, Saul of Tarsus shared to the fullest extent the pride and the prejudices of his nation. While still a young man, he became an honored member of the Sanhedrin. He was looked upon as a man of promise, a zealous defender of the ancient faith."
+   },
+   {
+    "pid": "29.287",
+    "etype": "p",
+    "text": "In the theological schools of Judea the word of God had been set aside for human speculations; it was robbed of its power by the interpretations and traditions of the rabbis. Self-aggrandizement, love of domination, jealous exclusiveness, bigotry and contemptuous pride, were the ruling principles and motives of these teachers."
+   },
+   {
+    "pid": "29.290",
+    "etype": "p",
+    "text": "The rabbis gloried in their superiority, not only to the people of other nations, but to the masses of their own. With their fierce hatred of their Roman oppressors, they cherished the determination to recover by force of arms their national supremacy. The followers of Jesus, whose message of peace was so contrary to their schemes of ambition, they hated and put to death. In this persecution, Saul was one of the most bitter and relentless actors."
+   },
+   {
+    "pid": "29.291",
+    "etype": "p",
+    "text": "In the military schools of Egypt, Moses was taught the law of force, and so strong a hold did this teaching have upon his character that it required forty years of quiet and communion with God and nature to fit him for the leadership of Israel by the law of love. The same lesson Paul had to learn."
+   },
+   {
+    "pid": "29.292",
+    "etype": "p",
+    "text": "At the gate of Damascus the vision of the Crucified One changed the whole current of his life. The persecutor became a disciple, the teacher a learner. The days of darkness spent in solitude at Damascus were as years in his experience. The Old Testament Scriptures stored in his memory were his study, and Christ his teacher. To him also nature’s solitudes became a school. To the desert of Arabia he went, there to study the Scriptures and to learn of God. He emptied his soul of prejudices and traditions that had shaped his life, and received instruction from the Source of truth."
+   },
+   {
+    "pid": "29.293",
+    "etype": "p",
+    "text": "His afterlife was inspired by the one principle of self-sacrifice, the ministry of love. “I am debtor,” he said, “both to the Greeks, and to the barbarians; both to the wise, and to the unwise.” “The love of Christ constraineth us.” [Romans 1:14]Romans 1:14; [2 Corinthians 5:14]2 Corinthians 5:14."
+   },
+   {
+    "pid": "29.296",
+    "etype": "p",
+    "text": "The greatest of human teachers, Paul accepted the lowliest as well as the highest duties. He recognized the necessity of labor for the hand as well as for the mind, and he wrought at a handicraft for his own support. His trade of tent making he pursued while daily preaching the gospel in the great centers of civilization. “These hands,” he said, at parting with the elders of Ephesus, “have ministered unto my necessities, and to them that were with me.” [Acts 20:34]Acts 20:34."
+   },
+   {
+    "pid": "29.297",
+    "etype": "p",
+    "text": "While he possessed high intellectual endowments, the life of Paul revealed the power of a rarer wisdom. Principles of deepest import, principles concerning which the greatest minds of this time were ignorant, are unfolded in his teachings and exemplified in his life. He had that greatest of all wisdom, which gives quickness of insight and sympathy of heart, which brings man in touch with men, and enables him to arouse their better nature and inspire them to a higher life."
+   },
+   {
+    "pid": "29.298",
+    "etype": "p",
+    "text": "Listen to his words before the heathen Lystrians, as he points them to God revealed in nature, the Source of all good, who “gave us rain from heaven, and fruitful seasons, filling our hearts with food and gladness.” [Acts 14:17]Acts 14:17."
+   },
+   {
+    "pid": "29.299",
+    "etype": "p",
+    "text": "See him in the dungeon at Philippi, where, despite his pain-racked body, his song of praise breaks the silence of midnight. After the earthquake has opened the prison doors, his voice is again heard, in words of cheer to the heathen jailer, “Do thyself no harm: for we are all here” ([Acts 16:28]Acts 16:28)—every man in his place, restrained by the presence of one fellow prisoner. And the jailer, convicted of the reality of that faith which sustains Paul, inquires the way of salvation, and with his whole household unites with the persecuted band of Christ’s disciples."
+   },
+   {
+    "pid": "29.302",
+    "etype": "p",
+    "text": "See Paul at Athens before the council of the Areopagus, as he meets science with science, logic with logic, and philosophy with philosophy. Mark how, with the tact born of divine love, he points to Jehovah as “the Unknown God,” whom his hearers have ignorantly worshiped; and in words quoted from a poet of their own he pictures Him as a Father whose children they are. Hear him, in that age of caste, when the rights of man as man were wholly unrecognized, as he sets forth the great truth of human brotherhood, declaring that God “hath made of one blood all nations of men for to dwell on all the face of the earth.” Then he shows how, through all the dealings of God with man, runs like a thread of gold His purpose of grace and mercy. He “hath determined the times before appointed, and the bounds of their habitation; that they should seek the Lord, if haply they might feel after Him, and find Him, though He be not far from every one of us.” [Acts 17:23]Acts 17:23, 26, 27."
+   },
+   {
+    "pid": "29.303",
+    "etype": "p",
+    "text": "Hear him in the court of Festus, when King Agrippa, convicted of the truth of the gospel, exclaims, “Almost thou persuadest me to be a Christian.” With what gentle courtesy does Paul, pointing to his own chain, make answer, “I would to God, that not only thou, but also all that hear me this day, were both almost, and altogether such as I am, except these bonds.” [Acts 26:28]Acts 26:28, 29."
+   },
+   {
+    "pid": "29.304",
+    "etype": "p",
+    "text": "Thus passed his life, as described in his own words, “in journeyings often, in perils of waters, in perils of robbers, in perils by mine own countrymen, in perils by the heathen, in perils in the city, in perils in the wilderness, in perils in the sea, in perils among false brethren; in weariness and painfulness, in watchings often, in hunger and thirst, in fastings often, in cold and nakedness.” [2 Corinthians 11:26]2 Corinthians 11:26, 27."
+   },
+   {
+    "pid": "29.307",
+    "etype": "p",
+    "text": "“Being reviled,” he said, “we bless; being persecuted, we suffer it: being defamed, we entreat;” “as sorrowful, yet alway rejoicing; as poor, yet making many rich; as having nothing, and yet possessing all things.” [1 Corinthians 4:12]1 Corinthians 4:12, 13; [2 Corinthians 6:10]2 Corinthians 6:10."
+   },
+   {
+    "pid": "29.308",
+    "etype": "p",
+    "text": "In service he found his joy; and at the close of his life of toil, looking back on its struggles and triumphs, he could say, “I have fought a good fight.” [2 Timothy 4:7]2 Timothy 4:7."
+   },
+   {
+    "pid": "29.309",
+    "etype": "p",
+    "text": "These histories are of vital interest. To none are they of deeper importance than to the youth. Moses renounced a prospective kingdom, Paul the advantages of wealth and honor among his people, for a life of burden bearing in God’s service. To many the life of these men appears one of renunciation and sacrifice. Was it really so? Moses counted the reproach of Christ greater riches than the treasures in Egypt. He counted it so because it was so. Paul declared: “What things were gain to me, these have I counted loss for Christ. Yea verily, and I count all things to be loss for the excellency of the knowledge of Christ Jesus my Lord: for whom I suffered the loss of all things, and do count them but refuse, that I may gain Christ.” [Philippians 3:7]Philippians 3:7, 8, R.V., margin. He was satisfied with his choice."
+   },
+   {
+    "pid": "29.310",
+    "etype": "p",
+    "text": "Moses was offered the palace of the Pharaohs and the monarch’s throne; but the sinful pleasures that make men forget God were in those lordly courts, and he chose instead the “durable riches and righteousness.” [Proverbs 8:18]Proverbs 8:18. Instead of linking himself with the greatness of Egypt, he chose to bind up his life with God’s purpose. Instead of giving laws to Egypt, he by divine direction enacted laws for the world. He became God’s instrument in giving to men those principles that are the safeguard alike of the home and of society, that are the cornerstone of the prosperity of nations—principles recognized today by the world’s greatest men as the foundation of all that is best in human governments."
+   },
+   {
+    "pid": "29.313",
+    "etype": "p",
+    "text": "The greatness of Egypt is in the dust. Its power and civilization have passed away. But the work of Moses can never perish. The great principles of righteousness which he lived to establish are eternal."
+   },
+   {
+    "pid": "29.314",
+    "etype": "p",
+    "text": "Moses’ life of toil and heart-burdening care was irradiated with the presence of Him who is “the chiefest among ten thousand,” and the One “altogether lovely.” [Song of Solomon 5:10]Song of Solomon 5:10, 16. With Christ in the wilderness wandering, with Christ on the mount of transfiguration, with Christ in the heavenly courts—his was a life on earth blessing and blessed, and in heaven honored."
+   },
+   {
+    "pid": "29.315",
+    "etype": "p",
+    "text": "Paul also in his manifold labors was upheld by the sustaining power of His presence. “I can do all things,” he said, “through Christ which strengtheneth me.” “Who shall separate us from the love of Christ? shall tribulation, or distress, or persecution, or famine, or nakedness, or peril, or sword? ... Nay, in all these things we are more than conquerors through Him that loved us. For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come, nor height, nor depth, nor any other created thing (Rotherham’s translation), shall be able to separate us from the love of God, which is in Christ Jesus our Lord.” [Philippians 4:13]Philippians 4:13; [Romans 8:35]Romans 8:35-39."
+   },
+   {
+    "pid": "29.318",
+    "etype": "p",
+    "text": "Yet there is a future joy to which Paul looked forward as the recompense of his labors—the same joy for the sake of which Christ endured the cross and despised the shame—the joy of seeing the fruition of his work. “What is our hope, or joy, or crown of rejoicing?” he wrote to the Thessalonian converts. “Are not even ye in the presence of our Lord Jesus Christ at His coming? For ye are our glory and joy.” [1 Thessalonians 2:19]1 Thessalonians 2:19, 20."
+   },
+   {
+    "pid": "29.319",
+    "etype": "p",
+    "text": "Who can measure the results to the world of Paul’s lifework? Of all those beneficent influences that alleviate suffering, that comfort sorrow, that restrain evil, that uplift life from the selfish and the sensual, and glorify it with the hope of immortality, how much is due to the labors of Paul and his fellow workers, as with the gospel of the Son of God they made their unnoticed journey from Asia to the shores of Europe?"
+   },
+   {
+    "pid": "29.320",
+    "etype": "p",
+    "text": "What is it worth to any life to have been God’s instrument in setting in motion such influences of blessing? What will it be worth in eternity to witness the results of such a lifework?"
+   },
+   {
+    "pid": "29.324",
+    "etype": "h2",
+    "text": "The Master Teacher"
+   },
+   {
+    "pid": "29.1638",
+    "etype": "p",
+    "text": "“Never man spake like this Man.”"
    }
   ],
   "zh_paras": [
@@ -2014,14 +2329,9 @@
   "chapter": 8,
   "en_title": "Chapter 8—The Teacher Sent From God",
   "zh_title": "第08章 上帝所差来的教师",
-  "en_count": 49,
+  "en_count": 48,
   "zh_count": 50,
   "en_paras": [
-   {
-    "pid": "29.325",
-    "etype": "h3",
-    "text": "Chapter 8—The Teacher Sent From God"
-   },
    {
     "pid": "29.1639",
     "etype": "p",
@@ -2522,14 +2832,9 @@
   "chapter": 9,
   "en_title": "Chapter 9—An Illustration of His Methods",
   "zh_title": "第09章 祂所用方法的实例",
-  "en_count": 9,
+  "en_count": 53,
   "zh_count": 57,
   "en_paras": [
-   {
-    "pid": "29.393",
-    "etype": "h3",
-    "text": "Chapter 9—An Illustration of His Methods"
-   },
    {
     "pid": "29.1640",
     "etype": "p",
@@ -2569,6 +2874,231 @@
     "pid": "29.404",
     "etype": "p",
     "text": "In order successfully to carry forward the work to which they had been called, these disciples, differing so widely in natural characteristics, in training, and in habits of life, needed to come into unity of feeling, thought, and action. This unity it was Christ’s object to secure. To this end He sought to bring them into unity with Himself. The burden of His labor for them is expressed in His prayer to the Father, “that they all may be one; as Thou, Father, art in Me, and I in Thee, that they also may be one in Us: ... that the world may know that Thou hast sent Me, and hast loved them, as Thou hast loved Me.” [John 17:21]John 17:21-23."
+   },
+   {
+    "pid": "29.405",
+    "etype": "h4",
+    "text": "The Transforming Power of Christ"
+   },
+   {
+    "pid": "29.406",
+    "etype": "p",
+    "text": "Of the twelve disciples, four were to act a leading part, each in a distinct line. In preparation for this, Christ taught them, foreseeing all. James, destined to swift-coming death by the sword; John, longest of the brethren to follow his Master in labor and persecution; Peter, the pioneer in breaking through the barriers of ages, and teaching the heathen world; and Judas, in service capable of pre-eminence above his brethren, yet brooding in his soul purposes of whose ripening he little dreamed—these were the objects of Christ’s greatest solicitude and the recipients of His most frequent and careful instruction."
+   },
+   {
+    "pid": "29.408",
+    "etype": "p",
+    "text": "Peter, James, and John sought every opportunity of coming into close contact with their Master, and their desire was granted. Of all the Twelve their relationship to Him was closest. John could be satisfied only with a still near intimacy, and this he obtained. At that first conference beside the Jordan, when Andrew, having heard Jesus, hurried away to call his brother, John sat silent, rapt in the contemplation of wondrous themes. He followed the Saviour, ever an eager, absorbed listener. Yet John’s was no faultless character. He was no gentle, dreamy enthusiast. He and his brother were called “the sons of thunder.” [Mark 3:17]Mark 3:17. John was proud, ambitious, combative; but beneath all this the divine Teacher discerned the ardent, sincere, loving heart. Jesus rebuked his self-seeking, disappointed his ambitions, tested his faith. But He revealed to him that for which his soul longed—the beauty of holiness, His own transforming love. “Unto the men which Thou gavest Me out of the world,” He said to the Father, “I have manifested Thy name.” [John 17:6]John 17:6."
+   },
+   {
+    "pid": "29.409",
+    "etype": "p",
+    "text": "John’s was a nature that longed for love, for sympathy and companionship. He pressed close to Jesus, sat by His side, leaned upon His breast. As a flower drinks the sun and dew, so did he drink in the divine light and life. In adoration and love he beheld the Saviour, until likeness to Christ and fellowship with Him became his one desire, and in his character was reflected the character of his Master."
+   },
+   {
+    "pid": "29.410",
+    "etype": "p",
+    "text": "“Behold,” he said, “what manner of love the Father hath bestowed upon us, that we should be called the sons of God: therefore the world knoweth us not, because it knew Him not. Beloved, now are we the sons of God, and it doth not yet appear what we shall be: but we know that, when He shall appear, we shall be like Him; for we shall see Him as He is. And every man that hath this hope in Him purifieth himself, even as He is pure.” [1 John 3:1]1 John 3:1-3."
+   },
+   {
+    "pid": "29.413",
+    "etype": "h4",
+    "text": "From Weakness to Strength"
+   },
+   {
+    "pid": "29.414",
+    "etype": "p",
+    "text": "The history of no one of the disciples better illustrates Christ’s method of training than does the history of Peter. Bold, aggressive, and self-confident, quick to perceive and forward to act, prompt in retaliation yet generous in forgiving, Peter often erred, and often received reproof. Nor were his warmhearted loyalty and devotion to Christ the less decidedly recognized and commended. Patiently, with discriminating love, the Saviour dealt with His impetuous disciple, seeking to check his self-confidence, and to teach him humility, obedience, and trust."
+   },
+   {
+    "pid": "29.415",
+    "etype": "p",
+    "text": "But only in part was the lesson learned. Self-assurance was not uprooted."
+   },
+   {
+    "pid": "29.416",
+    "etype": "p",
+    "text": "Often Jesus, the burden heavy upon His own heart, sought to open to the disciples the scenes of His trial and suffering. But their eyes were holden. The knowledge was unwelcome, and they did not see. Self-pity, that shrank from fellowship with Christ in suffering, prompted Peter’s remonstrance, “Pity Thyself, Lord: this shall not be unto Thee.” [Matthew 16:22]Matthew 16:22, margin. His words expressed the thought and feeling of the Twelve."
+   },
+   {
+    "pid": "29.417",
+    "etype": "p",
+    "text": "So they went on, the crisis drawing nearer; they, boastful, contentious, in anticipation apportioning regal honors, and dreaming not of the cross."
+   },
+   {
+    "pid": "29.418",
+    "etype": "p",
+    "text": "For them all, Peter’s experience had a lesson. To self-trust, trial is defeat. The sure outworking of evil still unforsaken, Christ could not prevent. But as His hand had been outstretched to save when the waves were about to sweep over Peter, so did His love reach out for his rescue when the deep waters swept over his soul. Over and over again, on the very verge of ruin, Peter’s words of boasting brought him nearer and still nearer to the brink. Over and over again was given the warning, “Thou shalt ... deny that thou knowest Me.” [Luke 22:34]Luke 22:34. It was the grieved, loving heart of the disciple that spoke out in the avowal, “Lord, I am ready to go with Thee, both into prison, and to death” ([Luke 22:33]Luke 22:33); and He who reads the heart gave to Peter the message, little valued then, but that in the swift-falling darkness would shed a ray of hope: “Simon, Simon, behold, Satan hath desired to have you, that he may sift you as wheat: but I have prayed for thee, that thy faith fail not: and when thou art converted, strengthen thy brethren.” [Luke 22:31]Luke 22:31, 32."
+   },
+   {
+    "pid": "29.421",
+    "etype": "p",
+    "text": "When in the judgment hall the words of denial had been spoken; when Peter’s love and loyalty, awakened under the Saviour’s glance of pity and love and sorrow, had sent him forth to the garden where Christ had wept and prayed; when his tears of remorse dropped upon the sod that had been moistened with the blood drops of His agony—then the Saviour’s words, “I have prayed for thee: ... when thou art converted, strengthen thy brethren,” were a stay to his soul. Christ, though foreseeing his sin, had not abandoned him to despair."
+   },
+   {
+    "pid": "29.422",
+    "etype": "p",
+    "text": "If the look that Jesus cast upon him had spoken condemnation instead of pity; if in foretelling the sin He had failed of speaking hope, how dense would have been the darkness that encompassed Peter! how reckless the despair of that tortured soul! In that hour of anguish and self-abhorrence, what could have held him back from the path trodden by Judas?"
+   },
+   {
+    "pid": "29.424",
+    "etype": "p",
+    "text": "He who could not spare His disciple the anguish, left him not alone to its bitterness. His is a love that fails not nor forsakes."
+   },
+   {
+    "pid": "29.425",
+    "etype": "p",
+    "text": "Human beings, themselves given to evil, are prone to deal untenderly with the tempted and the erring. They cannot read the heart, they know not its struggle and pain. Of the rebuke that is love, of the blow that wounds to heal, of the warning that speaks hope, they have need to learn."
+   },
+   {
+    "pid": "29.426",
+    "etype": "p",
+    "text": "It was not John, the one who watched with Him in the judgment hall, who stood beside His cross, and who of the Twelve was first at the tomb—it was not John, but Peter, that was mentioned by Christ after His resurrection. “Tell His disciples and Peter,” the angel said, “that He goeth before you into Galilee: there shall ye see Him.” [Mark 16:7]Mark 16:7."
+   },
+   {
+    "pid": "29.427",
+    "etype": "p",
+    "text": "At the last meeting of Christ with the disciples by the sea, Peter, tested by the thrice-given question, “Lovest thou Me?” was restored to his place among the Twelve. His work was appointed him; he was to feed the Lord’s flock. Then, as His last personal direction, Jesus bade him, “Follow thou Me.” [John 21:17]John 21:17, 22."
+   },
+   {
+    "pid": "29.428",
+    "etype": "p",
+    "text": "Now he could appreciate the words. The lesson Christ had given when He set a little child in the midst of the disciples and bade them become like him, Peter could now better understand. Knowing more fully both his own weakness and Christ’s power, he was ready to trust and to obey. In His strength he could follow his Master."
+   },
+   {
+    "pid": "29.429",
+    "etype": "p",
+    "text": "And at the close of his experience of labor and sacrifice, the disciple once so unready to discern the cross, counted it a joy to yield up his life for the gospel, feeling only that, for him who had denied the Lord, to die in the same manner as his Master died was too great an honor."
+   },
+   {
+    "pid": "29.432",
+    "etype": "p",
+    "text": "A miracle of divine tenderness was Peter’s transformation. It is a life lesson to all who seek to follow in the steps of the Master Teacher."
+   },
+   {
+    "pid": "29.433",
+    "etype": "h4",
+    "text": "A Lesson in Love"
+   },
+   {
+    "pid": "29.434",
+    "etype": "p",
+    "text": "Jesus reproved His disciples, He warned and cautioned them; but John and Peter and their brethren did not leave Him. Notwithstanding the reproofs, they chose to be with Jesus. And the Saviour did not, because of their errors, withdraw from them. He takes men as they are, with all their faults and weaknesses, and trains them for His service, if they will be disciplined and taught by Him."
+   },
+   {
+    "pid": "29.435",
+    "etype": "p",
+    "text": "But there was one of the Twelve to whom, until very near the close of His work, Christ spoke no word of direct reproof."
+   },
+   {
+    "pid": "29.436",
+    "etype": "p",
+    "text": "With Judas an element of antagonism was introduced among the disciples. In connecting himself with Jesus he had responded to the attraction of His character and life. He had sincerely desired a change in himself, and had hoped to experience this through a union with Jesus. But this desire did not become predominant. That which ruled him was the hope of selfish benefit in the worldly kingdom which he expected Christ to establish. Though recognizing the divine power of the love of Christ, Judas did not yield to its supremacy. He continued to cherish his own judgment and opinions, his disposition to criticize and condemn. Christ’s motives and movements, often so far above his comprehension, excited doubt and disapproval, and his own questionings and ambitions were insinuated to the disciples. Many of their contentions for supremacy, much of their dissatisfaction with Christ’s methods, originated with Judas."
+   },
+   {
+    "pid": "29.439",
+    "etype": "p",
+    "text": "Jesus, seeing that to antagonize was but to harden, refrained from direct conflict. The narrowing selfishness of Judas’ life, Christ sought to heal through contact with His own self-sacrificing love. In His teaching He unfolded principles that struck at the root of the disciple’s self-centered ambitions. Lesson after lesson was thus given, and many a time Judas realized that his character had been portrayed, and his sin pointed out; but he would not yield."
+   },
+   {
+    "pid": "29.440",
+    "etype": "p",
+    "text": "Mercy’s pleading resisted, the impulse of evil bore final sway. Judas, angered at an implied rebuke and made desperate by the disappointment of his ambitious dreams, surrendered his soul to the demon of greed and determined upon the betrayal of his Master. From the Passover chamber, the joy of Christ’s presence, and the light of immortal hope, he went forth to his evil work—into the outer darkness, where hope was not."
+   },
+   {
+    "pid": "29.441",
+    "etype": "p",
+    "text": "“Jesus knew from the beginning who they were that believed not, and who should betray Him.” [John 6:64]John 6:64. Yet, knowing all, He had withheld no pleading of mercy or gift of love."
+   },
+   {
+    "pid": "29.442",
+    "etype": "p",
+    "text": "Seeing the danger of Judas, He had brought him close to Himself, within the inner circle of His chosen and trusted disciples. Day after day, when the burden lay heaviest upon His own heart, He had borne the pain of continual contact with that stubborn, suspicious, brooding spirit; He had witnessed and labored to counteract among His disciples that continuous, secret, and subtle antagonism. And all this that no possible saving influence might be lacking to that imperiled soul!"
+   },
+   {
+    "pid": "29.445",
+    "etype": "p",
+    "text": "“Many waters cannot quench love, Neither can the floods drown it;” “For love is strong as death.” [Song of Solomon 8:7]Song of Solomon 8:7, 6."
+   },
+   {
+    "pid": "29.446",
+    "etype": "p",
+    "text": "So far as Judas himself was concerned, Christ’s work of love had been without avail. But not so as regards his fellow disciples. To them it was a lesson of lifelong influence. Ever would its example of tenderness and long-suffering mold their intercourse with the tempted and the erring. And it had other lessons. At the ordination of the Twelve the disciples had greatly desired that Judas should become one of their number, and they had counted his accession an event of much promise to the apostolic band. He had come more into contact with the world than they, he was a man of good address, of discernment and executive ability, and, having a high estimate of his own qualifications, he had led the disciples to hold him in the same regard. But the methods he desired to introduce into Christ’s work were based upon worldly principles and were controlled by worldly policy. They looked to the securing of worldly recognition and honor—to the obtaining of the kingdom of this world. The working out of these desires in the life of Judas, helped the disciples to understand the antagonism between the principle of self-aggrandizement and Christ’s principle of humility and self-sacrifice—the principle of the spiritual kingdom. In the fate of Judas they saw the end to which self-serving tends."
+   },
+   {
+    "pid": "29.447",
+    "etype": "p",
+    "text": "For these disciples the mission of Christ finally accomplished its purpose. Little by little His example and His lessons of self-abnegation molded their characters. His death destroyed their hope of worldly greatness. The fall of Peter, the apostasy of Judas, their own failure in forsaking Christ in His anguish and peril, swept away their self-sufficiency. They saw their own weakness; they saw something of the greatness of the work committed to them; they felt their need of their Master’s guidance at every step."
+   },
+   {
+    "pid": "29.450",
+    "etype": "p",
+    "text": "They knew that His personal presence was no longer to be with them, and they recognized, as they had never recognized before, the value of the opportunities that had been theirs to walk and talk with the Sent of God. Many of His lessons, when spoken, they had not appreciated or understood; now they longed to recall these lessons, to hear again His words. With what joy now came back to them His assurance:"
+   },
+   {
+    "pid": "29.451",
+    "etype": "p",
+    "text": "“It is expedient for you that I go away; for if I go not away, the Comforter will not come unto you; but if I depart, I will send Him.” “All things that I have heard of My Father I have made known unto you.” And “the Comforter, ... whom the Father will send in My name, He shall teach you all things, and bring all things to your remembrance, whatsoever I have said unto you.” [John 16:7]John 16:7; [John 15:15]15:15; [John 14:26]14:26."
+   },
+   {
+    "pid": "29.452",
+    "etype": "p",
+    "text": "“All things that the Father hath are Mine.” “When He, the Spirit of truth, is come, He will guide you into all truth.... He shall receive of Mine, and shall show it unto you.” [John 16:15]John 16:15, 13, 14."
+   },
+   {
+    "pid": "29.453",
+    "etype": "p",
+    "text": "The disciples had seen Christ ascend from among them on the Mount of Olives. And as the heavens received Him, there had come back to them His parting promise, “Lo, I am with you alway, even unto the end of the world.” [Matthew 28:20]Matthew 28:20."
+   },
+   {
+    "pid": "29.455",
+    "etype": "p",
+    "text": "They knew that His sympathies were with them still. They knew that they had a representative, an advocate, at the throne of God. In the name of Jesus they presented their petitions, repeating His promise, “Whatsoever ye shall ask the Father in My name, He will give it you.” [John 16:23]John 16:23."
+   },
+   {
+    "pid": "29.456",
+    "etype": "p",
+    "text": "Higher and higher they extended the hand of faith, with the mighty argument, “It is Christ that died, yea rather, that is risen again, who is even at the right hand of God, who also maketh intercession for us.” [Romans 8:34]Romans 8:34."
+   },
+   {
+    "pid": "29.457",
+    "etype": "p",
+    "text": "Faithful to his promise, the Divine One, exalted in the heavenly courts, imparted of His fullness to His followers on earth. His enthronement at God’s right hand was signalized by the outpouring of the Spirit upon His disciples."
+   },
+   {
+    "pid": "29.458",
+    "etype": "p",
+    "text": "By the work of Christ these disciples had been led to feel their need of the Spirit; under the Spirit’s teaching they received their final preparation and went forth to their lifework."
+   },
+   {
+    "pid": "29.459",
+    "etype": "p",
+    "text": "No longer were they ignorant and uncultured. No longer were they a collection of independent units or of discordant and conflicting elements. No longer were their hopes set on worldly greatness. They were of “one accord,” of one mind and one soul. Christ filled their thoughts. The advancement of His kingdom was their aim. In mind and character they had become like their Master; and men “took knowledge of them, that they had been with Jesus.” [Acts 4:13]Acts 4:13."
+   },
+   {
+    "pid": "29.460",
+    "etype": "p",
+    "text": "Then was there such a revelation of the glory of Christ as had never before been witnessed by mortal man. Multitudes who had reviled His name and despised His power confessed themselves disciples of the Crucified. Through the co-operation of the divine Spirit the labors of the humble men whom Christ had chosen stirred the world. To every nation under heaven was the gospel carried in a single generation."
+   },
+   {
+    "pid": "29.463",
+    "etype": "p",
+    "text": "The same Spirit that in His stead was sent to be the instructor of His first co-workers, Christ has commissioned to be the instructor of His co-workers today. “Lo, I am with you alway, even unto the end of the world” ([Matthew 28:20]Matthew 28:20), is His promise."
+   },
+   {
+    "pid": "29.464",
+    "etype": "p",
+    "text": "The presence of the same guide in educational work today will produce the same results as of old. This is the end to which true education tends; this is the work that God designs it to accomplish."
+   },
+   {
+    "pid": "29.468",
+    "etype": "h2",
+    "text": "Nature Teaching"
+   },
+   {
+    "pid": "29.1641",
+    "etype": "p",
+    "text": "“Consider ... the wondrous works of Him which is perfect in knowledge.”"
    }
   ],
   "zh_paras": [
@@ -2865,14 +3395,9 @@
   "chapter": 10,
   "en_title": "Chapter 10—God in Nature",
   "zh_title": "第10章 上帝在大自然中",
-  "en_count": 11,
+  "en_count": 10,
   "zh_count": 12,
   "en_paras": [
-   {
-    "pid": "29.469",
-    "etype": "h3",
-    "text": "Chapter 10—God in Nature"
-   },
    {
     "pid": "29.1642",
     "etype": "p",
@@ -2993,14 +3518,9 @@
   "chapter": 11,
   "en_title": "Chapter 11—Lessons of Life",
   "zh_title": "第11章 生命的教训",
-  "en_count": 6,
+  "en_count": 39,
   "zh_count": 41,
   "en_paras": [
-   {
-    "pid": "29.484",
-    "etype": "h3",
-    "text": "Chapter 11—Lessons of Life"
-   },
    {
     "pid": "29.1643",
     "etype": "p",
@@ -3025,6 +3545,176 @@
     "pid": "29.490",
     "etype": "p",
     "text": "As they learn thus to study the lessons in all created things, and in all life’s experiences, show that the same laws which govern the things of nature and the events of life are to control us; that they are given for our good; and that only in obedience to them can we find true happiness and success."
+   },
+   {
+    "pid": "29.491",
+    "etype": "h4",
+    "text": "The Law of Ministry"
+   },
+   {
+    "pid": "29.492",
+    "etype": "p",
+    "text": "All things both in heaven and in earth declare that the great law of life is a law of service. The infinite Father ministers to the life of every living thing. Christ came to the earth “as He that serveth.” [Luke 22:27]Luke 22:27. The angels are “ministering spirits, sent forth to minister for them who shall be heirs of salvation.” [Hebrews 1:14]Hebrews 1:14. The same law of service is written upon all things in nature. The birds of the air, the beasts of the field, the trees of the forest, the leaves, the grass, and the flowers, the sun in the heavens and the stars of light—all have their ministry. Lake and ocean, river and water spring—each takes to give."
+   },
+   {
+    "pid": "29.493",
+    "etype": "p",
+    "text": "As each thing in nature ministers thus to the world’s life, it also secures its own. “Give, and it shall be given unto you” ([Luke 6:38]Luke 6:38), is the lesson written no less surely in nature than in the pages of Holy Writ."
+   },
+   {
+    "pid": "29.494",
+    "etype": "p",
+    "text": "As the hillsides and the plains open a channel for the mountain stream to reach the sea, that which they give is repaid a hundredfold. The stream that goes singing on its way leaves behind its gift of beauty and fruitfulness. Through the fields, bare and brown under the summer’s heat, a line of verdure marks the river’s course; every noble tree, every bud, every blossom, a witness to the recompense God’s grace decrees to all who become its channels to the world."
+   },
+   {
+    "pid": "29.497",
+    "etype": "h4",
+    "text": "Sowing in Faith"
+   },
+   {
+    "pid": "29.498",
+    "etype": "p",
+    "text": "Of the almost innumerable lessons taught in the varied processes of growth, some of the most precious are conveyed in the Saviour’s parable of the growing seed. It has lessons for old and young."
+   },
+   {
+    "pid": "29.499",
+    "etype": "p",
+    "text": "“So is the kingdom of God, as if a man should cast seed into the ground; and should sleep, and rise night and day, and the seed should spring and grow up, he knoweth not how. For the earth bringeth forth fruit of herself; first the blade, then the ear, after that the full corn in the ear.” [Mark 4:26]Mark 4:26-28."
+   },
+   {
+    "pid": "29.500",
+    "etype": "p",
+    "text": "The seed has in itself a germinating principle, a principle that God Himself has implanted; yet if left to itself the seed would have no power to spring up. Man has his part to act in promoting the growth of the grain; but there is a point beyond which he can accomplish nothing. He must depend upon One who has connected the sowing and the reaping by wonderful links of His own omnipotent power."
+   },
+   {
+    "pid": "29.501",
+    "etype": "p",
+    "text": "There is life in the seed, there is power in the soil; but unless infinite power is exercised day and night, the seed will yield no return. The showers of rain must refresh the thirsty fields; the sun must impart warmth; electricity must be conveyed to the buried seed. The life which the Creator has implanted, He alone can call forth. Every seed grows, every plant develops, by the power of God."
+   },
+   {
+    "pid": "29.502",
+    "etype": "p",
+    "text": "“The seed is the word of God.” “As the earth bringeth forth her bud, and as the garden causeth the things that are sown in it to spring forth; so the Lord God will cause righteousness and praise to spring forth.” [Luke 8:11]Luke 8:11; [Isaiah 61:11]Isaiah 61:11. As in the natural, so in the spiritual sowing; the power that alone can produce life is from God."
+   },
+   {
+    "pid": "29.505",
+    "etype": "p",
+    "text": "The work of the sower is a work of faith. The mystery of the germination and growth of the seed he cannot understand; but he has confidence in the agencies by which God causes vegetation to flourish. He casts away the seed, expecting to gather it manyfold in an abundant harvest. So parents and teachers are to labor, expecting a harvest from the seed they sow."
+   },
+   {
+    "pid": "29.506",
+    "etype": "p",
+    "text": "For a time the good seed may lie unnoticed in the heart, giving no evidence that it has taken root; but afterward, as the Spirit of God breathes on the soul, the hidden seed springs up, and at last brings forth fruit. In our lifework we know not which shall prosper, this or that. This question it is not for us to settle. “In the morning sow thy seed, and in the evening withhold not thine hand.” [Ecclesiastes 11:6]Ecclesiastes 11:6. God’s great covenant declares that “while the earth remaineth, seedtime and harvest ... shall not cease.” [Genesis 8:22]Genesis 8:22. In the confidence of this promise the husbandman tills and sows. Not less confidently are we, in the spiritual sowing, to labor, trusting His assurance: “So shall My word be that goeth forth out of My mouth: it shall not return unto Me void, but it shall accomplish that which I please, and it shall prosper in the thing whereto I sent it.” “He that goeth forth and weepeth, bearing precious seed, shall doubtless come again with rejoicing, bringing his sheaves with him.” [Isaiah 55:11]Isaiah 55:11; [Psalm 126:6]Psalm 126:6."
+   },
+   {
+    "pid": "29.507",
+    "etype": "p",
+    "text": "The germination of the seed represents the beginning of spiritual life, and the development of the plant is a figure of the development of character. There can be no life without growth. The plant must either grow or die. As its growth is silent and imperceptible, but continuous, so is the growth of character. At every stage of development our life may be perfect; yet if God’s purpose for us is fulfilled, there will be constant advancement."
+   },
+   {
+    "pid": "29.510",
+    "etype": "p",
+    "text": "The plant grows by receiving that which God has provided to sustain its life. So spiritual growth is attained through co-operation with divine agencies. As the plant takes root in the soil, so we are to take root in Christ. As the plant receives the sunshine, the dew, and the rain, so are we to receive the Holy Spirit. If our hearts are stayed upon Christ, He will come unto us “as the rain, as the latter and former rain unto the earth.” As the Sun of Righteousness, He will arise upon us “with healing in His wings.” We shall “grow as the lily.” We “shall revive as the corn, and grow as the vine.” [Hosea 6:3]Hosea 6:3; [Malachi 4:2]Malachi 4:2; [Hosea 14:5]Hosea 14:5, 7."
+   },
+   {
+    "pid": "29.511",
+    "etype": "p",
+    "text": "The wheat develops, “first the blade, then the ear, after that the full corn in the ear.” [Mark 4:28]Mark 4:28. The object of the husbandman in the sowing of the seed and the culture of the plant, is the production of grain—bread for the hungry, and seed for future harvests. So the divine Husbandman looks for a harvest. He is seeking to reproduce Himself in the hearts and lives of His followers, that through them He may be reproduced in other hearts and lives."
+   },
+   {
+    "pid": "29.512",
+    "etype": "p",
+    "text": "The gradual development of the plant from the seed is an object lesson in child training. There is “first the blade, then the ear, after that the full corn in the ear.” [Mark 4:28]Mark 4:28. He who gave this parable created the tiny seed, gave it its vital properties, and ordained the laws that govern its growth. And the truths taught by the parable were made a reality in His own life. He, the Majesty of heaven, the King of glory, became a babe in Bethlehem, and for a time represented the helpless infant in its mother’s care. In childhood He spoke and acted as a child, honoring His parents, and carrying out their wishes in helpful ways. But from the first dawning of intelligence He was constantly growing in grace and in a knowledge of truth."
+   },
+   {
+    "pid": "29.515",
+    "etype": "p",
+    "text": "Parents and teachers should aim so to cultivate the tendencies of the youth that at each stage of life they may represent the beauty appropriate to that period, unfolding naturally, as do the plants in the garden."
+   },
+   {
+    "pid": "29.516",
+    "etype": "p",
+    "text": "The little ones should be educated in childlike simplicity. They should be trained to be content with the small, helpful duties and the pleasures and experiences natural to their years. Childhood answers to the blade in the parable, and the blade has a beauty peculiarly its own. Children should not be forced into a precocious maturity, but as long as possible should retain the freshness and grace of their early years. The more quiet and simple the life of the child—the more free from artificial excitement and the more in harmony with nature—the more favorable it is to physical and mental vigor and to spiritual strength."
+   },
+   {
+    "pid": "29.517",
+    "etype": "p",
+    "text": "In the Saviour’s miracle of feeding the five thousand is illustrated the working of God’s power in the production of the harvest. Jesus draws aside the veil from the world of nature and reveals the creative energy that is constantly exercised for our good. In multiplying the seed cast into the ground, He who multiplied the loaves is working a miracle every day. It is by miracle that He constantly feeds millions from earth’s harvest fields. Men are called upon to co-operate with Him in the care of the grain and the preparation of the loaf, and because of this they lose sight of the divine agency. The working of His power is ascribed to natural causes or to human instrumentality, and too often His gifts are perverted to selfish uses and made a curse instead of a blessing. God is seeking to change all this. He desires that our dull senses shall be quickened to discern His merciful kindness, that His gifts may be to us the blessing that He intended."
+   },
+   {
+    "pid": "29.520",
+    "etype": "p",
+    "text": "It is the word of God, the impartation of His life, that gives life to the seed; and of that life, we, in eating the grain, become partakers. This, God desires us to discern; He desires that even in receiving our daily bread we may recognize His agency and may be brought into closer fellowship with Him."
+   },
+   {
+    "pid": "29.521",
+    "etype": "p",
+    "text": "By the laws of God in nature, effect follows cause with unvarying certainty. The reaping testifies to the sowing. Here no pretense is tolerated. Men may deceive their fellow men and may receive praise and compensation for service which they have not rendered. But in nature there can be no deception. On the unfaithful husbandman the harvest passes sentence of condemnation. And in the highest sense this is true also in the spiritual realm. It is in appearance, not in reality, that evil succeeds. The child who plays truant from school, the youth who is slothful in his studies, the clerk or apprentice who fails of serving the interests of his employer, the man in any business or profession who is untrue to his highest responsibilities, may flatter himself that, so long as the wrong is concealed, he is gaining an advantage. But not so; he is cheating himself. The harvest of life is character, and it is this that determines destiny, both for this life and for the life to come."
+   },
+   {
+    "pid": "29.524",
+    "etype": "p",
+    "text": "The harvest is a reproduction of the seed sown. Every seed yields fruit after its kind. So it is with the traits of character we cherish. Selfishness, self-love, self-esteem, self-indulgence, reproduce themselves, and the end is wretchedness and ruin. “He that soweth to his flesh shall of the flesh reap corruption; but he that soweth to the Spirit shall of the Spirit reap life everlasting.” [Galatians 6:8]Galatians 6:8. Love, sympathy, and kindness yield fruitage of blessing, a harvest that is imperishable."
+   },
+   {
+    "pid": "29.525",
+    "etype": "p",
+    "text": "In the harvest the seed is multiplied. A single grain of wheat, increased by repeated sowings, would cover a whole land with golden sheaves. So widespread may be the influence of a single life, of even a single act."
+   },
+   {
+    "pid": "29.526",
+    "etype": "p",
+    "text": "What deeds of love the memory of that alabaster box broken for Christ’s anointing has through the long centuries prompted! What countless gifts that contribution, by a poor unnamed widow, of “two mites, which make a farthing” ([Mark 12:42]Mark 12:42), has brought to the Saviour’s cause!"
+   },
+   {
+    "pid": "29.527",
+    "etype": "h4",
+    "text": "Life Through Death"
+   },
+   {
+    "pid": "29.528",
+    "etype": "p",
+    "text": "The lesson of seed sowing teaches liberality. “He which soweth sparingly shall reap also sparingly; and he which soweth bountifully shall reap also bountifully.” [2 Corinthians 9:6]2 Corinthians 9:6."
+   },
+   {
+    "pid": "29.529",
+    "etype": "p",
+    "text": "The Lord says, “Blessed are ye that sow beside all waters.” [Isaiah 32:20]Isaiah 32:20. To sow beside all waters means to give wherever our help is needed. This will not tend to poverty. “He which soweth bountifully shall reap also bountifully.” By casting it away the sower multiplies his seed. So by imparting we increase our blessings. God’s promise assures a sufficiency, that we may continue to give."
+   },
+   {
+    "pid": "29.532",
+    "etype": "p",
+    "text": "More than this: as we impart the blessings of this life, gratitude in the recipient prepares the heart to receive spiritual truth, and a harvest is produced unto life everlasting."
+   },
+   {
+    "pid": "29.533",
+    "etype": "p",
+    "text": "By the casting of grain into the earth, the Saviour represents His sacrifice for us. “Except a corn of wheat fall into the ground and die,” He says, “it abideth alone: but if it die, it bringeth forth much fruit.” [John 12:24]John 12:24. Only through the sacrifice of Christ, the Seed, could fruit be brought forth for the kingdom of God. In accordance with the law of the vegetable kingdom, life is the result of His death."
+   },
+   {
+    "pid": "29.534",
+    "etype": "p",
+    "text": "So with all who bring forth fruit as workers together with Christ: self-love, self-interest, must perish; the life must be cast into the furrow of the world’s need. But the law of self-sacrifice is the law of self-preservation. The husbandman preserves his grain by casting it away. So the life that will be preserved is the life that is freely given in service to God and man."
+   },
+   {
+    "pid": "29.535",
+    "etype": "p",
+    "text": "The seed dies, to spring forth into new life. In this we are taught the lesson of the resurrection. Of the human body laid away to molder in the grave, God has said: “It is sown in corruption; it is raised in incorruption: it is sown in dishonor; it is raised in glory: it is sown in weakness; it is raised in power.” [1 Corinthians 15:42]1 Corinthians 15:42, 43."
+   },
+   {
+    "pid": "29.537",
+    "etype": "p",
+    "text": "As parents and teachers try to teach these lessons, the work should be made practical. Let the children themselves prepare the soil and sow the seed. As they work, the parent or teacher can explain the garden of the heart, with the good or bad seed sown there, and that as the garden must be prepared for the natural seed, so the heart must be prepared for the seed of truth. As the seed is cast into the ground, they can teach the lesson of Christ’s death; and as the blade springs up, the truth of the resurrection. As the plant grows, the correspondence between the natural and the spiritual sowing may be continued."
+   },
+   {
+    "pid": "29.538",
+    "etype": "p",
+    "text": "The youth should be instructed in a similar way. From the tilling of the soil, lessons may constantly be learned. No one settles upon a raw piece of land with the expectation that it will at once yield a harvest. Diligent, persevering labor must be put forth in the preparation of the soil, the sowing of the seed, and the culture of the crop. So it must be in the spiritual sowing. The garden of the heart must be cultivated. The soil must be broken up by repentance. The evil growths that choke the good grain must be uprooted. As soil once overgrown with thorns can be reclaimed only by diligent labor, so the evil tendencies of the heart can be overcome only by earnest effort in the name and strength of Christ."
+   },
+   {
+    "pid": "29.539",
+    "etype": "p",
+    "text": "In the cultivation of the soil the thoughtful worker will find that treasures little dreamed of are opening up before him. No one can succeed in agriculture or gardening without attention to the laws involved. The special needs of every variety of plant must be studied. Different varieties require different soil and cultivation, and compliance with the laws governing each is the condition of success. The attention required in transplanting, that not even a root fiber shall be crowded or misplaced, the care of the young plants, the pruning and watering, the shielding from frost at night and sun by day, keeping out weeds, disease, and insect pests, the training and arranging, not only teach important lessons concerning the development of character, but the work itself is a means of development. In cultivating carefulness, patience, attention to detail, obedience to law, it imparts a most essential training. The constant contact with the mystery of life and the loveliness of nature, as well as the tenderness called forth in ministering to these beautiful objects of God’s creation, tends to quicken the mind and refine and elevate the character; and the lessons taught prepare the worker to deal more successfully with other minds."
    }
   ],
   "zh_paras": [
@@ -3241,14 +3931,9 @@
   "chapter": 12,
   "en_title": "Chapter 12—Other Object Lessons",
   "zh_title": "第12章 其他实际教训",
-  "en_count": 10,
+  "en_count": 29,
   "zh_count": 30,
   "en_paras": [
-   {
-    "pid": "29.543",
-    "etype": "h3",
-    "text": "Chapter 12—Other Object Lessons"
-   },
    {
     "pid": "29.1644",
     "etype": "p",
@@ -3293,6 +3978,106 @@
     "pid": "29.554",
     "etype": "p",
     "text": "“As I have sworn that the waters of Noah should no more go over the earth; so have I sworn that I would not be wroth with thee, nor rebuke thee. For the mountains shall depart, and the hills be removed; but My kindness shall not depart from thee, neither shall the covenant of My peace be removed, saith the Lord that hath mercy on thee.” [Isaiah 54:9]Isaiah 54:9, 10."
+   },
+   {
+    "pid": "29.555",
+    "etype": "h4",
+    "text": "The Message of the Stars"
+   },
+   {
+    "pid": "29.556",
+    "etype": "p",
+    "text": "The stars also have a message of good cheer for every human being. In those hours that come to all, when the heart is faint and temptation presses sore; when obstacles seem insurmountable, life’s aims impossible of achievement, its fair promises like apples of Sodom; where, then, can such courage and steadfastness be found as in that lesson which God has bidden us learn from the stars in their untroubled course?"
+   },
+   {
+    "pid": "29.557",
+    "etype": "p",
+    "text": "“Lift up your eyes on high, and behold who hath created these things, that bringeth out their host by number: He calleth them all by names by the greatness of His might, for that He is strong in power; not one faileth. Why sayest thou, O Jacob, and speakest, O Israel, My way is hid from the Lord, and my judgment is passed over from my God? Hast thou not known? hast thou not heard, that the everlasting God, the Lord, the Creator of the ends of the earth, fainteth not, neither is weary? there is no searching of His understanding. He giveth power to the faint; and to them that have no might He increaseth strength.” “Fear thou not; for I am with thee: be not dismayed for I am Thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of My righteousness.” “I the Lord thy God will hold thy right hand, saying unto thee, Fear not; I will help thee.” [Isaiah 40:26]Isaiah 40:26-29; [Isaiah 41:10]41:10, 13."
+   },
+   {
+    "pid": "29.560",
+    "etype": "p",
+    "text": "The palm tree, beaten by the scorching sun and the fierce sandstorm, stands green and flourishing and fruitful in the midst of the desert. Its roots are fed by living springs. Its crown of verdure is seen afar over the parched, desolate plain; and the traveler, ready to die, urges his failing steps to the cool shade and the life-giving water."
+   },
+   {
+    "pid": "29.561",
+    "etype": "p",
+    "text": "The tree of the desert is a symbol of what God means the life of His children in this world to be. They are to guide weary souls, full of unrest, and ready to perish in the desert of sin, to the living water. They are to point their fellow men to Him who gives the invitation, “If any man thirst, let him come unto Me, and drink.” [John 7:37]John 7:37."
+   },
+   {
+    "pid": "29.562",
+    "etype": "p",
+    "text": "The wide, deep river, that offers a highway for the traffic and travel of nations, is valued as a world-wide benefit; but what of the little rills that help to form this noble stream? Were it not for them, the river would disappear. Upon them its very existence depends. So men called to lead in some great work are honored as if its success were due to them alone; but that success required the faithful co-operation of humbler workers almost without number—workers of whom the world knows nothing. Tasks uncommended, labor without recognition, is the lot of most of the world’s toilers. And in such a lot many are filled with discontent. They feel that life is wasted. But the little rill that makes its noiseless way through grove and meadow, bearing health and fertility and beauty, is as useful in its way as the broad river. And in contributing to the river’s life, it helps achieve that which alone it could never have accomplished."
+   },
+   {
+    "pid": "29.565",
+    "etype": "p",
+    "text": "The lesson is one needed by many. Talent is too much idolized, and station too much coveted. There are too many who will do nothing unless they are recognized as leaders; too many who must receive praise, or they have no interest to labor. What we need to learn is faithfulness in making the utmost use of the powers and opportunities we have, and contentment in the lot to which Heaven assigns us."
+   },
+   {
+    "pid": "29.566",
+    "etype": "h4",
+    "text": "A Lesson of Trust"
+   },
+   {
+    "pid": "29.567",
+    "etype": "p",
+    "text": "“Ask now the beasts, and they shall teach thee; and the fowls of the air, and they shall tell thee: ... and the fishes of the sea shall declare unto thee.” “Go to the ant; ... consider her ways.” “Behold the birds.” “Consider the ravens.” [Job 12:7]Job 12:7, 8; [Proverbs 6:6]Proverbs 6:6; [Matthew 6:26]Matthew 6:26, R.V.; [Luke 12:24]Luke 12:24."
+   },
+   {
+    "pid": "29.568",
+    "etype": "p",
+    "text": "We are not merely to tell the child about these creatures of God. The animals themselves are to be his teachers. The ants teach lessons of patient industry, of perseverance in surmounting obstacles, of providence for the future. And the birds are teachers of the sweet lesson of trust. Our heavenly Father provides for them; but they must gather the food, they must build their nests and rear their young. Every moment they are exposed to enemies that seek to destroy them. Yet how cheerily they go about their work! how full of joy are their little songs!"
+   },
+   {
+    "pid": "29.571",
+    "etype": "p",
+    "text": "How beautiful the psalmist’s description of God’s care for the creatures of the woods— “The high hills are a refuge for the wild goats; And the rocks for the conies.” [Psalm 104:18]Psalm 104:18. He sends the springs to run among the hills, where the birds have their habitation, and “sing among the branches.” [Psalm 104:12]Psalm 104:12. All the creatures of the woods and hills are a part of His great household. He opens His hand, and satisfies “the desire of every living thing.” [Psalm 145:16]Psalm 145:16."
+   },
+   {
+    "pid": "29.573",
+    "etype": "p",
+    "text": "The eagle of the Alps is sometimes beaten down by the tempest into the narrow defiles of the mountains. Storm clouds shut in this mighty bird of the forest, their dark masses separating her from the sunny heights where she has made her home. Her efforts to escape seem fruitless. She dashes to and fro, beating the air with her strong wings, and waking the mountain echoes with her cries. At length, with a note of triumph, she darts upward, and, piercing the clouds, is once more in the clear sunlight, with the darkness and tempest far beneath. So we may be surrounded with difficulties, discouragement, and darkness. Falsehood, calamity, injustice, shut us in. There are clouds that we cannot dispel. We battle with circumstances in vain. There is one, and but one, way of escape. The mists and fogs cling to the earth; beyond the clouds God’s light is shining. Into the sunlight of His presence we may rise on the wings of faith."
+   },
+   {
+    "pid": "29.576",
+    "etype": "p",
+    "text": "Many are the lessons that may thus be learned. Self-reliance, from the tree that, growing alone on plain or mountainside, strikes down its roots deep into the earth, and in its rugged strength defies the tempest. The power of early influence, from the gnarled, shapeless trunk, bent as a sapling, to which no earthly power can afterward restore its lost symmetry. The secret of a holy life, from the water lily, that, on the bosom of some slimy pool, surrounded by weeds and rubbish, strikes down its channeled stem to the pure sands beneath, and, drawing thence its life, lifts up its fragrant blossoms to the light in spotless purity."
+   },
+   {
+    "pid": "29.577",
+    "etype": "p",
+    "text": "Thus while the children and youth gain a knowledge of facts from teachers and textbooks, let them learn to draw lessons and discern truth for themselves. In their gardening, question them as to what they learn from the care of their plants. As they look on a beautiful landscape, ask them why God clothed the fields and woods with such lovely and varied hues. Why was not all colored a somber brown? When they gather the flowers, lead them to think why He spared us the beauty of these wanderers from Eden. Teach them to notice the evidences everywhere manifest in nature of God’s thought for us, the wonderful adaptation of all things to our need and happiness."
+   },
+   {
+    "pid": "29.578",
+    "etype": "p",
+    "text": "He alone who recognizes in nature his Father’s handiwork, who in the richness and beauty of the earth reads the Father’s handwriting—he alone learns from the things of nature their deepest lessons, and receives their highest ministry. Only he can fully appreciate the significance of hill and vale, river and sea, who looks upon them as an expression of the thought of God, a revelation of the Creator."
+   },
+   {
+    "pid": "29.581",
+    "etype": "p",
+    "text": "Many illustrations from nature are used by the Bible writers, and as we observe the things of the natural world, we shall be enabled, under the guiding of the Holy Spirit, more fully to understand the lessons of God’s word. It is thus that nature becomes a key to the treasure house of the word."
+   },
+   {
+    "pid": "29.582",
+    "etype": "p",
+    "text": "Children should be encouraged to search out in nature the objects that illustrate Bible teachings, and to trace in the Bible the similitudes drawn from nature. They should search out, both in nature and in Holy Writ, every object representing Christ, and those also that He employed in illustrating truth. Thus may they learn to see Him in tree and vine, in lily and rose, in sun and star. They may learn to hear His voice in the song of birds, in the sighing of the trees, in the rolling thunder, and in the music of the sea. And every object in nature will repeat to them His precious lessons."
+   },
+   {
+    "pid": "29.583",
+    "etype": "p",
+    "text": "To those who thus acquaint themselves with Christ, the earth will nevermore be a lonely and desolate place. It will be their Father’s house, filled with the presence of Him who once dwelt among men."
+   },
+   {
+    "pid": "29.587",
+    "etype": "h2",
+    "text": "The Bible as an Educator"
+   },
+   {
+    "pid": "29.1645",
+    "etype": "p",
+    "text": "“When thou goest, it shall lead thee; when thou sleepest, it shall keep thee; and when thou awakest, it shall talk with thee.”"
    }
   ],
   "zh_paras": [
@@ -3454,14 +4239,9 @@
   "chapter": 13,
   "en_title": "Chapter 13—Mental and Spiritual Culture",
   "zh_title": "第13章 心智和属灵的培育",
-  "en_count": 17,
+  "en_count": 16,
   "zh_count": 18,
   "en_paras": [
-   {
-    "pid": "29.588",
-    "etype": "h3",
-    "text": "Chapter 13—Mental and Spiritual Culture"
-   },
    {
     "pid": "29.1646",
     "etype": "p",
@@ -3642,14 +4422,9 @@
   "chapter": 14,
   "en_title": "Chapter 14—Science and the Bible",
   "zh_title": "第14章 科学与圣经",
-  "en_count": 29,
+  "en_count": 28,
   "zh_count": 64,
   "en_paras": [
-   {
-    "pid": "29.613",
-    "etype": "h3",
-    "text": "Chapter 14—Science and the Bible"
-   },
    {
     "pid": "29.1647",
     "etype": "p",
@@ -4120,14 +4895,9 @@
   "chapter": 15,
   "en_title": "Chapter 15—Business Principles and Methods",
   "zh_title": "第15章 处理事务的原则与方法",
-  "en_count": 40,
+  "en_count": 63,
   "zh_count": 91,
   "en_paras": [
-   {
-    "pid": "29.650",
-    "etype": "h3",
-    "text": "Chapter 15—Business Principles and Methods"
-   },
    {
     "pid": "29.1648",
     "etype": "p",
@@ -4322,6 +5092,126 @@
     "pid": "29.697",
     "etype": "p",
     "text": "He who makes this investment lays up double treasure. Besides that which, however wisely improved, he must leave at last, he is amassing wealth for eternity,—that treasure of character which is the most valuable possession of earth or heaven."
+   },
+   {
+    "pid": "29.698",
+    "etype": "h4",
+    "text": "Honest Business Dealings"
+   },
+   {
+    "pid": "29.699",
+    "etype": "p",
+    "text": "“The Lord knoweth the days of the upright: and their inheritance shall be forever. They shall not be ashamed in the evil time: and in the days of famine they shall be satisfied.” [Psalm 37:18]Psalm 37:18, 19."
+   },
+   {
+    "pid": "29.700",
+    "etype": "p",
+    "text": "“He that walketh uprightly, and worketh righteousness, and speaketh the truth in his heart.... He that sweareth to his own hurt, and changeth not;” “he that despiseth the gain of oppressions, that shaketh his hands from holding of bribes, ... and shutteth his eyes from seeing evil; he shall dwell on high: ... bread shall be given him; his waters shall be sure. Thine eyes shall see the King in His beauty: they shall behold the land that is very far off.” [Psalm 15:2]Psalm 15:2-4; [Isaiah 33:15]Isaiah 33:15-17."
+   },
+   {
+    "pid": "29.702",
+    "etype": "p",
+    "text": "God has given in His word a picture of a prosperous man—one whose life was in the truest sense a success, a man whom both heaven and earth delighted to honor. Of his experiences Job himself says:"
+   },
+   {
+    "pid": "29.703",
+    "etype": "p",
+    "text": "“In the ripeness of my days, When the secret of God was upon my tent; When the Almighty was yet with me, And my children were about me; ... When I went forth to the gate unto the city, When I prepared my seat in the broad place [margin], The young men saw me and hid themselves, And the aged rose up and stood; The princes refrained talking, And laid their hand on their mouth; The voice of the nobles was hushed...."
+   },
+   {
+    "pid": "29.704",
+    "etype": "p",
+    "text": "“For when the ear heard me, then it blessed me; And when the eye saw me, it gave witness unto me; Because I delivered the poor that cried, The fatherless also, and him [margin], that had none to help him."
+   },
+   {
+    "pid": "29.705",
+    "etype": "p",
+    "text": "“The blessing of him that was ready to perish came upon me; And I caused the widow’s heart to sing for joy. I put on righteousness, and it clothed me: My justice was as a robe and a diadem. I was eyes to the blind, And feet was I to the lame. I was a father to the needy: And the cause of him that I knew not I searched out.”"
+   },
+   {
+    "pid": "29.1693",
+    "etype": "p",
+    "text": "“The stranger did not lodge in the street: But I opened my doors to the traveler.”"
+   },
+   {
+    "pid": "29.706",
+    "etype": "p",
+    "text": "“Unto me men gave ear, and waited.... And the light of my countenance they cast not down. I chose out their way, and sat chief, And dwelt as a king in the army, As one that comforteth the mourners.” [Job 29:4]Job 29:4-16, R.V.; 31:32; 29:21-25."
+   },
+   {
+    "pid": "29.708",
+    "etype": "p",
+    "text": "“The blessing of the Lord, it maketh rich, and He addeth no sorrow with it.” [Proverbs 10:22]Proverbs 10:22."
+   },
+   {
+    "pid": "29.710",
+    "etype": "p",
+    "text": "“Riches and honor are with Me,” declares Wisdom; “yea, durable riches and righteousness.” [Proverbs 8:18]Proverbs 8:18."
+   },
+   {
+    "pid": "29.711",
+    "etype": "p",
+    "text": "The Bible shows also the result of a departure from right principles in our dealing both with God and with one another. To those who are entrusted with His gifts but indifferent to His claims, God says:"
+   },
+   {
+    "pid": "29.712",
+    "etype": "p",
+    "text": "“Consider your ways. Ye have sown much, and bring in little; ye eat, but ye have not enough; ye drink, but ye are not filled with drink; ye clothe you, but there is none warm; and he that earneth wages earneth wages to put it into a bag with holes.... Ye looked for much, and, lo, it came to little; and when ye brought it home, I did blow upon it.” “When one came to an heap of twenty measures, there were but ten: when one came to the pressfat for to draw out fifty vessels out of the press, there were but twenty.” “Why? saith the Lord of hosts. Because of Mine house that is waste.” “Will a man rob God? Yet ye have robbed Me. But ye say, Wherein have we robbed Thee? In tithes and offerings.” “Therefore the heaven over you is stayed from dew, and the earth is stayed from her fruit.” [Haggai 1:5]Haggai 1:5-9; [Haggai 2:16]2:16; [Malachi 3:8]Malachi 3:8; [Haggai 1:10]Haggai 1:10."
+   },
+   {
+    "pid": "29.713",
+    "etype": "p",
+    "text": "“Forasmuch therefore as your treading is upon the poor, ... ye have built houses of hewn stone, but ye shall not dwell in them; ye have planted pleasant vineyards, but ye shall not drink wine of them.” “The Lord shall send upon thee cursing, vexation, and rebuke, in all that thou settest thine hand unto.” “Thy sons and thy daughters shall be given unto another, ... and thine eyes shall look, and fail with longing for them all the day long: and there shall be no might in thine hand.” [Amos 5:11]Amos 5:11; [Deuteronomy 28:20]Deuteronomy 28:20, 32."
+   },
+   {
+    "pid": "29.714",
+    "etype": "p",
+    "text": "“He that getteth riches, and not by right, shall leave them in the midst of his days, and at his end shall be a fool.” [Jeremiah 17:11]Jeremiah 17:11."
+   },
+   {
+    "pid": "29.716",
+    "etype": "p",
+    "text": "The accounts of every business, the details of every transaction, pass the scrutiny of unseen auditors, agents of Him who never compromises with injustice, never overlooks evil, never palliates wrong."
+   },
+   {
+    "pid": "29.717",
+    "etype": "p",
+    "text": "“If thou seest the oppression of the poor, and violent perverting of judgment and justice, ... marvel not at the matter: for He that is higher than the highest regardeth.” “There is no darkness, nor shadow of death, where the workers of iniquity may hide themselves.” [Ecclesiastes 5:8]Ecclesiastes 5:8; [Job 34:22]Job 34:22."
+   },
+   {
+    "pid": "29.718",
+    "etype": "p",
+    "text": "“They set their mouth against the heavens.... And they say, How doth God know? and is there knowledge in the Most High?” “These things hast thou done,” God says, “and I kept silence; thou thoughtest that I was altogether such an one as thyself: but I will reprove thee, and set them in order before thine eyes,” [Psalm 73:9]Psalm 73:9-11; [Psalm 50:21]50:21."
+   },
+   {
+    "pid": "29.719",
+    "etype": "p",
+    "text": "“I turned, and lifted up mine eyes, and looked, and behold a flying roll.... This is the curse that goeth forth over the face of the whole earth: for everyone that stealeth shall be cut off as on this side according to it; and everyone that sweareth shall be cut off as on that side according to it. I will bring it forth, saith the Lord of hosts, and it shall enter into the house of the thief, and into the house of him that sweareth falsely by My name: and it shall remain in the midst of his house, and shall consume it with the timber thereof and the stones thereof.” [Zechariah 5:1]Zechariah 5:1-4."
+   },
+   {
+    "pid": "29.720",
+    "etype": "p",
+    "text": "Against every evildoer God’s law utters condemnation. He may disregard that voice, he may seek to drown its warning, but in vain. It follows him. It makes itself heard. It destroys his peace. If unheeded, it pursues him to the grave. It bears witness against him at the judgment. A quenchless fire, it consumes at last soul and body."
+   },
+   {
+    "pid": "29.723",
+    "etype": "p",
+    "text": "“What shall it profit a man, if he shall gain the whole world, and lose his own soul? Or what shall a man give in exchange for his soul?” [Mark 8:36]Mark 8:36, 37."
+   },
+   {
+    "pid": "29.724",
+    "etype": "p",
+    "text": "This is a question that demands consideration by every parent, every teacher, every student—by every human being, young or old. No scheme of business or plan of life can be sound or complete that embraces only the brief years of this present life and makes no provision for the unending future. Let the youth be taught to take eternity into their reckoning. Let them be taught to choose the principles and seek the possessions that are enduring—to lay up for themselves that “treasure in the heavens that faileth not, where no thief approacheth, neither moth corrupteth;” to make to themselves friends “by means of the mammon of unrighteousness,” that when it shall fail, these may receive them “into the eternal tabernacles.” [Luke 12:33]Luke 12:33; [Luke 16:9]16:9, R.V."
+   },
+   {
+    "pid": "29.725",
+    "etype": "p",
+    "text": "All who do this are making the best possible preparation for life in this world. No man can lay up treasure in heaven without finding his life on earth thereby enriched and ennobled."
+   },
+   {
+    "pid": "29.726",
+    "etype": "p",
+    "text": "“Godliness is profitable unto all things, having promise of the life that now is, and of that which is to come.” [1 Timothy 4:8]1 Timothy 4:8."
    }
   ],
   "zh_paras": [
@@ -4788,14 +5678,9 @@
   "chapter": 16,
   "en_title": "Chapter 16—Bible Biographies",
   "zh_title": "第16章 圣经的传记",
-  "en_count": 17,
+  "en_count": 65,
   "zh_count": 92,
   "en_paras": [
-   {
-    "pid": "29.728",
-    "etype": "h3",
-    "text": "Chapter 16—Bible Biographies"
-   },
    {
     "pid": "29.1649",
     "etype": "p",
@@ -4875,6 +5760,251 @@
     "pid": "29.745",
     "etype": "p",
     "text": "The appointed ministers of the sanctuary, the Levites received no landed inheritance; they dwelt together in cities set apart for their use, and received their support from the tithes and the gifts and offerings devoted to God’s service. They were the teachers of the people, guests at all their festivities, and everywhere honored as servants and representatives of God. To the whole nation was given the command: “Take heed to thyself that thou forsake not the Levite as long as thou livest upon the earth.” “Levi hath no part nor inheritance with his brethren; the Lord is his inheritance.” [Deuteronomy 12:19]Deuteronomy 12:19; [Deuteronomy 10:9]10:9."
+   },
+   {
+    "pid": "29.748",
+    "etype": "h4",
+    "text": "By Faith to Conquest"
+   },
+   {
+    "pid": "29.749",
+    "etype": "p",
+    "text": "The truth that as a man “thinketh in his heart, so is he” ([Proverbs 23:7]Proverbs 23:7), finds another illustration in Israel’s experience. On the borders of Canaan the spies, returned from searching the country, made their report. The beauty and fruitfulness of the land were lost sight of through fear of the difficulties in the way of its occupation. The cities walled up to heaven, the giant warriors, the iron chariots, daunted their faith. Leaving God out of the question, the multitude echoed the decision of the unbelieving spies, “We be not able to go up against the people; for they are stronger than we.” [Numbers 13:31]Numbers 13:31. Their words proved true. They were not able to go up, and they wore out their lives in the desert."
+   },
+   {
+    "pid": "29.750",
+    "etype": "p",
+    "text": "Two, however, of the twelve who had viewed the land, reasoned otherwise. “We are well able to overcome it” ([Numbers 13:30]Numbers 13:30), they urged, counting God’s promise superior to giants, walled cities, or chariots of iron. For them their word was true. Though they shared with their brethren the forty years’ wandering, Caleb and Joshua entered the Land of Promise. As courageous of heart as when with the hosts of the Lord he set out from Egypt, Caleb asked for and received as his portion the stronghold of the giants. In God’s strength he drove out the Canaanites. The vineyards and olive groves where his feet had trodden became his possession. Though the cowards and rebels perished in the wilderness, the men of faith ate of the grapes of Eshcol."
+   },
+   {
+    "pid": "29.752",
+    "etype": "p",
+    "text": "No truth does the Bible set forth in clearer light than the peril of even one departure from the right—peril both to the wrongdoer and to all whom his influence shall reach. Example has wonderful power; and when cast on the side of the evil tendencies of our nature, it becomes well-nigh irresistible."
+   },
+   {
+    "pid": "29.753",
+    "etype": "p",
+    "text": "The strongest bulwark of vice in our world is not the iniquitous life of the abandoned sinner or the degraded outcast; it is that life which otherwise appears virtuous, honorable, and noble, but in which one sin is fostered, one vice indulged. To the soul that is struggling in secret against some giant temptation, trembling upon the very verge of the precipice, such an example is one of the most powerful enticements to sin. He who, endowed with high conceptions of life and truth and honor, does yet willfully transgress one precept of God’s holy law, has perverted his noble gifts into a lure to sin. Genius, talent, sympathy, even generous and kindly deeds, may thus become decoys of Satan to entice souls over the precipice of ruin."
+   },
+   {
+    "pid": "29.754",
+    "etype": "p",
+    "text": "This is why God has given so many examples showing the results of even one wrong act. From the sad story of that one sin which “brought death into the world and all our woe, with loss of Eden,” to the record of him who for thirty pieces of silver sold the Lord of glory, Bible biography abounds in these examples, set up as beacons of warning at the byways leading from the path of life."
+   },
+   {
+    "pid": "29.755",
+    "etype": "p",
+    "text": "There is warning also in noting the results that have followed upon even once yielding to human weakness and error, the fruit of the letting go of faith."
+   },
+   {
+    "pid": "29.757",
+    "etype": "p",
+    "text": "By one failure of his faith, Elijah cut short his lifework. Heavy was the burden that he had borne in behalf of Israel; faithful had been his warnings against the national idolatry; and deep was his solicitude as during three years and a half of famine he watched and waited for some token of repentance. Alone he stood for God upon Mount Carmel. Through the power of faith, idolatry was cast down, and the blessed rain testified to the showers of blessing waiting to be poured upon Israel. Then in his weariness and weakness he fled before the threats of Jezebel and alone in the desert prayed that he might die. His faith had failed. The work he had begun he was not to complete. God bade him anoint another to be prophet in his stead."
+   },
+   {
+    "pid": "29.758",
+    "etype": "p",
+    "text": "But God had marked the heart service of His servant. Elijah was not to perish in discouragement and solitude in the wilderness. Not for him the descent to the tomb, but the ascent with God’s angels to the presence of His glory."
+   },
+   {
+    "pid": "29.759",
+    "etype": "p",
+    "text": "These life records declare what every human being will one day understand—that sin can bring only shame and loss; that unbelief means failure; but that God’s mercy reaches to the deepest depths; that faith lifts up the repenting soul to share the adoption of the sons of God."
+   },
+   {
+    "pid": "29.760",
+    "etype": "h4",
+    "text": "The Discipline of Suffering"
+   },
+   {
+    "pid": "29.761",
+    "etype": "p",
+    "text": "All who in this world render true service to God or man receive a preparatory training in the school of sorrow. The weightier the trust and the higher the service, the closer is the test and the more severe the discipline."
+   },
+   {
+    "pid": "29.762",
+    "etype": "p",
+    "text": "Study the experiences of Joseph and of Moses, of Daniel and of David. Compare the early history of David with the history of Solomon, and consider the results."
+   },
+   {
+    "pid": "29.765",
+    "etype": "p",
+    "text": "David in his youth was intimately associated with Saul, and his stay at court and his connection with the king’s household gave him an insight into the cares and sorrows and perplexities concealed by the glitter and pomp of royalty. He saw of how little worth is human glory to bring peace to the soul. And it was with relief and gladness that he returned from the king’s court to the sheepfolds and the flocks."
+   },
+   {
+    "pid": "29.766",
+    "etype": "p",
+    "text": "When by the jealousy of Saul driven a fugitive into the wilderness, David, cut off from human support, leaned more heavily upon God. The uncertainty and unrest of the wilderness life, its unceasing peril, its necessity for frequent flight, the character of the men who gathered to him there,—“everyone that was in distress, and everyone that was in debt, and everyone that was discontented” ([1 Samuel 22:2]1 Samuel 22:2),—all rendered the more essential a stern self-discipline. These experiences aroused and developed power to deal with men, sympathy for the oppressed, and hatred of injustice. Through years of waiting and peril, David learned to find in God his comfort, his support, his life. He learned that only by God’s power could he come to the throne; only in His wisdom could he rule wisely. It was through the training in the school of hardship and sorrow that David was able to make the record—though afterward marred with his great sin—that he “executed judgment and justice unto all his people.” [2 Samuel 8:15]2 Samuel 8:15."
+   },
+   {
+    "pid": "29.767",
+    "etype": "p",
+    "text": "The discipline of David’s early experience was lacking in that of Solomon. In circumstances, in character, and in life, he seemed favored above all others. Noble in youth, noble in manhood, the beloved of his God, Solomon entered on a reign that gave high promise of prosperity and honor. Nations marveled at the knowledge and insight of the man to whom God had given wisdom. But the pride of prosperity brought separation from God. From the joy of divine communion Solomon turned to find satisfaction in the pleasures of sense. Of this experience he says:"
+   },
+   {
+    "pid": "29.770",
+    "etype": "p",
+    "text": "“I made me great works; I builded me houses; I planted me vineyards: I made me gardens and orchards: ... I got me servants and maidens: ... I gathered me also silver and gold, and the peculiar treasure of kings and of the provinces: I gat me men singers and women singers, and the delights of the sons of men, as musical instruments, and that of all sorts. So I was great, and increased more than all that were before me in Jerusalem.... And whatsoever mine eyes desired I kept not from them, I withheld not my heart from any joy; for my heart rejoiced in all my labor.... Then I looked on all the works that my hands had wrought, and on the labor that I had labored to do: and, behold, all was vanity and vexation of spirit, and there was no profit under the sun. And I turned myself to behold wisdom, and madness, and folly: for what can the man do that cometh after the king? even that which hath been already done.”"
+   },
+   {
+    "pid": "29.771",
+    "etype": "p",
+    "text": "“I hated life.... Yea, I hated all my labor which I had taken under the sun.” [Ecclesiastes 2:4]Ecclesiastes 2:4-12, 17, 18."
+   },
+   {
+    "pid": "29.772",
+    "etype": "p",
+    "text": "By his own bitter experience, Solomon learned the emptiness of a life that seeks in earthly things its highest good. He erected altars to heathen gods, only to learn how vain is their promise of rest to the soul."
+   },
+   {
+    "pid": "29.773",
+    "etype": "p",
+    "text": "In his later years, turning wearied and thirsting from earth’s broken cisterns, Solomon returned to drink at the fountain of life. The history of his wasted years, with their lessons of warning, he by the Spirit of inspiration recorded for after generations. And thus, although the seed of his sowing was reaped by his people in harvests of evil, the lifework of Solomon was not wholly lost. For him at last the discipline of suffering accomplished its work."
+   },
+   {
+    "pid": "29.776",
+    "etype": "p",
+    "text": "But with such a dawning, how glorious might have been his life’s day had Solomon in his youth learned the lesson that suffering had taught in other lives!"
+   },
+   {
+    "pid": "29.777",
+    "etype": "h4",
+    "text": "The Testing of Job"
+   },
+   {
+    "pid": "29.778",
+    "etype": "p",
+    "text": "For those who love God, those who are “the called according to His purpose” ([Romans 8:28]Romans 8:28), Bible biography has a yet higher lesson of the ministry of sorrow. “Ye are My witnesses, saith the Lord, that I am God” ([Isaiah 43:12]Isaiah 43:12)—witnesses that He is good, and that goodness is supreme. “We are made a theater unto the world, both (R.V., margin) to angels, and to men.” [1 Corinthians 4:9]1 Corinthians 4:9, margin."
+   },
+   {
+    "pid": "29.779",
+    "etype": "p",
+    "text": "Unselfishness, the principle of God’s kingdom, is the principle that Satan hates; its very existence he denies. From the beginning of the great controversy he has endeavored to prove God’s principles of action to be selfish, and he deals in the same way with all who serve God. To disprove Satan’s claim is the work of Christ and of all who bear His name."
+   },
+   {
+    "pid": "29.780",
+    "etype": "p",
+    "text": "It was to give in His own life an illustration of unselfishness that Jesus came in the form of humanity. And all who accept this principle are to be workers together with Him in demonstrating it in practical life. To choose the right because it is right; to stand for truth at the cost of suffering and sacrifice—“this is the heritage of the servants of the Lord, and their righteousness is of Me, saith the Lord.” [Isaiah 54:17]Isaiah 54:17."
+   },
+   {
+    "pid": "29.783",
+    "etype": "p",
+    "text": "Very early in the history of the world is given the life record of one over whom this controversy of Satan’s was waged."
+   },
+   {
+    "pid": "29.784",
+    "etype": "p",
+    "text": "Of Job, the patriarch of Uz, the testimony of the Searcher of hearts was, “There is none like him in the earth, a perfect and an upright man, one that feareth God, and escheweth evil.”"
+   },
+   {
+    "pid": "29.785",
+    "etype": "p",
+    "text": "Against this man, Satan brought scornful charge: “Doth Job fear God for nought? Hast Thou not made an hedge about him, and about his house, and about all that he hath on every side? ... Put forth Thine hand now, and touch all that he hath;” “touch his bone and his flesh, and he will curse Thee to Thy face.”"
+   },
+   {
+    "pid": "29.786",
+    "etype": "p",
+    "text": "The Lord said unto Satan, “All that he hath is in thy power.” “Behold, he is in thine hand; but save his life.”"
+   },
+   {
+    "pid": "29.787",
+    "etype": "p",
+    "text": "Thus permitted, Satan swept away all that Job possessed—flocks and herds, menservants and maidens, sons and daughters; and he “smote Job with sore boils from the sole of his foot unto his crown.” [Job 1:8]Job 1:8-12; [Job 2:5]2:5-7."
+   },
+   {
+    "pid": "29.788",
+    "etype": "p",
+    "text": "Still another element of bitterness was added to his cup. His friends, seeing in adversity but the retribution of sin, pressed on his bruised and burdened spirit their accusations of wrongdoing."
+   },
+   {
+    "pid": "29.789",
+    "etype": "p",
+    "text": "Seemingly forsaken of heaven and earth, yet holding fast his faith in God and his consciousness of integrity, in anguish and perplexity he cried:"
+   },
+   {
+    "pid": "29.790",
+    "etype": "p",
+    "text": "“My soul is weary of my life.”"
+   },
+   {
+    "pid": "29.1703",
+    "etype": "p",
+    "text": "“O that Thou wouldest hide me in the grave, That Thou wouldest keep me secret, until Thy wrath be past, That Thou wouldest appoint me a set time, and remember me!” [Job 10:1]Job 10:1; [Job 14:13]14:13."
+   },
+   {
+    "pid": "29.792",
+    "etype": "p",
+    "text": "“Behold, I cry out of wrong, but I am not heard: I cry for help, but there is no judgment.... He hath stripped me of my glory, And taken the crown from my head.... My kinsfolk have failed, And my familiar friends have forgotten me.... They whom I loved are turned against me.... Have pity upon me, have pity upon me, O ye my friends; For the hand of God hath touched me.”"
+   },
+   {
+    "pid": "29.1700",
+    "etype": "p",
+    "text": "“Oh that I knew where I might find Him, That I might come even to His seat!... Behold, I go forward, but He is not there; And backward, but I cannot perceive Him: On the left hand, where He doth work, but I cannot behold Him: He hideth Himself on the right hand, that I cannot see Him. But He knoweth the way that I take; When He hath tried me, I shall come forth as gold.”"
+   },
+   {
+    "pid": "29.1701",
+    "etype": "p",
+    "text": "“Though He slay me, yet will I trust in Him.”"
+   },
+   {
+    "pid": "29.1702",
+    "etype": "p",
+    "text": "“I know that my Redeemer liveth, And that He shall stand up at the last upon the earth: And after my skin hath been destroyed, this shall be, Even from my flesh shall I see God: Whom I shall see for myself, And mine eyes shall behold, and not as a stranger.” [Job 19:7]Job 19:7-21, R.V.; [Job 23:3]23:3-10, R.V.; [Job 13:15]13:15; [Job 19:25]19:25-27, R.V., margin."
+   },
+   {
+    "pid": "29.794",
+    "etype": "p",
+    "text": "According to his faith, so was it unto Job. “When He hath tried me,” he said, “I shall come forth as gold.” [Job 23:10]Job 23:10. So it came to pass. By his patient endurance he vindicated his own character, and thus the character of Him whose representative he was. And “the Lord turned the captivity of Job: ... also the Lord gave Job twice as much as he had before.... So the Lord blessed the latter end of Job more than his beginning.” [Job 42:10]Job 42:10-12."
+   },
+   {
+    "pid": "29.795",
+    "etype": "p",
+    "text": "On the record of those who through self-abnegation have entered into the fellowship of Christ’s sufferings, stand—one in the Old Testament and one in the New—the names of Jonathan and of John the Baptist."
+   },
+   {
+    "pid": "29.798",
+    "etype": "p",
+    "text": "Jonathan, by birth heir to the throne, yet knowing himself set aside by the divine decree; to his rival the most tender and faithful of friends, shielding David’s life at the peril of his own; steadfast at his father’s side through the dark days of his declining power, and at his side falling at the last—the name of Jonathan is treasured in heaven, and it stands on earth a witness to the existence and the power of unselfish love."
+   },
+   {
+    "pid": "29.799",
+    "etype": "p",
+    "text": "John the Baptist, at his appearance as the Messiah’s herald, stirred the nation. From place to place his steps were followed by vast throngs of people of every rank and station. But when the One came to whom he had borne witness, all was changed. The crowds followed Jesus, and John’s work seemed fast closing. Yet there was no wavering of his faith. “He must increase,” he said, “but I must decrease.” [John 3:30]John 3:30."
+   },
+   {
+    "pid": "29.800",
+    "etype": "p",
+    "text": "Time passed, and the kingdom which John had confidently expected was not established. In Herod’s dungeon, cut off from the life-giving air and the desert freedom, he waited and watched."
+   },
+   {
+    "pid": "29.801",
+    "etype": "p",
+    "text": "There was no display of arms, no rending of prison doors; but the healing of the sick, the preaching of the gospel, the uplifting of men’s souls, testified to Christ’s mission."
+   },
+   {
+    "pid": "29.802",
+    "etype": "p",
+    "text": "Alone in the dungeon, seeing whither his path, like his Master’s, tended, John accepted the trust—fellowship with Christ in sacrifice. Heaven’s messengers attended him to the grave. The intelligences of the universe, fallen and unfallen, witnessed his vindication of unselfish service."
+   },
+   {
+    "pid": "29.803",
+    "etype": "p",
+    "text": "And in all the generations that have passed since then, suffering souls have been sustained by the testimony of John’s life. In the dungeon, on the scaffold, in the flames, men and women through centuries of darkness have been strengthened by the memory of him of whom Christ declared, “Among them that are born of women there hath not risen a greater.” [Matthew 11:11]Matthew 11:11."
+   },
+   {
+    "pid": "29.806",
+    "etype": "p",
+    "text": "“And what shall I more say? for the time would fail me to tell of Gideon, and of Barak, and of Samson, and of Jephthah; ... and Samuel, and of the prophets: who through faith subdued kingdoms, wrought righteousness, obtained promises, stopped the mouths of lions, quenched the violence of fire, escaped the edge of the sword, out of weakness were made strong, waxed valiant in fight, turned to flight the armies of the aliens."
+   },
+   {
+    "pid": "29.807",
+    "etype": "p",
+    "text": "“Women received their dead raised to life again: and others were tortured, not accepting deliverance; that they might obtain a better resurrection: and others had trial of cruel mockings and scourgings, yea, moreover of bonds and imprisonment: they were stoned, they were sawn asunder, were tempted, were slain with the sword: they wandered about in sheepskins and goatskins; being destitute, afflicted, tormented; (of whom the world was not worthy:) they wandered in deserts, and in mountains, and in dens and caves of the earth."
+   },
+   {
+    "pid": "29.808",
+    "etype": "p",
+    "text": "“And these all, having obtained a good report through faith, received not the promise: God having provided some better thing for us, that they without us should not be made perfect.” [Hebrews 11:32]Hebrews 11:32-40."
    }
   ],
   "zh_paras": [
@@ -5346,14 +6476,9 @@
   "chapter": 17,
   "en_title": "Chapter 17—Poetry and Song",
   "zh_title": "第17章 诗歌",
-  "en_count": 56,
+  "en_count": 62,
   "zh_count": 205,
   "en_paras": [
-   {
-    "pid": "29.810",
-    "etype": "h3",
-    "text": "Chapter 17—Poetry and Song"
-   },
    {
     "pid": "29.1650",
     "etype": "p",
@@ -5628,6 +6753,41 @@
     "pid": "29.880",
     "etype": "p",
     "text": "“They shall come and sing in the height of Zion, and shall flow together unto the goodness of the Lord: ... and their soul shall be as a watered garden; and they shall not sorrow any more at all.” [Jeremiah 31:12]Jeremiah 31:12."
+   },
+   {
+    "pid": "29.881",
+    "etype": "h4",
+    "text": "The Power of Song"
+   },
+   {
+    "pid": "29.882",
+    "etype": "p",
+    "text": "The history of the songs of the Bible is full of suggestion as to the uses and benefits of music and song. Music is often perverted to serve purposes of evil, and it thus becomes one of the most alluring agencies of temptation. But, rightly employed, it is a precious gift of God, designed to uplift the thoughts to high and noble themes, to inspire and elevate the soul."
+   },
+   {
+    "pid": "29.883",
+    "etype": "p",
+    "text": "As the children of Israel, journeying through the wilderness, cheered their way by the music of sacred song, so God bids His children today gladden their pilgrim life. There are few means more effective for fixing His words in the memory than repeating them in song. And such song has wonderful power. It has power to subdue rude and uncultivated natures; power to quicken thought and to awaken sympathy, to promote harmony of action, and to banish the gloom and foreboding that destroy courage and weaken effort."
+   },
+   {
+    "pid": "29.886",
+    "etype": "p",
+    "text": "It is one of the most effective means of impressing the heart with spiritual truth. How often to the soul hard-pressed and ready to despair, memory recalls some word of God’s—the long-forgotten burden of a childhood song,—and temptations lose their power, life takes on new meaning and new purpose, and courage and gladness are imparted to other souls!"
+   },
+   {
+    "pid": "29.887",
+    "etype": "p",
+    "text": "The value of song as a means of education should never be lost sight of. Let there be singing in the home, of songs that are sweet and pure, and there will be fewer words of censure and more of cheerfulness and hope and joy. Let there be singing in the school, and the pupils will be drawn closer to God, to their teachers, and to one another."
+   },
+   {
+    "pid": "29.888",
+    "etype": "p",
+    "text": "As a part of religious service, singing is as much an act of worship as is prayer. Indeed, many a song is prayer. If the child is taught to realize this, he will think more of the meaning of the words he sings and will be more susceptible to their power."
+   },
+   {
+    "pid": "29.889",
+    "etype": "p",
+    "text": "As our Redeemer leads us to the threshold of the Infinite, flushed with the glory of God, we may catch the themes of praise and thanksgiving from the heavenly choir round about the throne; and as the echo of the angels’ song is awakened in our earthly homes, hearts will be drawn closer to the heavenly singers. Heaven’s communion begins on earth. We learn here the keynote of its praise."
    }
   ],
   "zh_paras": [
@@ -6664,14 +7824,9 @@
   "chapter": 18,
   "en_title": "Chapter 18—Mysteries of the Bible",
   "zh_title": "第18章 圣经的奥秘",
-  "en_count": 14,
+  "en_count": 13,
   "zh_count": 15,
   "en_paras": [
-   {
-    "pid": "29.891",
-    "etype": "h3",
-    "text": "Chapter 18—Mysteries of the Bible"
-   },
    {
     "pid": "29.1651",
     "etype": "p",
@@ -6822,14 +7977,9 @@
   "chapter": 19,
   "en_title": "Chapter 19—History and Prophecy",
   "zh_title": "第19章 历史与预言",
-  "en_count": 56,
+  "en_count": 55,
   "zh_count": 83,
   "en_paras": [
-   {
-    "pid": "29.910",
-    "etype": "h3",
-    "text": "Chapter 19—History and Prophecy"
-   },
    {
     "pid": "29.1652",
     "etype": "p",
@@ -7530,14 +8680,9 @@
   "chapter": 20,
   "en_title": "Chapter 20—Bible Teaching and Study",
   "zh_title": "第20章 圣经的教学",
-  "en_count": 27,
+  "en_count": 28,
   "zh_count": 34,
   "en_paras": [
-   {
-    "pid": "29.986",
-    "etype": "h3",
-    "text": "Chapter 20—Bible Teaching and Study"
-   },
    {
     "pid": "29.1653",
     "etype": "p",
@@ -7667,6 +8812,16 @@
     "pid": "29.1021",
     "etype": "p",
     "text": "The springs of heavenly peace and joy unsealed in the soul by the words of Inspiration will become a mighty river of influence to bless all who come within its reach. Let the youth of today, the youth who are growing up with the Bible in their hands, become the recipients and the channels of its life-giving energy, and what streams of blessing would flow forth to the world!—influences of whose power to heal and comfort we can scarcely conceive—rivers of living water, fountains “springing up unto everlasting life.”"
+   },
+   {
+    "pid": "29.1025",
+    "etype": "h2",
+    "text": "Physical Culture"
+   },
+   {
+    "pid": "29.1654",
+    "etype": "p",
+    "text": "“Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth.”"
    }
   ],
   "zh_paras": [
@@ -7848,14 +9003,9 @@
   "chapter": 21,
   "en_title": "Chapter 21—Study of Physiology",
   "zh_title": "第21章 生理学的研究",
-  "en_count": 23,
+  "en_count": 22,
   "zh_count": 24,
   "en_paras": [
-   {
-    "pid": "29.1026",
-    "etype": "h3",
-    "text": "Chapter 21—Study of Physiology"
-   },
    {
     "pid": "29.1655",
     "etype": "p",
@@ -8096,14 +9246,9 @@
   "chapter": 22,
   "en_title": "Chapter 22—Temperance and Dietetics",
   "zh_title": "第22章 节制和饮食",
-  "en_count": 8,
+  "en_count": 19,
   "zh_count": 21,
   "en_paras": [
-   {
-    "pid": "29.1061",
-    "etype": "h3",
-    "text": "Chapter 22—Temperance and Dietetics"
-   },
    {
     "pid": "29.1656",
     "etype": "p",
@@ -8138,6 +9283,66 @@
     "pid": "29.1069",
     "etype": "p",
     "text": "It is the beginnings of evil that should be guarded against. In the instruction of the youth the effect of apparently small deviations from the right should be made very plain. Let the student be taught the value of a simple, healthful diet in preventing the desire for unnatural stimulants. Let the habit of self-control be early established. Let the youth be impressed with the thought that they are to be masters, and not slaves. Of the kingdom within them God has made them rulers, and they are to exercise their Heaven-appointed kingship. When such instruction is faithfully given, the results will extend far beyond the youth themselves. Influences will reach out that will save thousands of men and women who are on the very brink of ruin."
+   },
+   {
+    "pid": "29.1072",
+    "etype": "h4",
+    "text": "Diet and Mental Development"
+   },
+   {
+    "pid": "29.1073",
+    "etype": "p",
+    "text": "The relation of diet to intellectual development should be given far more attention than it has received. Mental confusion and dullness are often the result of errors in diet."
+   },
+   {
+    "pid": "29.1074",
+    "etype": "p",
+    "text": "It is frequently urged that, in the selection of food, appetite is a safe guide. If the laws of health had always been obeyed, this would be true. But through wrong habits, continued from generation to generation, appetite has become so perverted that it is constantly craving some hurtful gratification. As a guide it cannot now be trusted."
+   },
+   {
+    "pid": "29.1075",
+    "etype": "p",
+    "text": "In the study of hygiene, students should be taught the nutrient value of different foods. The effect of a concentrated and stimulating diet, also of foods deficient in the elements of nutrition, should be made plain. Tea and coffee, fine-flour bread, pickles, coarse vegetables, candies, condiments, and pastries fail of supplying proper nutriment. Many a student has broken down as the result of using such foods. Many a puny child, incapable of vigorous effort of mind or body, is the victim of an impoverished diet. Grains, fruits, nuts, and vegetables, in proper combination, contain all the elements of nutrition; and when properly prepared, they constitute the diet that best promotes both physical and mental strength."
+   },
+   {
+    "pid": "29.1078",
+    "etype": "p",
+    "text": "There is need to consider not only the properties of the food but its adaptation to the eater. Often food that can be eaten freely by persons engaged in physical labor must be avoided by those whose work is chiefly mental. Attention should be given also to the proper combination of foods. By brain workers and others of sedentary pursuits, but few kinds should be taken at a meal."
+   },
+   {
+    "pid": "29.1079",
+    "etype": "p",
+    "text": "And overeating, even of the most wholesome food, is to be guarded against. Nature can use no more than is required for building up the various organs of the body, and excess clogs the system. Many a student is supposed to have broken down from overstudy, when the real cause was overeating. While proper attention is given to the laws of health, there is little danger from mental taxation; but in many cases of so-called mental failure it is the overcrowding of the stomach that wearies the body and weakens the mind."
+   },
+   {
+    "pid": "29.1080",
+    "etype": "p",
+    "text": "In most cases two meals a day are preferable to three. Supper, when taken at an early hour, interferes with the digestion of the previous meal. When taken later, it is not itself digested before bedtime. Thus the stomach fails of securing proper rest. The sleep is disturbed, the brain and nerves are wearied, the appetite for breakfast is impaired, the whole system is unrefreshed and is unready for the day’s duties."
+   },
+   {
+    "pid": "29.1081",
+    "etype": "p",
+    "text": "The importance of regularity in the time for eating and sleeping should not be overlooked. Since the work of building up the body takes place during the hours of rest, it is essential, especially in youth, that sleep should be regular and abundant."
+   },
+   {
+    "pid": "29.1083",
+    "etype": "p",
+    "text": "So far as possible we should avoid hurried eating. The shorter the time for a meal, the less should be eaten. It is better to omit a meal than to eat without proper mastication."
+   },
+   {
+    "pid": "29.1084",
+    "etype": "p",
+    "text": "Mealtime should be a season for social intercourse and refreshment. Everything that can burden or irritate should be banished. Let trust and kindliness and gratitude to the Giver of all good be cherished, and the conversation will be cheerful, a pleasant flow of thought that will uplift without wearying."
+   },
+   {
+    "pid": "29.1085",
+    "etype": "p",
+    "text": "The observance of temperance and regularity in all things has a wonderful power. It will do more than circumstances or natural endowments in promoting that sweetness and serenity of disposition which count so much in smoothing life’s pathway. At the same time the power of self-control thus acquired will be found one of the most valuable of equipments for grappling successfully with the stern duties and realities that await every human being."
+   },
+   {
+    "pid": "29.1086",
+    "etype": "p",
+    "text": "Wisdom’s “ways are ways of pleasantness, and all her paths are peace.” [Proverbs 3:17]Proverbs 3:17. Let every youth in our land, with the possibilities before him of a destiny higher than that of crowned kings, ponder the lesson conveyed in the words of the wise man, “Blessed art thou, O land, when ... thy princes eat in due season, for strength, and not for drunkenness!” [Ecclesiastes 10:17]Ecclesiastes 10:17."
    }
   ],
   "zh_paras": [
@@ -8254,14 +9459,9 @@
   "chapter": 23,
   "en_title": "Chapter 23—Recreation",
   "zh_title": "第23章 消遣",
-  "en_count": 24,
+  "en_count": 23,
   "zh_count": 25,
   "en_paras": [
-   {
-    "pid": "29.1088",
-    "etype": "h3",
-    "text": "Chapter 23—Recreation"
-   },
    {
     "pid": "29.1657",
     "etype": "p",
@@ -8512,14 +9712,9 @@
   "chapter": 24,
   "en_title": "Chapter 24—Manual Training",
   "zh_title": "第24章 劳动的训练",
-  "en_count": 30,
+  "en_count": 31,
   "zh_count": 32,
   "en_paras": [
-   {
-    "pid": "29.1123",
-    "etype": "h3",
-    "text": "Chapter 24—Manual Training"
-   },
    {
     "pid": "29.1658",
     "etype": "p",
@@ -8664,6 +9859,16 @@
     "pid": "29.1165",
     "etype": "p",
     "text": "A youth so trained, whatever his calling in life, so long as it is honest, will make his position one of usefulness and honor."
+   },
+   {
+    "pid": "29.1169",
+    "etype": "h2",
+    "text": "Character Building"
+   },
+   {
+    "pid": "29.1659",
+    "etype": "p",
+    "text": "“See...that thou make all things according to the pattern showed to thee in the mount.”"
    }
   ],
   "zh_paras": [
@@ -8835,14 +10040,9 @@
   "chapter": 25,
   "en_title": "Chapter 25—Education and Character",
   "zh_title": "第25章 教育与品格",
-  "en_count": 22,
+  "en_count": 21,
   "zh_count": 23,
   "en_paras": [
-   {
-    "pid": "29.1170",
-    "etype": "h3",
-    "text": "Chapter 25—Education and Character"
-   },
    {
     "pid": "29.1660",
     "etype": "p",
@@ -9073,14 +10273,9 @@
   "chapter": 26,
   "en_title": "Chapter 26—Methods of Teaching",
   "zh_title": "第26章 教学方法",
-  "en_count": 44,
+  "en_count": 43,
   "zh_count": 45,
   "en_paras": [
-   {
-    "pid": "29.1200",
-    "etype": "h3",
-    "text": "Chapter 26—Methods of Teaching"
-   },
    {
     "pid": "29.1661",
     "etype": "p",
@@ -9531,14 +10726,9 @@
   "chapter": 27,
   "en_title": "Chapter 27—Deportment",
   "zh_title": "第27章 礼貌",
-  "en_count": 28,
+  "en_count": 27,
   "zh_count": 52,
   "en_paras": [
-   {
-    "pid": "29.1259",
-    "etype": "h3",
-    "text": "Chapter 27—Deportment"
-   },
    {
     "pid": "29.1662",
     "etype": "p",
@@ -9944,14 +11134,9 @@
   "chapter": 28,
   "en_title": "Chapter 28—Relation of Dress to Education",
   "zh_title": "第28章 服装与教育的关系",
-  "en_count": 21,
+  "en_count": 20,
   "zh_count": 22,
   "en_paras": [
-   {
-    "pid": "29.1295",
-    "etype": "h3",
-    "text": "Chapter 28—Relation of Dress to Education"
-   },
    {
     "pid": "29.1663",
     "etype": "p",
@@ -10172,14 +11357,9 @@
   "chapter": 29,
   "en_title": "Chapter 29—The Sabbath",
   "zh_title": "第29章 安息日",
-  "en_count": 11,
+  "en_count": 10,
   "zh_count": 12,
   "en_paras": [
-   {
-    "pid": "29.1321",
-    "etype": "h3",
-    "text": "Chapter 29—The Sabbath"
-   },
    {
     "pid": "29.1664",
     "etype": "p",
@@ -10300,14 +11480,9 @@
   "chapter": 30,
   "en_title": "Chapter 30—Faith and Prayer",
   "zh_title": "第30章 信心与祈祷",
-  "en_count": 36,
+  "en_count": 35,
   "zh_count": 41,
   "en_paras": [
-   {
-    "pid": "29.1336",
-    "etype": "h3",
-    "text": "Chapter 30—Faith and Prayer"
-   },
    {
     "pid": "29.1665",
     "etype": "p",
@@ -10698,14 +11873,9 @@
   "chapter": 31,
   "en_title": "Chapter 31—The Lifework",
   "zh_title": "第31章 毕生的事业",
-  "en_count": 34,
+  "en_count": 35,
   "zh_count": 36,
   "en_paras": [
-   {
-    "pid": "29.1387",
-    "etype": "h3",
-    "text": "Chapter 31—The Lifework"
-   },
    {
     "pid": "29.1666",
     "etype": "p",
@@ -10870,6 +12040,16 @@
     "pid": "29.1437",
     "etype": "p",
     "text": "With such an army of workers as our youth, rightly trained, might furnish, how soon the message of a crucified, risen, and soon-coming Saviour might be carried to the whole world! How soon might the end come—the end of suffering and sorrow and sin! How soon, in place of a possession here, with its blight of sin and pain, our children might receive their inheritance where “the righteous shall inherit the land, and dwell therein forever;” where “the inhabitant shall not say, I am sick,” and “the voice of weeping shall be no more heard.” [Psalm 37:29]Psalm 37:29; [Isaiah 33:24]Isaiah 33:24; [Isaiah 65:19]65:19."
+   },
+   {
+    "pid": "29.1442",
+    "etype": "h2",
+    "text": "The Underteacher"
+   },
+   {
+    "pid": "29.1692",
+    "etype": "p",
+    "text": "“As My Father hath sent Me, even so send I you.”"
    }
   ],
   "zh_paras": [
@@ -11061,14 +12241,9 @@
   "chapter": 32,
   "en_title": "Chapter 32—Preparation",
   "zh_title": "第32章 准备",
-  "en_count": 35,
+  "en_count": 34,
   "zh_count": 36,
   "en_paras": [
-   {
-    "pid": "29.1443",
-    "etype": "h3",
-    "text": "Chapter 32—Preparation"
-   },
    {
     "pid": "29.1667",
     "etype": "p",
@@ -11429,14 +12604,9 @@
   "chapter": 33,
   "en_title": "Chapter 33—Co-operation",
   "zh_title": "第33章 合作",
-  "en_count": 16,
+  "en_count": 15,
   "zh_count": 17,
   "en_paras": [
-   {
-    "pid": "29.1490",
-    "etype": "h3",
-    "text": "Chapter 33—Co-operation"
-   },
    {
     "pid": "29.1668",
     "etype": "p",
@@ -11607,14 +12777,9 @@
   "chapter": 34,
   "en_title": "Chapter 34—Discipline",
   "zh_title": "第34章 纪律",
-  "en_count": 29,
+  "en_count": 41,
   "zh_count": 52,
   "en_paras": [
-   {
-    "pid": "29.1511",
-    "etype": "h3",
-    "text": "Chapter 34—Discipline"
-   },
    {
     "pid": "29.1669",
     "etype": "p",
@@ -11754,6 +12919,71 @@
     "pid": "29.1551",
     "etype": "p",
     "text": "Every parent and every teacher should cherish the attributes of Him who makes the cause of the afflicted, the suffering, and the tempted His own. He should be one who can have “compassion on the ignorant, and on them that are out of the way; for that he himself also is compassed with infirmity.” [Hebrews 5:2]Hebrews 5:2. Jesus treats us far better than we deserve; and as He has treated us, so we are to treat others. The course of no parent or teacher is justifiable if it is unlike that which under similar circumstances the Saviour would pursue."
+   },
+   {
+    "pid": "29.1554",
+    "etype": "h4",
+    "text": "Meeting Life’s Discipline"
+   },
+   {
+    "pid": "29.1555",
+    "etype": "p",
+    "text": "Beyond the discipline of the home and the school, all have to meet the stern discipline of life. How to meet this wisely is a lesson that should be made plain to every child and to every youth. It is true that God loves us, that He is working for our happiness, and that, if His law had always been obeyed, we should never have known suffering; and it is no less true that, in this world, as the result of sin, suffering, trouble, burdens, come to every life. We may do the children and the youth a lifelong good by teaching them to meet bravely these troubles and burdens. While we should give them sympathy, let it never be such as to foster self-pity. What they need is that which stimulates and strengthens rather than weakens."
+   },
+   {
+    "pid": "29.1556",
+    "etype": "p",
+    "text": "They should be taught that this world is not a parade ground, but a battlefield. All are called to endure hardness, as good soldiers. They are to be strong and quit themselves like men. Let them be taught that the true test of character is found in the willingness to bear burdens, to take the hard place, to do the work that needs to be done, though it bring no earthly recognition or reward."
+   },
+   {
+    "pid": "29.1557",
+    "etype": "p",
+    "text": "The true way of dealing with trial is not by seeking to escape it, but by transforming it. This applies to all discipline, the earlier as well as the later. The neglect of the child’s earliest training, and the consequent strengthening of wrong tendencies, makes his after education more difficult, and causes discipline to be too often a painful process. Painful it must be to the lower nature, crossing, as it does, the natural desires and inclinations; but the pain may be lost sight of in a higher joy."
+   },
+   {
+    "pid": "29.1560",
+    "etype": "p",
+    "text": "Let the child and the youth be taught that every mistake, every fault, every difficulty, conquered, becomes a stepping-stone to better and higher things. It is through such experiences that all who have ever made life worth the living have achieved success."
+   },
+   {
+    "pid": "29.1561",
+    "etype": "p",
+    "text": "“The heights by great men reached and kept Were not attained by sudden flight, But they, while their companions slept, Were toiling upward in the night.”"
+   },
+   {
+    "pid": "29.1562",
+    "etype": "p",
+    "text": "“We rise by things that are under our feet; By what we have mastered of good and gain; By the pride deposed and the passion slain, And the vanquished ills that we hourly meet.”"
+   },
+   {
+    "pid": "29.1563",
+    "etype": "p",
+    "text": "“All common things, each day’s events, That with the hour begin and end, Our pleasures and our discontents, Are rounds by which we may ascend.”"
+   },
+   {
+    "pid": "29.1564",
+    "etype": "p",
+    "text": "We are to “look not at the things which are seen, but at the things which are not seen: for the things which are seen are temporal; but the things which are not seen are eternal.” [2 Corinthians 4:18]2 Corinthians 4:18. The exchange we make in the denial of selfish desires and inclinations is an exchange of the worthless and transitory for the precious and enduring. This is not sacrifice, but infinite gain."
+   },
+   {
+    "pid": "29.1565",
+    "etype": "p",
+    "text": "“Something better” is the watchword of education, the law of all true living. Whatever Christ asks us to renounce, He offers in its stead something better. Often the youth cherish objects, pursuits, and pleasures that may not appear to be evil, but that fall short of the highest good. They divert the life from its noblest aim. Arbitrary measures or direct denunciation may not avail in leading these youth to relinquish that which they hold dear. Let them be directed to something better than display, ambition, or self-indulgence. Bring them in contact with truer beauty, with loftier principles, and with nobler lives. Lead them to behold the One “altogether lovely.” When once the gaze is fixed upon Him, the life finds its center. The enthusiasm, the generous devotion, the passionate ardor, of the youth find here their true object. Duty becomes a delight and sacrifice a pleasure. To honor Christ, to become like Him, to work for Him, is the life’s highest ambition and its greatest joy."
+   },
+   {
+    "pid": "29.1568",
+    "etype": "p",
+    "text": "“The love of Christ constraineth.” [2 Corinthians 5:14]2 Corinthians 5:14."
+   },
+   {
+    "pid": "29.1573",
+    "etype": "h2",
+    "text": "The Higher Course"
+   },
+   {
+    "pid": "29.1670",
+    "etype": "p",
+    "text": "“Since the beginning of the world men have not...perceived by the ear, neither hath the eyes seen,...what He hath prepared for him that waiteth for Him.”"
    }
   ],
   "zh_paras": [
@@ -12025,14 +13255,9 @@
   "chapter": 35,
   "en_title": "Chapter 35—The School of the Hereafter",
   "zh_title": "第35章 来生的学校",
-  "en_count": 42,
+  "en_count": 41,
   "zh_count": 46,
   "en_paras": [
-   {
-    "pid": "29.1574",
-    "etype": "h3",
-    "text": "Chapter 35—The School of the Hereafter"
-   },
    {
     "pid": "29.1671",
     "etype": "p",
