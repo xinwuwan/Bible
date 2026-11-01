@@ -2,8 +2,11 @@
 // 怀爱伦著作（怀著）中英对照目录：供「对照模块」首页「怀著」Tab 与阅读器复用。
 //
 // 数据来源：egwwritings.org 官方 API（英文原著 book id 与中文译本 book id 成对）。
-// 仅已抓取并完成中英段落对齐的著作标记为 ready=true；其余为「数据准备中」，
-// 后续把对齐 JSON 放入 assets/web/ 并在下方补 asset 路径即可上线，无需改阅读器逻辑。
+// 仅已抓取并完成中英段落对齐的著作标记为 ready=true。
+//
+// 注意：egwwritings 将每个中文译本作为独立书籍存储（自有页码、无任何 EN<->ZH
+// 互链、不支持 lang 切换），无法按段落/页码精确对齐；以「章号」为共享键对齐
+// （忠实译本保留 Chapter N ↔ 第N章 的章节编号），由 _egw_align_multi.py 生成。
 
 class EgwWork {
   final String code; // egwwritings 书号（如 SC）
@@ -27,7 +30,7 @@ class EgwWork {
   });
 }
 
-/// 怀著目录（按需扩充；ready=true 的著作需配套 assets/web 资产）。
+/// 怀著目录（ready=true 的著作需配套 assets/web 资产）。
 const List<EgwWork> kEgwWorks = [
   EgwWork(
     code: 'SC',
@@ -44,71 +47,87 @@ const List<EgwWork> kEgwWorks = [
     nameEn: 'The Desire of Ages',
     nameZh: '历代愿望',
     enBookId: 130,
-    zhBookId: 14535,
+    zhBookId: 14492,
+    ready: true,
+    asset: 'assets/web/egw_da_align.json',
     blurb: '基督生平叙事',
   ),
   EgwWork(
     code: 'GC',
     nameEn: 'The Great Controversy',
     nameZh: '善恶之争',
-    enBookId: 121,
-    zhBookId: 14526,
+    enBookId: 132,
+    zhBookId: 14504,
+    ready: true,
+    asset: 'assets/web/egw_gc_align.json',
     blurb: '救赎史论述',
   ),
   EgwWork(
     code: 'MH',
     nameEn: 'The Ministry of Healing',
     nameZh: '服务真诠',
-    enBookId: 143,
-    zhBookId: 14547,
+    enBookId: 135,
+    zhBookId: 14468,
+    ready: true,
+    asset: 'assets/web/egw_mh_align.json',
     blurb: '基督化医病与服务',
   ),
   EgwWork(
     code: 'PP',
     nameEn: 'Patriarchs and Prophets',
     nameZh: '先祖与先知',
-    enBookId: 161,
-    zhBookId: 14558,
+    enBookId: 84,
+    zhBookId: 14604,
+    ready: true,
+    asset: 'assets/web/egw_pp_align.json',
     blurb: '从创世到大卫',
   ),
   EgwWork(
     code: 'PK',
     nameEn: 'Prophets and Kings',
     nameZh: '先知与君王',
-    enBookId: 164,
-    zhBookId: 14561,
+    enBookId: 88,
+    zhBookId: 14605,
+    ready: true,
+    asset: 'assets/web/egw_pk_align.json',
     blurb: '王国与先知时代',
   ),
   EgwWork(
     code: 'AA',
     nameEn: 'The Acts of the Apostles',
     nameZh: '使徒行述',
-    enBookId: 119,
-    zhBookId: 14524,
+    enBookId: 127,
+    zhBookId: 14510,
+    ready: true,
+    asset: 'assets/web/egw_aa_align.json',
     blurb: '早期教会史',
   ),
   EgwWork(
     code: 'Ed',
     nameEn: 'Education',
     nameZh: '教育论',
-    enBookId: 110,
-    zhBookId: 14540,
+    enBookId: 29,
+    zhBookId: 14488,
+    ready: true,
+    asset: 'assets/web/egw_ed_align.json',
     blurb: '真教育原理',
   ),
   EgwWork(
     code: 'COL',
     nameEn: "Christ's Object Lessons",
-    nameZh: '比喻宝训',
-    enBookId: 414,
-    zhBookId: 14544,
+    nameZh: '基督比喻实训',
+    enBookId: 15,
+    zhBookId: 14481,
+    // 暂未上线：egwwritings 英文版(15)仅暴露章节约略大纲，无法取得完整英文本，待另行补全英文源。
     blurb: '天国的比喻',
   ),
   EgwWork(
     code: 'MYP',
     nameEn: 'Messages to Young People',
-    nameZh: '给青年人的信息',
-    enBookId: 149,
-    zhBookId: 14552,
+    nameZh: '告青年书',
+    enBookId: 76,
+    zhBookId: 14475,
+    // 暂未上线：egwwritings 英文版(76)仅暴露章节约略大纲，无法取得完整英文本，待另行补全英文源。
     blurb: '青年信仰劝勉',
   ),
 ];

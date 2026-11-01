@@ -188,10 +188,13 @@ class _EgwComparePageState extends State<EgwComparePage> {
 
   String _sectionLabel(int i) {
     final s = _sections[i];
+    final kind = (s['kind'] ?? (i == 0 ? 'foreword' : 'chapter')).toString();
+    final ch = s['chapter'] ?? i;
     final zh = (s['zh_title'] ?? '').toString();
     final en = (s['en_title'] ?? '').toString();
     final head = zh.isNotEmpty ? zh : en;
-    return '${i == 0 ? "前言 · " : "第 $i 章 · "}$head';
+    if (kind == 'foreword') return '前言 · $head';
+    return '第 $ch 章 · $head';
   }
 
   void _showDeviationNotes() {
