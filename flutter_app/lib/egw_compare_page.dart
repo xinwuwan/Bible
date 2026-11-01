@@ -1,8 +1,14 @@
 // egw_compare_page.dart
-// 怀爱伦著作（怀著）中英对照阅读器：以英文原著为基准，逐段呈现中文译本，并附已核实的译校差异备注。
+// 怀爱伦著作（怀著）中英对照阅读器。
+//
+// 重要事实：英文原著与中文译本分属 egwwritings.org 上两个相互独立的版本（不同书号、不同
+// 分段、不同章节划分）。二者之间没有可靠的段落级对齐主键（英文 refcode 如 "MH 17.1" 与
+// 中文 "MHF 1.9" 无法对应；且中文版 API 对部分英文章节仅暴露碎片段段）。因此本页**不强求
+// 逐段 1:1 配对**，而是把英文原著与中文译本各自按原文顺序忠实呈现于独立栏，避免任何错配、
+// 误译对照，确保「所见的英文即英文原文、所见的译文即中文译文」的准确性。
 //
 // 数据：assets/web/*.json（kEgwWorks 中 ready=true 的著作），结构为
-//   [{ sec, en_title, zh_title, en_count, zh_count,
+//   [{ sec, kind, chapter, en_title, zh_title, en_count, zh_count,
 //      en_paras:[{pid,etype,text}], zh_paras:[{pid,etype,text}] }, ...]
 //
 // 合规：英文原著与中文译本均取自 egwwritings.org 官方标准版（公有领域）；
@@ -47,6 +53,7 @@ class _EgwComparePageState extends State<EgwComparePage> {
   int _secIndex = 1; // 默认进入第 1 章（索引 1 为 Chapter 1；索引 0 为前言）
   bool _loading = true;
   String? _error;
+  bool _showEn = false; // 窄屏单语模式下默认显示中文（用户主语言）
 
   @override
   void initState() {
@@ -72,6 +79,23 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 
   Map<String, dynamic> get _section => _sections[_secIndex];
+
+  /// 归一化某一侧的段落列表：剔除标题类（etype 以 h 开头）、空文本，以及中文侧过短、
+  /// 无句末标点的小节标题行（如「我们的榜样」「弟兄之爱」），避免它们造成偏移或孤立显示。
+  List<dynamic> _cleanBody(List? paras) {
+    final list = paras ?? [];
+    final out = <dynamic>[];
+    for (final p in list) {
+      final et = (p['etype'] ?? 'p').toString();
+      if (et.startsWith('h')) continue; // 标题不计入正文栏
+      final t = (p['text'] ?? '').toString().trim();
+      if (t.isEmpty) continue;
+      // 中文短标题行：长度 <= 8 且无中文句末标点 → 视为小节标题，剔除
+      if (t.length <= 8 && !RegExp(r'[。！？；：、，]').hasMatch(t)) continue;
+      out.add(p);
+    }
+    return out;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,15 +130,12 @@ class _EgwComparePageState extends State<EgwComparePage> {
 
   Widget _buildBody() {
     final sec = _section;
-    final enParas = (sec['en_paras'] as List?) ?? [];
-    final zhParas = (sec['zh_paras'] as List?) ?? [];
-    final maxLen = enParas.length >= zhParas.length
-        ? enParas.length
-        : zhParas.length;
+    final enBody = _cleanBody(sec['en_paras'] as List?);
+    final zhBody = _cleanBody(sec['zh_paras'] as List?);
 
     return Column(
       children: [
-        // 章节选择（胶囊容器，复用圣经模块的弹性布局思路）
+        // 章节选择
         Padding(
           padding: const EdgeInsets.fromLTRB(14, 6, 14, 4),
           child: Container(
@@ -157,32 +178,112 @@ class _EgwComparePageState extends State<EgwComparePage> {
             ),
           ),
         ),
-        // 英中对照图例
+        // 图例 + 窄屏语言切换
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
-          child: Wrap(
-            spacing: 12,
-            runSpacing: 4,
-            crossAxisAlignment: WrapCrossAlignment.center,
+          padding: const EdgeInsets.fromLTRB(16, 4, 16, 2),
+          child: Row(
             children: [
-              _LegendDot(color: AppTheme.scriptureBlue, text: '英文原著'),
-              _LegendDot(color: AppTheme.zhTeal, text: '中文译本'),
+              Expanded(
+                child: Wrap(
+                  spacing: 12,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _LegendDot(color: AppTheme.scriptureBlue, text: '英文原著'),
+                    _LegendDot(color: AppTheme.zhTeal, text: '中文译本'),
+                  ],
+                ),
+              ),
+              LayoutBuilder(
+                builder: (ctx, c) {
+                  if (c.maxWidth >= 720) return const SizedBox.shrink();
+                  return ToggleButtons(
+                    isSelected: [!_showEn, _showEn],
+                    onPressed: (i) => setState(() => _showEn = i == 1),
+                    constraints: const BoxConstraints(minWidth: 48, minHeight: 32),
+                    borderRadius: BorderRadius.circular(8),
+                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    selectedColor: Colors.white,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('中文', style: TextStyle(color: _showEn ? Colors.grey : AppTheme.zhTeal)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('英文', style: TextStyle(color: _showEn ? AppTheme.scriptureBlue : Colors.grey)),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ],
+          ),
+        ),
+        // 版本独立性说明（诚实提示：两版结构不同，按原文顺序并排，不强行逐段配对）
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
+          child: Text(
+            '英文原著与中文译本分属不同版本，段落结构独立；此处按各自原文顺序并排呈现，便于对照，不作强行逐段配对。',
+            style: TextStyle(fontSize: 11, color: Colors.grey.shade600, height: 1.4),
           ),
         ),
         const Divider(height: 8),
         Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.only(bottom: 24),
-            itemCount: maxLen,
-            itemBuilder: (context, i) {
-              final en = i < enParas.length ? enParas[i] : null;
-              final zh = i < zhParas.length ? zhParas[i] : null;
-              return _ParaRow(en: en, zh: zh);
+          child: LayoutBuilder(
+            builder: (context, c) {
+              if (c.maxWidth >= 720) {
+                return _buildTwoColumns(enBody, zhBody);
+              }
+              return _buildNarrow(enBody, zhBody);
             },
           ),
         ),
       ],
+    );
+  }
+
+  /// 宽屏：左右双栏，各自按原文顺序忠实呈现，整页同步滚动（无逐段配对，杜绝错配）。
+  Widget _buildTwoColumns(List<dynamic> enBody, List<dynamic> zhBody) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: _langColumn('英文原著', AppTheme.scriptureBlue, enBody)),
+          const SizedBox(width: 12),
+          Expanded(child: _langColumn('中文译本', AppTheme.zhTeal, zhBody)),
+        ],
+      ),
+    );
+  }
+
+  Widget _langColumn(String label, Color color, List<dynamic> body) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _ColHeader(label: label, color: color),
+        const SizedBox(height: 6),
+        for (final p in body) _LangBlock(para: p, color: color),
+      ],
+    );
+  }
+
+  /// 窄屏：按语言切换，整章以该语言原文顺序呈现（默认中文）。
+  Widget _buildNarrow(List<dynamic> enBody, List<dynamic> zhBody) {
+    final body = _showEn ? enBody : zhBody;
+    final color = _showEn ? AppTheme.scriptureBlue : AppTheme.zhTeal;
+    final label = _showEn ? '英文原著' : '中文译本';
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ColHeader(label: label, color: color),
+          const SizedBox(height: 6),
+          for (final p in body) _LangBlock(para: p, color: color),
+        ],
+      ),
     );
   }
 
@@ -247,121 +348,48 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 }
 
-/// 单段对照：宽屏双栏（英 | 中），窄屏上下堆叠。
-class _ParaRow extends StatelessWidget {
-  final dynamic en;
-  final dynamic zh;
-
-  const _ParaRow({this.en, this.zh});
+/// 章节栏目标题（英文原著 / 中文译本）。
+class _ColHeader extends StatelessWidget {
+  final String label;
+  final Color color;
+  const _ColHeader({required this.label, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    final enBlock = _LangBlock(
-      label: '英文原著',
-      para: en,
-      color: AppTheme.scriptureBlue,
-    );
-    final zhBlock = _LangBlock(
-      label: '中文译本',
-      para: zh,
-      color: AppTheme.zhTeal,
-    );
-    return LayoutBuilder(
-      builder: (context, c) {
-        final wide = c.maxWidth >= 720;
-        if (wide) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(14, 8, 14, 4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: enBlock),
-                const SizedBox(width: 12),
-                Expanded(child: zhBlock),
-              ],
-            ),
-          );
-        }
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(14, 8, 14, 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              enBlock,
-              const SizedBox(height: 8),
-              zhBlock,
-            ],
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Row(
+        children: [
+          Container(width: 4, height: 16, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
+          const SizedBox(width: 6),
+          Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: color)),
+        ],
+      ),
     );
   }
 }
 
-/// 单语块：标题（etype 以 h 开头）用粗体居中；正文用带左侧色条的卡片并标注语言。
+/// 单语块：正文用带左侧色条的卡片并标注语言。
 class _LangBlock extends StatelessWidget {
-  final String label;
   final dynamic para;
   final Color color;
 
-  const _LangBlock({required this.label, required this.para, required this.color});
+  const _LangBlock({required this.para, required this.color});
 
   @override
   Widget build(BuildContext context) {
-    if (para == null) {
-      return Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: color.withOpacity(0.25)),
-        ),
-        child: Text(
-          '（本段 $label 无对应内容）',
-          style: TextStyle(fontSize: 12, color: color.withOpacity(0.7), fontStyle: FontStyle.italic),
-        ),
-      );
-    }
     final text = (para['text'] ?? '').toString();
-    final isHeading = (para['etype'] ?? 'p').toString().startsWith('h');
-    if (isHeading) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            color: color,
-            height: 1.4,
-          ),
-        ),
-      );
-    }
     return Container(
+      margin: const EdgeInsets.fromLTRB(14, 4, 14, 4),
       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppTheme.line),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(width: 3, height: 12, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
-              const SizedBox(width: 6),
-              Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: color)),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
-          ),
-        ],
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
       ),
     );
   }
