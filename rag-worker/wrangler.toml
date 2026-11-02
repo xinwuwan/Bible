@@ -1,0 +1,19 @@
+name = "bible-rag-proxy"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# 非敏感配置：大模型接入点
+[vars]
+RAG_BASE_URL = "https://open.bigmodel.cn/api/paas/v4"
+RAG_MODEL = "glm-4-flash"
+
+# 可选：跨实例共享限流（不配置则使用单实例内存限流）
+# 创建：wrangler kv namespace create RAG_KV
+# 然后把下方的 id 改成输出值
+# [[kv_namespaces]]
+# binding = "RAG_KV"
+# id = "your-kv-namespace-id"
+
+# 注意：RAG_API_KEY 是密钥，切勿写入此文件！
+# 部署前执行：wrangler secret put RAG_API_KEY
+#   -> 交互输入你的智谱 API Key（如 ecff843b....fkjCmxTXJ3fGez7Y）

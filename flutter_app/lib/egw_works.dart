@@ -118,7 +118,8 @@ const List<EgwWork> kEgwWorks = [
     nameZh: '基督比喻实训',
     enBookId: 15,
     zhBookId: 14481,
-    // 暂未上线：egwwritings 英文版(15)仅暴露章节约略大纲，无法取得完整英文本，待另行补全英文源。
+    ready: true,
+    asset: 'assets/web/egw_col_align.json',
     blurb: '天国的比喻',
   ),
   EgwWork(
@@ -127,7 +128,9 @@ const List<EgwWork> kEgwWorks = [
     nameZh: '告青年书',
     enBookId: 76,
     zhBookId: 14475,
-    // 暂未上线：egwwritings 英文版(76)仅暴露章节约略大纲，无法取得完整英文本，待另行补全英文源。
+    // 暂未上线：英文原文(76)已可经官方 API 取全（TOC 遍历法），但其中文版(14475)为
+    // 「主题重编/选编」而非平行译本——章节边界与段落顺序均不对应，自动化对齐会产出错配
+    // 对照，违反内容准确铁律。待换平行译本源或人工逐段对照后再上线。
     blurb: '青年信仰劝勉',
   ),
 ];

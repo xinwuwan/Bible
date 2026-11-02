@@ -20,10 +20,29 @@
 const http = require('http');
 
 // ---------------------------------------------------------------------------
-// 配置：优先读环境变量；FALLBACK_API_KEY 便于控制台上传时直接内嵌（仅服务端可见）
+// 配置：Key 仅来自「环境变量 RAG_API_KEY」或「本地 .env（gitignore 排除，绝不进仓库）」。
+// 不再硬编码任何 Key 到源码——此前写死的兜底 Key 已随公开仓库暴露，必须移除。
+// 部署前请在本机 domestic-rag/.env 写入 RAG_API_KEY=你的智谱key（不要提交到仓库/发到聊天）。
 // ---------------------------------------------------------------------------
+function loadLocalEnv() {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const f = path.join(__dirname, '.env');
+    if (!fs.existsSync(f)) return;
+    const txt = fs.readFileSync(f, 'utf8');
+    for (const line of txt.split(/\r?\n/)) {
+      const m = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+      if (m && !(m[1] in process.env)) {
+        process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+      }
+    }
+  } catch (_) { /* .env 缺失不影响启动，仅会触发下方的缺 Key 校验 */ }
+}
+loadLocalEnv();
+
 const CONFIG = {
-  apiKey: process.env.RAG_API_KEY || 'ecff843bce564e3395219a749b59a59c.fkjCmxTXJ3fGez7Y',
+  apiKey: process.env.RAG_API_KEY,
   baseUrl: (process.env.RAG_BASE_URL || 'https://open.bigmodel.cn/api/paas/v4').replace(/\/$/, ''),
   model: process.env.RAG_MODEL || 'glm-4-flash',
   limit: Number(process.env.RAG_LIMIT) || 20, // 每分钟每 IP
@@ -632,7 +651,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (!CONFIG.apiKey) {
-    return jsonRes(res, 500, { error: 'server misconfigured: missing RAG_API_KEY' }, origin);
+    return jsonRes(res, 500, { error: 'server misconfigured: missing RAG_API_KEY (set env var or domestic-rag/.env)' }, origin);
   }
 
   if (rateLimited(clientIp(req))) {

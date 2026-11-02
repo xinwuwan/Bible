@@ -12,3 +12,6 @@ flutter_app/.flutter-plugins-dependencies
 *.db
 *.db-journal
 /build/
+
+# 后端密钥：本地 .env 含智谱 Key，绝不提交公开仓库（模板见 domestic-rag/.env.example）
+domestic-rag/.env

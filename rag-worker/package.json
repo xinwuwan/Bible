@@ -1,0 +1,10 @@
+{
+  "name": "bible-rag-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "圣经/健康 RAG 后端代理 (Cloudflare Worker)：托管大模型 Key、限流、引用审计 + CUV 检测",
+  "scripts": {
+    "test": "node test_local.mjs"
+  }
+}
