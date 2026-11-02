@@ -537,12 +537,22 @@ class _Block extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = AppTheme.scripture(
-      size: muted ? 13.5 : 15,
-      color: muted ? AppTheme.inkSoft : AppTheme.ink,
-      weight: emphasis ? FontWeight.w500 : FontWeight.w400,
-      height: muted ? 1.55 : 1.65,
-    );
+    // KJV 英文（权威底本）用专用英文样式：只走拉丁衬线字体 + 加宽词间距，
+    // 避免中文衬线字体渲染拉丁字母导致手机端单词粘连；其余（含中文）用通用衬线。
+    final isKjv = label.startsWith('KJV');
+    final style = isKjv
+        ? AppTheme.scriptureEn(
+            size: 15,
+            color: muted ? AppTheme.inkSoft : AppTheme.ink,
+            weight: emphasis ? FontWeight.w500 : FontWeight.w400,
+            height: 1.6,
+          )
+        : AppTheme.scripture(
+            size: muted ? 13.5 : 15,
+            color: muted ? AppTheme.inkSoft : AppTheme.ink,
+            weight: emphasis ? FontWeight.w500 : FontWeight.w400,
+            height: muted ? 1.55 : 1.65,
+          );
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(12),

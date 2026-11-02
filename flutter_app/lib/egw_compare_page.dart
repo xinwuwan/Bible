@@ -177,7 +177,7 @@ class _EgwComparePageState extends State<EgwComparePage> {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
           child: Text(
-            '英文原著与中文译本分属不同版本、段落结构独立。此处按内容长度平衡，将大致对应的英文与中文归为同一「对应组」逐组呈现；两组并非严格逐句对应，仅供对照阅读。',
+            '英文原著与中文译本分属不同版本、段落结构独立。此处按内容长度平衡，将大致对应的英文与中文归为同一「对应组」，组内再按句子逐一对照（英一句、中一句交错）；两组并非严格逐句对应，仅供对照阅读。',
             style: TextStyle(fontSize: 11, color: Colors.grey.shade600, height: 1.4),
           ),
         ),
@@ -207,10 +207,14 @@ class _EgwComparePageState extends State<EgwComparePage> {
       ]);
     }
 
+    // 前言：英文版常含作者/出版者原序，中文数字版普遍未收录对应中译。
+    final isForeword = (sec['kind'] ?? '').toString() == 'foreword';
+    final zhMissing = isForeword && zh.isEmpty;
+
     return LayoutBuilder(
       builder: (ctx, c) {
         final wide = c.maxWidth >= 720;
-        return ListView.separated(
+        final list = ListView.separated(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 28),
           itemCount: pairs.length,
           separatorBuilder: (_, __) => const SizedBox(height: 10),
@@ -231,10 +235,48 @@ class _EgwComparePageState extends State<EgwComparePage> {
               wide: wide,
               enParas: enParas,
               zhParas: zhParas,
+              isForeword: isForeword,
             );
           },
         );
+        // 前言缺失中译时，列表顶部加一条温和说明，避免用户误以为缺数据。
+        if (!zhMissing) return list;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+              child: _forewordNote(),
+            ),
+            Expanded(child: list),
+          ],
+        );
       },
+    );
+  }
+
+  /// 前言无对应中译时的温和说明条。
+  Widget _forewordNote() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.amber.shade50,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.amber.shade200),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline, size: 16, color: Colors.amber.shade700),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              '本篇前言为中文版未收录内容（英文原版序言，无对应中译），右栏中文将显示「中文版无前言」。',
+              style: TextStyle(fontSize: 12.5, color: Colors.amber.shade900, height: 1.5),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -299,115 +341,243 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 }
 
-/// 单个「对应组」卡片：英文块与中文块明确成组（宽屏左右并排、窄屏上下堆叠）。
+/// 英文常见缩写集合（句子切分时保护，避免误在缩写句点处断句）。
+const Set<String> _enAbbrev = {
+  'mr', 'mrs', 'ms', 'dr', 'st', 'rev', 'no', 'vs', 'etc', 'fig', 'vol',
+  'inc', 'ltd', 'ph', 'gen', 'exo', 'lev', 'num', 'deu', 'jos', 'jdg', 'rut',
+  'sa1', 'sa2', 'ki1', 'ki2', 'ch1', 'ch2', 'ezr', 'neh', 'est', 'job', 'psa',
+  'pro', 'ecc', 'sos', 'isa', 'jer', 'lam', 'eze', 'dan', 'hos', 'joe', 'amo',
+  'oba', 'jon', 'mic', 'nah', 'hab', 'zep', 'hag', 'zec', 'mal', 'mat', 'mar',
+  'luk', 'joh', 'act', 'rom', 'co1', 'co2', 'gal', 'eph', 'php', 'col', 'th1',
+  'th2', 'ti1', 'ti2', 'tit', 'phm', 'heb', 'jas', 'pe1', 'pe2', 'jo1', 'jo2',
+  'jo3', 'jud', 'rev',
+};
+
+bool _isCjk(int cp) =>
+    (cp >= 0x4E00 && cp <= 0x9FFF) ||
+    (cp >= 0x3400 && cp <= 0x4DBF) ||
+    (cp >= 0xF900 && cp <= 0xFAFF) ||
+    (cp >= 0x3000 && cp <= 0x303F) ||
+    (cp >= 0xFF00 && cp <= 0xFFEF);
+
+/// 把一组段落合并为连续文本（英文段间补空格，纯中文段间直接相连，避免汉字间隙）。
+String _mergeParas(List<dynamic> paras) {
+  final buf = StringBuffer();
+  for (final p in paras) {
+    final t = (p is Map ? (p['text'] ?? '') : p.toString()).toString();
+    if (t.isEmpty) continue;
+    if (buf.isNotEmpty) {
+      final last = buf.toString().runes.last;
+      final first = t.runes.first;
+      // 非「中文接中文」时才补空格（英文/数字/中英文边界都需要空格分隔）
+      if (!_isCjk(last) || !_isCjk(first)) buf.write(' ');
+    }
+    buf.write(t);
+  }
+  return buf.toString();
+}
+
+/// 按句子拆分文本（中英文标点通用）。
+/// 保护两类易误断的句点（均以不可见占位符 \u2063 临时替代，最后还原）：
+///  1) 常见拉丁缩写（e.g./i.e./etc./圣经书卷缩写等）后的句点；
+///  2) 紧贴右引号、且其后紧跟小写字母（句中引用而非真正句末）的句点，
+///     例如 the phrase "the end." refers —— 避免把引号内容误拆成两句。
+///     保护时连同其后的空白一并保留，避免粘连。
+/// 真正句末的「句点+右引号」（其后为大写字母或文末）在主切分时断在引号之后，
+/// 即整组 "…." 作为一句的收尾，不会把右引号甩到下一句。
+/// 主切分采用「消费式」匹配（句界 = 句末标点 + 可选右引号 + 其后空白），
+/// 并将标点并回前句，避免使用变宽后顾（Dart/JS 正则不支持）。
+List<String> splitSentences(String text) {
+  if (text.trim().isEmpty) return const [];
+  var s = text
+      .replaceAll('e.g.', 'e\u2063g\u2063')
+      .replaceAll('i.e.', 'i\u2063e\u2063')
+      .replaceAll('etc.', 'etc\u2063')
+      .replaceAll(RegExp(r'\n+'), ' ');
+  // 省略号（连续 2+ 个句点，或单字符 …）不当作句末，避免把 "…" 拆成空句。
+  s = s.replaceAllMapped(RegExp(r'\.{2,}'), (_) => '…');
+  s = s.replaceAllMapped(RegExp(r'\b([A-Za-z][A-Za-z0-9]{0,3})\.(?=\s)'), (m) {
+    final tok = m.group(1)!.toLowerCase();
+    return _enAbbrev.contains(tok) ? '${m.group(1)}\u2063' : m.group(0)!;
+  });
+  // 保护「句中引用」的句点：句点 + 右引号(含直角/弯角) + 其后空白 + 小写字母。
+  // 捕获空白并重放，避免 "...end."refers 这类粘连。
+  s = s.replaceAllMapped(RegExp(r"(\.)(['’\"”])(\s*)(?=[a-z])"),
+      (m) => '\u2063${m.group(2)}${m.group(3)}');
+  // 主切分：句界 = 句末标点 + 可选右引号 + 其后空白；标点并回前句。
+  final delim = RegExp(r"([.!?。！？]['”’\"]?)\s*");
+  final out = <String>[];
+  var last = 0;
+  for (final m in delim.allMatches(s)) {
+    final sentence = s.substring(last, m.end).replaceAll('\u2063', '.').trim();
+    // 仅含标点/空白（如引用标记残留的孤立句点）的句子丢弃，避免空行。
+    if (sentence.replaceAll(RegExp(r'[.!?。！？”’"\s]'), '').isNotEmpty) {
+      out.add(sentence);
+    }
+    last = m.end;
+  }
+  final tail = s.substring(last).replaceAll('\u2063', '.').trim();
+  if (tail.replaceAll(RegExp(r'[.!?。！？”’"\s]'), '').isNotEmpty) out.add(tail);
+  return out;
+}
+
+/// 单个「对应组」卡片：组内英文与中文按句子逐一交错对照
+/// （窄屏上下、宽屏左右），便于逐句对照阅读。段落级已对齐，组内逐句不会跨段错位。
 class _PairCard extends StatelessWidget {
   final int index;
   final bool wide;
   final List<dynamic> enParas;
   final List<dynamic> zhParas;
+  final bool isForeword;
 
   const _PairCard({
     required this.index,
     required this.wide,
     required this.enParas,
     required this.zhParas,
+    this.isForeword = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final enSide = _unitSide('英文', AppTheme.scriptureBlue, enParas);
-    final zhSide = _unitSide('中文', AppTheme.zhTeal, zhParas);
+    // 前言且整组中文缺失：显示「中文版无前言」，不进入句子级渲染。
+    final zhMissing = isForeword && zhParas.isEmpty;
+    if (zhMissing) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.line),
+        ),
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _groupTag(index),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Text('（中文版无前言）',
+                  style: TextStyle(fontSize: 13, color: Colors.grey.shade400, fontStyle: FontStyle.italic)),
+            ),
+          ],
+        ),
+      );
+    }
 
-    final card = Container(
+    final enText = _mergeParas(enParas);
+    final zhText = _mergeParas(zhParas);
+    final enSents = splitSentences(enText);
+    final zhSents = splitSentences(zhText);
+    final n = enSents.length > zhSents.length ? enSents.length : zhSents.length;
+
+    final rows = <Widget>[];
+    for (int i = 0; i < n; i++) {
+      final en = i < enSents.length ? enSents[i] : null;
+      final zh = i < zhSents.length ? zhSents[i] : null;
+      rows.add(_SentenceRow(en: en, zh: zh, wide: wide));
+      if (i < n - 1) rows.add(const SizedBox(height: 10));
+    }
+
+    return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppTheme.line),
       ),
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // 组号标签
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text('对应 ${index + 1}',
-                    style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
-              ),
-              const Spacer(),
-              const Icon(Icons.compare_arrows_rounded, size: 14, color: Colors.grey),
-            ],
-          ),
+          _groupTag(index),
           const SizedBox(height: 8),
-          if (wide)
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: enSide),
-                Container(width: 1, color: AppTheme.line, margin: const EdgeInsets.symmetric(horizontal: 10)),
-                Expanded(child: zhSide),
-              ],
-            )
-          else
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                enSide,
-                const SizedBox(height: 10),
-                Container(height: 1, color: AppTheme.line),
-                const SizedBox(height: 10),
-                zhSide,
-              ],
-            ),
+          ...rows,
         ],
       ),
     );
-
-    return card;
   }
 
-  /// 一侧（英文或中文）的段落堆：顶部小标签 + 左侧色条 + 正文。
-  Widget _unitSide(String label, Color color, List<dynamic> paras) {
-    final children = <Widget>[];
-    children.add(
-      Padding(
-        padding: const EdgeInsets.only(bottom: 6),
-        child: Row(
-          children: [
-            Container(width: 4, height: 14, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
-            const SizedBox(width: 6),
-            Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: color)),
-          ],
+  /// 组号标签行（对应 N）
+  Widget _groupTag(int index) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text('对应 ${index + 1}',
+              style: TextStyle(fontSize: 11, color: Colors.grey.shade600, fontWeight: FontWeight.w600)),
         ),
-      ),
+        const Spacer(),
+        const Icon(Icons.compare_arrows_rounded, size: 14, color: Colors.grey),
+      ],
     );
-    if (paras.isEmpty) {
-      children.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
-          child: Text('（本组无${label == '英文' ? '英文原文' : '对应中译'}）',
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade400, fontStyle: FontStyle.italic)),
-        ),
+  }
+}
+
+/// 单句对照行：一句英文 + 一句中文（窄屏上下、宽屏左右）。任一侧缺失则仅显示另一侧。
+class _SentenceRow extends StatelessWidget {
+  final String? en;
+  final String? zh;
+  final bool wide;
+
+  const _SentenceRow({required this.en, required this.zh, required this.wide});
+
+  @override
+  Widget build(BuildContext context) {
+    final enSide = _sentenceSide('英文', AppTheme.scriptureBlue, en);
+    final zhSide = _sentenceSide('中文', AppTheme.zhTeal, zh);
+    if (wide) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: enSide ?? const SizedBox.shrink()),
+          Container(width: 1, color: AppTheme.line, margin: const EdgeInsets.symmetric(horizontal: 10)),
+          Expanded(child: zhSide ?? const SizedBox.shrink()),
+        ],
       );
-    } else {
-      for (int i = 0; i < paras.length; i++) {
-        if (i > 0) children.add(const SizedBox(height: 8));
-        final text = (paras[i] is Map ? (paras[i]['text'] ?? '') : '').toString();
-        children.add(
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (enSide != null) enSide,
+        if (enSide != null && zhSide != null) const SizedBox(height: 8),
+        if (zhSide != null) zhSide,
+      ],
+    );
+  }
+
+  /// 单句一侧：顶部小标签 + 左侧色条 + 正文。文本为 null（该侧句子缺失）时返回 null。
+  Widget? _sentenceSide(String label, Color color, String? text) {
+    if (text == null) return null;
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.04),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Row(
+              children: [
+                Container(width: 4, height: 14, decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2))),
+                const SizedBox(width: 6),
+                Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: color)),
+              ],
+            ),
+          ),
           Text(
             text,
             style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
           ),
-        );
-      }
-    }
-    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
+        ],
+      ),
+    );
   }
 }
 

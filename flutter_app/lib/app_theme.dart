@@ -29,14 +29,19 @@ class AppTheme {
 
   // ---- 字体 ----
   static const String _serif = 'Georgia';
+  // 注意顺序：英文优先字体必须排在 CJK 字体之前，否则缺少 Georgia 的设备
+  // （如 Android 手机）会把英文用「中文衬线字体」的拉丁字形渲染——其半角
+  // 空格极窄、字距偏紧，导致英文单词粘连（"beginningGod"）。CJK 字体应只
+  // 作为中文（无拉丁字形）的兜底，绝不能承接拉丁字符。
   static const List<String> _serifFallback = [
+    'Times New Roman',
+    'serif',
     'Noto Serif SC',
     'Songti SC',
     'SimSun',
-    'serif',
   ];
 
-  /// 经文正文（衬线，阅读优化）
+  /// 经文正文（衬线，阅读优化，中英混排通用）
   static TextStyle scripture({
     double size = 15,
     Color color = ink,
@@ -50,6 +55,26 @@ class AppTheme {
       height: height,
       color: color,
       fontWeight: weight,
+    );
+  }
+
+  /// 英文经文专用样式：只走纯英文字体栈（绝不回退到 CJK 字体），
+  /// 并加宽词间距/字间距，确保手机端英文单词边界清晰、易于辨认。
+  static TextStyle scriptureEn({
+    double size = 15,
+    Color color = ink,
+    FontWeight weight = FontWeight.w500,
+    double height = 1.6,
+  }) {
+    return TextStyle(
+      fontFamily: _serif,
+      fontFamilyFallback: const ['Times New Roman', 'serif'],
+      fontSize: size,
+      height: height,
+      color: color,
+      fontWeight: weight,
+      wordSpacing: 1.2,
+      letterSpacing: 0.2,
     );
   }
 
