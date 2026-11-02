@@ -350,7 +350,7 @@ const Set<String> _enAbbrev = {
   'oba', 'jon', 'mic', 'nah', 'hab', 'zep', 'hag', 'zec', 'mal', 'mat', 'mar',
   'luk', 'joh', 'act', 'rom', 'co1', 'co2', 'gal', 'eph', 'php', 'col', 'th1',
   'th2', 'ti1', 'ti2', 'tit', 'phm', 'heb', 'jas', 'pe1', 'pe2', 'jo1', 'jo2',
-  'jo3', 'jud', 'rev',
+  'jo3', 'jud',
 };
 
 bool _isCjk(int cp) =>
@@ -402,10 +402,10 @@ List<String> splitSentences(String text) {
   });
   // 保护「句中引用」的句点：句点 + 右引号(含直角/弯角) + 其后空白 + 小写字母。
   // 捕获空白并重放，避免 "...end."refers 这类粘连。
-  s = s.replaceAllMapped(RegExp(r"(\.)(['’\"”])(\s*)(?=[a-z])"),
+  s = s.replaceAllMapped(RegExp(r'''(\.)(['’”])(\s*)(?=[a-z])'''),
       (m) => '\u2063${m.group(2)}${m.group(3)}');
   // 主切分：句界 = 句末标点 + 可选右引号 + 其后空白；标点并回前句。
-  final delim = RegExp(r"([.!?。！？]['”’\"]?)\s*");
+  final delim = RegExp(r'''([.!?。！？]['’”"]?)\s*''');
   final out = <String>[];
   var last = 0;
   for (final m in delim.allMatches(s)) {
