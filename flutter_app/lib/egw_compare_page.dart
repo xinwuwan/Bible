@@ -421,6 +421,45 @@ List<String> splitSentences(String text) {
   return out;
 }
 
+/// 一行的英/中配对（两侧均非空，除非某一侧整组缺失）。
+class _SentPair {
+  final String en;
+  final String zh;
+  const _SentPair(this.en, this.zh);
+}
+
+/// 组内英中句子对齐：保证每一行都有英、中两侧，绝不出现「英文句配空白中文」。
+///
+/// 思路：英文与中文源自不同版本，句子数量常不相等。若直接按下标一一对应，
+/// 多出来的一侧会变成空白缺译。这里改为按「内容长度比例」把**较长一侧合并**，
+/// 使两侧行数相等——常见情形（两数接近）退化为逐句 1:1；差异大时把较长一侧
+/// 相邻几句并在同一行（用双空格分隔），从而每一句英文都配得到对应中译。
+List<_SentPair> _alignSentences(List<String> en, List<String> zh) {
+  final E = en.length;
+  final Z = zh.length;
+  if (E == 0 && Z == 0) return const [];
+  if (E == 0) return [for (final z in zh) _SentPair('', z)];
+  if (Z == 0) return [for (final e in en) _SentPair(e, '')];
+  if (E == Z) {
+    return [for (int i = 0; i < E; i++) _SentPair(en[i], zh[i])];
+  }
+  final enLonger = E > Z;
+  final long = enLonger ? en : zh;
+  final short = enLonger ? zh : en;
+  final L = long.length;
+  final S = short.length;
+  final out = <_SentPair>[];
+  var prev = 0;
+  for (int si = 0; si < S; si++) {
+    final end = (si + 1 == S) ? L : ((si + 1) * L / S).round();
+    final seg = long.sublist(prev, end).join(enLonger ? '  ' : '');
+    prev = end;
+    final s = short[si];
+    out.add(enLonger ? _SentPair(seg, s) : _SentPair(s, seg));
+  }
+  return out;
+}
+
 /// 单个「对应组」卡片：组内英文与中文按句子逐一交错对照
 /// （窄屏上下、宽屏左右），便于逐句对照阅读。段落级已对齐，组内逐句不会跨段错位。
 class _PairCard extends StatelessWidget {
@@ -469,14 +508,46 @@ class _PairCard extends StatelessWidget {
     final zhText = _mergeParas(zhParas);
     final enSents = splitSentences(enText);
     final zhSents = splitSentences(zhText);
-    final n = enSents.length > zhSents.length ? enSents.length : zhSents.length;
+
+    // 本组中文确实缺失（非前言、却无任何中文句子）：仅显示英文并温和提示，
+    // 不再把英文句子配成空白中文（避免「英文缺对应中译」的观感）。
+    if (zhSents.isEmpty && !isForeword) {
+      final rows = <Widget>[];
+      rows.add(Padding(
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Text('（本组中文译本缺失，仅显示英文原著）',
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade500, fontStyle: FontStyle.italic)),
+      ));
+      for (int i = 0; i < enSents.length; i++) {
+        rows.add(_SentenceRow(en: enSents[i], zh: null, wide: wide));
+        if (i < enSents.length - 1) rows.add(const SizedBox(height: 10));
+      }
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppTheme.line),
+        ),
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [_groupTag(index), const SizedBox(height: 8), ...rows],
+        ),
+      );
+    }
+
+    // 按内容长度比例把较长一侧合并，使中英行数相等，杜绝任一句英文缺失对应中译。
+    final aligned = _alignSentences(enSents, zhSents);
 
     final rows = <Widget>[];
-    for (int i = 0; i < n; i++) {
-      final en = i < enSents.length ? enSents[i] : null;
-      final zh = i < zhSents.length ? zhSents[i] : null;
-      rows.add(_SentenceRow(en: en, zh: zh, wide: wide));
-      if (i < n - 1) rows.add(const SizedBox(height: 10));
+    for (int i = 0; i < aligned.length; i++) {
+      final a = aligned[i];
+      rows.add(_SentenceRow(
+        en: a.en.isEmpty ? null : a.en,
+        zh: a.zh.isEmpty ? null : a.zh,
+        wide: wide,
+      ));
+      if (i < aligned.length - 1) rows.add(const SizedBox(height: 10));
     }
 
     return Container(
@@ -573,7 +644,11 @@ class _SentenceRow extends StatelessWidget {
           ),
           Text(
             text,
-            style: const TextStyle(fontSize: 14.5, height: 1.7, color: AppTheme.ink),
+            // 英文一侧用内置拉丁衬线 Tinos（绝不回退中文衬线），修复手机端单词粘连；
+            // 中文一侧用通用衬线（含中文回退）。
+            style: label == '英文'
+                ? AppTheme.scriptureEn(size: 14.5, height: 1.7)
+                : AppTheme.scripture(size: 14.5, height: 1.7),
           ),
         ],
       ),

@@ -22,7 +22,7 @@ description: 全球华人跨平台信仰应用 —— 模块 A 翻译与对照 /
 publish_to: "no"
 # 每次发布递增 +N：flutter build 会把该版本写进 version.json，
 # 浏览器 Service Worker 据此检测更新并刷新缓存（避免用户停留在旧版本）。
-version: 1.1.0+70
+version: 1.1.0+71
 environment:
   sdk: ">=3.4.0 <4.0.0"
 
@@ -67,6 +67,15 @@ flutter:
     - assets/web/hospital_tier_a.json     # 专业咨询：三甲/专科识别规则 + 重大疾病分级关键词
     - assets/web/consult_scripts.json     # AI 医生：多轮问诊剧本（主诉/问题/鉴别/红旗规则）
     - assets/notes.json         # export_notes_json.py 产物（26 条，全部 status=draft）
+  fonts:
+    # 英文经文专用拉丁衬线字体（OFL 授权，随包内置，不依赖系统字体 / 不触发中文衬线回退）。
+    # 解决手机端英文单词因「中文衬线字体渲染拉丁字母、半角空格过窄」而粘连的问题。
+    - family: Tinos
+      fonts:
+        - asset: assets/fonts/Tinos-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Tinos-Bold.ttf
+          weight: 700
 
 # 构建示例（正式发布不要开 SHOW_DRAFT_NOTES / SHOW_UNREVIEWED_HEALTH）:
 #   flutter build apk --dart-define=API_BASE=https://api.example.com \

@@ -58,8 +58,8 @@ class AppTheme {
     );
   }
 
-  /// 英文经文专用样式：只走纯英文字体栈（绝不回退到 CJK 字体），
-  /// 并加宽词间距/字间距，确保手机端英文单词边界清晰、易于辨认。
+  /// 英文经文专用样式：只走纯拉丁字体栈（内置 Tinos，绝不回退到 CJK 字体），
+  /// 并加宽词间距，确保手机端英文单词边界清晰、空格不被中文衬线字体吞掉。
   static TextStyle scriptureEn({
     double size = 15,
     Color color = ink,
@@ -67,14 +67,14 @@ class AppTheme {
     double height = 1.6,
   }) {
     return TextStyle(
-      fontFamily: _serif,
-      fontFamilyFallback: const ['Times New Roman', 'serif'],
+      fontFamily: 'Tinos',
+      fontFamilyFallback: const ['Georgia', 'Times New Roman', 'serif'],
       fontSize: size,
       height: height,
       color: color,
       fontWeight: weight,
-      wordSpacing: 1.2,
-      letterSpacing: 0.2,
+      wordSpacing: 1.6,
+      letterSpacing: 0.1,
     );
   }
 
