@@ -154,24 +154,31 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
+      - name: Inject cache-bust token into index.html
+        # 把 index.html 模板里的占位符 {{CACHE_BUST}} 替换为本次提交 SHA，
+        # 使 main.dart.js?cb=<sha> 的 URL 每次发布都变化，强制微信 X5 等
+        # 激进缓存的浏览器重新下载入口脚本，而不是长期复用陈旧构建。
+        working-directory: flutter_app
+        run: sed -i "s/{{CACHE_BUST}}/${{ github.sha }}/g" web/index.html
+
       - name: Build web release (EdgeOne, base-href /)
         # EdgeOne Pages 是域名根部署，必须用 base-href "/"；
         # 先构建再 mv 到独立目录，避免覆盖下面 GitHub Pages 用的产物
         # （不依赖 flutter build 的 -o 参数，兼容性最稳）。
-        # --web-renderer auto：在支持 WebGL 的浏览器（含微信内置 X5、Chrome、iOS WKWebView）
-        #   走 CanvasKit，由 Skia 直接绘制文字 —— 彻底规避微信 X5 对 html 渲染器 DOM
-        #   文本的「字体放大 / 空格折叠」缺陷（Flutter issue #145140）。
-        #   仅在不支持 WebGL 的极少数环境下回退 html（不会白屏，只是回归到旧排版）。
+        # --web-renderer canvaskit（强制，不回退 html）：微信内置 X5 对 Flutter
+        #   html 渲染器的 DOM 文本排版有致命缺陷（字体放大 / 词间空格折叠，
+        #   Flutter issue #145140），会令英文单词粘连、行内拥挤。canvaskit 由
+        #   Skia 直接绘制文字，完全绕开浏览器文本排版，彻底规避该缺陷。
         # --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/：自托管 CanvasKit，
         #   不再从 gstatic.com 拉取（国内被墙/极慢），随仓库附带的 web/canvaskit/ 即可。
         run: |
-          flutter build web --release --web-renderer auto --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ --base-href "/"
+          flutter build web --release --web-renderer canvaskit --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ --base-href "/"
           mv build/web build/web-eo
 
       - name: Build web release (GitHub Pages, base-href /Bible/)
         # 项目页需要 base-href 带仓库名，否则静态资源 404。
-        # 同上的 auto 渲染器 + 自托管 CanvasKit 说明。
-        run: flutter build web --release --web-renderer auto --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ --base-href "/${{ github.event.repository.name }}/"
+        # 同上：强制 canvaskit 渲染器 + 自托管 CanvasKit。
+        run: flutter build web --release --web-renderer canvaskit --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ --base-href "/${{ github.event.repository.name }}/"
 
       - name: Deploy to EdgeOne Pages (domestic CDN)
         # 未在仓库 Secrets 配置 EDGEONE_API_TOKEN 时自动跳过（job 级 env 为空串），

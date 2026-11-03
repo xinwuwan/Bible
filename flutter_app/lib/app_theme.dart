@@ -74,17 +74,19 @@ class AppTheme {
     double size = 15,
     Color color = ink,
     FontWeight weight = FontWeight.w500,
-    double height = 1.6,
+    double height = 1.75,
   }) {
     return TextStyle(
       // 系统默认字体（拉丁无衬线，半角空格正常）；回退链纯拉丁无衬线，无 CJK 衬线。
+      // 渲染走 CanvasKit（CI --web-renderer canvaskit 强制），由 Skia 直接绘制，
+      // 彻底绕开微信 X5 对 html 渲染器 DOM 文本「字体放大/词间空格折叠」的缺陷。
       fontFamily: null,
       fontFamilyFallback: const ['Helvetica', 'Arial', 'sans-serif'],
       fontSize: size,
       height: height,
       color: color,
       fontWeight: weight,
-      wordSpacing: 2.0, // 额外加宽词间距（逻辑像素）：即便字体偏紧也清晰分词
+      wordSpacing: 2.2, // 额外加宽词间距（逻辑像素）：清晰分词、宽松易读
       letterSpacing: 0.2, // 轻微字距：进一步拉开字母，提升可读性
     );
   }
