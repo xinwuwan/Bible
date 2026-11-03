@@ -78,8 +78,8 @@ class AppTheme {
   }) {
     return TextStyle(
       // 系统默认字体（拉丁无衬线，半角空格正常）；回退链纯拉丁无衬线，无 CJK 衬线。
-      // 渲染走 CanvasKit（CI --web-renderer canvaskit 强制），由 Skia 直接绘制，
-      // 彻底绕开微信 X5 对 html 渲染器 DOM 文本「字体放大/词间空格折叠」的缺陷。
+      // 微信 X5 下入口脚本会运行时请求 CanvasKit（Skia 直接绘制），彻底绕开 X5 对
+      // html 渲染器 DOM 文本「字体放大/词间空格折叠」的缺陷；词距/字距由 Skia 精确绘制。
       fontFamily: null,
       fontFamilyFallback: const ['Helvetica', 'Arial', 'sans-serif'],
       fontSize: size,
