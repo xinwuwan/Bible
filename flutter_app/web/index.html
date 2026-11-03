@@ -27,6 +27,15 @@
 
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
+  <!-- 自托管 CanvasKit：指向随仓库附带的 web/canvaskit/ 目录，避免从 gstatic.com 拉取
+       （国内被墙/极慢）。必须在引擎入口脚本之前声明。
+       微信内置浏览器(X5) 对 Flutter html 渲染器的 DOM 文本排版存在字体放大 / 空格折叠
+       缺陷（Flutter issue #145140），切换 canvaskit 渲染器由 Skia 直接绘制文字可彻底规避。
+       与 CI 构建参数 --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ 互为冗余，双保险。 -->
+  <script>
+    window.flutterConfiguration = window.flutterConfiguration || {};
+    window.flutterConfiguration.canvasKitBaseUrl = 'canvaskit/';
+  </script>
   <style>
     /* 禁止 iOS Safari / 微信内置浏览器按系统「文字大小」设置自动放大页面文字：
        Flutter web html 渲染器的文字由引擎按 px 精确排版，浏览器一旦自动放大
