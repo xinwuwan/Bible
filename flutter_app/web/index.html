@@ -3,24 +3,35 @@
 <head>
   <base href="$FLUTTER_BASE_HREF">
   <!--
-    If you are serving your web app in a browser, the head is the place
-    to add your <meta> tags, <link> tags, and <script> tags.
+    微信内置浏览器(X5) 渲染策略说明（重要，避免再次踩坑）：
+    1) X5 对 Flutter「html 渲染器」的 DOM 文本排版存在字体放大 / 词间空格折叠缺陷
+       （Flutter issue #145140），会让英文单词粘连。故优先用 canvaskit（Skia 直接
+       绘制，彻底规避该缺陷）。
+    2) 但 canvaskit 需要 WebGL + 下载 ~6.7MB wasm。为「保证微信里一定能打开」，
+       构建使用 --web-renderer auto：支持 WebGL 时走 canvaskit（文字正常），
+       不支持时自动回退 html（至少能打开，不会白屏/报错）。
+    3) canvaskit 自托管（web/canvaskit/），不依赖被墙的 gstatic.com。
+    4) 自托管 wasm 的加载依赖 main.dart.js 自身的相对路径解析，**绝不能**给
+       main.dart.js 加 ?cb= 之类查询串（会让引擎内部资源定位失败 → 黑屏/不渲染）。
+       本页通过「不使用查询串」+ 下方 no-cache meta，让微信重新拉取新包。
   -->
   <meta charset="UTF-8">
-  <!-- 显式声明视口：不要依赖 Flutter 引擎运行时注入。viewport-fit=cover 适配刘海屏；
-       maximum-scale=1.0 + user-scalable=no 与 Flutter 官方模板一致，避免双击/误触
-       整页缩放破坏应用式布局。 -->
+  <!-- 视口：固定宽度=设备宽度；maximum-scale=1.0 + user-scalable=no 与 Flutter 官方
+       模板一致，避免双击/误触整页缩放破坏应用式布局。 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <!-- 本页内容已是简体中文，禁止浏览器自动翻译（防止被转成繁体显示） -->
+  <!-- 禁止浏览器按系统「文字大小」自动放大页面文字（X5 的 -webkit-text-size-adjust
+       默认行为会把字形放大、撑爆引擎算好的布局盒 → 拥挤/重叠）。100% = 不调整。 -->
   <meta name="google" content="notranslate">
-  <!-- 微信内置浏览器(X5) 缓存极度激进且不支持 Service Worker，仅靠 max-age 容易长期
-       返回陈旧构建。这里用 HTTP 头级别的 no-cache 提示，配合下方 main.dart.js 的
-       版本化查询串 (?cb=...)，双重强制微信重新拉取新包。 -->
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="全球华人跨平台信仰应用 —— 模块 A 翻译对照 / 模块 B 牧师问答 / 模块 C 健康 NEWSTART">
+
+  <!-- 微信 X5 缓存极激进且不支持 Service Worker，仅靠 max-age 会长期返回陈旧构建。
+       这里用 HTTP 头级 no-cache 提示，配合下方「main.dart.js 不带查询串」的改动，
+       双重强制微信重新拉取新包（旧包曾在 main.dart.js 后加了 ?cb=，URL 不同，
+       现在去掉查询串 = 新 URL，微信必定重新下载）。 -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="全球华人跨平台信仰应用 —— 模块 A 翻译对照 / 模块 B 牧师问答 / 模块 C 健康 NEWSTART">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,19 +44,22 @@
 
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
-  <!-- 自托管 CanvasKit：指向随仓库附带的 web/canvaskit/ 目录，避免从 gstatic.com 拉取
-       （国内被墙/极慢）。必须在引擎入口脚本之前声明。
-       微信内置浏览器(X5) 对 Flutter html 渲染器的 DOM 文本排版存在字体放大 / 空格折叠
-       缺陷（Flutter issue #145140），因此本应用**强制**使用 canvaskit 渲染器
-       （见 CI 的 --web-renderer canvaskit），由 Skia 直接绘制文字，彻底规避该缺陷。
-       与 CI 构建参数 --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ 配合。 -->
+  <!-- 自托管 CanvasKit：指向随仓库附带的 web/canvaskit/，避免从 gstatic.com 拉取
+       （国内被墙/极慢）。必须在入口脚本之前声明。与 CI 的
+       --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ 配合。 -->
   <script>
     window.flutterConfiguration = window.flutterConfiguration || {};
     window.flutterConfiguration.canvasKitBaseUrl = 'canvaskit/';
   </script>
   <style>
-    /* 首屏 loading：Flutter 引擎启动前（canvaskit 需先下载 ~6.7MB wasm，
-       启动前只有白屏）给出明确反馈，避免用户以为页面卡死。 */
+    /* 同时覆盖首屏 loading 层与 Flutter 渲染正文：禁止文字自动放大。 */
+    html, body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    /* 首屏 loading：引擎启动前（canvaskit 需先下载 wasm，启动前只有白屏）给出
+       明确反馈，避免用户以为页面卡死。仅作展示，绝不显示任何「请用系统浏览器」
+       之类的引导——本应用目标就是「微信里直接正常显示」。 */
     #app-loading {
       position: fixed;
       inset: 0;
@@ -84,70 +98,35 @@
     <div class="ring"></div>
     <div class="msg" id="app-loading-msg">真理对照 · 加载中</div>
   </div>
+  <!-- 关键：main.dart.js 在本 Flutter 版本是自举的入口，必须「不带任何查询串」直接加载，
+       否则引擎内部相对路径（canvaskit、service worker 等）定位失败 → 黑屏/不渲染。
+       之前给 main.dart.js 加 ?cb= 查询串正是导致微信「完全打不开」的直接原因。 -->
+  <script src="main.dart.js" type="application/javascript"></script>
   <script>
-    // 入口加载逻辑（含 WebGL 预检 + 缓存强制刷新 + 渲染超时兜底）。
-    // 关键背景：微信内置浏览器(X5) 对 Flutter html 渲染器的文字排版有致命缺陷
-    // （字体放大 / 词间空格折叠，见 Flutter issue #145140），因此本应用强制
-    // canvaskit 渲染器。canvaskit 需要 WebGL；若设备/浏览器不支持 WebGL，
-    // 提前给出明确引导，避免白屏。
+    // Flutter 首帧渲染后移除 loading 层。main.dart.js 动态初始化引擎，本脚本执行时
+    // window._flutter 可能尚未就绪，故轮询 DOM：html 渲染器首帧插入 <flt-glass-pane>，
+    // canvaskit 渲染器插入 <canvas>，二者任一出现即视为已渲染。
+    // 注意：本脚本**不做任何报错/跳转引导**，只负责隐藏 loading；渲染本身交给引擎。
     (function () {
-      var loading = document.getElementById('app-loading');
-      var msgEl = document.getElementById('app-loading-msg');
-      function show(msg, isError) {
-        if (msgEl) msgEl.innerHTML = msg;
-        if (loading) {
-          // 错误态：去掉转圈，保留文案
-          var ring = loading.querySelector('.ring');
-          if (ring && isError) ring.style.display = 'none';
-          loading.classList.remove('done');
+      var done = function () {
+        var el = document.getElementById('app-loading');
+        if (el) {
+          el.classList.add('done');
+          setTimeout(function () { el.remove(); }, 350);
         }
-      }
-
-      // 1) WebGL 预检：不支持则引导到系统浏览器，绝不白屏。
-      function hasWebGL() {
-        try {
-          var c = document.createElement('canvas');
-          return !!(window.WebGLRenderingContext &&
-            (c.getContext('webgl') || c.getContext('experimental-webgl')));
-        } catch (e) { return false; }
-      }
-      if (!hasWebGL()) {
-        show('当前浏览器不支持 WebGL，无法完整显示。<br><br>请点击右上角「···」→「在浏览器打开」，使用手机系统浏览器（Safari / Chrome）访问。');
-        return; // 不加载 Flutter，避免白屏
-      }
-
-      // 2) 加载 Flutter 入口；?cb= 为缓存破坏串（由 CI 替换为本次提交 SHA），
-      //    强制微信 X5 重新下载 main.dart.js，而不是用陈旧缓存的旧包。
-      var s = document.createElement('script');
-      s.src = 'main.dart.js?cb={{CACHE_BUST}}';
-      s.type = 'application/javascript';
-      s.onerror = function () {
-        show('资源加载失败，请检查网络后重试，或在手机系统浏览器中打开本页面。', true);
       };
-      document.body.appendChild(s);
-
-      // 3) 渲染超时兜底：25s 内未出现 <canvas>（CanvasKit 渲染面）则提示。
-      var done = false;
-      var timer = setTimeout(function () {
-        if (!done && !document.querySelector('canvas')) {
-          show('页面渲染超时，请下拉刷新，或在手机系统浏览器中打开本页面。', true);
-        }
-      }, 25000);
-
-      // 4) 检测首帧：CanvasKit 会插入 <canvas>，出现即视为渲染成功，移除 loading。
-      var check = function (n) {
-        if (document.querySelector('canvas')) {
-          done = true;
-          clearTimeout(timer);
-          if (loading) {
-            loading.classList.add('done');
-            setTimeout(function () { loading.remove(); }, 350);
-          }
+      var check = function (tries) {
+        if (document.querySelector('flt-glass-pane, canvas')) {
+          done();
           return;
         }
-        if (n > 0) setTimeout(function () { check(n - 1); }, 100);
+        if (tries > 0) {
+          setTimeout(function () { check(tries - 1); }, 150);
+        }
+        // 超过约 30 秒仍未渲染：保持 loading 层（说明真的在加载 wasm 或卡住），
+        // 不自动隐藏掩盖问题，也不弹出「请用系统浏览器」等引导。
       };
-      check(250);
+      check(200);
     })();
   </script>
 </body>
