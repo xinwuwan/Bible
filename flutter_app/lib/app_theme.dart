@@ -4,7 +4,8 @@
 // 设计语言：
 //   · 底色——暖羊皮纸白（阅读器质感，长时间阅读不刺眼）
 //   · 主色——沉稳靛蓝（权威、庄重），点缀 antique gold（艺术感）
-//   · 经文正文统一使用衬线字体（Georgia + 中文衬线回退），UI 标签用无衬线
+//   · 英文经文用系统无衬线（绝不用中文衬线，避免半角空格过窄导致单词粘连）；
+//     中文正文用衬线 + 中文回退；UI 标签用无衬线
 //   · 卡片零投影 + 细描边，克制、安静、有书卷气
 //
 // 合规：本文件只管视觉；权威层级文案（KJV 权威 / 参照标注）由各页面保留。
@@ -58,8 +59,12 @@ class AppTheme {
     );
   }
 
-  /// 英文经文专用样式：只走纯拉丁字体栈（内置 Tinos，绝不回退到 CJK 字体），
-  /// 并加宽词间距，确保手机端英文单词边界清晰、空格不被中文衬线字体吞掉。
+  /// 英文经文专用样式。
+  /// 已知教训：曾尝试内置 Tinos 字体，但线上字体文件 404 加载失败，英文被迫回退到
+  /// 回退链末尾的 `serif`——在安卓上 `serif` 解析为中文衬线，其半角空格极窄，导致
+  /// 单词粘连（"Lookat"）。故此处**不指定任何自定义字体、也绝不把 CJK 衬线放进回退链**，
+  /// fontFamily 留空 ⇒ 走系统默认无衬线（安卓 Roboto / iOS 苹方-SF / Web 浏览器默认），
+  /// 半角空格宽度正常，英文单词边界清晰、永不粘连。
   static TextStyle scriptureEn({
     double size = 15,
     Color color = ink,
@@ -67,15 +72,27 @@ class AppTheme {
     double height = 1.6,
   }) {
     return TextStyle(
-      fontFamily: 'Tinos',
-      fontFamilyFallback: const ['Georgia', 'Times New Roman', 'serif'],
+      // 不指定 fontFamily ⇒ 继承系统默认无衬线（绝不含 CJK 衬线）。
+      fontFamilyFallback: const ['Georgia', 'Times New Roman', 'sans-serif'],
       fontSize: size,
       height: height,
       color: color,
       fontWeight: weight,
-      wordSpacing: 1.6,
-      letterSpacing: 0.1,
+      wordSpacing: 1.8,
+      letterSpacing: 0.15,
     );
+  }
+
+  /// 阅读字号自适应系数：依据屏幕宽度缩放，适配各种手机（小屏略小、大屏略大）。
+  /// 系统「显示大小 / 字体大小 / 无障碍」设置由 Flutter 的 textScaleFactor 自动叠加，
+  /// 无需在此处理——即使用户把系统字号调大，正文也会同步放大，不会被锁死。
+  static double readingScale(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    if (w >= 560) return 1.12; // 平板 / 大屏
+    if (w >= 430) return 1.04; // 大手机
+    if (w >= 380) return 1.0; // 主流手机
+    if (w >= 340) return 0.94; // 小屏手机
+    return 0.88; // 超小屏
   }
 
   /// 标题（衬线，书卷气）

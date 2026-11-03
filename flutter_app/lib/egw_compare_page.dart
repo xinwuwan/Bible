@@ -598,8 +598,9 @@ class _SentenceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enSide = _sentenceSide('英文', AppTheme.scriptureBlue, en);
-    final zhSide = _sentenceSide('中文', AppTheme.zhTeal, zh);
+    final scale = AppTheme.readingScale(context);
+    final enSide = _sentenceSide(context, '英文', AppTheme.scriptureBlue, en, scale);
+    final zhSide = _sentenceSide(context, '中文', AppTheme.zhTeal, zh, scale);
     if (wide) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -621,7 +622,8 @@ class _SentenceRow extends StatelessWidget {
   }
 
   /// 单句一侧：顶部小标签 + 左侧色条 + 正文。文本为 null（该侧句子缺失）时返回 null。
-  Widget? _sentenceSide(String label, Color color, String? text) {
+  /// [scale] 为屏幕宽度自适应系数（见 AppTheme.readingScale）。
+  Widget? _sentenceSide(BuildContext context, String label, Color color, String? text, double scale) {
     if (text == null) return null;
     return Container(
       padding: const EdgeInsets.all(8),
@@ -644,11 +646,11 @@ class _SentenceRow extends StatelessWidget {
           ),
           Text(
             text,
-            // 英文一侧用内置拉丁衬线 Tinos（绝不回退中文衬线），修复手机端单词粘连；
-            // 中文一侧用通用衬线（含中文回退）。
             style: label == '英文'
-                ? AppTheme.scriptureEn(size: 14.5, height: 1.7)
-                : AppTheme.scripture(size: 14.5, height: 1.7),
+                // 英文一侧走系统无衬线（见 scriptureEn），半角空格正常、绝不粘连；
+                // 中文一侧用通用衬线（含中文回退）。字号按屏幕宽度自适应。
+                ? AppTheme.scriptureEn(size: 14.5 * scale, height: 1.7)
+                : AppTheme.scripture(size: 14.5 * scale, height: 1.7),
           ),
         ],
       ),

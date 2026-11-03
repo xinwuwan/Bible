@@ -537,18 +537,20 @@ class _Block extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // KJV 英文（权威底本）用专用英文样式：只走拉丁衬线字体 + 加宽词间距，
-    // 避免中文衬线字体渲染拉丁字母导致手机端单词粘连；其余（含中文）用通用衬线。
+    // KJV 英文（权威底本）用专用英文样式：系统无衬线 + 加宽词间距，
+    // 绝不回退到中文衬线，避免手机端单词粘连；其余（含中文）用通用衬线。
+    // 字号按屏幕宽度自适应（scale），并随系统字号设置自动缩放。
     final isKjv = label.startsWith('KJV');
+    final scale = AppTheme.readingScale(context);
     final style = isKjv
         ? AppTheme.scriptureEn(
-            size: 15,
+            size: 15 * scale,
             color: muted ? AppTheme.inkSoft : AppTheme.ink,
             weight: emphasis ? FontWeight.w500 : FontWeight.w400,
             height: 1.6,
           )
         : AppTheme.scripture(
-            size: muted ? 13.5 : 15,
+            size: (muted ? 13.5 : 15) * scale,
             color: muted ? AppTheme.inkSoft : AppTheme.ink,
             weight: emphasis ? FontWeight.w500 : FontWeight.w400,
             height: muted ? 1.55 : 1.65,
