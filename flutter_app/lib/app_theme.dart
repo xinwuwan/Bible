@@ -60,11 +60,16 @@ class AppTheme {
   }
 
   /// 英文经文专用样式。
-  /// 已知教训：曾尝试内置 Tinos 字体，但线上字体文件 404 加载失败，英文被迫回退到
-  /// 回退链末尾的 `serif`——在安卓上 `serif` 解析为中文衬线，其半角空格极窄，导致
-  /// 单词粘连（"Lookat"）。故此处**不指定任何自定义字体、也绝不把 CJK 衬线放进回退链**，
-  /// fontFamily 留空 ⇒ 走系统默认无衬线（安卓 Roboto / iOS 苹方-SF / Web 浏览器默认），
-  /// 半角空格宽度正常，英文单词边界清晰、永不粘连。
+  /// 已知教训（踩坑全过程）：
+  ///   1) 内置 Tinos 字体 → 线上字体文件 404，英文被迫回退到回退链末尾的 `serif`；
+  ///   2) 安卓上 `serif` 解析为思源宋体等「中文衬线」，其半角空格极窄、字距偏紧，
+  ///      把 "In the beginning" 挤成 "Inthebeginning"——字母紧挨、单词边界不清。
+  /// 因此本样式**三道保险**杜绝粘连：
+  ///   · fontFamily 留空 ⇒ 走系统默认字体（安卓 Roboto / iOS 苹方-SF / Web 浏览器默认），
+  ///     这些系统字体对拉丁字母的半角空格宽度都正常；
+  ///   · 回退链只放拉丁无衬线（Helvetica/Arial）并以 CSS 通用族 'sans-serif' 收尾，
+  ///     **绝不**出现 'serif' 通用族（那是安卓中文衬线的入口）；
+  ///   · 再叠加 wordSpacing/letterSpacing，即便个别环境字体偏紧也能清晰分词、拉开字距。
   static TextStyle scriptureEn({
     double size = 15,
     Color color = ink,
@@ -72,14 +77,15 @@ class AppTheme {
     double height = 1.6,
   }) {
     return TextStyle(
-      // 不指定 fontFamily ⇒ 继承系统默认无衬线（绝不含 CJK 衬线）。
-      fontFamilyFallback: const ['Georgia', 'Times New Roman', 'sans-serif'],
+      // 系统默认字体（拉丁无衬线，半角空格正常）；回退链纯拉丁无衬线，无 CJK 衬线。
+      fontFamily: null,
+      fontFamilyFallback: const ['Helvetica', 'Arial', 'sans-serif'],
       fontSize: size,
       height: height,
       color: color,
       fontWeight: weight,
-      wordSpacing: 1.8,
-      letterSpacing: 0.15,
+      wordSpacing: 2.0, // 额外加宽词间距（逻辑像素）：即便字体偏紧也清晰分词
+      letterSpacing: 0.2, // 轻微字距：进一步拉开字母，提升可读性
     );
   }
 
