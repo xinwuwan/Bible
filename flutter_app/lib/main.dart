@@ -443,12 +443,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: Text('怀著'),
                     icon: Icon(Icons.menu_book_outlined),
                   ),
-                ],
                   ButtonSegment<_HomeMode>(
                     value: _HomeMode.doctrine,
                     label: Text('教义'),
                     icon: Icon(Icons.lightbulb_outline),
                   ),
+                ],
               ),
             ),
           ),
@@ -689,64 +689,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
-  }
-
-  /// 教义卡：中文名 + 英文名 + 简介，白底细描边（复用圣经/怀著网格的弹性列宽思路）
-  class _DoctrineCard extends StatelessWidget {
-    final DoctrineItem doctrine;
-    final VoidCallback onTap;
-
-    const _DoctrineCard({required this.doctrine, required this.onTap});
-
-    @override
-    Widget build(BuildContext context) {
-      final d = doctrine;
-      return Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(12),
-          onTap: onTap,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppTheme.gold.withOpacity(0.5)),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  d.titleZh,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppTheme.ink,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  d.titleEn,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  d.summary,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft, height: 1.4),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
   }
 
   void _openEgwWork(EgwWork w) {
@@ -1057,6 +999,66 @@ class _BookCard extends StatelessWidget {
                     color: AppTheme.line,
                   ),
                 ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/// 教义卡：中文名 + 英文名 + 简介，白底细描边（复用圣经/怀著网格的弹性列宽思路）
+class _DoctrineCard extends StatelessWidget {
+  final DoctrineItem doctrine;
+  final VoidCallback onTap;
+
+  const _DoctrineCard({required this.doctrine, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final d = doctrine;
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: AppTheme.gold.withOpacity(0.5)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                d.titleZh,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.ink,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                d.titleEn,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                d.summary,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft, height: 1.4),
               ),
             ],
           ),
