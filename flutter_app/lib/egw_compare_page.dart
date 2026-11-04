@@ -173,11 +173,11 @@ class _EgwComparePageState extends State<EgwComparePage> {
             ],
           ),
         ),
-        // 对齐说明（诚实提示：两组文本源自不同版本，按内容长度平衡归组，非严格逐句对应）
+        // 对齐说明（诚实提示：两组文本源自不同版本，按内容块对照，非严格逐句对应）
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 2, 16, 4),
           child: Text(
-            '英文原著与中文译本分属不同版本、段落结构独立。此处按内容长度平衡，将大致对应的英文与中文归为同一「对应组」，组内再按句子逐一对照（英一句、中一句交错）；两组并非严格逐句对应，仅供对照阅读。',
+            '英文原著与中文译本分属不同版本、段落结构独立，无法逐句精确对应。此处按内容长度归为「对应组」，组内以整段英文 + 整段中文分块呈现（非逐句交错），便于对照阅读；若只需权威中译，可读下方「中文译本」整段。',
             style: TextStyle(fontSize: 11, color: Colors.grey.shade600, height: 1.4),
           ),
         ),
@@ -421,47 +421,9 @@ List<String> splitSentences(String text) {
   return out;
 }
 
-/// 一行的英/中配对（两侧均非空，除非某一侧整组缺失）。
-class _SentPair {
-  final String en;
-  final String zh;
-  const _SentPair(this.en, this.zh);
-}
 
-/// 组内英中句子对齐：保证每一行都有英、中两侧，绝不出现「英文句配空白中文」。
-///
-/// 思路：英文与中文源自不同版本，句子数量常不相等。若直接按下标一一对应，
-/// 多出来的一侧会变成空白缺译。这里改为按「内容长度比例」把**较长一侧合并**，
-/// 使两侧行数相等——常见情形（两数接近）退化为逐句 1:1；差异大时把较长一侧
-/// 相邻几句并在同一行（用双空格分隔），从而每一句英文都配得到对应中译。
-List<_SentPair> _alignSentences(List<String> en, List<String> zh) {
-  final E = en.length;
-  final Z = zh.length;
-  if (E == 0 && Z == 0) return const [];
-  if (E == 0) return [for (final z in zh) _SentPair('', z)];
-  if (Z == 0) return [for (final e in en) _SentPair(e, '')];
-  if (E == Z) {
-    return [for (int i = 0; i < E; i++) _SentPair(en[i], zh[i])];
-  }
-  final enLonger = E > Z;
-  final long = enLonger ? en : zh;
-  final short = enLonger ? zh : en;
-  final L = long.length;
-  final S = short.length;
-  final out = <_SentPair>[];
-  var prev = 0;
-  for (int si = 0; si < S; si++) {
-    final end = (si + 1 == S) ? L : ((si + 1) * L / S).round();
-    final seg = long.sublist(prev, end).join(enLonger ? '  ' : '');
-    prev = end;
-    final s = short[si];
-    out.add(enLonger ? _SentPair(seg, s) : _SentPair(s, seg));
-  }
-  return out;
-}
-
-/// 单个「对应组」卡片：组内英文与中文按句子逐一交错对照
-/// （窄屏上下、宽屏左右），便于逐句对照阅读。段落级已对齐，组内逐句不会跨段错位。
+/// 单个「对应组」卡片：组内英文与中文以整段分块呈现（窄屏上下、宽屏左右），
+/// 避免逐句位置交错造成的「英句≠中句」错位错觉，便于对照阅读。
 class _PairCard extends StatelessWidget {
   final int index;
   final bool wide;
@@ -536,19 +498,34 @@ class _PairCard extends StatelessWidget {
       );
     }
 
-    // 按内容长度比例把较长一侧合并，使中英行数相等，杜绝任一句英文缺失对应中译。
-    final aligned = _alignSentences(enSents, zhSents);
-
-    final rows = <Widget>[];
-    for (int i = 0; i < aligned.length; i++) {
-      final a = aligned[i];
-      rows.add(_SentenceRow(
-        en: a.en.isEmpty ? null : a.en,
-        zh: a.zh.isEmpty ? null : a.zh,
-        wide: wide,
-      ));
-      if (i < aligned.length - 1) rows.add(const SizedBox(height: 10));
-    }
+    // 中英分块呈现：英文整段 + 中文整段（均清晰标注），不再逐句位置交错。
+    // 原因：EN/ZH 为相互独立的官方译本，段落/句子粒度不同；若按位置逐句配对，
+    // 「英句3」与「中句3」常不对应，产生「翻译不准」的错位观感（实为对照机制所致）。
+    // 改为分块呈现可消除该错觉，且中文（官方译本）得以完整、准确呈现。
+    final scale = AppTheme.readingScale(context);
+    final enBlock = _passageBlock('英文原著', AppTheme.scriptureBlue, enText, scale);
+    final zhBlock = _passageBlock('中文译本', AppTheme.zhTeal, zhText, scale);
+    final body = wide
+        ? Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: enBlock),
+              Container(
+                width: 1,
+                color: AppTheme.line,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+              ),
+              Expanded(child: zhBlock),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              enBlock,
+              const SizedBox(height: 12),
+              zhBlock,
+            ],
+          );
 
     return Container(
       decoration: BoxDecoration(
@@ -562,7 +539,41 @@ class _PairCard extends StatelessWidget {
         children: [
           _groupTag(index),
           const SizedBox(height: 8),
-          ...rows,
+          body,
+        ],
+      ),
+    );
+  }
+
+  /// 单语整段呈现：顶部小标签 + 左侧色条 + 整段正文。用于「对应组」内中英分块显示，
+  /// 避免逐句位置交错造成的「英句≠中句」错位错觉。
+  Widget _passageBlock(String label, Color color, String text, double scale) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.04),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
+              children: [
+                Icon(Icons.menu_book_outlined, size: 14, color: color),
+                const SizedBox(width: 6),
+                Text(label,
+                    style: TextStyle(
+                        fontSize: 12.5, fontWeight: FontWeight.w700, color: color)),
+              ],
+            ),
+          ),
+          Text(
+            text,
+            style: TextStyle(
+                fontSize: 14.5 * scale, height: 1.7, color: AppTheme.ink),
+          ),
         ],
       ),
     );
