@@ -1,517 +1,513 @@
 // comparison_page.dart
-
 // 模块 A 主页面：对照阅读（KJV 权威底本 / 本应用中文译文 / 和合本仅参照 + 释经注记）
-
 //
-
 // 数据流:
-
 //   经文  ← 本地离线 SQLite（OfflineDbHelper.getChapter，离线可用）
-
 //   注记  ← NoteRepository（远端优先，可降级为资产/内存实现）
-
 //
-
 // 合规:
-
 //   - KJV 为唯一权威底本；「本应用译文」栏是本应用独立产出，不采用任何现有
-
 //     中文译本（和合本等）作为译文内容；
-
 //   - 和合本(CUV)仅作参照展示（灰化、标注「仅参照·非权威」），不作为权威来源；
-
 //   - 注记默认只显示 approved；draftMode 仅供联调，发布构建必须 false。
-
-
 
 import 'package:flutter/material.dart';
 
-
-
 import 'app_models.dart';
-
 import 'app_theme.dart';
-
 import 'comparison_note_sheet.dart';
-
 import 'kjv_cuv_diff.dart';
-
 import 'main.dart' show locateRef;
-
 import 'note_repository.dart';
-
 import 'offline_db_helper.dart';
-
 import 'user_note.dart';
-
 import 'user_note_repository.dart';
-
 import 'user_note_sheet.dart';
-
 import 'user_notes_page.dart';
-
 import 'egw_verses_repository.dart';
-
 import 'verse_compare_card.dart';
 
-
-
 /// 差异标示用的琥珀色（与 verse_compare_card 保持一致）
-
 const Color _diffColor = Color(0xFFE0A100);
 
-
-
 class ComparisonPage extends StatefulWidget {
-
   final int bookId;
-
   final String bookName;
-
   final int chapterCount;
-
   final int initialChapter;
-
   final NoteRepository notes;
-
   final bool draftMode; // 发布必须为 false
 
-
-
   const ComparisonPage({
-
     super.key,
-
     required this.bookId,
-
     required this.bookName,
-
     required this.chapterCount,
-
     this.initialChapter = 1,
-
     required this.notes,
-
     this.draftMode = false,
-
   });
 
-
-
   @override
-
   State<ComparisonPage> createState() => _ComparisonPageState();
-
 }
 
-
-
 class _ComparisonPageState extends State<ComparisonPage> {
-
   late int _chapter;
-
   List<VerseView> _verses = [];
-
   final Map<String, ComparisonNote> _noteMap = {};
-
   final Map<String, UserNote> _userNoteMap = {};
-
   bool _showCuv = true;
-
   bool _onlyDiffs = false; // 仅看 KJV 与和合本有差异的经节
-
   bool _loadingNotes = false;
-
   String? _error;
 
-
-
   @override
-
   void initState() {
-
     super.initState();
-
     _chapter = widget.initialChapter;
-
     // 差异标示数据（KJV↔和合本）全局加载一次，加载完成后刷新以显示过滤器/图例
-
     KjvCuvDiffStore.load().then((_) {
-
       if (mounted) setState(() {});
-
     });
-
     // 用户随手笔记：先确保本地数据载入，再随仓库变更刷新
-
     UserNoteRepository.instance.ensureLoaded();
-
     UserNoteRepository.instance.addListener(_onUserNotesChanged);
-
     // 怀爱伦(EGW)经文论述离线数据：加载完成后刷新整页，卡片即展示对应区块
-
     EgwVersesRepository.instance.ensureLoaded().then((_) {
-
       if (mounted) setState(() {});
-
     });
-
     _loadChapter();
-
   }
-
-
 
   @override
-
   void dispose() {
-
     UserNoteRepository.instance.removeListener(_onUserNotesChanged);
-
     super.dispose();
-
   }
-
-
 
   /// 笔记仓库任意变更（新增/修改/删除）后，刷新本章已加载的笔记映射
-
   void _onUserNotesChanged() {
-
     if (!mounted) return;
-
     setState(_refreshUserNotes);
-
   }
-
-
 
   void _refreshUserNotes() {
-
     _userNoteMap.clear();
-
     for (final v in _verses) {
-
       final n = UserNoteRepository.instance.get(v.ref);
-
       if (n != null) _userNoteMap[_normRef(v.ref)] = n;
-
     }
-
   }
-
-
 
   void _loadChapter() {
-
     final rows = OfflineDbHelper.getChapter(widget.bookId, _chapter);
-
     setState(() {
-
       _verses = rows.map(VerseView.fromDbRow).toList();
-
       _noteMap.clear();
-
       _refreshUserNotes();
-
       _error = null;
-
     });
-
     _loadNotes();
-
   }
-
-
 
   Future<void> _loadNotes() async {
-
     if (_verses.isEmpty) return;
-
     final refs = _verses.map((v) => v.ref).toList();
-
     setState(() => _loadingNotes = true);
-
     try {
-
       final list = await widget.notes.fetchForRefs(
-
         refs,
-
         includeDraft: widget.draftMode,
-
       );
-
       if (!mounted) return;
-
       setState(() {
-
         _noteMap
-
           ..clear()
-
           ..addEntries(list.map((n) => MapEntry(_normRef(n.ref), n)));
-
         _loadingNotes = false;
-
       });
-
     } catch (e) {
-
       if (!mounted) return;
-
       setState(() {
-
         _loadingNotes = false;
-
         _error = '注记加载失败：${e.toString()}（经文本地仍可阅读）';
-
       });
-
     }
-
   }
-
-
 
   String _normRef(String s) => s.replaceAll(RegExp(r'\s+'), '').toUpperCase();
 
-
-
   /// 本章被标记为「中英差异」的经节数
-
   int get _chapterDiffCount =>
-
       _verses.where((v) => KjvCuvDiffStore.get(v.ref) != null).length;
 
-
-
   void _goto(int ch) {
-
     // clamp 返回 num，需 toInt() 才能赋给 int 字段
-
     final c = ch.clamp(1, widget.chapterCount).toInt();
-
     if (c == _chapter) return;
-
     setState(() => _chapter = c);
-
     _loadChapter();
-
   }
-
-
 
   void _openNote(ComparisonNote note) {
-
     ComparisonNoteSheet.show(
-
       context,
-
       note: note,
-
       onFeedback: () {
-
         Navigator.of(context).pop();
-
         ScaffoldMessenger.of(context).showSnackBar(
-
           const SnackBar(content: Text('已记录反馈，将进入复核队列（review_queue）')),
-
         );
-
       },
-
     );
-
   }
-
-
 
   /// 打开用户随手笔记编辑器；返回 true 表示有变更，刷新本章映射
-
   Future<void> _openUserNote(String ref) async {
-
     final existing = UserNoteRepository.instance.get(ref);
-
     final changed = await UserNoteSheet.show(
-
       context,
-
       ref: ref,
-
       initialText: existing?.text,
-
     );
-
     if (changed == true && mounted) {
-
       setState(_refreshUserNotes);
-
     }
-
   }
-
-
 
   /// 打开「我的笔记」列表页
-
   void _openUserNotesPage() {
-
     Navigator.of(context).push(
-
       MaterialPageRoute(
-
         builder: (_) => UserNotesPage(onJumpToRef: _jumpToRef),
-
       ),
-
     );
-
   }
-
-
 
   /// 从笔记列表跳转到对应经文（新开对照页，保留当前书卷上下文）
-
   void _jumpToRef(String ref) {
-
     final loc = locateRef(ref);
-
     if (loc == null) {
-
       ScaffoldMessenger.of(context).showSnackBar(
-
         SnackBar(content: Text('离线库暂无该处原文：$ref')),
-
       );
-
       return;
-
     }
-
     Navigator.of(context).push(
-
       MaterialPageRoute(
-
         builder: (_) => ComparisonPage(
-
           bookId: loc['bookId'] as int,
-
           bookName: loc['name'] as String,
-
           chapterCount: loc['count'] as int,
-
           initialChapter: loc['chapter'] as int,
-
           notes: widget.notes,
-
           draftMode: widget.draftMode,
-
         ),
-
       ),
-
     );
-
   }
 
-
-
   /// 全本「中英差异」速览弹层：把 KJV 与和合本不一致的经节集中列出，
-
   /// 每条附说明注记与两译的定位片段，免去逐章翻查。
-
   void _showDiffOverview() {
-
     final all = KjvCuvDiffStore.all;
-
     showModalBottomSheet<void>(
-
       context: context,
-
       isScrollControlled: true,
-
       shape: const RoundedRectangleBorder(
-
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-
       ),
-
       builder: (ctx) => SizedBox(
-
         height: MediaQuery.of(ctx).size.height * 0.75,
-
         child: Column(
-
           children: [
-
             Padding(
-
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
-
               child: Column(
-
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
-
                   Row(
-
                     children: [
-
                       const Icon(Icons.warning_amber_rounded,
-
                           size: 18, color: _diffColor),
-
                       const SizedBox(width: 6),
-
                       Expanded(
-
                         child: Text(
-
                           'KJV 与和合本差异速览（共 ${all.length} 处）',
-
                           style: const TextStyle(
-
                               fontSize: 15, fontWeight: FontWeight.w700),
-
                         ),
-
                       ),
-
                       IconButton(
-
                         icon: const Icon(Icons.close, size: 18),
-
                         onPressed: () => Navigator.of(ctx).pop(),
-
                       ),
-
                     ],
-
                   ),
-
                   const SizedBox(height: 2),
-
                   const Text(
-
                     '琥珀标注仅说明两译所据底本传统或措辞不同，不判断谁对谁错；'
-
                     '和合本仅作参照，KJV 为权威底本。回到对照页可看到逐节高亮。',
-
                     style: TextStyle(fontSize: 11.5, color: Colors.black54, height: 1.4),
-
                   ),
-
                 ],
-
               ),
-
             ),
+            const Divider(height: 1),
+            Expanded(
+              child: ListView.separated(
+                itemCount: all.length,
+                separatorBuilder: (_, __) => const Divider(height: 1),
+                itemBuilder: (_, i) {
+                  final d = all[i];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                d.ref,
+                                style: const TextStyle(
+                                    fontSize: 13.5,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: _diffColor.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                '${d.typeLabel}·${KjvCuvDiffStore.severityLabel(d.severity)}',
+                                style: const TextStyle(
+                                    fontSize: 10.5, color: _diffColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          d.note,
+                          style: const TextStyle(
+                              fontSize: 12.5, height: 1.5),
+                        ),
+                        if ((d.kjvFocus ?? '').isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text.rich(
+                              TextSpan(children: [
+                                const TextSpan(
+                                  text: 'KJV　',
+                                  style: TextStyle(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppTheme.scriptureBlue),
+                                ),
+                                TextSpan(
+                                  text: d.kjvFocus!,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      height: 1.45,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        if ((d.cuvFocus ?? '').isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text.rich(
+                              TextSpan(children: [
+                                const TextSpan(
+                                  text: '和合本　',
+                                  style: TextStyle(
+                                      fontSize: 11.5,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppTheme.cuvGrey),
+                                ),
+                                TextSpan(
+                                  text: d.cuvFocus!,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      height: 1.45,
+                                      color: Colors.black54),
+                                ),
+                              ]),
+                            ),
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-            // [Item 1·权威透明] 明确「本应用译文」为自产辅助译文、非官方译本，
-            // 消除用户对"翻译不准"的误解，并声明 KJV 为唯一权威底本。
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${widget.bookName} 第 $_chapter 章'),
+        actions: [
+          IconButton(
+            tooltip: '我的笔记',
+            icon: const Icon(Icons.sticky_note_2_outlined),
+            onPressed: _openUserNotesPage,
+          ),
+          IconButton(
+            tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
+            icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+            onPressed: () => setState(() => _showCuv = !_showCuv),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // 章节导航（胶囊容器）
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 6, 14, 4),
+            child: Container(
+              // minHeight 而非 height：下拉菜单文字随系统字号放大时长高，
+              // 固定 46px 会把放大的文字挤出容器造成重叠
+              constraints: const BoxConstraints(minHeight: 46),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppTheme.line),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.chevron_left, size: 22),
+                    onPressed: _chapter > 1 ? () => _goto(_chapter - 1) : null,
+                  ),
+                  Expanded(
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<int>(
+                        value: _chapter,
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        items: List.generate(
+                          widget.chapterCount,
+                          (i) => DropdownMenuItem<int>(
+                            value: i + 1,
+                            child: Text(
+                              '第 ${i + 1} 章 / 共 ${widget.chapterCount} 章',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.ink,
+                              ),
+                            ),
+                          ),
+                        ),
+                        onChanged: (v) => _goto(v ?? 1),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.chevron_right, size: 22),
+                    onPressed: _chapter < widget.chapterCount
+                        ? () => _goto(_chapter + 1)
+                        : null,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // ⚠ 中英差异快速通道：显眼按钮（仅当差异数据可用时显示）
+          if (KjvCuvDiffStore.isAvailable)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 6, 14, 0),
+              // Wrap 而非 Row：按钮文案随字号放大变宽时自动换行到下一行，
+              // 不再把第二个按钮挤出屏幕（RenderFlex overflow）
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor:
+                            _onlyDiffs ? Colors.white : _diffColor,
+                        backgroundColor:
+                            _onlyDiffs ? _diffColor : Colors.white,
+                        side: const BorderSide(color: _diffColor),
+                        minimumSize: const Size(0, 38),
+                        textStyle: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                      ),
+                      onPressed: () =>
+                          setState(() => _onlyDiffs = !_onlyDiffs),
+                      icon: Icon(
+                        _onlyDiffs
+                            ? Icons.filter_alt
+                            : Icons.filter_alt_outlined,
+                        size: 16,
+                      ),
+                      label: Text(
+                        _chapterDiffCount > 0
+                            ? (_onlyDiffs
+                                ? '只看差异中（本章 $_chapterDiffCount 处）·点此还原'
+                                : '仅看本章中英差异（$_chapterDiffCount 处）')
+                            : '本章无标记差异',
+                      ),
+                    ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: _diffColor,
+                      side: const BorderSide(color: _diffColor),
+                      backgroundColor: Colors.white,
+                      minimumSize: const Size(0, 38),
+                      textStyle: const TextStyle(
+                          fontSize: 13, fontWeight: FontWeight.w600),
+                    ),
+                    onPressed: _showDiffOverview,
+                    child: Text('速览全本 ${KjvCuvDiffStore.all.length} 处'),
+                  ),
+                ],
+              ),
+            ),
+          // 权威层级图例
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
+            // Wrap 而非 Row：图例文字随系统字号放大变宽时自动换行，
+            // 不再横向溢出屏幕
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威底本'),
+                _LegendDot(color: AppTheme.zhTeal, text: '本应用译文'),
+                if (_showCuv)
+                  _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
+                if (KjvCuvDiffStore.isAvailable)
+                  _LegendDot(color: _diffColor, text: '⚠ 中英差异'),
+                if (_loadingNotes)
+                  const SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+              ],
+            ),
+          ),
+            // [Item 1·权威透明] 明确「本应用译文」为自产辅助译文、非官方译本，消除误解，声明 KJV 为唯一权威底本。
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
               child: Row(
@@ -528,666 +524,81 @@ class _ComparisonPageState extends State<ComparisonPage> {
                 ],
               ),
             ),
-
-            const Divider(height: 1),
-
-            Expanded(
-
-              child: ListView.separated(
-
-                itemCount: all.length,
-
-                separatorBuilder: (_, __) => const Divider(height: 1),
-
-                itemBuilder: (_, i) {
-
-                  final d = all[i];
-
-                  return Padding(
-
-                    padding: const EdgeInsets.symmetric(
-
-                        horizontal: 16, vertical: 10),
-
-                    child: Column(
-
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-
-                        Row(
-
-                          children: [
-
-                            Flexible(
-
-                              child: Text(
-
-                                d.ref,
-
-                                style: const TextStyle(
-
-                                    fontSize: 13.5,
-
-                                    fontWeight: FontWeight.w700),
-
-                              ),
-
-                            ),
-
-                            const SizedBox(width: 8),
-
-                            Container(
-
-                              padding: const EdgeInsets.symmetric(
-
-                                  horizontal: 6, vertical: 1),
-
-                              decoration: BoxDecoration(
-
-                                color: _diffColor.withOpacity(0.12),
-
-                                borderRadius: BorderRadius.circular(8),
-
-                              ),
-
-                              child: Text(
-
-                                '${d.typeLabel}·${KjvCuvDiffStore.severityLabel(d.severity)}',
-
-                                style: const TextStyle(
-
-                                    fontSize: 10.5, color: _diffColor),
-
-                              ),
-
-                            ),
-
-                          ],
-
-                        ),
-
-                        const SizedBox(height: 4),
-
-                        Text(
-
-                          d.note,
-
-                          style: const TextStyle(
-
-                              fontSize: 12.5, height: 1.5),
-
-                        ),
-
-                        if ((d.kjvFocus ?? '').isNotEmpty)
-
-                          Padding(
-
-                            padding: const EdgeInsets.only(top: 4),
-
-                            child: Text.rich(
-
-                              TextSpan(children: [
-
-                                const TextSpan(
-
-                                  text: 'KJV　',
-
-                                  style: TextStyle(
-
-                                      fontSize: 11.5,
-
-                                      fontWeight: FontWeight.w700,
-
-                                      color: AppTheme.scriptureBlue),
-
-                                ),
-
-                                TextSpan(
-
-                                  text: d.kjvFocus!,
-
-                                  style: const TextStyle(
-
-                                      fontSize: 12,
-
-                                      height: 1.45,
-
-                                      fontWeight: FontWeight.w600),
-
-                                ),
-
-                              ]),
-
-                            ),
-
-                          ),
-
-                        if ((d.cuvFocus ?? '').isNotEmpty)
-
-                          Padding(
-
-                            padding: const EdgeInsets.only(top: 2),
-
-                            child: Text.rich(
-
-                              TextSpan(children: [
-
-                                const TextSpan(
-
-                                  text: '和合本　',
-
-                                  style: TextStyle(
-
-                                      fontSize: 11.5,
-
-                                      fontWeight: FontWeight.w700,
-
-                                      color: AppTheme.cuvGrey),
-
-                                ),
-
-                                TextSpan(
-
-                                  text: d.cuvFocus!,
-
-                                  style: const TextStyle(
-
-                                      fontSize: 12,
-
-                                      height: 1.45,
-
-                                      color: Colors.black54),
-
-                                ),
-
-                              ]),
-
-                            ),
-
-                          ),
-
-                      ],
-
-                    ),
-
-                  );
-
-                },
-
-              ),
-
-            ),
-
-          ],
-
-        ),
-
-      ),
-
-    );
-
-  }
-
-
-
-  @override
-
-  Widget build(BuildContext context) {
-
-    final cs = Theme.of(context).colorScheme;
-
-    return Scaffold(
-
-      appBar: AppBar(
-
-        title: Text('${widget.bookName} 第 $_chapter 章'),
-
-        actions: [
-
-          IconButton(
-
-            tooltip: '我的笔记',
-
-            icon: const Icon(Icons.sticky_note_2_outlined),
-
-            onPressed: _openUserNotesPage,
-
-          ),
-
-          IconButton(
-
-            tooltip: _showCuv ? '隐藏和合本参照' : '显示和合本参照',
-
-            icon: Icon(_showCuv ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-
-            onPressed: () => setState(() => _showCuv = !_showCuv),
-
-          ),
-
-        ],
-
-      ),
-
-      body: Column(
-
-        children: [
-
-          // 章节导航（胶囊容器）
-
-          Padding(
-
-            padding: const EdgeInsets.fromLTRB(14, 6, 14, 4),
-
-            child: Container(
-
-              // minHeight 而非 height：下拉菜单文字随系统字号放大时长高，
-
-              // 固定 46px 会把放大的文字挤出容器造成重叠
-
-              constraints: const BoxConstraints(minHeight: 46),
-
-              decoration: BoxDecoration(
-
-                color: Colors.white,
-
-                borderRadius: BorderRadius.circular(14),
-
-                border: Border.all(color: AppTheme.line),
-
-              ),
-
-              child: Row(
-
-                children: [
-
-                  IconButton(
-
-                    icon: const Icon(Icons.chevron_left, size: 22),
-
-                    onPressed: _chapter > 1 ? () => _goto(_chapter - 1) : null,
-
-                  ),
-
-                  Expanded(
-
-                    child: DropdownButtonHideUnderline(
-
-                      child: DropdownButton<int>(
-
-                        value: _chapter,
-
-                        isExpanded: true,
-
-                        alignment: Alignment.center,
-
-                        items: List.generate(
-
-                          widget.chapterCount,
-
-                          (i) => DropdownMenuItem<int>(
-
-                            value: i + 1,
-
-                            child: Text(
-
-                              '第 ${i + 1} 章 / 共 ${widget.chapterCount} 章',
-
-                              textAlign: TextAlign.center,
-
-                              style: const TextStyle(
-
-                                fontSize: 14,
-
-                                fontWeight: FontWeight.w600,
-
-                                color: AppTheme.ink,
-
-                              ),
-
-                            ),
-
-                          ),
-
-                        ),
-
-                        onChanged: (v) => _goto(v ?? 1),
-
-                      ),
-
-                    ),
-
-                  ),
-
-                  IconButton(
-
-                    icon: const Icon(Icons.chevron_right, size: 22),
-
-                    onPressed: _chapter < widget.chapterCount
-
-                        ? () => _goto(_chapter + 1)
-
-                        : null,
-
-                  ),
-
-                ],
-
-              ),
-
-            ),
-
-          ),
-
-          // ⚠ 中英差异快速通道：显眼按钮（仅当差异数据可用时显示）
-
-          if (KjvCuvDiffStore.isAvailable)
-
-            Padding(
-
-              padding: const EdgeInsets.fromLTRB(14, 6, 14, 0),
-
-              // Wrap 而非 Row：按钮文案随字号放大变宽时自动换行到下一行，
-
-              // 不再把第二个按钮挤出屏幕（RenderFlex overflow）
-
-              child: Wrap(
-
-                alignment: WrapAlignment.spaceBetween,
-
-                spacing: 8,
-
-                runSpacing: 8,
-
-                children: [
-
-                  OutlinedButton.icon(
-
-                      style: OutlinedButton.styleFrom(
-
-                        foregroundColor:
-
-                            _onlyDiffs ? Colors.white : _diffColor,
-
-                        backgroundColor:
-
-                            _onlyDiffs ? _diffColor : Colors.white,
-
-                        side: const BorderSide(color: _diffColor),
-
-                        minimumSize: const Size(0, 38),
-
-                        textStyle: const TextStyle(
-
-                            fontSize: 13, fontWeight: FontWeight.w600),
-
-                      ),
-
-                      onPressed: () =>
-
-                          setState(() => _onlyDiffs = !_onlyDiffs),
-
-                      icon: Icon(
-
-                        _onlyDiffs
-
-                            ? Icons.filter_alt
-
-                            : Icons.filter_alt_outlined,
-
-                        size: 16,
-
-                      ),
-
-                      label: Text(
-
-                        _chapterDiffCount > 0
-
-                            ? (_onlyDiffs
-
-                                ? '只看差异中（本章 $_chapterDiffCount 处）·点此还原'
-
-                                : '仅看本章中英差异（$_chapterDiffCount 处）')
-
-                            : '本章无标记差异',
-
-                      ),
-
-                    ),
-
-                  OutlinedButton(
-
-                    style: OutlinedButton.styleFrom(
-
-                      foregroundColor: _diffColor,
-
-                      side: const BorderSide(color: _diffColor),
-
-                      backgroundColor: Colors.white,
-
-                      minimumSize: const Size(0, 38),
-
-                      textStyle: const TextStyle(
-
-                          fontSize: 13, fontWeight: FontWeight.w600),
-
-                    ),
-
-                    onPressed: _showDiffOverview,
-
-                    child: Text('速览全本 ${KjvCuvDiffStore.all.length} 处'),
-
-                  ),
-
-                ],
-
-              ),
-
-            ),
-
-          // 权威层级图例
-
-          Padding(
-
-            padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
-
-            // Wrap 而非 Row：图例文字随系统字号放大变宽时自动换行，
-
-            // 不再横向溢出屏幕
-
-            child: Wrap(
-
-              spacing: 10,
-
-              runSpacing: 4,
-
-              crossAxisAlignment: WrapCrossAlignment.center,
-
-              children: [
-
-                _LegendDot(color: AppTheme.scriptureBlue, text: 'KJV 权威底本'),
-
-                _LegendDot(color: AppTheme.zhTeal, text: '本应用译文'),
-
-                if (_showCuv)
-
-                  _LegendDot(color: AppTheme.cuvGrey, text: '和合本仅参照'),
-
-                if (KjvCuvDiffStore.isAvailable)
-
-                  _LegendDot(color: _diffColor, text: '⚠ 中英差异'),
-
-                if (_loadingNotes)
-
-                  const SizedBox(
-
-                    width: 14,
-
-                    height: 14,
-
-                    child: CircularProgressIndicator(strokeWidth: 2),
-
-                  ),
-
-              ],
-
-            ),
-
-          ),
-
           if (_error != null)
-
             Padding(
-
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-
               child: Text(
-
                 _error!,
-
                 style: TextStyle(fontSize: 12, color: cs.error),
-
               ),
-
             ),
-
           const Divider(height: 8),
-
           // 经文列表
-
           Expanded(
-
             child: _verses.isEmpty
-
                 ? const Center(child: Text('本章暂无离线数据'))
-
                 : Builder(
-
                     builder: (context) {
-
                       final display = _onlyDiffs
-
                           ? _verses
-
                               .where((v) => KjvCuvDiffStore.get(v.ref) != null)
-
                               .toList()
-
                           : _verses;
-
                       if (display.isEmpty) {
-
                         return Center(
-
                           child: Text(
-
                             _onlyDiffs
-
                                 ? '本章没有标记出的 KJV 与和合本差异'
-
                                 : '本章暂无离线数据',
-
                           ),
-
                         );
-
                       }
-
                       return ListView.builder(
-
                         itemCount: display.length,
-
                         itemBuilder: (context, i) {
-
                           final v = display[i];
-
                           final note = _noteMap[_normRef(v.ref)];
-
                           return VerseCompareCard(
-
                             verse: v,
-
                             note: note,
-
                             showCuv: _showCuv,
-
                             draftMode: widget.draftMode,
-
                             onTapNote: note == null ? null : () => _openNote(note),
-
                             diff: KjvCuvDiffStore.get(v.ref),
-
                             userNote: _userNoteMap[_normRef(v.ref)],
-
                             onTapUserNote: () => _openUserNote(v.ref),
-
                             egw: EgwVersesRepository.instance.get(v.ref),
-
                           );
-
                         },
-
                       );
-
                     },
-
                   ),
-
           ),
-
         ],
-
       ),
-
     );
-
   }
-
 }
 
-
-
 class _LegendDot extends StatelessWidget {
-
   final Color color;
-
   final String text;
-
-
 
   const _LegendDot({required this.color, required this.text});
 
-
-
   @override
-
   Widget build(BuildContext context) {
-
     return Row(
-
       mainAxisSize: MainAxisSize.min,
-
       children: [
-
         Container(
-
           width: 10,
-
           height: 10,
-
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-
         ),
-
         const SizedBox(width: 4),
-
         Text(text, style: const TextStyle(fontSize: 11, color: Colors.black54)),
-
       ],
-
     );
-
   }
-
 }
-
