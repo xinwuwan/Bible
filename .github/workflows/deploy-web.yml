@@ -154,6 +154,18 @@ jobs:
           if-no-files-found: warn
           retention-days: 3
 
+      - name: Auto-subset CJK fonts (before build)
+        # 构建前自动重新提取应用字符并子集化中文字体，保证「之后新增中文文案」
+        # 也能正确显示、不出现方框；同时固化白名单，使本步骤在 CI 缺少离线库时
+        # 仍保有完整汉字覆盖。
+        # 设 continue-on-error：即便 gstatic 下载受限导致子集化失败，也保留已入库的
+        # 可用子集字体继续构建发布，绝不因此中断发布。
+        working-directory: ${{ github.workspace }}
+        continue-on-error: true
+        run: |
+          python3 -m pip install -q fonttools
+          python3 tools/subset_fonts.py
+
       - name: Build web release (EdgeOne, base-href /)
         # EdgeOne Pages 是域名根部署，必须用 base-href "/"；
         # 先构建再 mv 到独立目录，避免覆盖下面 GitHub Pages 用的产物
