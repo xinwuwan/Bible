@@ -2,7 +2,7 @@ name: Debug Analyze
 on:
   workflow_dispatch: {}
   push:
-    branches: [debug/analyze]
+    branches: [main]
 permissions:
   contents: read
   issues: write
