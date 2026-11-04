@@ -1,549 +1,1260 @@
 // main.dart
+
 // 应用入口 + 统一导航外壳（BottomNavigationBar 整合模块 A 对照 / B 牧师问答 / C 健康）
+
 //
+
 // 启动流程:
+
 //   1. 加载 web / 桌面 / 手机通用的 JSON 离线资源（assets/web/app_data.json）
+
 //   2. 构建注记 / 问答数据源（远端 API / 本地资产或 Mock，二选一）
+
 //   3. 进入统一外壳：底部三个 Tab —— 对照 / 问答 / 健康
+
 //
+
 // 发布开关（用 dart-define 注入，默认均为安全值）:
+
 //   --dart-define=API_BASE=https://...       后端地址
+
 //   --dart-define=USE_REMOTE_NOTES=true      启用远端注记（默认 false，用本地资产）
+
 //   --dart-define=USE_REMOTE_QA=true         启用远端问答 RAG（默认 false，用 Mock）
+
 //   --dart-define=SHOW_DRAFT_NOTES=true      【仅联调】展示 draft 注记，正式构建切勿开启
+
 //   --dart-define=SHOW_UNREVIEWED_HEALTH=true 【仅联调】展示未过医学审核的健康条目
 
+
+
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
 import 'app_models.dart';
+
 import 'app_theme.dart';
+
 import 'comparison_page.dart';
+
 import 'egw_compare_page.dart';
+
 import 'egw_works.dart';
+import 'doctrine_page.dart';
+
 import 'health_page.dart';
+
 import 'health_repository.dart';
+
 import 'note_repository.dart';
+
 import 'offline_db_helper.dart';
+
 import 'onboarding_page.dart';
+
 import 'qa_models.dart';
+
 import 'qa_page.dart';
+
 import 'qa_repository.dart';
+
 import 'offline_qa_repository.dart';
+
 import 'rag_qa_repository.dart';
+
 import 'rag_client.dart';
+
 import 'rag_config.dart';
+
 import 'search_page.dart';
 
+
+
 const String kApiBaseUrl =
+
     String.fromEnvironment('API_BASE', defaultValue: 'https://api.example.com');
+
 const bool kUseRemoteNotes =
+
     bool.fromEnvironment('USE_REMOTE_NOTES', defaultValue: false);
+
 const bool kDraftMode =
+
     bool.fromEnvironment('SHOW_DRAFT_NOTES', defaultValue: false);
+
 // 问答默认走 Mock（无后端时的界面演示）。正式构建必须置 true 走远端 RAG。
+
 const bool kUseRemoteQa =
+
     bool.fromEnvironment('USE_REMOTE_QA', defaultValue: false);
+
 // 健康模块：默认只展示已过医学审核的条目（合规闸门）。正式构建必须为 false。
+
 const bool kHealthPreview =
+
     bool.fromEnvironment('SHOW_UNREVIEWED_HEALTH', defaultValue: false);
 
+
+
 /// 把引用 ref（如 'JHN 3:16'）解析为可跳转的章节定位；无法定位返回 null。
+
 Map<String, dynamic>? locateRef(String ref) {
+
   if (!OfflineDbHelper.isAvailable) return null;
+
   final parts = ref.trim().split(RegExp(r'\s+'));
+
   if (parts.length < 2) return null;
+
   final code = parts[0].toUpperCase();
+
   final chapter = int.tryParse(parts[1].split(':').first);
+
   if (chapter == null) return null;
+
   for (final b in OfflineDbHelper.getBooks()) {
+
     if ((b['book_code'] as String).toUpperCase() == code) {
+
       return {
+
         'bookId': b['book_id'] as int,
+
         'chapter': chapter,
+
         'name': b['name_zh'] as String,
+
         'count': b['chapter_count'] as int,
+
       };
+
     }
+
   }
+
   return null;
+
 }
+
+
 
 Future<void> main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
+
   // 加载 web / 桌面 / 手机通用的 JSON 离线资源（网页端也能正常初始化）。
+
   try {
+
     await OfflineDbHelper.load();
+
     await OfflineDbHelper.loadLogsCache();
+
     // 预载离线问答索引（链接里模块 B 即可本地真实回答，无需后端）。
+
     try {
+
       await OfflineQaRepository.load();
+
     } catch (e) {
+
       debugPrint('offline qa load failed: $e');
+
     }
+
   } catch (e) {
+
     // 离线资源加载失败不阻断应用：模块 A/C 显示友好提示，模块 B 仍可用。
+
     debugPrint('offline data load failed: $e');
+
   }
+
   runApp(const FaithApp());
+
 }
+
+
 
 class FaithApp extends StatelessWidget {
+
   const FaithApp({super.key});
 
+
+
   /// 全应用文本缩放上限：老年用户/系统大字号与布局稳定之间的平衡点。
+
   /// 低于上限 → 跟随系统/浏览器字体放大（无障碍友好）；
+
   /// 高于上限 → 夹紧，防止写死尺寸的装饰元素（进度环、节号徽章）被撑爆。
+
   /// 配套：各页面已去除固定高度、改弹性布局（Wrap/Flexible/ellipsis），
+
   /// 在上限范围内不会出现挤压重叠。
+
   static const double kMaxTextScale = 1.5;
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     // iOS/微信浏览器会把系统「文字大小」传给 Flutter web 的 textScaler；
+
     // 夹紧极端值，同时保留正常范围的大字号支持。
+
     return MediaQuery.withClampedTextScaling(
+
       maxScaleFactor: kMaxTextScale,
+
       child: MaterialApp(
+
         title: '真理对照',
+
         debugShowCheckedModeBanner: false,
+
         theme: AppTheme.light(),
+
         home: const AppRoot(),
+
       ),
+
     );
+
   }
+
 }
+
+
 
 /// 首次启动引导闸门：检测 onboarding 标记，未看过则先展示引导页，之后直达主外壳。
+
 class AppRoot extends StatefulWidget {
+
   const AppRoot({super.key});
 
+
+
   @override
+
   State<AppRoot> createState() => _AppRootState();
+
 }
+
+
 
 class _AppRootState extends State<AppRoot> {
+
   static const String _kOnboardingSeen = 'onboarding_seen_v1';
 
+
+
   final Future<bool> _seen = SharedPreferences.getInstance()
+
       .then((p) => p.getBool(_kOnboardingSeen) ?? false);
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return FutureBuilder<bool>(
+
       future: _seen,
+
       builder: (context, snap) {
+
         if (!snap.hasData) {
+
           return const Scaffold(
+
             body: Center(child: CircularProgressIndicator()),
+
           );
+
         }
+
         if (snap.data == true) return const HomePage();
+
         return OnboardingPage(
+
           onFinish: () async {
+
             final p = await SharedPreferences.getInstance();
+
             await p.setBool(_kOnboardingSeen, true);
+
             if (!mounted) return;
+
             Navigator.of(context).pushReplacement(
+
               MaterialPageRoute(builder: (_) => const HomePage()),
+
             );
+
           },
+
         );
+
       },
+
     );
+
   }
+
 }
+
+
 
 /// 统一导航外壳：底部三个 Tab（对照 / 问答 / 健康），每个 Tab 各自维护一个 Navigator，
+
 /// 使得 Tab 内的页面跳转（打开章节、引用跳回、打开健康主题）不会顶掉底部导航栏。
+
 class HomePage extends StatefulWidget {
+
   const HomePage({super.key});
 
+
+
   @override
+
   State<HomePage> createState() => _HomePageState();
+
 }
+
+
 
 class _HomePageState extends State<HomePage> {
+
   late final NoteRepository _notes;
+
   late final QaRepository _qaRepo;
+
   int _tab = 0;
+
   final List<GlobalKey<NavigatorState>> _navKeys = [
+
     GlobalKey<NavigatorState>(),
+
     GlobalKey<NavigatorState>(),
+
     GlobalKey<NavigatorState>(),
+
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _notes = kUseRemoteNotes
-        ? RemoteNoteRepository(baseUrl: kApiBaseUrl)
-        : const AssetNoteRepository();
-    // 无后端时（默认）使用离线问答：链接里模块 B 即可本地真实回答，无需任何服务。
-    // 若已部署 RAG Worker 且在 rag_config.dart 填入 kRagEndpoint，则走离线优先 + RAG 兜底。
-    _qaRepo = kUseRemoteQa
-        ? RemoteQaRepository(baseUrl: kApiBaseUrl)
-        : (() {
-            final offline = OfflineQaRepository.instance;
-            if (offline != null && kRagEndpoint.isNotEmpty) {
-              return RagFallbackQaRepository(
-                offline: offline.logic,
-                ragClient: RagClient(kRagEndpoint),
-              );
-            }
-            return offline ?? MockQaRepository();
-          })();
-  }
+
 
   @override
-  void dispose() {
-    // 用局部变量承接，避免多余的类型转换（私有 final 字段可类型提升）
-    final notes = _notes;
-    if (notes is RemoteNoteRepository) notes.client.close();
-    final qa = _qaRepo;
-    if (qa is RemoteQaRepository) qa.client.close();
-    super.dispose();
+
+  void initState() {
+
+    super.initState();
+
+    _notes = kUseRemoteNotes
+
+        ? RemoteNoteRepository(baseUrl: kApiBaseUrl)
+
+        : const AssetNoteRepository();
+
+    // 无后端时（默认）使用离线问答：链接里模块 B 即可本地真实回答，无需任何服务。
+
+    // 若已部署 RAG Worker 且在 rag_config.dart 填入 kRagEndpoint，则走离线优先 + RAG 兜底。
+
+    _qaRepo = kUseRemoteQa
+
+        ? RemoteQaRepository(baseUrl: kApiBaseUrl)
+
+        : (() {
+
+            final offline = OfflineQaRepository.instance;
+
+            if (offline != null && kRagEndpoint.isNotEmpty) {
+
+              return RagFallbackQaRepository(
+
+                offline: offline.logic,
+
+                ragClient: RagClient(kRagEndpoint),
+
+              );
+
+            }
+
+            return offline ?? MockQaRepository();
+
+          })();
+
   }
+
+
+
+  @override
+
+  void dispose() {
+
+    // 用局部变量承接，避免多余的类型转换（私有 final 字段可类型提升）
+
+    final notes = _notes;
+
+    if (notes is RemoteNoteRepository) notes.client.close();
+
+    final qa = _qaRepo;
+
+    if (qa is RemoteQaRepository) qa.client.close();
+
+    super.dispose();
+
+  }
+
+
 
   /// 在「当前 Tab 的 Navigator」里打开对照页（问答/健康的引用跳转复用此方法）
+
   void _openBook(BuildContext context, BookMeta b, int chapter) {
+
     Navigator.of(context).push(
+
       MaterialPageRoute(
+
         builder: (_) => ComparisonPage(
+
           bookId: b.bookId,
+
           bookName: b.nameZh,
+
           chapterCount: b.chapterCount,
+
           initialChapter: chapter,
+
           notes: _notes,
+
           draftMode: kDraftMode,
+
         ),
+
       ),
+
     );
+
   }
+
+
 
   /// 问答引用跳转：BIBLE 跳对照页，其余提示待接入
+
   void _onOpenCitation(BuildContext context, QaCitation c) {
+
     if (c.sourceType != QaSourceType.bible) {
+
       ScaffoldMessenger.of(context).showSnackBar(
+
         SnackBar(content: Text('${c.sourceType.label}原文阅读器待接入：${c.ref}')),
+
       );
+
       return;
+
     }
+
     final loc = locateRef(c.ref);
+
     if (loc == null) {
+
       ScaffoldMessenger.of(context).showSnackBar(
+
         SnackBar(content: Text('离线库暂无该处原文：${c.ref}')),
+
       );
+
       return;
+
     }
+
     _openBook(
+
       context,
+
       BookMeta(
+
         bookId: loc['bookId'] as int,
+
         bookCode: '',
+
         nameZh: loc['name'] as String,
+
         testament: '',
+
         chapterCount: loc['count'] as int,
+
       ),
+
       loc['chapter'] as int,
+
     );
+
   }
+
+
 
   Widget _buildTab(int index) {
+
     switch (index) {
+
       case 0:
+
         return Navigator(
+
           key: _navKeys[0],
+
           onGenerateRoute: (_) => MaterialPageRoute(
+
             builder: (_) => HomeScreen(
+
               notes: _notes,
+
               draftMode: kDraftMode,
+
               onOpenBook: _openBook,
+
             ),
+
           ),
+
         );
+
       case 1:
+
         return Navigator(
+
           key: _navKeys[1],
+
           onGenerateRoute: (_) => MaterialPageRoute(
+
             builder: (ctx) => QaTab(
+
               repo: _qaRepo,
+
               onOpenCitation: (c) => _onOpenCitation(ctx, c),
+
             ),
+
           ),
+
         );
+
       case 2:
+
         return Navigator(
+
           key: _navKeys[2],
+
           onGenerateRoute: (_) => MaterialPageRoute(
+
             builder: (_) => const HealthTab(),
+
           ),
+
         );
+
       default:
+
         return const SizedBox.shrink();
+
     }
+
   }
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       body: IndexedStack(
+
         index: _tab,
+
         children: List.generate(3, _buildTab),
+
       ),
+
       bottomNavigationBar: NavigationBar(
+
         selectedIndex: _tab,
+
         onDestinationSelected: (i) => setState(() => _tab = i),
+
         destinations: const [
+
           NavigationDestination(
+
             icon: Icon(Icons.auto_stories_outlined),
+
             selectedIcon: Icon(Icons.auto_stories),
+
             label: '对照',
+
           ),
+
           NavigationDestination(
+
             icon: Icon(Icons.chat_outlined),
+
             selectedIcon: Icon(Icons.chat),
+
             label: '问答',
+
           ),
+
           NavigationDestination(
+
             icon: Icon(Icons.favorite_border),
+
             selectedIcon: Icon(Icons.favorite),
+
             label: '健康',
+
           ),
+
         ],
+
       ),
+
     );
+
   }
+
 }
+
+
 
 /// 首页内容模式：圣经书卷目录 / 怀爱伦著作（怀著）目录
-enum _HomeMode { bible, egw }
+
+enum _HomeMode { bible, egw, doctrine }
+
+
 
 /// 模块 A 首页（对照 Tab 的根页面）：书卷目录 + 搜索入口
+
 class HomeScreen extends StatefulWidget {
+
   final NoteRepository notes;
+
   final bool draftMode;
+
   final void Function(BuildContext, BookMeta, int) onOpenBook;
 
+
+
   const HomeScreen({
+
     super.key,
+
     required this.notes,
+
     required this.draftMode,
+
     required this.onOpenBook,
+
   });
 
+
+
   @override
+
   State<HomeScreen> createState() => _HomeScreenState();
+
 }
 
+
+
 class _HomeScreenState extends State<HomeScreen> {
+
   List<BookMeta> _books = [];
+
   String? _initError;
+
   bool _unsupported = false;
+
   _HomeMode _mode = _HomeMode.bible;
 
+
+
   @override
+
   void initState() {
+
     super.initState();
+
     _loadBooks();
+
   }
+
+
 
   void _loadBooks() {
+
     if (!OfflineDbHelper.isAvailable) {
+
       setState(() {
+
         _unsupported = true;
+
         _initError = '离线圣经内容加载失败，请稍后重试或使用桌面 / 手机版。';
+
       });
+
       return;
+
     }
+
     try {
+
       final rows = OfflineDbHelper.getBooks();
+
       setState(() => _books = rows.map(BookMeta.fromDbRow).toList());
+
     } catch (e) {
+
       setState(() => _initError = '离线库未就绪：${e.toString()}');
+
     }
+
   }
+
+
 
   Future<void> _openSearch() async {
+
     final loc = await Navigator.of(context).push<Map<String, dynamic>>(
+
       MaterialPageRoute(builder: (_) => const SearchPage()),
+
     );
+
     if (loc == null || !mounted) return;
+
     widget.onOpenBook(
+
       context,
+
       BookMeta(
+
         bookId: loc['bookId'] as int,
+
         bookCode: '',
+
         nameZh: loc['name'] as String,
+
         testament: '',
+
         chapterCount: loc['count'] as int,
+
       ),
+
       loc['chapter'] as int,
+
     );
+
   }
+
+
 
   @override
+
   Widget build(BuildContext context) {
+
     final cs = Theme.of(context).colorScheme;
+
     if (_initError != null) {
+
       return Scaffold(
+
         appBar: AppBar(title: const Text('真理对照')),
+
         body: Center(
+
           child: Padding(
+
             padding: const EdgeInsets.all(24),
+
             child: Text(
+
               _initError!,
+
               textAlign: TextAlign.center,
+
               style: TextStyle(
+
                 color: _unsupported ? Colors.black54 : cs.error,
+
                 fontSize: 14,
+
                 height: 1.5,
+
               ),
+
             ),
+
           ),
+
         ),
+
       );
+
     }
+
     final ot = _books.where((b) => b.testament == 'OT').toList();
+
     final nt = _books.where((b) => b.testament == 'NT').toList();
+
     return Scaffold(
+
       appBar: AppBar(
+
         title: const Text('真理对照'),
+
         centerTitle: false,
+
         actions: [
+
           IconButton(
+
             tooltip: _unsupported ? '网页端暂不支持' : '搜索经文',
+
             icon: const Icon(Icons.search),
+
             onPressed: _unsupported ? null : _openSearch,
+
           ),
+
         ],
+
       ),
+
       body: Column(
+
         children: [
+
           // 内容模式切换：圣经 / 怀著（怀爱伦著作）。
+
           // 关键：Column 默认不拉伸子项，原生 SegmentedButton 会按「自身内容宽」计算，
+
           // 图标 + 内边距把两字标签挤没 → 「圣经/怀著」竖排换行。这里用 SizedBox
+
           // 撑满整行宽度（约束 minWidth = 屏宽），每段 = 屏宽/2，文字必然横排单行。
+
           Padding(
+
             padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
+
             child: SizedBox(
+
               width: double.infinity,
+
               child: SegmentedButton<_HomeMode>(
+
                 selected: {_mode},
+
                 onSelectionChanged: (s) => setState(() => _mode = s.first),
+
                 segments: const [
+
                   ButtonSegment<_HomeMode>(
+
                     value: _HomeMode.bible,
+
                     label: Text('圣经'),
+
                     icon: Icon(Icons.auto_stories_outlined),
+
                   ),
+
                   ButtonSegment<_HomeMode>(
+
                     value: _HomeMode.egw,
+
                     label: Text('怀著'),
+
                     icon: Icon(Icons.menu_book_outlined),
+
                   ),
+
+                  ButtonSegment<_HomeMode>(
+
+                    value: _HomeMode.doctrine,
+
+                    label: Text('教义'),
+
+                    icon: Icon(Icons.lightbulb_outline),
+
+                  ),
+
                 ],
+
               ),
+
             ),
+
           ),
+
           Expanded(
+
             child: _mode == _HomeMode.bible
+
                 ? _buildBibleBody(ot, nt)
-                : _buildEgwBody(),
+
+                : _mode == _HomeMode.doctrine
+
+                    ? _buildDoctrineBody()
+
+                    : _buildEgwBody(),
+
           ),
+
         ],
+
       ),
+
     );
+
   }
+
+
 
   /// 圣经模式：搜索入口 + 旧约/新约书卷网格 + 权威说明
+
   Widget _buildBibleBody(List<BookMeta> ot, List<BookMeta> nt) {
+
     return Column(
+
       children: [
+
         // 搜索入口（点按进入经文搜索页）
+
         Padding(
+
           padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+
           child: InkWell(
+
             borderRadius: BorderRadius.circular(14),
+
             onTap: _unsupported ? null : _openSearch,
+
             child: Container(
+
               // minHeight 而非 height：大字号时文字换行/变高，容器随之长高，
+
               // 不再把文字挤出 50px 的固定盒子
+
               constraints: const BoxConstraints(minHeight: 50),
+
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+
               decoration: BoxDecoration(
+
                 color: Colors.white,
+
                 borderRadius: BorderRadius.circular(14),
+
                 border: Border.all(color: AppTheme.line),
+
               ),
+
               child: Row(
+
                 children: [
+
                   Icon(Icons.search, size: 20, color: AppTheme.inkSoft),
+
                   const SizedBox(width: 10),
+
                   Text(
+
                     '搜索经文、章节…',
+
                     style: TextStyle(fontSize: 14, color: AppTheme.inkSoft),
+
                   ),
+
                 ],
+
               ),
+
             ),
+
           ),
+
         ),
+
         Expanded(
+
           child: _books.isEmpty
+
               ? Center(
+
                   child: Text(
+
                     '离线库暂无书卷数据',
+
                     style: TextStyle(color: AppTheme.inkSoft, fontSize: 14),
+
                   ),
+
                 )
+
               : ListView(
+
                   padding: const EdgeInsets.only(bottom: 24),
+
                   children: [
+
                     _SectionTitle('旧约 · Old Testament', count: ot.length),
+
                     _BookGrid(books: ot, onTap: (b) => widget.onOpenBook(context, b, 1)),
+
                     _SectionTitle('新约 · New Testament', count: nt.length),
+
                     _BookGrid(books: nt, onTap: (b) => widget.onOpenBook(context, b, 1)),
+
                     const SizedBox(height: 8),
+
                     // 权威层级说明（合规：始终让用户知道什么是权威、什么是参照）
+
                     Padding(
+
                       padding: const EdgeInsets.symmetric(horizontal: 14),
+
                       child: Container(
+
                         padding: const EdgeInsets.all(12),
+
                         decoration: BoxDecoration(
+
                           color: Colors.white,
+
                           borderRadius: BorderRadius.circular(12),
+
                           border: Border.all(color: AppTheme.line),
+
                         ),
+
                         child: Row(
+
                           crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
+
                             Icon(Icons.verified_user_outlined,
+
                                 size: 16, color: AppTheme.gold),
+
                             const SizedBox(width: 8),
+
                             const Expanded(
+
                               child: Text(
+
                                 '权威依据：KJV 英文原文（唯一底本）。本应用中文译文为独立产出（非任何现有中文译本）；和合本仅作参照展示。',
+
                                 style: TextStyle(
+
                                   fontSize: 12,
+
                                   color: AppTheme.inkSoft,
+
                                   height: 1.5,
+
                                 ),
+
                               ),
+
                             ),
+
                           ],
+
                         ),
+
                       ),
+
                     ),
+
                   ],
+
                 ),
+
         ),
+
       ],
+
     );
+
   }
 
+
+
   /// 怀著模式：怀爱伦著作目录 + 中英对照入口
+
   Widget _buildEgwBody() {
+
+    return Column(
+
+      children: [
+
+        Padding(
+
+          padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
+
+          child: Container(
+
+            padding: const EdgeInsets.all(12),
+
+            decoration: BoxDecoration(
+
+              color: Colors.white,
+
+              borderRadius: BorderRadius.circular(12),
+
+              border: Border.all(color: AppTheme.line),
+
+            ),
+
+            child: Row(
+
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: [
+
+                Icon(Icons.menu_book_outlined, size: 16, color: AppTheme.zhTeal),
+
+                const SizedBox(width: 8),
+
+                const Expanded(
+
+                  child: Text(
+
+                    '怀爱伦著作（EGW）中英对照：英文原著为基准，逐段对照中文译本，并附已核实的译校差异备注。已收录的著作可直接点开阅读。',
+
+                    style: TextStyle(
+
+                      fontSize: 12,
+
+                      color: AppTheme.inkSoft,
+
+                      height: 1.5,
+
+                    ),
+
+                  ),
+
+                ),
+
+              ],
+
+            ),
+
+          ),
+
+        ),
+
+        Expanded(
+
+          child: ListView(
+
+            padding: const EdgeInsets.only(bottom: 24),
+
+            children: [
+
+              _SectionTitle('怀爱伦著作 · Ellen G. White', count: kEgwWorks.length),
+
+              _EgwGrid(works: kEgwWorks, onTap: _openEgwWork),
+
+              const SizedBox(height: 8),
+
+              Padding(
+
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+
+                child: Container(
+
+                  padding: const EdgeInsets.all(12),
+
+                  decoration: BoxDecoration(
+
+                    color: Colors.white,
+
+                    borderRadius: BorderRadius.circular(12),
+
+                    border: Border.all(color: AppTheme.line),
+
+                  ),
+
+                  child: Row(
+
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    children: [
+
+                      Icon(Icons.verified_user_outlined,
+
+                          size: 16, color: AppTheme.gold),
+
+                      const SizedBox(width: 8),
+
+                      const Expanded(
+
+                        child: Text(
+
+                          '英文原著与中文译本均取自 egwwritings.org 官方标准版（公有领域）。更多著作的中英对照数据正在逐步收录。',
+
+                          style: TextStyle(
+
+                            fontSize: 12,
+
+                            color: AppTheme.inkSoft,
+
+                            height: 1.5,
+
+                          ),
+
+                        ),
+
+                      ),
+
+                    ],
+
+                  ),
+
+                ),
+
+              ),
+
+            ],
+
+          ),
+
+        ),
+
+      ],
+
+    );
+
+  }
+
+
+
+  /// 打开怀著阅读器；未收录的著作给出友好提示
+
+  /// 教义对照模式（Item 3）：核心教义卡 -> 教义详情页
+  Widget _buildDoctrineBody() {
     return Column(
       children: [
         Padding(
@@ -558,16 +1269,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.menu_book_outlined, size: 16, color: AppTheme.zhTeal),
+                Icon(Icons.lightbulb_outline, size: 16, color: AppTheme.gold),
                 const SizedBox(width: 8),
                 const Expanded(
                   child: Text(
-                    '怀爱伦著作（EGW）中英对照：英文原著为基准，逐段对照中文译本，并附已核实的译校差异备注。已收录的著作可直接点开阅读。',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.inkSoft,
-                      height: 1.5,
-                    ),
+                    '核心教义对照：以 KJV 英文原文为权威，聚合相关经文与怀爱伦著作的辅助说明，系统呈现复临信仰的标志性教义。',
+                    style: TextStyle(fontSize: 12, color: AppTheme.inkSoft, height: 1.5),
                   ),
                 ),
               ],
@@ -578,36 +1285,31 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListView(
             padding: const EdgeInsets.only(bottom: 24),
             children: [
-              _SectionTitle('怀爱伦著作 · Ellen G. White', count: kEgwWorks.length),
-              _EgwGrid(works: kEgwWorks, onTap: _openEgwWork),
-              const SizedBox(height: 8),
+              _SectionTitle('核心教义 · SDA Distinctives', count: kDoctrines.length),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppTheme.line),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.verified_user_outlined,
-                          size: 16, color: AppTheme.gold),
-                      const SizedBox(width: 8),
-                      const Expanded(
-                        child: Text(
-                          '英文原著与中文译本均取自 egwwritings.org 官方标准版（公有领域）。更多著作的中英对照数据正在逐步收录。',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppTheme.inkSoft,
-                            height: 1.5,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: LayoutBuilder(
+                  builder: (context, c) {
+                    const spacing = 8.0;
+                    final columns = (c.maxWidth / 168).floor().clamp(2, 6);
+                    final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
+                    return Wrap(
+                      spacing: spacing,
+                      runSpacing: spacing,
+                      children: [
+                        for (final d in kDoctrines)
+                          SizedBox(
+                            width: itemWidth,
+                            child: _DoctrineCard(
+                              doctrine: d,
+                              onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(builder: (_) => DoctrinePage(doctrine: d)),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ],
@@ -617,320 +1319,693 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// 打开怀著阅读器；未收录的著作给出友好提示
-  void _openEgwWork(EgwWork w) {
-    if (!w.ready || w.asset == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('《${w.nameZh}》中英对照数据准备中，敬请期待')),
+  /// 教义卡：中文名 + 英文名 + 简介，白底细描边（复用圣经/怀著网格的弹性列宽思路）
+  class _DoctrineCard extends StatelessWidget {
+    final DoctrineItem doctrine;
+    final VoidCallback onTap;
+
+    const _DoctrineCard({required this.doctrine, required this.onTap});
+
+    @override
+    Widget build(BuildContext context) {
+      final d = doctrine;
+      return Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.gold.withOpacity(0.5)),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  d.titleZh,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppTheme.ink,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  d.titleEn,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  d.summary,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft, height: 1.4),
+                ),
+              ],
+            ),
+          ),
+        ),
       );
-      return;
     }
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => EgwComparePage(work: w)),
-    );
   }
+
+  void _openEgwWork(EgwWork w) {
+
+    if (!w.ready || w.asset == null) {
+
+      ScaffoldMessenger.of(context).showSnackBar(
+
+        SnackBar(content: Text('《${w.nameZh}》中英对照数据准备中，敬请期待')),
+
+      );
+
+      return;
+
+    }
+
+    Navigator.of(context).push(
+
+      MaterialPageRoute(builder: (_) => EgwComparePage(work: w)),
+
+    );
+
+  }
+
 }
 
+
+
 /// 模块 B（问答 Tab）：包装 QaPage，提供引用跳回对照页的回调
+
 class QaTab extends StatelessWidget {
+
   final QaRepository repo;
+
   final ValueChanged<QaCitation> onOpenCitation;
+
+
 
   const QaTab({super.key, required this.repo, required this.onOpenCitation});
 
+
+
   @override
+
   Widget build(BuildContext context) => QaPage(repo: repo, onOpenCitation: onOpenCitation);
+
 }
+
+
 
 /// 模块 C（健康 Tab）：包装 HealthPage（离线优先，读预置库中的 health_* 表）
+
 class HealthTab extends StatelessWidget {
+
   const HealthTab({super.key});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     // 离线内容未就绪时显示友好提示，避免崩溃（正常初始化后不会触发）。
+
     if (!OfflineDbHelper.isAvailable) {
+
       return const Scaffold(
+
         body: Center(
+
           child: Padding(
+
             padding: EdgeInsets.all(24),
+
             child: Text(
+
               '健康模块内容加载失败，请稍后重试或使用桌面 / 手机版。',
+
               textAlign: TextAlign.center,
+
               style: TextStyle(color: Colors.black54, fontSize: 14, height: 1.5),
+
             ),
+
           ),
+
         ),
+
       );
+
     }
+
     return HealthPage(
+
       repo: const OfflineHealthRepository(),
+
       userId: 'local',
+
       previewMode: kHealthPreview,
+
     );
+
   }
+
 }
 
+
+
 class _SectionTitle extends StatelessWidget {
+
   final String text;
+
   final int count;
+
+
 
   const _SectionTitle(this.text, {this.count = 0});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return Padding(
+
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+
       child: Row(
+
         children: [
+
           Container(
+
             width: 3,
+
             height: 14,
+
             decoration: BoxDecoration(
+
               color: AppTheme.gold,
+
               borderRadius: BorderRadius.circular(2),
+
             ),
+
           ),
+
           const SizedBox(width: 8),
+
           Flexible(
+
             child: Text(
+
               text,
+
               maxLines: 2,
+
               overflow: TextOverflow.ellipsis,
+
               style: const TextStyle(
+
                 fontSize: 14,
+
                 fontWeight: FontWeight.w700,
+
                 color: AppTheme.ink,
+
                 letterSpacing: 0.3,
+
               ),
+
             ),
+
           ),
+
           if (count > 0) ...[
+
             const SizedBox(width: 6),
+
             Text(
+
               '$count 卷',
+
               maxLines: 1,
+
               style: const TextStyle(fontSize: 12, color: AppTheme.inkSoft),
+
             ),
+
           ],
+
         ],
+
       ),
+
     );
+
   }
+
 }
 
+
+
 class _BookGrid extends StatelessWidget {
+
   final List<BookMeta> books;
+
   final ValueChanged<BookMeta> onTap;
+
+
 
   const _BookGrid({required this.books, required this.onTap});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     // 用 Wrap 替代固定 mainAxisExtent=64 的网格：书卷名为中文，字号放大后
+
     // 可能换行到两行，卡片高度必须能随内容长高，否则文字被裁切/重叠。
+
     return Padding(
+
       padding: const EdgeInsets.symmetric(horizontal: 12),
+
       child: LayoutBuilder(
+
         builder: (context, c) {
+
           const spacing = 8.0;
+
           // 与旧网格一致的目标列宽（maxCrossAxisExtent 168）
+
           final columns = (c.maxWidth / 168).floor().clamp(2, 6);
+
           final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
+
           return Wrap(
+
             spacing: spacing,
+
             runSpacing: spacing,
+
             children: [
+
               for (final b in books)
+
                 SizedBox(
+
                   width: itemWidth,
+
                   child: _BookCard(book: b, onTap: onTap),
+
                 ),
+
             ],
+
           );
+
         },
+
       ),
+
     );
+
   }
+
 }
 
+
+
 /// 怀著卡片网格：复用圣经网格的弹性列宽思路（Wrap + 自适应列数）
+
 class _EgwGrid extends StatelessWidget {
+
   final List<EgwWork> works;
+
   final ValueChanged<EgwWork> onTap;
+
+
 
   const _EgwGrid({required this.works, required this.onTap});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return Padding(
+
       padding: const EdgeInsets.symmetric(horizontal: 12),
+
       child: LayoutBuilder(
+
         builder: (context, c) {
+
           const spacing = 8.0;
+
           final columns = (c.maxWidth / 168).floor().clamp(2, 6);
+
           final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
+
           return Wrap(
+
             spacing: spacing,
+
             runSpacing: spacing,
+
             children: [
+
               for (final w in works)
+
                 SizedBox(width: itemWidth, child: _EgwCard(work: w, onTap: onTap)),
+
             ],
+
           );
+
         },
+
       ),
+
     );
+
   }
+
 }
 
+
+
 /// 怀著卡片：中文名 + 英文名 + 简介 + 收录状态徽标
+
 class _EgwCard extends StatelessWidget {
+
   final EgwWork work;
+
   final ValueChanged<EgwWork> onTap;
+
+
 
   const _EgwCard({required this.work, required this.onTap});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     final ready = work.ready;
+
     return Material(
+
       color: Colors.white,
+
       borderRadius: BorderRadius.circular(12),
+
       child: InkWell(
+
         borderRadius: BorderRadius.circular(12),
+
         onTap: () => onTap(work),
+
         child: Container(
+
           decoration: BoxDecoration(
+
             borderRadius: BorderRadius.circular(12),
+
             border: Border.all(
+
               color: ready ? AppTheme.zhTeal.withOpacity(0.5) : AppTheme.line,
+
             ),
+
           ),
+
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+
           child: Column(
+
             mainAxisSize: MainAxisSize.min,
+
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
+
               Text(
+
                 work.nameZh,
+
                 maxLines: 2,
+
                 overflow: TextOverflow.ellipsis,
+
                 style: const TextStyle(
+
                   fontSize: 15,
+
                   fontWeight: FontWeight.w600,
+
                   color: AppTheme.ink,
+
                 ),
+
               ),
+
               const SizedBox(height: 2),
+
               Text(
+
                 work.nameEn,
+
                 maxLines: 1,
+
                 overflow: TextOverflow.ellipsis,
+
                 style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
+
               ),
+
               const SizedBox(height: 6),
+
               Row(
+
                 children: [
+
                   if (work.blurb != null && work.blurb!.isNotEmpty)
+
                     Expanded(
+
                       child: Text(
+
                         work.blurb!,
+
                         maxLines: 1,
+
                         overflow: TextOverflow.ellipsis,
+
                         style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft),
+
                       ),
+
                     ),
+
                   const SizedBox(width: 6),
+
                   Container(
+
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+
                     decoration: BoxDecoration(
+
                       color: ready
+
                           ? AppTheme.zhTeal.withOpacity(0.12)
+
                           : Colors.grey.withOpacity(0.12),
+
                       borderRadius: BorderRadius.circular(8),
+
                     ),
+
                     child: Text(
+
                       ready ? '已收录' : '准备中',
+
                       style: TextStyle(
+
                         fontSize: 10.5,
+
                         color: ready ? AppTheme.zhTeal : Colors.grey,
+
                       ),
+
                     ),
+
                   ),
+
                 ],
+
               ),
+
             ],
+
           ),
+
         ),
+
       ),
+
     );
+
   }
+
 }
 
+
+
 /// 书卷卡片：中文名（衬线）+ 英文名 + 章数，白底细描边，安静书卷气
+
 class _BookCard extends StatelessWidget {
+
   final BookMeta book;
+
   final ValueChanged<BookMeta> onTap;
+
+
 
   const _BookCard({required this.book, required this.onTap});
 
+
+
   @override
+
   Widget build(BuildContext context) {
+
     return Material(
+
       color: Colors.white,
+
       borderRadius: BorderRadius.circular(12),
+
       child: InkWell(
+
         borderRadius: BorderRadius.circular(12),
+
         onTap: () => onTap(book),
+
         child: Container(
+
           decoration: BoxDecoration(
+
             borderRadius: BorderRadius.circular(12),
+
             border: Border.all(color: AppTheme.line),
+
           ),
+
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+
           child: Column(
+
             // min：高度随内容自适应（不再有 64px 格子兜底，也绝不能爆）
+
             mainAxisSize: MainAxisSize.min,
+
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
+
               Text(
+
                 book.nameZh,
+
                 maxLines: 2,
+
                 overflow: TextOverflow.ellipsis,
+
                 style: const TextStyle(
+
                   fontSize: 15,
+
                   fontWeight: FontWeight.w600,
+
                   color: AppTheme.ink,
+
                 ),
+
               ),
+
               const SizedBox(height: 2),
+
               Row(
+
                 children: [
+
                   Expanded(
+
                     child: Text(
+
                       book.chapterCount > 0
+
                           ? '${book.chapterCount} 章'
+
                           : '',
+
                       maxLines: 1,
+
                       overflow: TextOverflow.ellipsis,
+
                       style: const TextStyle(
+
                         fontSize: 11,
+
                         color: AppTheme.inkSoft,
+
                       ),
+
                     ),
+
                   ),
+
                   const Icon(
+
                     Icons.chevron_right,
+
                     size: 14,
+
                     color: AppTheme.line,
+
                   ),
+
                 ],
+
               ),
+
             ],
+
           ),
+
         ),
+
       ),
+
     );
+
   }
+
 }
+
