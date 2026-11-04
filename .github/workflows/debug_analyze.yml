@@ -5,6 +5,7 @@ on:
     branches: [debug/analyze]
 permissions:
   contents: read
+  issues: write
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -19,20 +20,18 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get
-      - name: Analyze and emit annotations
+      - name: Analyze and post errors to issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           flutter analyze . > analyze_out.txt 2>&1 || true
           cat analyze_out.txt
           python3 - <<'PY'
-          import re
+          import json
           txt = open('analyze_out.txt', encoding='utf-8', errors='replace').read()
-          pat = re.compile(r'^\s{2}(.+?):(\d+):(\d+):\s+(error|warning|info):\s+(.+)$', re.I)
-          for line in txt.splitlines():
-              m = pat.match(line)
-              if m:
-                  path, ln, col, sev, msg = m.groups()
-                  level = sev.lower()
-                  if level == 'info':
-                      level = 'notice'
-                  print(f'::{level} file=flutter_app/{path},line={ln},col={col}::{msg}')
+          snippet = txt if len(txt) <= 9000 else txt[:9000] + "\n... (truncated)"
+          body = "### flutter analyze output\n\n```\n" + snippet + "\n```"
+          json.dump({"title": "Debug: flutter analyze errors", "body": body},
+                    open('issue.json', 'w'), ensure_ascii=False)
           PY
+          gh api -X POST /repos/xinwuwan/Bible/issues --input issue.json
