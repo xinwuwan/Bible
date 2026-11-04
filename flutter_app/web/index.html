@@ -78,6 +78,27 @@
       } catch (e) {}
     })();
   </script>
+  <script>
+    // 首屏字体预热：微信 X5 / CanvasKit 下，自托管 Noto SC/TC 回退字体需先下载（约数 MB），
+    // 否则首个画面中文会短暂空白。这里提前把这两个字体注册进 document.fonts 并预取，
+    // 让下方 loading 遮罩在字体就绪前一直显示「真理对照 · 加载中」，消除无字空白期。
+    (function () {
+      try {
+        if (!window.FontFace || !document.fonts) return;
+        var base = document.baseURI || location.href;
+        var dir = base.replace(/[^/]+$/, ''); // base href 以 / 结尾
+        var defs = [
+          ['Noto Sans SC', dir + 'fonts/notosanssc/v36/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYxNbPzS5HE.ttf'],
+          ['Noto Sans TC', dir + 'fonts/notosanstc/v35/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_CpOtma3uNQ.ttf']
+        ];
+        window.__cjkFonts = defs.map(function (d) {
+          var ff = new FontFace(d[0], 'url(' + d[1] + ')');
+          document.fonts.add(ff);
+          return ff.load().catch(function () {});
+        });
+      } catch (e) {}
+    })();
+  </script>
   <style>
     /* 同时覆盖首屏 loading 层与 Flutter 渲染正文：禁止文字自动放大。 */
     html, body {
@@ -130,16 +151,11 @@
        之前给 main.dart.js 加 ?cb= 查询串正是导致微信「完全打不开」的直接原因。 -->
   <script src="main.dart.js" type="application/javascript"></script>
   <script>
-    // 移除 loading 层的时机（关键：消除「首屏无字空白期」）：
-    // 1) 轮询 DOM：html 渲染器首帧插入 <flt-glass-pane>，canvaskit 插入 <canvas>，
-    //    二者任一出现 ⇒ 引擎已开始渲染（canvasUp）。
-    // 2) canvas 出现后，CJK 字体可能仍在下载（微信 X5 走 canvaskit 需先拉 wasm + 字体）。
-    //    此时若直接揭幕，中文尚未绘制 → 用户看到「白屏/无字」。故继续等待：
-    //    - document.fonts.status === 'loaded'（Flutter 把自托管字体注册为 FontFace，
-    //      由 document.fonts 跟踪）且已过去 ≥1.2s；或
-    //    - 总时长超过 12s 硬上限（极端弱网保护，绝不长期遮挡应用）。
-    //    这样首屏始终先显示「真理对照 · 加载中」文字层，文字就绪才揭幕，无空白感。
-    // 本脚本**不做任何报错/跳转引导**，只负责隐藏 loading；渲染本身交给引擎。
+    // 揭幕时机（关键：消除「首屏无字空白期」）：
+    // 先在 head 中预热的 CJK 字体 Promise 全部 settled（loaded 或失败）后，再等画布首帧
+    // （html 渲染器插 <flt-glass-pane>、canvaskit 插 <canvas>）出现，最后揭幕。
+    // 这样首屏始终先显示「真理对照 · 加载中」文字层，文字就绪才揭幕，无空白感。
+    // 12s 硬上限兜底，极端弱网也绝不长期遮挡应用。本脚本不做任何报错/跳转引导。
     (function () {
       var el = document.getElementById('app-loading');
       var hidden = false;
@@ -150,23 +166,19 @@
         setTimeout(function () { if (el) el.remove(); }, 350);
       };
       var start = Date.now();
-      var canvasUp = false;
       var MAX = 12000;
-      var step = function () {
+      var canvasUp = false;
+      var cjk = window.__cjkFonts || [];
+      function reveal() {
         if (hidden) return;
-        if (!canvasUp && document.querySelector('flt-glass-pane, canvas')) {
-          canvasUp = true;
-        }
         var elapsed = Date.now() - start;
-        if (canvasUp) {
-          var fontsReady = (document.fonts && document.fonts.status === 'loaded');
-          if ((fontsReady && elapsed > 1200) || elapsed > MAX) { hide(); return; }
-        } else if (elapsed > MAX) {
-          hide(); return;
-        }
-        setTimeout(step, 150);
-      };
-      step();
+        if (!canvasUp && document.querySelector('flt-glass-pane, canvas')) canvasUp = true;
+        if (canvasUp && elapsed > 1000) hide();
+        else if (elapsed > MAX) hide();
+        else setTimeout(reveal, 150);
+      }
+      Promise.all(cjk).catch(function () {}).then(reveal);
+      setTimeout(hide, MAX);
     })();
   </script>
 </body>

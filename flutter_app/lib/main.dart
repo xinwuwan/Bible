@@ -21,7 +21,6 @@ import 'app_theme.dart';
 import 'comparison_page.dart';
 import 'egw_compare_page.dart';
 import 'egw_works.dart';
-import 'doctrine_page.dart';
 import 'health_page.dart';
 import 'health_repository.dart';
 import 'note_repository.dart';
@@ -318,7 +317,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 /// 首页内容模式：圣经书卷目录 / 怀爱伦著作（怀著）目录
-enum _HomeMode { bible, egw, doctrine }
+enum _HomeMode { bible, egw }
 
 /// 模块 A 首页（对照 Tab 的根页面）：书卷目录 + 搜索入口
 class HomeScreen extends StatefulWidget {
@@ -443,11 +442,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: Text('怀著'),
                     icon: Icon(Icons.menu_book_outlined),
                   ),
-                  ButtonSegment<_HomeMode>(
-                    value: _HomeMode.doctrine,
-                    label: Text('教义'),
-                    icon: Icon(Icons.lightbulb_outline),
-                  ),
                 ],
               ),
             ),
@@ -455,9 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: _mode == _HomeMode.bible
                 ? _buildBibleBody(ot, nt)
-                : _mode == _HomeMode.doctrine
-                    ? _buildDoctrineBody()
-                    : _buildEgwBody(),
+                : _buildEgwBody(),
           ),
         ],
       ),
@@ -625,71 +617,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  /// 打开怀著阅读器；未收录的著作给出友好提示
-  Widget _buildDoctrineBody() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(14, 4, 14, 8),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppTheme.line),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.lightbulb_outline, size: 16, color: AppTheme.gold),
-                const SizedBox(width: 8),
-                const Expanded(
-                  child: Text(
-                    '核心教义对照：以 KJV 英文原文为权威，聚合相关经文与怀爱伦著作的辅助说明，系统呈现复临信仰的标志性教义。',
-                    style: TextStyle(fontSize: 12, color: AppTheme.inkSoft, height: 1.5),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.only(bottom: 24),
-            children: [
-              _SectionTitle('核心教义 · SDA Distinctives', count: kDoctrines.length),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: LayoutBuilder(
-                  builder: (context, c) {
-                    const spacing = 8.0;
-                    final columns = (c.maxWidth / 168).floor().clamp(2, 6);
-                    final itemWidth = (c.maxWidth - spacing * (columns - 1)) / columns;
-                    return Wrap(
-                      spacing: spacing,
-                      runSpacing: spacing,
-                      children: [
-                        for (final d in kDoctrines)
-                          SizedBox(
-                            width: itemWidth,
-                            child: _DoctrineCard(
-                              doctrine: d,
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => DoctrinePage(doctrine: d)),
-                              ),
-                            ),
-                          ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
   void _openEgwWork(EgwWork w) {
     if (!w.ready || w.asset == null) {
@@ -999,66 +926,6 @@ class _BookCard extends StatelessWidget {
                     color: AppTheme.line,
                   ),
                 ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-
-
-/// 教义卡：中文名 + 英文名 + 简介，白底细描边（复用圣经/怀著网格的弹性列宽思路）
-class _DoctrineCard extends StatelessWidget {
-  final DoctrineItem doctrine;
-  final VoidCallback onTap;
-
-  const _DoctrineCard({required this.doctrine, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final d = doctrine;
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppTheme.gold.withOpacity(0.5)),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                d.titleZh,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.ink,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                d.titleEn,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 11, color: AppTheme.inkSoft),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                d.summary,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 10.5, color: AppTheme.inkSoft, height: 1.4),
               ),
             ],
           ),
