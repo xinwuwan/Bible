@@ -47,11 +47,6 @@
 
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
-  <!-- 首屏关键中文(简体)字体预加载：与 Flutter/wasm 并行下载，消除首屏中文空白。
-       字体已子集化（仅含应用用到的 ~3900 字），仅 ~1.2MB（原 10.5MB），
-       且只预载首页必需的简体；繁体(和合本)在经文阅读页使用时再按需加载。 -->
-  <link rel="preload" as="font" type="font/ttf" crossorigin
-        href="fonts/notosanssc/v36/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYxNbPzS5HE.ttf">
   <!-- 自托管 CanvasKit：指向随仓库附带的 web/canvaskit/，避免从 gstatic.com 拉取
        （国内被墙/极慢）。必须在入口脚本之前声明。与 CI 的
        --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ 配合。 -->
@@ -135,31 +130,43 @@
        之前给 main.dart.js 加 ?cb= 查询串正是导致微信「完全打不开」的直接原因。 -->
   <script src="main.dart.js" type="application/javascript"></script>
   <script>
-    // Flutter 首帧渲染后移除 loading 层。main.dart.js 动态初始化引擎，本脚本执行时
-    // window._flutter 可能尚未就绪，故轮询 DOM：html 渲染器首帧插入 <flt-glass-pane>，
-    // canvaskit 渲染器插入 <canvas>，二者任一出现即视为已渲染。
-    // 微信 X5 走 canvaskit 时需先下载 wasm(~6.7MB) + CJK 字体(~17MB)，首屏更久。
-    // 注意：本脚本**不做任何报错/跳转引导**，只负责隐藏 loading；渲染本身交给引擎。
+    // 移除 loading 层的时机（关键：消除「首屏无字空白期」）：
+    // 1) 轮询 DOM：html 渲染器首帧插入 <flt-glass-pane>，canvaskit 插入 <canvas>，
+    //    二者任一出现 ⇒ 引擎已开始渲染（canvasUp）。
+    // 2) canvas 出现后，CJK 字体可能仍在下载（微信 X5 走 canvaskit 需先拉 wasm + 字体）。
+    //    此时若直接揭幕，中文尚未绘制 → 用户看到「白屏/无字」。故继续等待：
+    //    - document.fonts.status === 'loaded'（Flutter 把自托管字体注册为 FontFace，
+    //      由 document.fonts 跟踪）且已过去 ≥1.2s；或
+    //    - 总时长超过 12s 硬上限（极端弱网保护，绝不长期遮挡应用）。
+    //    这样首屏始终先显示「真理对照 · 加载中」文字层，文字就绪才揭幕，无空白感。
+    // 本脚本**不做任何报错/跳转引导**，只负责隐藏 loading；渲染本身交给引擎。
     (function () {
       var el = document.getElementById('app-loading');
+      var hidden = false;
       var hide = function () {
-        if (el) {
-          el.classList.add('done');
-          setTimeout(function () { if (el) el.remove(); }, 350);
-        }
+        if (hidden || !el) return;
+        hidden = true;
+        el.classList.add('done');
+        setTimeout(function () { if (el) el.remove(); }, 350);
       };
-      var tries = 0, maxTries = 800; // 约 120 秒：弱网下载 canvaskit 资源更久
-      var check = function () {
-        if (document.querySelector('flt-glass-pane, canvas')) { hide(); return; }
-        tries++;
-        if (tries < maxTries) {
-          setTimeout(check, 150);
-        } else {
-          // 兜底：无论如何移除遮罩，避免长期遮挡已渲染的内容（宁可露出空白也不挡住应用）
-          hide();
+      var start = Date.now();
+      var canvasUp = false;
+      var MAX = 12000;
+      var step = function () {
+        if (hidden) return;
+        if (!canvasUp && document.querySelector('flt-glass-pane, canvas')) {
+          canvasUp = true;
         }
+        var elapsed = Date.now() - start;
+        if (canvasUp) {
+          var fontsReady = (document.fonts && document.fonts.status === 'loaded');
+          if ((fontsReady && elapsed > 1200) || elapsed > MAX) { hide(); return; }
+        } else if (elapsed > MAX) {
+          hide(); return;
+        }
+        setTimeout(step, 150);
       };
-      check();
+      step();
     })();
   </script>
 </body>
