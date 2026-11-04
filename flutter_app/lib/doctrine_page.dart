@@ -323,3 +323,5 @@ class DoctrinePage extends StatelessWidget {
     );
   }
 }
+
+// (trigger rebuild: retrigger CI after transient data-injection failure)
