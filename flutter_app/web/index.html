@@ -47,6 +47,11 @@
 
   <title>真理对照</title>
   <link rel="manifest" href="manifest.json">
+  <!-- 首屏关键中文(简体)字体预加载：与 Flutter/wasm 并行下载，消除首屏中文空白。
+       字体已子集化（仅含应用用到的 ~3900 字），仅 ~1.2MB（原 10.5MB），
+       且只预载首页必需的简体；繁体(和合本)在经文阅读页使用时再按需加载。 -->
+  <link rel="preload" as="font" type="font/ttf" crossorigin
+        href="fonts/notosanssc/v36/k3kCo84MPvpLmixcA63oeAL7Iqp5IZJF9bmaG9_FnYxNbPzS5HE.ttf">
   <!-- 自托管 CanvasKit：指向随仓库附带的 web/canvaskit/，避免从 gstatic.com 拉取
        （国内被墙/极慢）。必须在入口脚本之前声明。与 CI 的
        --dart-define=FLUTTER_WEB_CANVASKIT_URL=canvaskit/ 配合。 -->

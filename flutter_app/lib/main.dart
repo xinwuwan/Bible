@@ -421,30 +421,77 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           // 内容模式切换：圣经 / 怀著（怀爱伦著作）
+          // 不使用原生 SegmentedButton：它在父级未拉伸时按「每段 = 自身内容宽」计算，
+          // 图标 + 内边距会挤掉两字标签的宽度，导致「圣经/怀著」竖排换行、按钮整体变窄。
+          // 这里用 Expanded 均分整行宽度 + 禁止文字换行，彻底避免竖排。
           Padding(
             padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
-            child: SegmentedButton<_HomeMode>(
-              selected: {_mode},
-              onSelectionChanged: (s) => setState(() => _mode = s.first),
-              segments: const [
-                ButtonSegment<_HomeMode>(
-                  value: _HomeMode.bible,
-                  label: Text('圣经'),
-                  icon: Icon(Icons.auto_stories_outlined),
-                ),
-                ButtonSegment<_HomeMode>(
-                  value: _HomeMode.egw,
-                  label: Text('怀著'),
-                  icon: Icon(Icons.menu_book_outlined),
-                ),
-              ],
-            ),
+            child: _buildModeToggle(),
           ),
           Expanded(
             child: _mode == _HomeMode.bible
                 ? _buildBibleBody(ot, nt)
                 : _buildEgwBody(),
           ),
+        ],
+      ),
+    );
+  }
+
+  /// 圣经 / 怀著 模式切换（自定义分段控件）。
+  /// 用 Expanded 把整行宽度均分给两个选项，文字 softWrap:false + 居中，
+  /// 确保「圣经 / 怀著」始终横排单行，绝不被挤成竖排；选中段用主色填充。
+  Widget _buildModeToggle() {
+    final cs = Theme.of(context).colorScheme;
+    final bool bible = _mode == _HomeMode.bible;
+    Widget seg(_HomeMode mode, IconData icon, String label, bool active) {
+      return Expanded(
+        child: GestureDetector(
+          onTap: () {
+            if (_mode != mode) setState(() => _mode = mode);
+          },
+          child: Container(
+            height: 38,
+            decoration: BoxDecoration(
+              color: active ? cs.primary : Colors.transparent,
+              borderRadius: BorderRadius.circular(19),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Icon(icon, size: 18,
+                    color: active ? Colors.white : cs.primary),
+                const SizedBox(width: 6),
+                Text(
+                  label,
+                  softWrap: false,
+                  overflow: TextOverflow.visible,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: active ? Colors.white : cs.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      height: 42,
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: cs.primary.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(21),
+      ),
+      child: Row(
+        children: [
+          seg(_HomeMode.bible, Icons.auto_stories_outlined, '圣经', bible),
+          seg(_HomeMode.egw, Icons.menu_book_outlined, '怀著', !bible),
         ],
       ),
     );
