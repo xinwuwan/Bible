@@ -259,7 +259,7 @@ class _EgwComparePageState extends State<EgwComparePage> {
   }
 
   /// 以「对应单元」为单位，逐组呈现英文与中文的明确配对。
-  Widget _buildPairs({Widget? header}) {
+  Widget _buildPairs({required Widget header}) {
     final sec = _section;
     final en = (sec['en_paras'] as List?) ?? [];
     final zh = (sec['zh_paras'] as List?) ?? [];
@@ -282,8 +282,7 @@ class _EgwComparePageState extends State<EgwComparePage> {
     final isForeword = (sec['kind'] ?? '').toString() == 'foreword';
     final zhMissing = isForeword && zh.isEmpty;
 
-    final hasHeader = header != null;
-    final headerCount = hasHeader ? 1 : 0;
+    const headerCount = 1; // 说明块固定作为列表第 0 项
     final noteCount = zhMissing ? 1 : 0;
 
     return LayoutBuilder(
@@ -294,7 +293,7 @@ class _EgwComparePageState extends State<EgwComparePage> {
           itemCount: pairs.length + headerCount + noteCount,
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemBuilder: (ctx, i) {
-            if (hasHeader && i == 0) return header!;
+            if (i == 0) return header;
             final offset = headerCount + noteCount;
             // 前言缺失中译时，列表内插入一条温和说明，避免用户误以为缺数据。
             if (zhMissing && i == headerCount) {
