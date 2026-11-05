@@ -136,7 +136,10 @@ class _HealthTopicPageState extends State<HealthTopicPage> {
                     children: _sources.map(_sourceCard).toList(),
                   ),
                 const SizedBox(height: 18),
-                _SectionTitle(text: '今日打卡标准（${widget.metrics.length}）'),
+                _SectionTitle(
+                    text: widget.metrics.length == 1
+                        ? '今日打卡标准'
+                        : '今日打卡标准（${widget.metrics.length}）'),
                 const SizedBox(height: 6),
                 if (widget.metrics.isEmpty)
                   const Text('本支柱暂未设定打卡指标',
@@ -231,59 +234,115 @@ class _HealthTopicPageState extends State<HealthTopicPage> {
     );
   }
 
-  /// 今日打卡标准卡片：指标名 + 目标徽标 + 判定标准（说明怎样才算打卡成功）。
+  /// 今日打卡标准卡片：清晰呈现「每日最低要求」与「达标标准」。
+  /// 左侧主题色竖条增强辨识度；目标值以醒目大字展示，避免溢出与竖排。
   Widget _standardCard(HealthMetric m) {
+    final target = (m.targetValue ?? '').toString().trim();
+    final hasTarget = target.isNotEmpty;
+    final hint = m.standardHint;
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      margin: const EdgeInsets.only(bottom: 10),
+      elevation: 0,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: _themeColor.withOpacity(0.18)),
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    m.nameZh,
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.2),
-                  ),
-                ),
-                if (m.targetValue != null && m.targetValue!.isNotEmpty)
-                  Container(
-                    margin: const EdgeInsets.only(left: 8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: _themeColor.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(6),
+            // 左侧主题色竖条，增强辨识度与设计感
+            Container(width: 4, color: _themeColor),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(12, 12, 14, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 指标名
+                    Text(
+                      m.nameZh,
+                      style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2),
                     ),
-                    child: Text(
-                      '目标 $m.targetValue${m.unitLabel}',
-                      style: TextStyle(fontSize: 12, color: _themeColor),
+                    const SizedBox(height: 10),
+                    // 每日最低要求（醒目展示）
+                    if (hasTarget)
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: _themeColor.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.track_changes_outlined,
+                                size: 15, color: _themeColor),
+                            const SizedBox(width: 6),
+                            Text('每日最低要求',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: _themeColor,
+                                    fontWeight: FontWeight.w600)),
+                            const Spacer(),
+                            Flexible(
+                              child: Text(
+                                '$target${m.unitLabel}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                    color: _themeColor),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (hasTarget) const SizedBox(height: 8),
+                    // 达标标准
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 1),
+                          child: Icon(Icons.verified_outlined,
+                              size: 15, color: _themeColor),
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '达标标准：',
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: _themeColor),
+                                ),
+                                TextSpan(
+                                  text: hint,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black87,
+                                      height: 1.5),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 6),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(Icons.check_circle_outline, size: 14, color: _themeColor),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    m.standardHint,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.black87, height: 1.5),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
         ),
