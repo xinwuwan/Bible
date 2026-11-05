@@ -206,14 +206,14 @@ class _HealthPageState extends State<HealthPage> {
                           cross;
                       return CustomScrollView(
                         slivers: [
-// 顶部 Hero：今日打卡进度环 + 鼓励语（原「今日完成」横幅并入此处）
-SliverToBoxAdapter(
+                          // 顶部 Hero：今日打卡进度环 + 鼓励语（原「今日完成」横幅并入此处）
+                          SliverToBoxAdapter(
                             child: _TodayProgressHeader(
                               done: _totalDone,
                               total: _metrics.length,
                             ),
-                          )
-if (_topics.isEmpty)
+                          ),
+                          if (_topics.isEmpty)
                             const SliverFillRemaining(
                               hasScrollBody: false,
                               child: Center(child: Text('暂无健康内容')),
@@ -245,8 +245,8 @@ if (_topics.isEmpty)
                                   ],
                                 ),
                               ),
-                            )
-SliverToBoxAdapter(
+                            ),
+                          SliverToBoxAdapter(
                             child: _DailyTipCard(
                               tip: _todayTip,
                               isFav: _todayTip != null &&
@@ -258,29 +258,29 @@ SliverToBoxAdapter(
                                   ? null
                                   : () => _toggleFav(_todayTip!.id),
                             ),
-                          )
-// 唯一的健康顾问入口（每日一贴卡内的重复按钮已移除）
-SliverToBoxAdapter(
+                          ),
+                          // 唯一的健康顾问入口（每日一贴卡内的重复按钮已移除）
+                          SliverToBoxAdapter(
                             child: _HealthQaEntry(
                               onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => const HealthQaPage()),
                               ),
                             ),
-                          )
-// 专业咨询整合模块入口（v55：原「专业咨询·医药布道」
-// 与「AI 医生·多轮问诊」两个平铺入口合并为一个模块，
-// 进入后再分两个子功能）
-SliverToBoxAdapter(
+                          ),
+                          // 专业咨询整合模块入口（v55：原「专业咨询·医药布道」
+                          // 与「AI 医生·多轮问诊」两个平铺入口合并为一个模块，
+                          // 进入后再分两个子功能）
+                          SliverToBoxAdapter(
                             child: _ConsultEntry(
                               onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (_) => const ConsultHubPage()),
                               ),
                             ),
-                          )
-// 页尾免责声明：一行小字，不再占大横幅
-SliverToBoxAdapter(
+                          ),
+                          // 页尾免责声明：一行小字，不再占大横幅
+                          SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(24, 8, 24, 20),
                               child: Text(
@@ -293,7 +293,7 @@ SliverToBoxAdapter(
                                 ),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       );
                     },
