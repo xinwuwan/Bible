@@ -1,1 +1,326 @@
-ew0KICAidmVyc2UiOiBbDQogICAgew0KICAgICAgImJvb2tfaWQiOiAxLA0KICAgICAgImNoYXB0ZXIiOiAxLA0KICAgICAgInZlcnNlIjogMSwNCiAgICAgICJyZWYiOiAiR0VOIDE6MSIsDQogICAgICAia2p2X3RleHQiOiAiSW4gdGhlIGJlZ2lubmluZyBHb2QgY3JlYXRlZCB0aGUgaGVhdmVuIGFuZCB0aGUgZWFydGguIiwNCiAgICAgICJvdXJfemgiOiAi6LW35Yid77yM56We5Yib6YCg5aSp5Zyw44CCIiwNCiAgICAgICJjdXZfcmVmX3RleHQiOiAi6LW35Yid77yM56We5Yib6YCg5aSp5Zyw44CCIg0KICAgIH0sDQogICAgew0KICAgICAgImJvb2tfaWQiOiAxLA0KICAgICAgImNoYXB0ZXIiOiAxLA0KICAgICAgInZlcnNlIjogMiwNCiAgICAgICJyZWYiOiAiR0VOIDE6MiIsDQogICAgICAia2p2X3RleHQiOiAiQW5kIHRoZSBlYXJ0aCB3YXMgd2l0aG91dCBmb3JtLCBhbmQgdm9pZDsgYW5kIGRhcmtuZXNzIHdhcyB1cG9uIHRoZSBmYWNlIG9mIHRoZSBkZWVwLiIsDQogICAgICAib3VyX3poIjogIuWcsOaYr+epuuiZmua3t+ayjO+8jOa4iumdoum7keaal+OAgiIsDQogICAgICAiY3V2X3JlZl90ZXh0IjogIuWcsOaYr+epuuiZmua3t+ayjO+8jOa4iumdoum7keaal+OAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJib29rX2lkIjogNDMsDQogICAgICAiY2hhcHRlciI6IDMsDQogICAgICAidmVyc2UiOiAxNiwNCiAgICAgICJyZWYiOiAiSkhOIDM6MTYiLA0KICAgICAgImtqdl90ZXh0IjogIkZvciBHb2Qgc28gbG92ZWQgdGhlIHdvcmxkLCB0aGF0IGhlIGdhdmUgaGlzIG9ubHkgYmVnb3R0ZW4gU29uLCB0aGF0IHdob3NvZXZlciBiZWxpZXZldGggaW4gaGltIHNob3VsZCBub3QgcGVyaXNoLCBidXQgaGF2ZSBldmVybGFzdGluZyBsaWZlLiIsDQogICAgICAib3VyX3poIjogIuelnueIseS4luS6uu+8jOeUmuiHs+WwhuS7lueahOeLrOeUn+WtkOi1kOe7meS7luS7rO+8jOWPq+S4gOWIh+S/oeS7lueahOS4jeiHs+eBreS6oe+8jOWPjeW+l+awuOeUn+OAgiIsDQogICAgICAiY3V2X3JlZl90ZXh0IjogIuelnueIseS4luS6uu+8jOeUmuiHs+WwhuS7lueahOeLrOeUn+WtkOi1kOe7meS7luS7rO+8jOWPq+S4gOWIh+S/oeS7lueahOS4jeiHs+eBreS6oe+8jOWPjeW+l+awuOeUn+OAgiINCiAgICB9DQogIF0sDQogICJib29rIjogWw0KICAgIHsNCiAgICAgICJib29rX2lkIjogMSwNCiAgICAgICJib29rX2NvZGUiOiAiR0VOIiwNCiAgICAgICJuYW1lX2VuIjogIkdlbmVzaXMiLA0KICAgICAgIm5hbWVfemgiOiAi5Yib5LiW6K6wIiwNCiAgICAgICJ0ZXN0YW1lbnQiOiAiT1QiLA0KICAgICAgImNoYXB0ZXJfY291bnQiOiA1MA0KICAgIH0sDQogICAgew0KICAgICAgImJvb2tfaWQiOiA0MywNCiAgICAgICJib29rX2NvZGUiOiAiSkhOIiwNCiAgICAgICJuYW1lX2VuIjogIkpvaG4iLA0KICAgICAgIm5hbWVfemgiOiAi57qm57+w56aP6Z+zIiwNCiAgICAgICJ0ZXN0YW1lbnQiOiAiTlQiLA0KICAgICAgImNoYXB0ZXJfY291bnQiOiAyMQ0KICAgIH0NCiAgXSwNCiAgImRvY3RyaW5lIjogWw0KICAgIHsNCiAgICAgICJiZWxpZWZfaWQiOiAxLA0KICAgICAgImNvZGUiOiAiU0NSSVBUVVJFIiwNCiAgICAgICJ0aXRsZV9lbiI6ICJUaGUgSG9seSBTY3JpcHR1cmVzIiwNCiAgICAgICJ0aXRsZV96aCI6ICLlnKPnu48iLA0KICAgICAgImVuX3RleHQiOiAiVGhlIEhvbHkgU2NyaXB0dXJlcy4uLiIsDQogICAgICAiemhfdGV4dCI6ICLlnKPnu4/mmK/kuIrluJ3ml6jmhI/nmoTlkK/npLrvvIzmnKzlupTnlKjku6UgS0pWIOiLseaWh+S4uuadg+WogeW6leacrOOAgiINCiAgICB9DQogIF0sDQogICJoZWFsdGhfdG9waWMiOiBbDQogICAgew0KICAgICAgInRvcGljX2lkIjogMSwNCiAgICAgICJjb2RlIjogIk5VVCIsDQogICAgICAibmFtZV96aCI6ICLokKXlhbsiLA0KICAgICAgInN1bW1hcnkiOiAi5Lul5Zyj57uP5omA6K6w5Y6f5aeL6aWu6aOf5Li65Y6f5YiZ77yM6YCJ5oup5Y2V57qv44CB5bCR5Yqg5bel55qE6aOf54mp77yM5L2/6Lqr5L2T5b6X552A5ZCI5a6c55qE5ruL5YW744CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogMA0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogMiwNCiAgICAgICJjb2RlIjogIkVYRSIsDQogICAgICAibmFtZV96aCI6ICLov5DliqgiLA0KICAgICAgInN1bW1hcnkiOiAi5pyJ6KeE5b6L55qE6Lqr5L2T5rS75Yqo5piv57u05oyB5YGl5bq355qE5b+F6KaB5p2h5Lu277yM5LiO6IqC5Yi255u46YWN5ZCI5pWI5p6c5pyA5L2z44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogMQ0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogMywNCiAgICAgICJjb2RlIjogIldBVCIsDQogICAgICAibmFtZV96aCI6ICLmsLQiLA0KICAgICAgInN1bW1hcnkiOiAi5YWF6Laz55qE5rC05YiG5pGE5Y+W5piv6Lqr5L2T5Luj6LCi5LiO5riF5rSB55qE5Z+656GA77yM5YaF55So5aSW55So55qG5pyJ5YW255uK44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogMg0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogNCwNCiAgICAgICJjb2RlIjogIlNVTiIsDQogICAgICAibmFtZV96aCI6ICLpmLPlhYkiLA0KICAgICAgInN1bW1hcnkiOiAi6YCC5bqm55qE5pel5YWJ5pyJ5Yqp6Lqr5L2T5py66IO977yM5oOf5b2T6YG/5YWN6L+H5bqm5pud5pmS44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogMw0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogNSwNCiAgICAgICJjb2RlIjogIlRFTSIsDQogICAgICAibmFtZV96aCI6ICLoioLliLYiLA0KICAgICAgInN1bW1hcnkiOiAi5Yeh5pyJ55uK5LmL54mp5b2T6YCC5bqm5L2/55So77yM5Yeh5pyJ5a6z5LmL54mp5b2T5YWo54S25oiS57ud44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogNA0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogNiwNCiAgICAgICJjb2RlIjogIkFJUiIsDQogICAgICAibmFtZV96aCI6ICLnqbrmsJQiLA0KICAgICAgInN1bW1hcnkiOiAi5riF5paw55qE56m65rCU5LiO6Imv5aW96YCa6aOO5piv55Sf5ZG95LmL5pys77yM5bqU5bC96YeP6YG/5YWN5LmF5aSE5rGh5rWK5a+G6Zet5LmL5Zyw44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogNQ0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogNywNCiAgICAgICJjb2RlIjogIlJFUyIsDQogICAgICAibmFtZV96aCI6ICLkvJHmga8iLA0KICAgICAgInN1bW1hcnkiOiAi6KeE5b6L5L2c5oGv5LiO5a6J5oGv5pel55qE5q2H5oGv77yM5L2/6Lqr5b+D6YeN5paw5b6X5Yqb44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogNg0KICAgIH0sDQogICAgew0KICAgICAgInRvcGljX2lkIjogOCwNCiAgICAgICJjb2RlIjogIlRSVSIsDQogICAgICAibmFtZV96aCI6ICLkv6HpnaAiLA0KICAgICAgInN1bW1hcnkiOiAi5b+D54G155qE5YGl5bq35qC55qSN5LqO5a+55LiK5bid55qE5L+h6Z2g77yb6Lqr5L2T55qE5YGl5bq35Lqm5Y+X5b+D5aKD5b2x5ZON44CCIiwNCiAgICAgICJzb3J0X29yZGVyIjogNw0KICAgIH0NCiAgXSwNCiAgImhlYWx0aF90b3BpY19zb3VyY2UiOiBbDQogICAgew0KICAgICAgImlkIjogMSwNCiAgICAgICJ0b3BpY19pZCI6IDEsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICJHRU4gMToyOSIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIxBbmQgR29kIHNhaWQsIEJlaG9sZCwgSSBoYXZlIGdpdmVuIHlvdSBldmVyeSBoZXJiIGJlYXJpbmcgc2VlZOKApiBhbmQgZXZlcnkgdHJlZeKApiBmb3IgbWVhdC7jgI3moLjlv4PopoHkuYnvvJrkuIrluJ3lnKjliJvpgKDml7botZDkuIvmpI3nianmgKfpo5/nianvvIjkupTosLfjgIHoj5zolKzjgIHmnpzlrZDvvInkvZzkuLrkurrnsbvljp/mnKznmoTppa7po5/vvIzku6XlpKnnhLbmpI3niankuLrnsq7mmK/lgaXlurfkuYvmnKzjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAyLA0KICAgICAgInRvcGljX2lkIjogMSwNCiAgICAgICJzb3VyY2VfdHlwZSI6ICJCSUJMRSIsDQogICAgICAic291cmNlX2lkIjogIkRBTiAxOjEyIiwNCiAgICAgICJleGNlcnB0IjogIktKVu+8muOAjFByb3ZlIHRoeSBzZXJ2YW50c+KApiB0ZW4gZGF5czsgYW5kIGxldCB0aGVtIGdpdmUgdXMgcHVsc2UgdG8gZWF0LCBhbmQgd2F0ZXIgdG8gZHJpbmsu44CN5qC45b+D6KaB5LmJ77ya5L2G5Lul55CG6K+35rGC5Lul6JSs6I+c77yI57Sg54mp77yJ5LiO5rC05Luj5pu/546L6Iaz77yM57uT5p6c5q+U55So6Iaz6ICF5pu05pi+5YGl5bq35L+K56eA77yM6K+05piO566A5py05qSN54mp6aWu6aOf5LqO6Lqr5L2T5pyJ55uK44CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogMywNCiAgICAgICJ0b3BpY19pZCI6IDEsDQogICAgICAic291cmNlX3R5cGUiOiAiRUdXIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiRUdXLU1IIiwNCiAgICAgICJleGNlcnB0IjogIuaAgOeIseS8puWcqOOAiuacjeWKoeecn+ivoOOAi+S4reaMh+WHuu+8muacgOeugOWNleOAgeacgOWkqeeEtueahOmjn+eJqeKAlOKAlOS6lOiwt+OAgeawtOaenOOAgeiUrOiPnOOAgeWdmuaenO+8jOaJjeaYr+a7i+WFu+i6q+S9k+OAgeS/neWuiOWBpeW6t+eahOS4iumAie+8m+W9k+i/nOemu+WlouS+iOWutOS5kOS4jui/h+W6puWKoOW3peOAgeayueiFu+eahOmjn+eJqeOAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJpZCI6IDQsDQogICAgICAidG9waWNfaWQiOiAyLA0KICAgICAgInNvdXJjZV90eXBlIjogIkJJQkxFIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiMVRJIDQ6OCIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIxGb3IgYm9kaWx5IGV4ZXJjaXNlIHByb2ZpdGV0aCBsaXR0bGU6IGJ1dCBnb2RsaW5lc3MgaXMgcHJvZml0YWJsZSB1bnRvIGFsbCB0aGluZ3PigKbjgI3moLjlv4PopoHkuYnvvJrmk43nu4PouqvkvZPomb3nm4rlpITmnInpmZDvvIzljbTku43mnInnm4rkuo7ku4rnlJ/vvJvop4TlvovjgIHpgILluqbnmoTouqvkvZPmtLvliqjmmK/kuIrluJ3miYDllpzmgqbnmoTlgaXlurfnlJ/mtLvmlrnlvI/jgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiA1LA0KICAgICAgInRvcGljX2lkIjogMiwNCiAgICAgICJzb3VyY2VfdHlwZSI6ICJFR1ciLA0KICAgICAgInNvdXJjZV9pZCI6ICJFR1ctTUgiLA0KICAgICAgImV4Y2VycHQiOiAi5oCA54ix5Lym5by66LCD77ya6L+Q5Yqo5a+55L+d5oyB5YGl5bq35b+F5LiN5Y+v5bCR4oCU4oCU5pWj5q2l44CB5Yqz5L2c44CB6YCC5bqm55qE6IKi5L2T5rS75Yqo6IO95L+D6L+b5b6q546v44CB5by65YGl5L2T6a2E77yb5L2G6KaB6YG/5YWN6L+H5bqm5LiO5o2f5Lyk77yM5Yqz6YC45b6X5b2T44CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogNiwNCiAgICAgICJ0b3BpY19pZCI6IDMsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICJKSE4gNDoxNCIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIxXaG9zb2V2ZXIgZHJpbmtldGggb2YgdGhlIHdhdGVyIHRoYXQgSSBzaGFsbCBnaXZlIGhpbSBzaGFsbCBuZXZlciB0aGlyc3TigKYgYSB3ZWxsIG9mIHdhdGVyIHNwcmluZ2luZyB1cCBpbnRvIGV2ZXJsYXN0aW5nIGxpZmUu44CN5qC45b+D6KaB5LmJ77ya5rC06LGh5b6B55Sf5ZG95LiO5rSB5YeA77yb5YWF6Laz44CB5rSB5YeA55qE5rC05YiG5a+56Lqr5L2T55qE5Luj6LCi5LiO5bq35aSN6Iez5YWz6YeN6KaB44CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogNywNCiAgICAgICJ0b3BpY19pZCI6IDMsDQogICAgICAic291cmNlX3R5cGUiOiAiRUdXIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiRUdXLU1IIiwNCiAgICAgICJleGNlcnB0IjogIuaAgOeIseS8puinhuawtOS4uuacgOiJr+eahOiJr+iNr+S5i+S4gO+8mua0geWHgOeahOmlrueUqOawtOS4jumAguW9k+eahOawtOeWl++8jOWPr+W4ruWKqei6q+S9k+aOkuavkuOAgemAgOeDreOAgeaBouWkjea0u+WKm++8m+avj+aXpeWFhei2s+mlruawtOaYr+WFu+eUn+imgeWKoeOAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJpZCI6IDgsDQogICAgICAidG9waWNfaWQiOiA0LA0KICAgICAgInNvdXJjZV90eXBlIjogIkJJQkxFIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiTUFMIDQ6MiIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIzigKZ0aGUgU3VuIG9mIHJpZ2h0ZW91c25lc3Mgc2hhbGwgYXJpc2Ugd2l0aCBoZWFsaW5nIGluIGhpcyB3aW5nc+KApuOAjeaguOW/g+imgeS5ie+8muaXpeWFie+8iOS4juWFrOS5ieeahOaXpeWktO+8ieW4puadpeWMu+ayu+S4jueUn+acuu+8m+a4qeWSjOmAguW6pueahOmYs+WFieacieWKqei6q+S9k+WBpeW6t+OAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJpZCI6IDksDQogICAgICAidG9waWNfaWQiOiA0LA0KICAgICAgInNvdXJjZV90eXBlIjogIkVHVyIsDQogICAgICAic291cmNlX2lkIjogIkVHVy1NSCIsDQogICAgICAiZXhjZXJwdCI6ICLmgIDniLHkvKbkuLvlvKDvvJrmuKnlkoznmoTml6XlhYnmtbTkuI7miLflpJbnlJ/mtLvog73lvLrlgaXpqqjpqrzjgIHmj5DmjK/nsr7npZ7vvJvkvYbpobvpgb/lvIDng4jml6Xmm53mmZLvvIzov4fnirnkuI3lj4rjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxMCwNCiAgICAgICJ0b3BpY19pZCI6IDUsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICIxQ08gOToyNSIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIzigKZldmVyeSBtYW4gdGhhdCBzdHJpdmV0aCBmb3IgdGhlIG1hc3RlcnkgaXMgdGVtcGVyYXRlIGluIGFsbCB0aGluZ3PigKbjgI3moLjlv4PopoHkuYnvvJrnq57mioDogIXkuLrog5zlh7rlsJrkuJTlh6HkuovoioLliLbvvIzkv6HlvpLmm7TlvZPlnKjppa7po5/jgIHll5zlpb3kuIroh6rlvovoioLliLbjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxMSwNCiAgICAgICJ0b3BpY19pZCI6IDUsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICIxQ08gNjoxOS0yMCIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIzigKZ5b3VyIGJvZHkgaXMgdGhlIHRlbXBsZSBvZiB0aGUgSG9seSBHaG9zdOKApiB5ZSBhcmUgbm90IHlvdXIgb3duPyBGb3IgeWUgYXJlIGJvdWdodCB3aXRoIGEgcHJpY2XigKbjgI3moLjlv4PopoHkuYnvvJrouqvkvZPmmK/lnKPngbXnmoTmrr/vvIzlvZPku6XmtIHlh4DjgIHoioLliLbnmoTnlJ/mtLvojaPogIDkuIrluJ3jgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxMiwNCiAgICAgICJ0b3BpY19pZCI6IDUsDQogICAgICAic291cmNlX3R5cGUiOiAiRUdXIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiRUdXLVRFTSIsDQogICAgICAiZXhjZXJwdCI6ICLmgIDniLHkvKblnKjjgIroioLliLbjgIvkuK3lipvpmYjvvJrlvZPlhajnhLbnpoHnu53phZLjgIHng5/jgIHpurvphonlk4HnrYnmiJDnmL7kuYvnianvvIzlubblnKjkuIDliIfmnInnm4rkuYvkuovkuIrmjIHlrojpgILluqbigJTigJToioLliLbmmK/ouqvkvZPkuI7ngbXmgKflj4zph43okpnnpo/nmoTpkqXljJnjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxMywNCiAgICAgICJ0b3BpY19pZCI6IDYsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICJHRU4gMjo3IiwNCiAgICAgICJleGNlcnB0IjogIktKVu+8muOAjOKApmJyZWF0aGVkIGludG8gaGlzIG5vc3RyaWxzIHRoZSBicmVhdGggb2YgbGlmZTsgYW5kIG1hbiBiZWNhbWUgYSBsaXZpbmcgc291bC7jgI3moLjlv4PopoHkuYnvvJrnlJ/lkb3mupDkuo7kuIrluJ3miYDotZDnmoTnlJ/msJTvvJvmuIXmtIHnmoTnqbrmsJTmmK/nu7TmjIHov5nnlJ/lkb3nmoTlv4XpnIDjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxNCwNCiAgICAgICJ0b3BpY19pZCI6IDYsDQogICAgICAic291cmNlX3R5cGUiOiAiRUdXIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiRUdXLU1IIiwNCiAgICAgICJleGNlcnB0IjogIuaAgOeIseS8puaPkOmGku+8mua4heaWsOeahOepuuawlOS4juiJr+WlveeahOmAmumjjuWvueWBpeW6t+S4jeWPr+aIlue8uu+8m+WkmuWIsOaIt+WkluOAgeWLpOW8gOmXqOeql++8jOiuqeiCuuS4juihgOa2suW+l+edgOa0geWHgOeahOawp+awlOOAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJpZCI6IDE1LA0KICAgICAgInRvcGljX2lkIjogNywNCiAgICAgICJzb3VyY2VfdHlwZSI6ICJCSUJMRSIsDQogICAgICAic291cmNlX2lkIjogIkVYTyAyMDo4LTExIiwNCiAgICAgICJleGNlcnB0IjogIktKVu+8muOAjFJlbWVtYmVyIHRoZSBzYWJiYXRoIGRheSwgdG8ga2VlcCBpdCBob2x54oCmIHRoZSBMT1JEIHJlc3RlZCB0aGUgc2V2ZW50aCBkYXnigKbjgI3moLjlv4PopoHkuYnvvJrkuIrluJ3orr7nq4vlronmga/ml6XvvIzlkKnlkpDkurrlha3ml6XlgZrlt6XjgIHkuIDml6XlronmrYfvvJvop4TlvovnmoTkvJHmga/kuI7lronmga/mmK/npYLotZDkuIvnmoTouqvlv4PlpI3ljp/kuYvpgZPjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxNiwNCiAgICAgICJ0b3BpY19pZCI6IDcsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICJNUksgNjozMSIsDQogICAgICAiZXhjZXJwdCI6ICJLSlbvvJrjgIxDb21lIHllIHlvdXJzZWx2ZXMgYXBhcnTigKYgYW5kIHJlc3QgYSB3aGlsZTogZm9y4oCmIHRoZXkgaGFkIG5vIGxlaXN1cmUgc28gbXVjaCBhcyB0byBlYXQu44CN5qC45b+D6KaB5LmJ77ya6IC256ij5L2T5oGk6Zeo5b6S55qE5Yqz56KM77yM5Y+s5LuW5Lus6YCA5Yiw5pe36YeO5q2H5LiA5q2H77yb5Lq65Lmf6ZyA6KaB5Li75Yqo55WZ55m944CB5a6a5pyf5LyR5oGv44CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogMTcsDQogICAgICAidG9waWNfaWQiOiA3LA0KICAgICAgInNvdXJjZV90eXBlIjogIkVHVyIsDQogICAgICAic291cmNlX2lkIjogIkVHVy1NSCIsDQogICAgICAiZXhjZXJwdCI6ICLmgIDniLHkvKblhpnpgZPvvJrnlrLlirPnmoTmnLrkvZPpnIDopoHlronmrYfmiY3og73lpI3ljp/vvJvkv53or4HlhYXotrPnnaHnnKDvvIzlubbmr4/lkajnlZnkuIDmrrXkuI3ooqvmiZPmibDnmoTlronmga/ml7blhYnvvIzmmK/plb/ov5zlgaXlurfnmoTmoLnln7rjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAiaWQiOiAxOCwNCiAgICAgICJ0b3BpY19pZCI6IDgsDQogICAgICAic291cmNlX3R5cGUiOiAiQklCTEUiLA0KICAgICAgInNvdXJjZV9pZCI6ICJQSFAgNDo2LTciLA0KICAgICAgImV4Y2VycHQiOiAiS0pW77ya44CMQmUgY2FyZWZ1bCBmb3Igbm90aGluZ+KApiBsZXQgeW91ciByZXF1ZXN0cyBiZSBtYWRlIGtub3duIHVudG8gR29kLiBBbmQgdGhlIHBlYWNlIG9mIEdvZOKApiBzaGFsbCBrZWVwIHlvdXIgaGVhcnRz4oCm44CN5qC45b+D6KaB5LmJ77ya5Lul56W35ZGK5Lqk5omY5Luj5pu/5oyC6JmR77yM5LiK5bid5omA6LWQ5Ye65Lq65oSP5aSW55qE5bmz5a6J5b+F5L+d5a6I5b+D5oCA5oSP5b+144CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogMTksDQogICAgICAidG9waWNfaWQiOiA4LA0KICAgICAgInNvdXJjZV90eXBlIjogIkJJQkxFIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiUFNBIDIzOjEiLA0KICAgICAgImV4Y2VycHQiOiAiS0pW77ya44CMVGhlIExPUkQgaXMgbXkgc2hlcGhlcmQ7IEkgc2hhbGwgbm90IHdhbnQu44CN5qC45b+D6KaB5LmJ77ya5L+h6Z2g6L+Z5L2N55yL6aG+5Lq655qE54mn6ICF77yM5b+D6YeM5L6/5b6X5a6J56iz5ruh6Laz77yM5pyJ55uK5LqO5YWo5Lq655qE5YGl5bq344CCIg0KICAgIH0sDQogICAgew0KICAgICAgImlkIjogMjAsDQogICAgICAidG9waWNfaWQiOiA4LA0KICAgICAgInNvdXJjZV90eXBlIjogIkJJQkxFIiwNCiAgICAgICJzb3VyY2VfaWQiOiAiMVRIIDU6MjMiLA0KICAgICAgImV4Y2VycHQiOiAiS0pW77ya44CM4oCmdGhlIHZlcnkgR29kIG9mIHBlYWNlIHNhbmN0aWZ5IHlvdSB3aG9sbHnigKYgeW91ciB3aG9sZSBzcGlyaXQgYW5kIHNvdWwgYW5kIGJvZHkgYmUgcHJlc2VydmVkIGJsYW1lbGVzc+KApuOAjeaguOW/g+imgeS5ie+8muaEv+i1kOW5s+WuieeahOS4iuW4neS9v+S6uueahOeBteOAgemtguOAgeS9k+WFqOeEtuaIkOWco+OAgeW+l+S7peS/neWFqOKAlOKAlOi6q+W/g+eBteaVtOS9k+WBpeW6t+acrOaYr+S4iuW4neeahOW/g+aEj+OAgiINCiAgICB9DQogIF0sDQogICJoZWFsdGhfbWV0cmljIjogWw0KICAgIHsNCiAgICAgICJtZXRyaWNfaWQiOiAxLA0KICAgICAgInRvcGljX2NvZGUiOiAiTlVUIiwNCiAgICAgICJuYW1lX3poIjogIuiUrOaenOS7veaVsCIsDQogICAgICAidW5pdCI6ICLku70v5pelIiwNCiAgICAgICJ0YXJnZXRfdmFsdWUiOiAi4omlNSIsDQogICAgICAiY3JpdGVyaWEiOiAi5b2T5pel6JSs6I+c5LiO5rC05p6c5ZCI6K6h5pGE5YWlIOKJpTUg5Lu95Y2z6L6+5qCH77yIMSDku73iiYjkuIDkuKrmi7PlpLTlpKflsI/vvIznuqYgODDigJMxMDAg5YWL77yJ44CCIg0KICAgIH0sDQogICAgew0KICAgICAgIm1ldHJpY19pZCI6IDIsDQogICAgICAidG9waWNfY29kZSI6ICJFWEUiLA0KICAgICAgIm5hbWVfemgiOiAi6L+Q5Yqo5pe26ZW/IiwNCiAgICAgICJ1bml0IjogIuWIhumSnyIsDQogICAgICAidGFyZ2V0X3ZhbHVlIjogIuKJpTMwIiwNCiAgICAgICJjcml0ZXJpYSI6ICLlvZPml6XntK/orqHkuK3nrYnlvLrluqbov5Dliqgg4omlMzAg5YiG6ZKf77yI5aaC5b+r6LWw44CB6aqR6L2m44CB5YGa5a625Yqh77yJ5Y2z6L6+5qCH44CCIg0KICAgIH0sDQogICAgew0KICAgICAgIm1ldHJpY19pZCI6IDMsDQogICAgICAidG9waWNfY29kZSI6ICJXQVQiLA0KICAgICAgIm5hbWVfemgiOiAi6aWu5rC06YePIiwNCiAgICAgICJ1bml0IjogIuavq+WNhyIsDQogICAgICAidGFyZ2V0X3ZhbHVlIjogIjE1MDDigJMyMDAwIiwNCiAgICAgICJjcml0ZXJpYSI6ICLlvZPml6XkuLvliqjppa7nlKjnmb3msLTovr7liLAgMTUwMCDmr6vljYflj4rku6XkuIrljbPovr7moIfvvJsxNTAw4oCTMjAwMCDmr6vljYfkuLrmjqjojZDoiJLpgILljLrpl7TvvIzlj6/lsJHph4/lpJrmrKHooaXlhYXjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAibWV0cmljX2lkIjogNCwNCiAgICAgICJ0b3BpY19jb2RlIjogIlNVTiIsDQogICAgICAibmFtZV96aCI6ICLmiLflpJbml6XnhaciLA0KICAgICAgInVuaXQiOiAi5YiG6ZKfIiwNCiAgICAgICJ0YXJnZXRfdmFsdWUiOiAiMTXigJMzMCIsDQogICAgICAiY3JpdGVyaWEiOiAi5b2T5pel5rip5ZKM5oi35aSW5pel54WnIDE14oCTMzAg5YiG6ZKf5Y2z6L6+5qCH77yb6K+36YG/5byAIDEwOjAw4oCTMTY6MDAg5by657Sr5aSW57q/5pe25q6177yM5Lul5LiN5pmS5Lyk5Li65bqm44CCIg0KICAgIH0sDQogICAgew0KICAgICAgIm1ldHJpY19pZCI6IDUsDQogICAgICAidG9waWNfY29kZSI6ICJURU0iLA0KICAgICAgIm5hbWVfemgiOiAi5Yi65r+A5oCn6aWu5ZOBIiwNCiAgICAgICJ1bml0IjogIuadryIsDQogICAgICAidGFyZ2V0X3ZhbHVlIjogIjAiLA0KICAgICAgImNyaXRlcmlhIjogIuW9k+aXpeS/neaMgSAwIOadr+WQq+WSluWVoeWboOaIlumFkueyvueahOWIuua/gOaAp+mlruWTge+8iOWmguWSluWVoeOAgea1k+iMtuOAgemFku+8ieWNs+i+vuagh+OAgiINCiAgICB9LA0KICAgIHsNCiAgICAgICJtZXRyaWNfaWQiOiA2LA0KICAgICAgInRvcGljX2NvZGUiOiAiQUlSIiwNCiAgICAgICJuYW1lX3poIjogIumAmumjjuaXtumVvyIsDQogICAgICAidW5pdCI6ICLliIbpkp8iLA0KICAgICAgInRhcmdldF92YWx1ZSI6ICLiiaUzMCIsDQogICAgICAiY3JpdGVyaWEiOiAi5b2T5pel5L+d6K+B5bGF5omAL+WKnuWFrOWcuuaJgOmAmumjjue0r+iuoSDiiaUzMCDliIbpkp/vvIzmiJbliLDmiLflpJblkbzlkLjmlrDpspznqbrmsJTljbPovr7moIfjgIIiDQogICAgfSwNCiAgICB7DQogICAgICAibWV0cmljX2lkIjogNywNCiAgICAgICJ0b3BpY19jb2RlIjogIlJFUyIsDQogICAgICAibmFtZV96aCI6ICLnnaHnnKDml7bplb8iLA0KICAgICAgInVuaXQiOiAi5YiG6ZKfIiwNCiAgICAgICJ0YXJnZXRfdmFsdWUiOiAi4omlNDIwIiwNCiAgICAgICJjcml0ZXJpYSI6ICLlvZPml6XlpJzpl7TnnaHnnKDntK/orqEg4omlNDIwIOWIhumSn++8iDcg5bCP5pe277yJ5Y2z6L6+5qCH77yb6KeE5b6L5L2c5oGv5q+U6KGl6KeJ5pu06YeN6KaB44CCIg0KICAgIH0sDQogICAgew0KICAgICAgIm1ldHJpY19pZCI6IDgsDQogICAgICAidG9waWNfY29kZSI6ICJUUlUiLA0KICAgICAgIm5hbWVfemgiOiAi5b+D5oOF6K+E5YiGIiwNCiAgICAgICJ1bml0IjogIjHigJM1IiwNCiAgICAgICJ0YXJnZXRfdmFsdWUiOiAi4omlMyIsDQogICAgICAiY3JpdGVyaWEiOiAi5b2T5pel6Ieq6K+E5b+D5oOFIOKJpTMg5YiG77yIMeKAkzUg5YiG5Yi277yMMyDliIbkuLrlubPnqLPku6XkuIrvvInljbPovr7moIfvvJvoi6Xplb/mnJ/kvY7kuo4gMyDliIbvvIzor7flr7vmsYLkuJPkuJrluK7liqnjgIIiDQogICAgfQ0KICBdLA0KICAiaGVhbHRoX2d1aWRhbmNlIjogW10NCn0NCg==
+{
+  "verse": [
+    {
+      "book_id": 1,
+      "chapter": 1,
+      "verse": 1,
+      "ref": "GEN 1:1",
+      "kjv_text": "In the beginning God created the heaven and the earth.",
+      "our_zh": "起初，神创造天地。",
+      "cuv_ref_text": "起初，神创造天地。"
+    },
+    {
+      "book_id": 1,
+      "chapter": 1,
+      "verse": 2,
+      "ref": "GEN 1:2",
+      "kjv_text": "And the earth was without form, and void; and darkness was upon the face of the deep.",
+      "our_zh": "地是空虚混沌，渊面黑暗。",
+      "cuv_ref_text": "地是空虚混沌，渊面黑暗。"
+    },
+    {
+      "book_id": 43,
+      "chapter": 3,
+      "verse": 16,
+      "ref": "JHN 3:16",
+      "kjv_text": "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
+      "our_zh": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。",
+      "cuv_ref_text": "神爱世人，甚至将他的独生子赐给他们，叫一切信他的不至灭亡，反得永生。"
+    }
+  ],
+  "book": [
+    {
+      "book_id": 1,
+      "book_code": "GEN",
+      "name_en": "Genesis",
+      "name_zh": "创世记",
+      "testament": "OT",
+      "chapter_count": 50
+    },
+    {
+      "book_id": 43,
+      "book_code": "JHN",
+      "name_en": "John",
+      "name_zh": "约翰福音",
+      "testament": "NT",
+      "chapter_count": 21
+    }
+  ],
+  "doctrine": [
+    {
+      "belief_id": 1,
+      "code": "SCRIPTURE",
+      "title_en": "The Holy Scriptures",
+      "title_zh": "圣经",
+      "en_text": "The Holy Scriptures...",
+      "zh_text": "圣经是上帝旨意的启示，本应用以 KJV 英文为权威底本。"
+    }
+  ],
+  "health_topic": [
+    {
+      "topic_id": 1,
+      "code": "NUT",
+      "name_zh": "营养",
+      "summary": "以圣经所记原始饮食为原则，选择单纯、少加工的食物，使身体得着合宜的滋养。",
+      "sort_order": 0
+    },
+    {
+      "topic_id": 2,
+      "code": "EXE",
+      "name_zh": "运动",
+      "summary": "有规律的身体活动是维持健康的必要条件，与节制相配合效果最佳。",
+      "sort_order": 1
+    },
+    {
+      "topic_id": 3,
+      "code": "WAT",
+      "name_zh": "水",
+      "summary": "充足的水分摄取是身体代谢与清洁的基础，内用外用皆有其益。",
+      "sort_order": 2
+    },
+    {
+      "topic_id": 4,
+      "code": "SUN",
+      "name_zh": "阳光",
+      "summary": "适度的日光有助身体机能，惟当避免过度曝晒。",
+      "sort_order": 3
+    },
+    {
+      "topic_id": 5,
+      "code": "TEM",
+      "name_zh": "节制",
+      "summary": "凡有益之物当适度使用，凡有害之物当全然戒绝。",
+      "sort_order": 4
+    },
+    {
+      "topic_id": 6,
+      "code": "AIR",
+      "name_zh": "空气",
+      "summary": "清新的空气与良好通风是生命之本，应尽量避免久处污浊密闭之地。",
+      "sort_order": 5
+    },
+    {
+      "topic_id": 7,
+      "code": "RES",
+      "name_zh": "休息",
+      "summary": "规律作息与安息日的歇息，使身心重新得力。",
+      "sort_order": 6
+    },
+    {
+      "topic_id": 8,
+      "code": "TRU",
+      "name_zh": "信靠",
+      "summary": "心灵的健康根植于对上帝的信靠；身体的健康亦受心境影响。",
+      "sort_order": 7
+    }
+  ],
+  "health_topic_source": [
+    {
+      "id": 1,
+      "topic_id": 1,
+      "source_type": "BIBLE",
+      "source_id": "GEN 1:29",
+      "excerpt": "KJV：「And God said, Behold, I have given you every herb bearing seed… and every tree… for meat.」核心要义：上帝在创造时赐下植物性食物（五谷、菜蔬、果子）作为人类原本的饮食，以天然植物为粮是健康之本。"
+    },
+    {
+      "id": 2,
+      "topic_id": 1,
+      "source_type": "BIBLE",
+      "source_id": "DAN 1:12",
+      "excerpt": "KJV：「Prove thy servants… ten days; and let them give us pulse to eat, and water to drink.」核心要义：但以理请求以蔬菜（素物）与水代替王膳，结果比用膳者更显健康俊秀，说明简朴植物饮食于身体有益。"
+    },
+    {
+      "id": 3,
+      "topic_id": 1,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦在《服务真诠》中指出：最简单、最天然的食物——五谷、水果、蔬菜、坚果，才是滋养身体、保守健康的上选；当远离奢侈宴乐与过度加工、油腻的食物。"
+    },
+    {
+      "id": 4,
+      "topic_id": 2,
+      "source_type": "BIBLE",
+      "source_id": "1TI 4:8",
+      "excerpt": "KJV：「For bodily exercise profiteth little: but godliness is profitable unto all things…」核心要义：操练身体虽益处有限，却仍有益于今生；规律、适度的身体活动是上帝所喜悦的健康生活方式。"
+    },
+    {
+      "id": 5,
+      "topic_id": 2,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦强调：运动对保持健康必不可少——散步、劳作、适度的肢体活动能促进循环、强健体魄；但要避免过度与损伤，劳逸得当。"
+    },
+    {
+      "id": 6,
+      "topic_id": 3,
+      "source_type": "BIBLE",
+      "source_id": "JHN 4:14",
+      "excerpt": "KJV：「Whosoever drinketh of the water that I shall give him shall never thirst… a well of water springing up into everlasting life.」核心要义：水象征生命与洁净；充足、洁净的水分对身体的代谢与康复至关重要。"
+    },
+    {
+      "id": 7,
+      "topic_id": 3,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦视水为最良的良药之一：洁净的饮用水与适当的水疗，可帮助身体排毒、退热、恢复活力；每日充足饮水是养生要务。"
+    },
+    {
+      "id": 8,
+      "topic_id": 4,
+      "source_type": "BIBLE",
+      "source_id": "MAL 4:2",
+      "excerpt": "KJV：「…the Sun of righteousness shall arise with healing in his wings…」核心要义：日光（与公义的日头）带来医治与生机；温和适度的阳光有助身体健康。"
+    },
+    {
+      "id": 9,
+      "topic_id": 4,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦主张：温和的日光浴与户外生活能强健骨骼、提振精神；但须避开烈日曝晒，过犹不及。"
+    },
+    {
+      "id": 10,
+      "topic_id": 5,
+      "source_type": "BIBLE",
+      "source_id": "1CO 9:25",
+      "excerpt": "KJV：「…every man that striveth for the mastery is temperate in all things…」核心要义：竞技者为胜出尚且凡事节制，信徒更当在饮食、嗜好上自律节制。"
+    },
+    {
+      "id": 11,
+      "topic_id": 5,
+      "source_type": "BIBLE",
+      "source_id": "1CO 6:19-20",
+      "excerpt": "KJV：「…your body is the temple of the Holy Ghost… ye are not your own? For ye are bought with a price…」核心要义：身体是圣灵的殿，当以洁净、节制的生活荣耀上帝。"
+    },
+    {
+      "id": 12,
+      "topic_id": 5,
+      "source_type": "EGW",
+      "source_id": "EGW-TEM",
+      "excerpt": "怀爱伦在《节制》中力陈：当全然禁绝酒、烟、麻醉品等成瘾之物，并在一切有益之事上持守适度——节制是身体与灵性双重蒙福的钥匙。"
+    },
+    {
+      "id": 13,
+      "topic_id": 6,
+      "source_type": "BIBLE",
+      "source_id": "GEN 2:7",
+      "excerpt": "KJV：「…breathed into his nostrils the breath of life; and man became a living soul.」核心要义：生命源于上帝所赐的生气；清洁的空气是维持这生命的必需。"
+    },
+    {
+      "id": 14,
+      "topic_id": 6,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦提醒：清新的空气与良好的通风对健康不可或缺；多到户外、勤开门窗，让肺与血液得着洁净的氧气。"
+    },
+    {
+      "id": 15,
+      "topic_id": 7,
+      "source_type": "BIBLE",
+      "source_id": "EXO 20:8-11",
+      "excerpt": "KJV：「Remember the sabbath day, to keep it holy… the LORD rested the seventh day…」核心要义：上帝设立安息日，吩咐人六日做工、一日安歇；规律的休息与安息是祂赐下的身心复原之道。"
+    },
+    {
+      "id": 16,
+      "topic_id": 7,
+      "source_type": "BIBLE",
+      "source_id": "MRK 6:31",
+      "excerpt": "KJV：「Come ye yourselves apart… and rest a while: for… they had no leisure so much as to eat.」核心要义：耶稣体恤门徒的劳碌，召他们退到旷野歇一歇；人也需要主动留白、定期休息。"
+    },
+    {
+      "id": 17,
+      "topic_id": 7,
+      "source_type": "EGW",
+      "source_id": "EGW-MH",
+      "excerpt": "怀爱伦写道：疲劳的机体需要安歇才能复原；保证充足睡眠，并每周留一段不被打扰的安息时光，是长远健康的根基。"
+    },
+    {
+      "id": 18,
+      "topic_id": 8,
+      "source_type": "BIBLE",
+      "source_id": "PHP 4:6-7",
+      "excerpt": "KJV：「Be careful for nothing… let your requests be made known unto God. And the peace of God… shall keep your hearts…」核心要义：以祷告交托代替挂虑，上帝所赐出人意外的平安必保守心怀意念。"
+    },
+    {
+      "id": 19,
+      "topic_id": 8,
+      "source_type": "BIBLE",
+      "source_id": "PSA 23:1",
+      "excerpt": "KJV：「The LORD is my shepherd; I shall not want.」核心要义：信靠这位看顾人的牧者，心里便得安稳满足，有益于全人的健康。"
+    },
+    {
+      "id": 20,
+      "topic_id": 8,
+      "source_type": "BIBLE",
+      "source_id": "1TH 5:23",
+      "excerpt": "KJV：「…the very God of peace sanctify you wholly… your whole spirit and soul and body be preserved blameless…」核心要义：愿赐平安的上帝使人的灵、魂、体全然成圣、得以保全——身心灵整体健康本是上帝的心意。"
+    }
+  ],
+  "health_metric": [
+    {
+      "metric_id": 1,
+      "topic_code": "NUT",
+      "name_zh": "蔬果份数",
+      "unit": "份/日",
+      "target_value": "≥5",
+      "criteria": "当日蔬菜与水果合计摄入 ≥5 份即达标（1 份≈一个拳头大小，约 80–100 克）。"
+    },
+    {
+      "metric_id": 2,
+      "topic_code": "EXE",
+      "name_zh": "运动时长",
+      "unit": "分钟",
+      "target_value": "≥30",
+      "criteria": "当日累计中等强度运动 ≥30 分钟（如快走、骑车、做家务）即达标。"
+    },
+    {
+      "metric_id": 3,
+      "topic_code": "WAT",
+      "name_zh": "饮水量",
+      "unit": "毫升",
+      "target_value": "1500–2000",
+      "criteria": "当日主动饮用白水达到 1500 毫升及以上即达标；1500–2000 毫升为推荐舒适区间，可少量多次补充。"
+    },
+    {
+      "metric_id": 4,
+      "topic_code": "SUN",
+      "name_zh": "户外日照",
+      "unit": "分钟",
+      "target_value": "15–30",
+      "criteria": "当日温和户外日照 15–30 分钟即达标；请避开 10:00–16:00 强紫外线时段，以不晒伤为度。"
+    },
+    {
+      "metric_id": 5,
+      "topic_code": "TEM",
+      "name_zh": "刺激性饮品",
+      "unit": "杯",
+      "target_value": "0",
+      "criteria": "当日保持 0 杯含咖啡因或酒精的刺激性饮品（如咖啡、浓茶、酒）即达标。"
+    },
+    {
+      "metric_id": 6,
+      "topic_code": "AIR",
+      "name_zh": "通风时长",
+      "unit": "分钟",
+      "target_value": "≥30",
+      "criteria": "当日保证居所/办公场所通风累计 ≥30 分钟，或到户外呼吸新鲜空气即达标。"
+    },
+    {
+      "metric_id": 7,
+      "topic_code": "RES",
+      "name_zh": "睡眠时长",
+      "unit": "分钟",
+      "target_value": "≥420",
+      "criteria": "当日夜间睡眠累计 ≥420 分钟（7 小时）即达标；规律作息比补觉更重要。"
+    },
+    {
+      "metric_id": 8,
+      "topic_code": "TRU",
+      "name_zh": "心情评分",
+      "unit": "1–5",
+      "target_value": "≥3",
+      "criteria": "当日自评心情 ≥3 分（1–5 分制，3 分为平稳以上）即达标；若长期低于 3 分，请寻求专业帮助。"
+    }
+  ],
+  "health_guidance": []
+}

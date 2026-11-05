@@ -1,1 +1,163 @@
-Ly8gaGVhbHRoX2NoZWNraW5fc2hlZXQuZGFydAovLyDmqKHlnZcgQ++8muavj+aXpeaJk+WNoeW8ueWxgu+8iOaMieaUr+afseeahOaMh+agh+mAkOmhueWhq+WGme+8iQoKaW1wb3J0ICdwYWNrYWdlOmZsdXR0ZXIvbWF0ZXJpYWwuZGFydCc7CmltcG9ydCAnaGVhbHRoX21vZGVscy5kYXJ0JzsKCi8vLyDmiZPlvIDmiZPljaHlvLnlsYLvvJvov5Tlm54gdHJ1ZSDooajnpLrlt7Lkv53lrZjjgIIKRnV0dXJlPGJvb2w+IHNob3dIZWFsdGhDaGVja2luU2hlZXQoewogIHJlcXVpcmVkIEJ1aWxkQ29udGV4dCBjb250ZXh0LAogIHJlcXVpcmVkIEhlYWx0aFRvcGljIHRvcGljLAogIHJlcXVpcmVkIExpc3Q8SGVhbHRoTWV0cmljPiBtZXRyaWNzLAogIHJlcXVpcmVkIExpc3Q8SGVhbHRoTG9nRW50cnk+IHRvZGF5TG9ncywKICByZXF1aXJlZCBTdHJpbmcgdXNlcklkLAogIHJlcXVpcmVkIHZvaWQgRnVuY3Rpb24oTGlzdDxIZWFsdGhMb2dFbnRyeT4pIG9uU2F2ZSwKfSkgYXN5bmMgewogIGZpbmFsIG9rID0gYXdhaXQgc2hvd01vZGFsQm90dG9tU2hlZXQ8Ym9vbD4oCiAgICBjb250ZXh0OiBjb250ZXh0LAogICAgaXNTY3JvbGxDb250cm9sbGVkOiB0cnVlLAogICAgc2hvd0RyYWdIYW5kbGU6IHRydWUsCiAgICBidWlsZGVyOiAoXykgPT4gSGVhbHRoQ2hlY2tpblNoZWV0KAogICAgICB0b3BpYzogdG9waWMsCiAgICAgIG1ldHJpY3M6IG1ldHJpY3MsCiAgICAgIHRvZGF5TG9nczogdG9kYXlMb2dzLAogICAgICB1c2VySWQ6IHVzZXJJZCwKICAgICAgb25TYXZlOiBvblNhdmUsCiAgICApLAogICk7CiAgcmV0dXJuIG9rID8/IGZhbHNlOwp9CgpjbGFzcyBIZWFsdGhDaGVja2luU2hlZXQgZXh0ZW5kcyBTdGF0ZWZ1bFdpZGdldCB7CiAgZmluYWwgSGVhbHRoVG9waWMgdG9waWM7CiAgZmluYWwgTGlzdDxIZWFsdGhNZXRyaWM+IG1ldHJpY3M7CiAgZmluYWwgTGlzdDxIZWFsdGhMb2dFbnRyeT4gdG9kYXlMb2dzOwogIGZpbmFsIFN0cmluZyB1c2VySWQ7CiAgZmluYWwgdm9pZCBGdW5jdGlvbihMaXN0PEhlYWx0aExvZ0VudHJ5Pikgb25TYXZlOwoKICBjb25zdCBIZWFsdGhDaGVja2luU2hlZXQoewogICAgc3VwZXIua2V5LAogICAgcmVxdWlyZWQgdGhpcy50b3BpYywKICAgIHJlcXVpcmVkIHRoaXMubWV0cmljcywKICAgIHJlcXVpcmVkIHRoaXMudG9kYXlMb2dzLAogICAgcmVxdWlyZWQgdGhpcy51c2VySWQsCiAgICByZXF1aXJlZCB0aGlzLm9uU2F2ZSwKICB9KTsKCiAgQG92ZXJyaWRlCiAgU3RhdGU8SGVhbHRoQ2hlY2tpblNoZWV0PiBjcmVhdGVTdGF0ZSgpID0+IF9IZWFsdGhDaGVja2luU2hlZXRTdGF0ZSgpOwp9CgpjbGFzcyBfSGVhbHRoQ2hlY2tpblNoZWV0U3RhdGUgZXh0ZW5kcyBTdGF0ZTxIZWFsdGhDaGVja2luU2hlZXQ+IHsKICBmaW5hbCBNYXA8aW50LCBUZXh0RWRpdGluZ0NvbnRyb2xsZXI+IF9jdHJscyA9IHt9OwoKICBAb3ZlcnJpZGUKICB2b2lkIGluaXRTdGF0ZSgpIHsKICAgIHN1cGVyLmluaXRTdGF0ZSgpOwogICAgZm9yIChmaW5hbCBtIGluIHdpZGdldC5tZXRyaWNzKSB7CiAgICAgIGZpbmFsIHByZXYgPSB3aWRnZXQudG9kYXlMb2dzCiAgICAgICAgICAud2hlcmUoKGUpID0+IGUubWV0cmljSWQgPT0gbS5tZXRyaWNJZCkKICAgICAgICAgIC5tYXAoKGUpID0+IGUudmFsdWUpCiAgICAgICAgICAuY2FzdDxTdHJpbmc/PigpCiAgICAgICAgICAuZmlyc3RXaGVyZSgodikgPT4gdiAhPSBudWxsICYmIHYuaXNOb3RFbXB0eSwgb3JFbHNlOiAoKSA9PiBudWxsKTsKICAgICAgX2N0cmxzW20ubWV0cmljSWRdID0gVGV4dEVkaXRpbmdDb250cm9sbGVyKHRleHQ6IHByZXYgPz8gJycpOwogICAgfQogIH0KCiAgQG92ZXJyaWRlCiAgdm9pZCBkaXNwb3NlKCkgewogICAgZm9yIChmaW5hbCBjIGluIF9jdHJscy52YWx1ZXMpIHsKICAgICAgYy5kaXNwb3NlKCk7CiAgICB9CiAgICBzdXBlci5kaXNwb3NlKCk7CiAgfQoKICB2b2lkIF9zdWJtaXQoKSB7CiAgICBmaW5hbCBub3cgPSBEYXRlVGltZS5ub3coKTsKICAgIGZpbmFsIGVudHJpZXMgPSA8SGVhbHRoTG9nRW50cnk+W107CiAgICBmb3IgKGZpbmFsIG0gaW4gd2lkZ2V0Lm1ldHJpY3MpIHsKICAgICAgZmluYWwgdiA9IChfY3RybHNbbS5tZXRyaWNJZF0/LnRleHQgPz8gJycpLnRyaW0oKTsKICAgICAgaWYgKHYuaXNFbXB0eSkgY29udGludWU7CiAgICAgIGVudHJpZXMuYWRkKEhlYWx0aExvZ0VudHJ5KAogICAgICAgIHVzZXJJZDogd2lkZ2V0LnVzZXJJZCwKICAgICAgICB0b3BpY0NvZGU6IG0udG9waWNDb2RlLAogICAgICAgIG1ldHJpY0lkOiBtLm1ldHJpY0lkLAogICAgICAgIHZhbHVlOiB2LAogICAgICAgIGxvZ2dlZEF0OiBub3csCiAgICAgICkpOwogICAgfQogICAgaWYgKGVudHJpZXMuaXNFbXB0eSkgewogICAgICBTY2FmZm9sZE1lc3Nlbmdlci5vZihjb250ZXh0KS5zaG93U25hY2tCYXIoCiAgICAgICAgY29uc3QgU25hY2tCYXIoY29udGVudDogVGV4dCgn6K+36Iez5bCR5aGr5YaZ5LiA6aG5JykpLAogICAgICApOwogICAgICByZXR1cm47CiAgICB9CiAgICB3aWRnZXQub25TYXZlKGVudHJpZXMpOwogICAgTmF2aWdhdG9yLm9mKGNvbnRleHQpLnBvcCh0cnVlKTsKICB9CgogIEBvdmVycmlkZQogIFdpZGdldCBidWlsZChCdWlsZENvbnRleHQgY29udGV4dCkgewogICAgZmluYWwgYm90dG9tID0gTWVkaWFRdWVyeS5vZihjb250ZXh0KS52aWV3SW5zZXRzLmJvdHRvbTsKICAgIHJldHVybiBQYWRkaW5nKAogICAgICBwYWRkaW5nOiBFZGdlSW5zZXRzLmZyb21MVFJCKDE2LCA4LCAxNiwgMTYgKyBib3R0b20pLAogICAgICBjaGlsZDogQ29sdW1uKAogICAgICAgIG1haW5BeGlzU2l6ZTogTWFpbkF4aXNTaXplLm1pbiwKICAgICAgICBjcm9zc0F4aXNBbGlnbm1lbnQ6IENyb3NzQXhpc0FsaWdubWVudC5zdHJldGNoLAogICAgICAgIGNoaWxkcmVuOiBbCiAgICAgICAgICBUZXh0KCcke3dpZGdldC50b3BpYy5kaXNwbGF5TmFtZX0gwrcg5LuK5pel5omT5Y2hJywKICAgICAgICAgICAgICBzdHlsZTogVGhlbWUub2YoY29udGV4dCkudGV4dFRoZW1lLnRpdGxlTWVkaXVtKSwKICAgICAgICAgIGNvbnN0IFNpemVkQm94KGhlaWdodDogNCksCiAgICAgICAgICBUZXh0KCforrDlvZXmmKjml6Uv5LuK5pel55qE5a6e6ZmF5oOF5Ya15Y2z5Y+v77yM5peg6ZyA6L+95rGC5a6M576O44CCJywKICAgICAgICAgICAgICBzdHlsZTogVGhlbWUub2YoY29udGV4dCkKICAgICAgICAgICAgICAgICAgLnRleHRUaGVtZQogICAgICAgICAgICAgICAgICAuYm9keVNtYWxsCiAgICAgICAgICAgICAgICAgID8uY29weVdpdGgoY29sb3I6IENvbG9ycy5ncmV5LnNoYWRlNjAwKSksCiAgICAgICAgICBjb25zdCBTaXplZEJveChoZWlnaHQ6IDIpLAogICAgICAgICAgVGV4dCgn6L6+5Yiw5q+P6aG55LiL5pa555qE44CM55uu5qCHIC8g5qCH5YeG44CN5Y2z6KeG5Li66K+l6aG55omT5Y2h5oiQ5Yqf44CCJywKICAgICAgICAgICAgICBzdHlsZTogVGhlbWUub2YoY29udGV4dCkKICAgICAgICAgICAgICAgICAgLnRleHRUaGVtZQogICAgICAgICAgICAgICAgICAuYm9keVNtYWxsCiAgICAgICAgICAgICAgICAgID8uY29weVdpdGgoY29sb3I6IENvbG9ycy5ncmV5LnNoYWRlNjAwKSksCiAgICAgICAgICBjb25zdCBTaXplZEJveChoZWlnaHQ6IDEyKSwKICAgICAgICAgIGlmICh3aWRnZXQubWV0cmljcy5pc0VtcHR5KQogICAgICAgICAgICBjb25zdCBQYWRkaW5nKAogICAgICAgICAgICAgIHBhZGRpbmc6IEVkZ2VJbnNldHMuc3ltbWV0cmljKHZlcnRpY2FsOiAyNCksCiAgICAgICAgICAgICAgY2hpbGQ6IENlbnRlcihjaGlsZDogVGV4dCgn5pys5pSv5p+x5pqC5pyq5a6a5LmJ5omT5Y2h5oyH5qCHJykpLAogICAgICAgICAgICApCiAgICAgICAgICBlbHNlCiAgICAgICAgICAgIEZsZXhpYmxlKAogICAgICAgICAgICAgIGNoaWxkOiBMaXN0VmlldygKICAgICAgICAgICAgICAgIHNocmlua1dyYXA6IHRydWUsCiAgICAgICAgICAgICAgICBjaGlsZHJlbjogd2lkZ2V0Lm1ldHJpY3MubWFwKF9tZXRyaWNGaWVsZCkudG9MaXN0KCksCiAgICAgICAgICAgICAgKSwKICAgICAgICAgICAgKSwKICAgICAgICAgIGNvbnN0IFNpemVkQm94KGhlaWdodDogMTIpLAogICAgICAgICAgRmlsbGVkQnV0dG9uLmljb24oCiAgICAgICAgICAgIG9uUHJlc3NlZDogX3N1Ym1pdCwKICAgICAgICAgICAgaWNvbjogY29uc3QgSWNvbihJY29ucy5jaGVjayksCiAgICAgICAgICAgIGxhYmVsOiBjb25zdCBUZXh0KCfkv53lrZjmiZPljaEnKSwKICAgICAgICAgICksCiAgICAgICAgXSwKICAgICAgKSwKICAgICk7CiAgfQoKICBXaWRnZXQgX21ldHJpY0ZpZWxkKEhlYWx0aE1ldHJpYyBtKSB7CiAgICBmaW5hbCBoaW50ID0gbS5zdGFuZGFyZEhpbnQ7CiAgICByZXR1cm4gUGFkZGluZygKICAgICAgcGFkZGluZzogY29uc3QgRWRnZUluc2V0cy5vbmx5KGJvdHRvbTogMTIpLAogICAgICBjaGlsZDogVGV4dEZpZWxkKAogICAgICAgIGNvbnRyb2xsZXI6IF9jdHJsc1ttLm1ldHJpY0lkXSwKICAgICAgICBrZXlib2FyZFR5cGU6IGNvbnN0IFRleHRJbnB1dFR5cGUubnVtYmVyV2l0aE9wdGlvbnMoZGVjaW1hbDogdHJ1ZSksCiAgICAgICAgZGVjb3JhdGlvbjogSW5wdXREZWNvcmF0aW9uKAogICAgICAgICAgbGFiZWxUZXh0OiAnJHttLm5hbWVaaH0ke20udW5pdExhYmVsfScsCiAgICAgICAgICBoZWxwZXJUZXh0OiBoaW50LAogICAgICAgICAgaGVscGVyTWF4TGluZXM6IDMsCiAgICAgICAgICBib3JkZXI6IGNvbnN0IE91dGxpbmVJbnB1dEJvcmRlcigpLAogICAgICAgICAgaXNEZW5zZTogdHJ1ZSwKICAgICAgICApLAogICAgICApLAogICAgKTsKICB9Cn0K
+// health_checkin_sheet.dart
+// 模块 C：每日打卡弹层（按支柱的指标逐项填写）
+
+import 'package:flutter/material.dart';
+import 'health_models.dart';
+
+/// 打开打卡弹层；返回 true 表示已保存。
+Future<bool> showHealthCheckinSheet({
+  required BuildContext context,
+  required HealthTopic topic,
+  required List<HealthMetric> metrics,
+  required List<HealthLogEntry> todayLogs,
+  required String userId,
+  required void Function(List<HealthLogEntry>) onSave,
+}) async {
+  final ok = await showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    showDragHandle: true,
+    builder: (_) => HealthCheckinSheet(
+      topic: topic,
+      metrics: metrics,
+      todayLogs: todayLogs,
+      userId: userId,
+      onSave: onSave,
+    ),
+  );
+  return ok ?? false;
+}
+
+class HealthCheckinSheet extends StatefulWidget {
+  final HealthTopic topic;
+  final List<HealthMetric> metrics;
+  final List<HealthLogEntry> todayLogs;
+  final String userId;
+  final void Function(List<HealthLogEntry>) onSave;
+
+  const HealthCheckinSheet({
+    super.key,
+    required this.topic,
+    required this.metrics,
+    required this.todayLogs,
+    required this.userId,
+    required this.onSave,
+  });
+
+  @override
+  State<HealthCheckinSheet> createState() => _HealthCheckinSheetState();
+}
+
+class _HealthCheckinSheetState extends State<HealthCheckinSheet> {
+  final Map<int, TextEditingController> _ctrls = {};
+
+  @override
+  void initState() {
+    super.initState();
+    for (final m in widget.metrics) {
+      final prev = widget.todayLogs
+          .where((e) => e.metricId == m.metricId)
+          .map((e) => e.value)
+          .cast<String?>()
+          .firstWhere((v) => v != null && v.isNotEmpty, orElse: () => null);
+      _ctrls[m.metricId] = TextEditingController(text: prev ?? '');
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final c in _ctrls.values) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  void _submit() {
+    final now = DateTime.now();
+    final entries = <HealthLogEntry>[];
+    for (final m in widget.metrics) {
+      final v = (_ctrls[m.metricId]?.text ?? '').trim();
+      if (v.isEmpty) continue;
+      entries.add(HealthLogEntry(
+        userId: widget.userId,
+        topicCode: m.topicCode,
+        metricId: m.metricId,
+        value: v,
+        loggedAt: now,
+      ));
+    }
+    if (entries.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('请至少填写一项')),
+      );
+      return;
+    }
+    widget.onSave(entries);
+    Navigator.of(context).pop(true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 16 + bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('${widget.topic.displayName} · 今日打卡',
+              style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 4),
+          Text('记录昨日/今日的实际情况即可，无需追求完美。',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.grey.shade600)),
+          const SizedBox(height: 2),
+          Text('达到每项下方的「目标 / 标准」即视为该项打卡成功。',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: Colors.grey.shade600)),
+          const SizedBox(height: 12),
+          if (widget.metrics.isEmpty)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: Center(child: Text('本支柱暂未定义打卡指标')),
+            )
+          else
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: widget.metrics.map(_metricField).toList(),
+              ),
+            ),
+          const SizedBox(height: 12),
+          FilledButton.icon(
+            onPressed: _submit,
+            icon: const Icon(Icons.check),
+            label: const Text('保存打卡'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _metricField(HealthMetric m) {
+    final hint = m.standardHint;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        controller: _ctrls[m.metricId],
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(
+          labelText: '${m.nameZh}${m.unitLabel}',
+          helperText: hint,
+          helperMaxLines: 3,
+          border: const OutlineInputBorder(),
+          isDense: true,
+        ),
+      ),
+    );
+  }
+}
