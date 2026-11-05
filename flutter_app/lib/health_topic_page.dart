@@ -269,7 +269,7 @@ class _HealthTopicPageState extends State<HealthTopicPage> {
                           letterSpacing: 0.2),
                     ),
                     const SizedBox(height: 10),
-                    // 每日最低要求（醒目展示）
+                    // 每日最低要求（醒目展示；数值独占一行，长数值自动换行不截断）
                     if (hasTarget)
                       Container(
                         width: double.infinity,
@@ -279,28 +279,29 @@ class _HealthTopicPageState extends State<HealthTopicPage> {
                           color: _themeColor.withOpacity(0.08),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.track_changes_outlined,
-                                size: 15, color: _themeColor),
-                            const SizedBox(width: 6),
-                            Text('每日最低要求',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: _themeColor,
-                                    fontWeight: FontWeight.w600)),
-                            const Spacer(),
-                            Flexible(
-                              child: Text(
-                                '$target${m.unitLabel}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.end,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: _themeColor),
-                              ),
+                            Row(
+                              children: [
+                                Icon(Icons.track_changes_outlined,
+                                    size: 15, color: _themeColor),
+                                const SizedBox(width: 6),
+                                Text('每日最低要求',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: _themeColor,
+                                        fontWeight: FontWeight.w600)),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '$target${m.unitLabel}',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: _themeColor,
+                                  height: 1.2),
                             ),
                           ],
                         ),
