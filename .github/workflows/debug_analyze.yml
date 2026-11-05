@@ -1,0 +1,37 @@
+name: Debug Analyze
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  issues: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: flutter_app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.22.3"
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Analyze and post errors to issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          flutter analyze . > analyze_out.txt 2>&1 || true
+          cat analyze_out.txt
+          python3 - <<'PY'
+          import json
+          txt = open('analyze_out.txt', encoding='utf-8', errors='replace').read()
+          snippet = txt if len(txt) <= 9000 else txt[:9000] + "\n... (truncated)"
+          body = "### flutter analyze output\n\n```\n" + snippet + "\n```"
+          json.dump({"title": "Debug: flutter analyze errors", "body": body},
+                    open('issue.json', 'w'), ensure_ascii=False)
+          PY
+          gh api -X POST /repos/xinwuwan/Bible/issues --input issue.json

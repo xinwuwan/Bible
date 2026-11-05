@@ -366,7 +366,9 @@ class _DailyTipCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w700)),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.2)),
                 ),
                 const Spacer(),
                 if (t != null)
@@ -398,13 +400,16 @@ class _DailyTipCard extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 10.5,
                       color: pillarColor,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w500),
                 ),
               ),
               const SizedBox(height: 4),
               Text(t.title,
                   style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w700, height: 1.4)),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.2,
+                      height: 1.4)),
               const SizedBox(height: 4),
               Text(t.body,
                   style: const TextStyle(
@@ -443,8 +448,15 @@ class _HealthQaEntry extends StatelessWidget {
         child: ListTile(
           leading:
               const Icon(Icons.health_and_safety, color: Color(0xFF2E7D32)),
+          // 小字号中文一律用 w500：微信 X5 / CanvasKit 下中文由自托管的单字重(400)
+          // Noto Sans SC 兜底字体绘制，仓库没有 600/700 粗体文件。请求 w600+ 时
+          // Skia 会用重复描边「合成加粗」，14px 左右的「问」门框内「口」被糊成黑块。
+          // 实测同页底部导航「问答」用 w500 即清晰，故层级感改由字号/字距/颜色表达。
           title: const Text('有问题？问问健康顾问',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.3)),
           subtitle: const Text('关于饮食、运动、睡眠、节制等，本地即时回答（不替代医生）',
               style: TextStyle(fontSize: 12)),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -470,7 +482,10 @@ class _ConsultEntry extends StatelessWidget {
           leading:
               const Icon(Icons.medical_services, color: Color(0xFF6A1B9A)),
           title: const Text('专业咨询',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+              style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.3)),
           subtitle: const Text('材料核验 · 医药布道 + AI 多轮问诊，一个模块全流程（不替代医生）',
               style: TextStyle(fontSize: 12)),
           trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -546,7 +561,8 @@ class _TodayProgressHeader extends StatelessWidget {
                 Text('今日打卡  $done / $total',
                     style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.2,
                         color: cs.primary)),
                 const SizedBox(height: 2),
                 Text(_encourage,

@@ -160,6 +160,22 @@ class _EgwComparePageState extends State<EgwComparePage> {
             ),
           ),
         ),
+        // 说明与正文共用同一个滚动视图：图例 / 对齐说明 / 权威层级 / 偏差提示
+        // 作为列表首项随正文一起滚走，不再固定占据半屏、压缩对照阅读区。
+        // 章节选择器是高频控件且仅占一行，保留常驻，方便随时切章。
+        Expanded(child: _buildPairs(header: _buildNotes())),
+      ],
+    );
+  }
+
+  /// 顶部说明块。作为滚动列表的第 0 项，随正文一起滚动。
+  /// （此前它固定在 Column 顶部，只有 _buildPairs 的 ListView 能滚，
+  ///   导致约半屏被说明长期占用，正文可见区极小。）
+  Widget _buildNotes() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
         // 图例
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 2),
@@ -238,13 +254,12 @@ class _EgwComparePageState extends State<EgwComparePage> {
             ),
           ),
         const Divider(height: 8),
-        Expanded(child: _buildPairs()),
       ],
     );
   }
 
   /// 以「对应单元」为单位，逐组呈现英文与中文的明确配对。
-  Widget _buildPairs() {
+  Widget _buildPairs({Widget? header}) {
     final sec = _section;
     final en = (sec['en_paras'] as List?) ?? [];
     final zh = (sec['zh_paras'] as List?) ?? [];
@@ -267,15 +282,29 @@ class _EgwComparePageState extends State<EgwComparePage> {
     final isForeword = (sec['kind'] ?? '').toString() == 'foreword';
     final zhMissing = isForeword && zh.isEmpty;
 
+    final hasHeader = header != null;
+    final headerCount = hasHeader ? 1 : 0;
+    final noteCount = zhMissing ? 1 : 0;
+
     return LayoutBuilder(
       builder: (ctx, c) {
         final wide = c.maxWidth >= 720;
-        final list = ListView.separated(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 28),
-          itemCount: pairs.length,
+        return ListView.separated(
+          padding: const EdgeInsets.only(bottom: 28),
+          itemCount: pairs.length + headerCount + noteCount,
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemBuilder: (ctx, i) {
-            final pair = pairs[i];
+            if (hasHeader && i == 0) return header!;
+            final offset = headerCount + noteCount;
+            // 前言缺失中译时，列表内插入一条温和说明，避免用户误以为缺数据。
+            if (zhMissing && i == headerCount) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+                child: _forewordNote(),
+              );
+            }
+            final pi = i - offset;
+            final pair = pairs[pi];
             final enIdx = (pair[0] as List?) ?? [];
             final zhIdx = (pair[1] as List?) ?? [];
             final enParas = <dynamic>[
@@ -286,26 +315,17 @@ class _EgwComparePageState extends State<EgwComparePage> {
               for (final ix in zhIdx)
                 if (ix is int && ix >= 0 && ix < zh.length) zh[ix]
             ];
-            return _PairCard(
-              index: i,
-              wide: wide,
-              enParas: enParas,
-              zhParas: zhParas,
-              isForeword: isForeword,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: _PairCard(
+                index: pi,
+                wide: wide,
+                enParas: enParas,
+                zhParas: zhParas,
+                isForeword: isForeword,
+              ),
             );
           },
-        );
-        // 前言缺失中译时，列表顶部加一条温和说明，避免用户误以为缺数据。
-        if (!zhMissing) return list;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
-              child: _forewordNote(),
-            ),
-            Expanded(child: list),
-          ],
         );
       },
     );
