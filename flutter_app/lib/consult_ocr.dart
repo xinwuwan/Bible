@@ -9,10 +9,14 @@
 // 拿回全文后交本地识别器提取字段。**OCR 只转录文字、不做任何医疗判断**，
 // 转录文本与本地识别结果最终都由用户核实后提交。
 //
+// v59：后端原默认付费视觉模型 glm-4v-plus 在账号余额耗尽后返回 1113
+// 「余额不足或无可用资源包」→ /api/ocr 502 → 本客户端收不到文本 → 自动填编
+// 失效。后端已切换为免费视觉模型链并做 fallback，本文件同步放宽超时以匹配。
+//
 // 失败策略（任一环节失败都返回 null，由调用方退回「手动誊写」提示，
 // 绝不阻塞上传流程）：
 //   - kRagBaseUrl 为空（灰度关闭）
-//   - 网络错误 / 超时（30s）
+//   - 网络错误 / 超时（60s；后端 v59 起会依次尝试多个免费视觉模型，需留足时间）
 //   - 非 200 / ok != true / 文本为空
 import 'dart:async';
 import 'dart:convert';
@@ -27,8 +31,9 @@ class ConsultOcr {
   ConsultOcr._();
 
   /// 超时：托管网关对挂死的上游有过期窗口，必须按时放弃（服务本身 4xx/5xx
-  /// 属正常响应，别误判挂了）。
-  static const Duration timeout = Duration(seconds: 30);
+  /// 属正常响应，别误判挂了）。后端 v59 的免费模型 fallback 链总预算 50s，
+  /// 客户端需略大于该值，否则模型刚切到第二个就被前端提前放弃。
+  static const Duration timeout = Duration(seconds: 60);
 
   /// 可注入的取数器（测试 seam；生产默认走 [_defaultFetch]）。
   static Future<String?> Function(Uint8List bytes, String mime)?

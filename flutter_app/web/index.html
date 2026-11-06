@@ -92,7 +92,22 @@
           ['Noto Sans TC', dir + 'fonts/notosanstc/v35/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz76Cy_CpOtma3uNQ.ttf']
         ];
         window.__cjkFonts = defs.map(function (d) {
-          var ff = new FontFace(d[0], 'url(' + d[1] + ')');
+          // 仓库只自托管了单字重(400)的 Noto Sans SC/TC。原先不带描述符注册时，
+          // 页面一旦请求 w600/w700/bold，浏览器/CanvasKit 会对中文做「合成加粗」
+          // （重复描边），把密笔画字（如「问」门框内的「口」）糊成黑块。
+          // 这里把该字体声明为覆盖 100–900 全字重：所有字重请求都直接复用真实
+          // 字形，不再触发 faux bold；字重层级由应用侧字号/字距/颜色表达。
+          var ff;
+          try {
+            ff = new FontFace(d[0], 'url(' + d[1] + ')', {
+              weight: '100 900',
+              style: 'normal'
+            });
+          } catch (_) {
+            // 老内核（部分 X5）不接受字重区间描述符：退回原注册方式，
+            // 宁可保留旧行为，也不能让字体预热整体失败导致首屏中文空白。
+            ff = new FontFace(d[0], 'url(' + d[1] + ')');
+          }
           document.fonts.add(ff);
           return ff.load().catch(function () {});
         });

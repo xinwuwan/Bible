@@ -111,9 +111,12 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       .map((a) => a.extractedText)
       .join('\n');
 
-  /// 待统一识别的图片附件数量（驱动「统一识别与分析」按钮显隐）
+  /// 待统一识别的图片附件数量（驱动「统一识别与分析」按钮显隐）。
+  /// v59：把识别失败(need_manual)的图片也计入 —— 后端 OCR 服务恢复后，用户
+  /// 直接再点一次按钮即可重试，不必重新上传诊断证明照片。
   int get _pendingImageCount => _attachments
-      .where((a) => _isImageName(a.name) && a.status == 'pending')
+      .where((a) => _isImageName(a.name) &&
+          (a.status == 'pending' || a.status == 'need_manual'))
       .length;
 
   Future<void> _pickFiles() async {
@@ -213,7 +216,10 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
         return;
       }
       final a = _attachments[i];
-      if (_isImageName(a.name) && a.status == 'pending' && a.bytes != null) {
+      // pending 首次识别；need_manual 表示上次失败，本次一并重试。
+      if (_isImageName(a.name) &&
+          (a.status == 'pending' || a.status == 'need_manual') &&
+          a.bytes != null) {
         await _runOcr(i, a.name, a.bytes!);
       }
     }
@@ -426,7 +432,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 14.5, fontWeight: FontWeight.w700)),
+                        fontSize: 14.5, fontWeight: FontWeight.w500)),
               ),
             ],
           ),
@@ -569,7 +575,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
                   r.passed ? '材料核验通过' : '材料尚不符合要求',
                   style: TextStyle(
                       fontSize: 13.5,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       color: r.passed
                           ? const Color(0xFF2E7D32)
                           : const Color(0xFFB71C1C)),
@@ -590,7 +596,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
             const SizedBox(height: 6),
             Text('材料所示诊断：${r.primaryDiagnosis}',
                 style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600)),
+                    fontSize: 13, fontWeight: FontWeight.w500)),
           ],
           if (r.hospitals.isNotEmpty) ...[
             const SizedBox(height: 6),
@@ -640,7 +646,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
       ),
       child: Text(text,
           style: TextStyle(
-              fontSize: 11, color: color, fontWeight: FontWeight.w600)),
+              fontSize: 11, color: color, fontWeight: FontWeight.w500)),
     );
   }
 
@@ -648,7 +654,7 @@ class _HealthConsultPageState extends State<HealthConsultPage> {
     final children = <Widget>[];
     children.add(Text(
       '材料所示诊断：${r.primaryDiagnosis}',
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
     ));
     children.add(const SizedBox(height: 4));
     children.add(const Text(
@@ -843,7 +849,7 @@ class _SubTitle extends StatelessWidget {
           Text(text,
               style: const TextStyle(
                   fontSize: 13,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   color: Color(0xFF6A1B9A))),
         ],
       ),
@@ -997,7 +1003,7 @@ class _AdviceRow extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 11,
                         color: color,
-                        fontWeight: FontWeight.w600)),
+                        fontWeight: FontWeight.w500)),
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -1016,7 +1022,7 @@ class _AdviceRow extends StatelessWidget {
                   const Text('可量化执行标准',
                       style: TextStyle(
                           fontSize: 11,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFF6A1B9A))),
                   const SizedBox(height: 3),
                   for (final t in targets)

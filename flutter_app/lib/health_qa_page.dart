@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'health_qa_logic.dart';
 import 'rag_qa_repository.dart';
 
-/// 把 **加粗** 渲染为粗体（与牧师问答一致）
+/// 把 **强调** 渲染为中等字重（与牧师问答一致，w500 避免 CanvasKit 合成加粗糊字）
 Widget buildHealthRichText(String text, TextStyle base) {
   final spans = <TextSpan>[];
   final boldRe = RegExp(r'\*\*(.+?)\*\*');
@@ -21,7 +21,7 @@ Widget buildHealthRichText(String text, TextStyle base) {
     }
     spans.add(TextSpan(
       text: m.group(1),
-      style: base.copyWith(fontWeight: FontWeight.bold),
+      style: base.copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.2),
     ));
     last = m.end;
   }
@@ -261,7 +261,7 @@ class _AnswerCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF2E7D32))),
+                      fontSize: 12, fontWeight: FontWeight.w500, color: Color(0xFF2E7D32))),
             ),
           ],
         ),

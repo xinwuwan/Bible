@@ -104,6 +104,13 @@ class AppTheme {
   }
 
   /// 标题（衬线，书卷气）
+  ///
+  /// 字重约定（重要）：微信 X5 / CanvasKit 下，仓库只自托管了**单字重(400)**
+  /// 的 Noto Sans SC / TC 回退字体，没有 600/700 的真实粗体文件。对中文请求
+  /// w600/w700/bold 时 Skia 会做「合成加粗(faux bold)」——重复描边让笔画密集
+  /// 的字（典型如「问」门框内的「口」）糊成黑块。曾实测「牧师问答」标题的
+  /// 「问」字内部变成实心方块。故全应用中文标题统一不超过 w500，层级感由
+  /// 字号、字距、颜色表达；纯数字/拉丁文本可用 w700（拉丁有真实粗体字形）。
   static TextStyle heading({double size = 20, Color color = ink}) {
     return TextStyle(
       fontFamily: _serif,
@@ -111,7 +118,8 @@ class AppTheme {
       fontSize: size,
       height: 1.35,
       color: color,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0.4,
     );
   }
 
@@ -138,11 +146,13 @@ class AppTheme {
         scrolledUnderElevation: 0,
         centerTitle: true,
         iconTheme: IconThemeData(color: ink),
+        // w500 而非 w600：避免单字重 CJK 回退字体在 CanvasKit 下合成加粗，
+        // 导致「牧师问答」等标题中的「问」字内部笔画糊成黑块。
         titleTextStyle: TextStyle(
           fontSize: 17,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
           color: ink,
-          letterSpacing: 0.3,
+          letterSpacing: 0.6,
         ),
       ),
       cardTheme: CardTheme(
@@ -173,7 +183,7 @@ class AppTheme {
           foregroundColor: Colors.white,
           minimumSize: const Size.fromHeight(52),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
       chipTheme: ChipThemeData(

@@ -19,8 +19,10 @@ import 'qa_repository.dart';
 /// 留空 = 人工通道尚未配置（点击按钮会给出诚实提示，绝不假装"已提交"）。
 const String kHumanReviewEmail = 'xinwuwan@163.com';
 
-/// 将答案文本中的 **加粗** 标记渲染为粗体（轻量 Markdown 支持，不引入额外依赖）。
-/// 用于「结论先行」——把每条回答的开头结论用 **...** 标粗，让用户一眼看到重点。
+/// 将答案文本中的 **强调** 标记渲染为中等字重（轻量 Markdown 支持，不引入额外依赖）。
+/// 用于「结论先行」——把每条回答的开头结论用 **...** 强调，让用户一眼看到重点。
+/// 注意：这里刻意用 w500 而非 bold。CanvasKit 下 CJK 只有单字重回退字体，
+/// 请求 w700/bold 会触发合成加粗，把中文密笔画（如「问」内的「口」）糊成黑块。
 Widget buildAnswerRichText(String text, TextStyle base) {
   final spans = <TextSpan>[];
   final boldRe = RegExp(r'\*\*(.+?)\*\*');
@@ -31,7 +33,7 @@ Widget buildAnswerRichText(String text, TextStyle base) {
     }
     spans.add(TextSpan(
       text: m.group(1),
-      style: base.copyWith(fontWeight: FontWeight.bold),
+      style: base.copyWith(fontWeight: FontWeight.w500, letterSpacing: 0.2),
     ));
     last = m.end;
   }
@@ -106,7 +108,7 @@ class _PastorAnswerCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       color: _accent)),
             ),
           ],
@@ -387,7 +389,7 @@ class _TurnView extends StatelessWidget {
                   Text('已拦截（未通过校验闸门）',
                       style: TextStyle(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFFE65100))),
                 ],
               ),

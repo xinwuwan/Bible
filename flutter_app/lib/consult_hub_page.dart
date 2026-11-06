@@ -171,8 +171,11 @@ class _ConsultFunctionCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
+                      // w500：单字重 CJK 回退字体下 w700 会合成加粗，中文易糊字
                       style: const TextStyle(
-                          fontSize: 14.5, fontWeight: FontWeight.w700),
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.3),
                     ),
                   ),
                   const Icon(Icons.arrow_forward_ios, size: 16),

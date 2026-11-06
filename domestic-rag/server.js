@@ -306,12 +306,25 @@ async function callLLM(system, user) {
 }
 
 // ---------------------------------------------------------------------------
-// v58：诊断材料图片 OCR（POST /api/ocr）
+// v59：诊断材料图片 OCR（POST /api/ocr）—— 免费视觉模型 + 多模型 fallback
 //
 // 背景：医药布道模块上传诊断证明图片后，附件解析层对图片一律返回「需手动
 // 誊写」占位（extractedText 为空），导致材料识别器无文本可处理、表单无法
-// 自动填写。这里补上图片文字提取环节：调用智谱视觉模型（glm-4v-plus）把
-// 图片文字逐字转录为纯文本。
+// 自动填写。这里补上图片文字提取环节：调用智谱视觉模型把图片文字逐字转录。
+//
+// 2026-11 线上失效根因（已实测）：
+//   v58 默认模型 glm-4v-plus 是**付费**视觉模型（约 4 元/百万 tokens）。
+//   账号余额/资源包耗尽后上游固定返回
+//   429 {"error":{"code":"1113","message":"余额不足或无可用资源包,请充值。"}}，
+//   本服务包装成 502，前端 ConsultOcr 收到非 200 → 附件退回 need_manual，
+//   没有文本交给 MaterialRecognizer，自动填编链路整体失效。
+//   客户端传 model 无效（服务端固定读自己的配置），必须改后端并重新发布。
+//
+// 修复：默认改用智谱官方**免费**的视觉模型，组成实测排序的 fallback 链；
+//   任一模型 429/402/5xx/余额不足/访问量过大/超时/空文本，自动切下一个，
+//   全部失败才返回 502。
+//   旧的付费默认值（含线上可能已写入的 OCR_MODEL=glm-4v-plus）自动忽略，
+//   避免环境变量把付费模型带回来再次触发 1113。
 //
 // 合规铁律：**只转录、不解读**——模型不得输出任何诊断、医学解读或建议，
 // 不得推测补全看不清的文字。转录文本回传前端后，交由本地识别器
@@ -324,8 +337,42 @@ const OCR_SYSTEM_PROMPT = `你是医疗材料文字转录引擎。唯一任务�
 3. 不得输出任何诊断结论、医学解读、治疗建议或其他图片之外的文字；
 4. 不要客套话，直接输出转录文本。`;
 
-async function callVisionLLM(imageUrl) {
-  const model = process.env.OCR_MODEL || 'glm-4v-plus';
+// 智谱官方免费视觉理解模型（见 docs.bigmodel.cn 定价页）。
+// 顺序来自 2026-11-06 用真实中文诊断证明图片 + 线上同一个 Key 的实测：
+//   glm-4.1v-thinking-flash → 200，三次转录全部准确（当前唯一稳定可用）；
+//   glm-4.6v-flash          → 429 code 1305「该模型当前访问量过大」；
+//   glm-4v-flash            → 429 code 1113「余额不足或无可用资源包」。
+// 免费模型的可用性会随平台配额/拥堵变化，因此保留后两者作为自动 fallback。
+// 首个能返回文本的模型即命中，避免任一模型临时不可用就整体失败。
+const OCR_FREE_MODELS = [
+  'glm-4.1v-thinking-flash',
+  'glm-4.6v-flash',
+  'glm-4v-flash',
+];
+// 曾经/可能仍被写在线上环境变量里的付费模型，一律不当作默认使用。
+const OCR_PAID_MODELS = new Set([
+  'glm-4v-plus', 'glm-4v-plus-0111', 'glm-4.5v', 'glm-4.6v',
+]);
+
+/** 生成本次请求要依次尝试的视觉模型链；去重、剔除旧的付费默认值。 */
+function ocrModels() {
+  const configured = String(process.env.OCR_MODEL || '').trim();
+  const primary = (!configured || OCR_PAID_MODELS.has(configured.toLowerCase()))
+    ? [] : [configured];
+  const extra = String(process.env.OCR_FALLBACK_MODELS || '')
+    .split(',').map((s) => s.trim()).filter(Boolean);
+  return [...primary, ...OCR_FREE_MODELS, ...extra]
+    .filter((m, i, a) => a.indexOf(m) === i);
+}
+
+/** 上游错误是否值得换一个模型重试（额度/限流/服务端故障/超时）。 */
+function isRetryableOcrError(status, text) {
+  if (status === 429 || status === 402 || status === 403 || status >= 500) return true;
+  return /余额不足|无可用资源包|1113|insufficient|quota|rate.?limit/i.test(String(text || ''));
+}
+
+/** 单个模型的一次转录调用。返回 { ok, text?, error?, retryable? }。 */
+async function callVisionModel(imageUrl, model, timeoutMs) {
   const body = JSON.stringify({
     model,
     messages: [
@@ -340,9 +387,8 @@ async function callVisionLLM(imageUrl) {
     ],
     temperature: 0.1,
   });
-  // 超时保护：托管平台反向代理窗口有限，视觉模型挂死必须按时返回错误，
-  // 绝不让网关 502（服务本身 400/502 正常，别误判挂了）。
-  const timeoutMs = Number(process.env.OCR_TIMEOUT_MS) || 30000;
+  // 超时保护：托管平台反向代理窗口有限，模型挂死必须按时返回并切下一个模型，
+  // 绝不让整个请求拖到网关超时。
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -357,19 +403,54 @@ async function callVisionLLM(imageUrl) {
     });
     if (!r.ok) {
       const txt = await r.text();
-      return { ok: false, error: `OCR LLM ${r.status}: ${txt.slice(0, 200)}` };
+      return {
+        ok: false,
+        retryable: isRetryableOcrError(r.status, txt),
+        error: `OCR LLM ${r.status}: ${txt.slice(0, 160)}`,
+      };
     }
-    const d = await r.json();
+    let d;
+    try {
+      d = await r.json();
+    } catch (_) {
+      return { ok: false, retryable: true, error: 'OCR upstream bad JSON' };
+    }
     const text = (d && d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '';
+    if (!String(text).trim()) {
+      return { ok: false, retryable: true, error: 'OCR returned empty text' };
+    }
     return { ok: true, text: String(text).slice(0, 8000) };
   } catch (e) {
     const msg = (e && e.name === 'AbortError')
       ? `OCR timeout after ${timeoutMs}ms`
       : `OCR call failed: ${(e && e.message) || e}`;
-    return { ok: false, error: msg };
+    return { ok: false, retryable: true, error: msg };
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** 依次尝试免费视觉模型链；全部失败才把汇总错误交回 /api/ocr 包装成 502。 */
+async function callVisionLLM(imageUrl) {
+  const models = ocrModels();
+  const perModelMs = Number(process.env.OCR_TIMEOUT_MS) || 20000;
+  const totalMs = Number(process.env.OCR_TOTAL_TIMEOUT_MS) || 50000;
+  const deadline = Date.now() + totalMs;
+  const errors = [];
+  for (const model of models) {
+    if (Date.now() >= deadline) {
+      errors.push('OCR total timeout');
+      break;
+    }
+    const budget = Math.min(perModelMs, Math.max(1000, deadline - Date.now()));
+    const attempt = await callVisionModel(imageUrl, model, budget);
+    if (attempt.ok) {
+      return { ok: true, text: attempt.text, model };
+    }
+    errors.push(`${model}: ${attempt.error}`);
+    if (!attempt.retryable) break; // 例如 401（Key 无效）：换模型也无意义
+  }
+  return { ok: false, error: `OCR failed: ${errors.join(' | ')}`.slice(0, 500) };
 }
 
 // ---------------------------------------------------------------------------
@@ -694,7 +775,8 @@ const server = http.createServer(async (req, res) => {
       if (!text) {
         return jsonRes(res, 502, { ok: false, error: 'OCR returned empty text' }, origin);
       }
-      return jsonRes(res, 200, { ok: true, text }, origin);
+      // model 仅用于排障（前端忽略），便于确认实际命中的是哪一个免费视觉模型。
+      return jsonRes(res, 200, { ok: true, text, model: llmResp.model || '' }, origin);
     }
 
     const question = String(parsed.question || '').trim();
