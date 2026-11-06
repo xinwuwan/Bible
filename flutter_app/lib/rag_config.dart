@@ -8,10 +8,16 @@
 //   lang=zh/cn = 简体中文（read.sdabible.org「SDA 圣经注释」官方中译 + 怀爱伦注释）。
 // sharecode 是托管平台的访问闸门（无码 403），必须作为查询串带上。
 // 历史地址：阿里云 FC（bible-rag-proxy-kyesoqskvl.cn-hangzhou.fcapp.run，账号欠费已弃用）、
-//          Cloudflare Workers（workers.dev，国内被屏蔽，仅备份）。
+//          Cloudflare Workers（workers.dev，国内被屏蔽，仅备份）、
+//          WorkBuddy 托管旧实例（bible-rag-proxy.app.workbuddy.host，v58 代码，
+//          仍跑付费视觉模型 glm-4v-plus，账号余额耗尽导致 /api/ocr 502，已停用于本应用）。
+// v59（2026-11-06）：修复后的后端发布为新的托管实例，OCR 切到免费视觉模型链
+//   （glm-4.1v-thinking-flash 优先，429/余额不足自动 fallback）。旧实例的
+//   发布目录属于另一台机器（C:\Users\xinwu\...），本会话无法就地覆盖，故改指向新实例；
+//   /api/rag、/api/ocr、/api/commentary 三条路径与 sharecode 均已在新实例实测通过。
 // 留空字符串 = 不启用 RAG 兜底（退回纯离线转人工），便于灰度与回滚。
-const String kRagBaseUrl = 'https://bible-rag-proxy.app.workbuddy.host';
-const String kRagSharecode = 'ZGXTEH5MO2';
+const String kRagBaseUrl = 'https://bible-rag-proxy-70802.app.workbuddy.host';
+const String kRagSharecode = 'JFLHO2B2JE';
 
 /// RAG 问答端点（POST）。留空即禁用兜底。
 String get kRagEndpoint => '$kRagBaseUrl/api/rag?sharecode=$kRagSharecode';
