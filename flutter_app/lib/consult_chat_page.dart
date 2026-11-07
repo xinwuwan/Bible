@@ -7,6 +7,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'consult_dialog_engine.dart';
 import 'consult_dialog_models.dart';
 import 'consult_models.dart' show AttachmentParser;
+import 'native_text_field.dart';
 
 /// AI 医生 —— 多轮对话式问诊页。
 ///
@@ -558,23 +559,15 @@ class _InputBar extends StatelessWidget {
               onPressed: picking ? null : onAttach,
             ),
             Expanded(
-              child: TextField(
+              child: NativeTextField(
                 controller: controller,
-                minLines: 1,
+                hint: multiCount > 0 ? '已选 $multiCount 项，点右侧发送' : '输入您的症状或回答…',
                 maxLines: 3,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (_) => onSend(),
-                decoration: InputDecoration(
-                  hintText: multiCount > 0 ? '已选 $multiCount 项，点右侧发送' : '输入您的症状或回答…',
-                  isDense: true,
-                  filled: true,
-                  fillColor: const Color(0xFFF5F5F5),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+                onSubmitted: (_) {
+                  // 组合态回车只是候选词上屏，不能当提交。
+                  if (!controller.value.composing.isCollapsed) return;
+                  onSend();
+                },
               ),
             ),
             const SizedBox(width: 6),

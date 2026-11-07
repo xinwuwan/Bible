@@ -114,6 +114,37 @@
       } catch (e) {}
     })();
   </script>
+  <script>
+    // 中文输入法组合态的回车保护（全局，**仅兜底仍在使用 Flutter TextField 的输入框**）。
+    // Flutter Web 3.22 引擎的 keydown 处理对 keyCode===13 无条件触发 TextInputAction，
+    // 没有判断 isComposing：Windows 拼音在候选词尚未上屏时按回车，本应只是「确认
+    // 候选词」，却被当成「提交」，把半成品（且顺序错乱）的文本发出去。这里在捕获
+    // 阶段拦下这类 keydown 的下发，不调用 preventDefault —— 浏览器默认行为不受影响，
+    // IME 候选词照常上屏，compositionend 仍会正常到达。
+    //
+    // 边界必须严格：
+    //   1. 只拦「keyCode===13 且 isComposing===true」。绝不能连 229 一起拦 ——
+    //      中文拼音输入过程中每一次击键都是 keyCode=229，宽泛拦截会吃掉正常输入。
+    //   2. 原生 textarea 必须完全放行：它自带 compositionstart/end 守卫，且捕获阶段
+    //      拦截会切断 keydown 到输入框的路径，反而可能干扰 IME 上屏。
+    // 正常回车、Shift+Enter 换行、组合中字母键一律放行。
+    (function () {
+      document.addEventListener('keydown', function (e) {
+        if (e.keyCode !== 13) return;
+        if (e.isComposing !== true) return;
+        // CanvasKit 的平台视图在 shadow DOM / slot 中，事件 target 会被重定向，
+        // 因此同时检查 composedPath，确保原生输入框一定被放行。
+        var t = e.target;
+        if (t && t.getAttribute && t.getAttribute('data-native-composer') === '1') return;
+        var path = (typeof e.composedPath === 'function') ? e.composedPath() : [];
+        for (var i = 0; i < path.length; i++) {
+          var n = path[i];
+          if (n && n.getAttribute && n.getAttribute('data-native-composer') === '1') return;
+        }
+        e.stopPropagation();
+      }, true);
+    })();
+  </script>
   <style>
     /* 同时覆盖首屏 loading 层与 Flutter 渲染正文：禁止文字自动放大。 */
     html, body {

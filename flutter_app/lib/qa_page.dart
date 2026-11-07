@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import 'citation_list.dart';
 import 'mailto_helper.dart';
+import 'native_text_field.dart';
 import 'qa_models.dart';
 import 'qa_repository.dart';
 
@@ -172,8 +173,12 @@ class _QaPageState extends State<QaPage> {
   }
 
   Future<void> _send() async {
+    if (_sending) return;
+    // 输入法组合态尚未结束时不提交：此时回车属于「候选词上屏」，
+    // 若放行会把半成品（甚至顺序错乱的片段）当成完整问题发出去。
+    if (!_ctrl.value.composing.isCollapsed) return;
     final q = _ctrl.text.trim();
-    if (q.isEmpty || _sending) return;
+    if (q.isEmpty) return;
     _ctrl.clear();
     final idx = _turns.length;
     setState(() {
@@ -488,17 +493,12 @@ class _Composer extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: TextField(
+              // 桌面 Web 走浏览器原生输入框：绕开 Flutter Web 的 IME 组合态桥接，
+              // 保证中文逐词上屏时文字可见且顺序与输入一致（详见 native_text_field.dart）。
+              child: NativeTextField(
                 controller: ctrl,
-                minLines: 1,
-                maxLines: 4,
-                textInputAction: TextInputAction.send,
+                hint: '输入你的问题…',
                 onSubmitted: (_) => onSend(),
-                decoration: const InputDecoration(
-                  hintText: '输入你的问题…',
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
               ),
             ),
             const SizedBox(width: 6),

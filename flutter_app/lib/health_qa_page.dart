@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 
 import 'health_qa_logic.dart';
+import 'native_text_field.dart';
 import 'rag_qa_repository.dart';
 
 /// 把 **强调** 渲染为中等字重（与牧师问答一致，w500 避免 CanvasKit 合成加粗糊字）
@@ -67,8 +68,11 @@ class _HealthQaPageState extends State<HealthQaPage> {
   }
 
   void _send() async {
+    if (_sending || _logic == null) return;
+    // 组合态未结束时的回车属于候选词上屏，不应提交半成品。
+    if (!_ctrl.value.composing.isCollapsed) return;
     final q = _ctrl.text.trim();
-    if (q.isEmpty || _sending || _logic == null) return;
+    if (q.isEmpty) return;
     _ctrl.clear();
     final idx = _turns.length;
     setState(() {
@@ -340,17 +344,10 @@ class _Composer extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: TextField(
+              child: NativeTextField(
                 controller: ctrl,
-                minLines: 1,
-                maxLines: 4,
-                textInputAction: TextInputAction.send,
+                hint: '问问健康：怎么吃更营养？怎样睡得好？',
                 onSubmitted: (_) => onSend(),
-                decoration: const InputDecoration(
-                  hintText: '问问健康：怎么吃更营养？怎样睡得好？',
-                  isDense: true,
-                  border: OutlineInputBorder(),
-                ),
               ),
             ),
             const SizedBox(width: 6),

@@ -6,6 +6,14 @@
 #   include: package:flutter_lints/analysis_options_user.yaml
 #
 # 即便不带 flutter_lints 规则，dart analyze 仍能保证代码无错误/无未用导入等。
+#
+# 条件导入的 Web 专属实现只在 dart.library.html 存在时编译，其中用到 dart:html /
+# dart:ui_web（属于 Flutter Web SDK，不在 VM 的 SDK 库表内）。让 analyzer 跳过它，
+# 由 CI 的 `flutter build web` 真实编译把关；非 Web 实现与所有测试仍全部分析。
+analyzer:
+  exclude:
+    - lib/native_text_field_web.dart
+
 linter:
   rules:
     # 项目约定：避免使用已弃用的 surfaceVariant，统一用 surfaceContainerHighest

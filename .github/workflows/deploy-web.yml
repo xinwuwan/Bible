@@ -145,6 +145,21 @@ jobs:
           cat analyze.log
           exit $code
 
+      - name: Test — text input regressions
+        # 覆盖：中文正常输入回显、连续逐段输入顺序、修改后重新提交、
+        # 输入法组合态回车不提交、组合结束后完整提交。
+        # 本仓库此前从未在 CI 运行 flutter test（本机亦无 Flutter SDK 预跑），
+        # 故两个测试步骤先以「记录结果但不阻断发布」接入；编译正确性由上面
+        # 的 flutter analyze 与下面的 flutter build web 两个硬闸门保证。
+        # 确认全绿后可去掉 continue-on-error 提升为硬闸门。
+        continue-on-error: true
+        run: flutter test test/native_text_field_test.dart
+
+      - name: Test — existing QA widget tests
+        # 既有测试同样首次接入 CI，作为回归观察项，不阻断发布。
+        continue-on-error: true
+        run: flutter test test/qa_page_test.dart
+
       - name: Upload analyze log (on failure)
         if: failure()
         uses: actions/upload-artifact@v4
