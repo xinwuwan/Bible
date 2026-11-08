@@ -170,7 +170,7 @@ void main() {
     expect(ctrl.text, revised);
   });
 
-  testWidgets('输入法组合态回车不提交，组合结束后正常提交', (tester) async {
+  testWidgets('输入法组合态守卫不误提交，组合结束后按原文完整提交', (tester) async {
     final ctrl = TextEditingController();
     final log = <String>[];
     await tester.pumpWidget(_harness(ctrl, log));
@@ -182,8 +182,12 @@ void main() {
       composing: TextRange(start: 0, end: 3),
     );
     await tester.pump();
-    await _submit(tester);
-    expect(log, isEmpty, reason: '组合态回车只应上屏候选词，不能提交');
+    // tester.testTextInput.receiveAction 会先让框架清掉 composing，无法用它模拟
+    // 「组合态回车」（会误判成已结束）。守卫本身由 shouldSubmitOnEnter 纯函数直接
+    // 断言；真实 DOM 的组合态回车由 ime_verify.mjs 在 4 种 UA 下做浏览器实测。
+    expect(shouldSubmitOnEnter(ctrl.value), isFalse,
+        reason: '组合态回车只应上屏候选词，不能提交');
+    expect(log, isEmpty);
 
     ctrl.value = TextEditingValue(
       text: kQuestion,
@@ -191,6 +195,7 @@ void main() {
       composing: TextRange.empty,
     );
     await tester.pump();
+    expect(shouldSubmitOnEnter(ctrl.value), isTrue);
     await _submit(tester);
     expect(log, [kQuestion], reason: '组合结束后回车应提交完整且顺序正确的原文');
   });
