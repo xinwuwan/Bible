@@ -4,6 +4,8 @@
 //       输入法组合态回车不提交、组合结束后按原顺序完整提交。
 // 运行: flutter test test/native_text_field_test.dart
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -37,6 +39,51 @@ Future<void> _attach(WidgetTester tester) async {
 }
 
 void main() {
+  // 结构性不变量：防止有人「图省事」把手机/微信又回退回 Flutter TextField，
+  // 或者让文本变化重建平台视图（两种做法都会把中文 IME 问题带回来）。
+  test('Web 实现全平台统一走原生 textarea，且平台视图不随文本重建', () {
+    final src = File('lib/native_text_field_web.dart').readAsStringSync();
+    expect(src.contains('_isMobile'), isFalse,
+        reason: '不得按 UA 区分输入实现：手机/微信 X5 正是问题最集中的环境');
+    expect(src.contains('_fallback'), isFalse,
+        reason: '不得存在回退到 Flutter TextField 的分支');
+    // 去掉本类自身的名字后再找裸 TextField( 调用，避免把 NativeTextField( 误判。
+    final withoutSelf = src.replaceAll('NativeTextField', '');
+    expect(RegExp(r'\bTextField\s*\(').hasMatch(withoutSelf), isFalse,
+        reason: 'Web 实现里不应再出现 Flutter TextField');
+    expect(src.contains('data-native-composer'), isTrue,
+        reason: '原生输入框必须打标记，index.html 的全局守卫才会放行');
+    expect(src.contains('HtmlElementView'), isTrue);
+    expect(src.contains('ValueListenableBuilder'), isFalse,
+        reason: '文本变化不得重建 HtmlElementView，否则会移动 DOM 并打断 IME 组合');
+    expect(src.contains('_fixedHeight'), isTrue,
+        reason: '占位高度必须在生命周期内固定');
+  });
+
+  test('入口页带构建标识、组合态守卫与微信缓存自愈', () {
+    final html = File('web/index.html').readAsStringSync();
+    expect(html.contains('data-app-build'), isTrue);
+    expect(html.contains('__APP_BUILD_ID__'), isTrue);
+    expect(html.contains('serviceWorker'), isTrue);
+    expect(html.contains('data-native-composer'), isTrue);
+    expect(html.contains('keyCode !== 13'), isTrue);
+    // 入口脚本必须保持无查询串：微信 X5 曾因此完全打不开。
+    expect(html.contains('<script src="main.dart.js"'), isTrue);
+  });
+
+  test('三个问答/对话页面都使用 NativeTextField', () {
+    for (final p in [
+      'lib/qa_page.dart',
+      'lib/health_qa_page.dart',
+      'lib/consult_chat_page.dart',
+    ]) {
+      final src = File(p).readAsStringSync();
+      expect(src.contains('NativeTextField('), isTrue, reason: p);
+      expect(src.contains("import 'native_text_field.dart';"), isTrue,
+          reason: p);
+    }
+  });
+
   // 组合态守卫本身是纯函数，直接断言，不依赖 EditableText 的内部状态机。
   test('shouldSubmitOnEnter：组合态不允许提交，组合结束后允许提交', () {
     const composing = TextEditingValue(

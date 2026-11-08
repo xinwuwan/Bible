@@ -184,6 +184,13 @@
       line-height: 1.8;
       letter-spacing: 0.5px;
     }
+    #app-loading .build {
+      margin-top: 6px;
+      font-size: 11px;
+      line-height: 1.4;
+      letter-spacing: 0.6px;
+      opacity: 0.62;
+    }
     @keyframes app-spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -191,10 +198,55 @@
   <div id="app-loading">
     <div class="ring"></div>
     <div class="msg" id="app-loading-msg">真理对照 · 加载中</div>
+    <div class="build" id="app-loading-build"></div>
   </div>
   <!-- 关键：main.dart.js 在本 Flutter 版本是自举的入口，必须「不带任何查询串」直接加载，
        否则引擎内部相对路径（canvaskit、service worker 等）定位失败 → 黑屏/不渲染。
        之前给 main.dart.js 加 ?cb= 查询串正是导致微信「完全打不开」的直接原因。 -->
+  <script>
+    // 构建标识 + 微信缓存自愈（不改动 main.dart.js 的加载方式：
+    // 给它加查询串曾导致微信 X5 完全打不开，这里只在「页面 URL」上做版本化）。
+    (function () {
+      var BUILD_ID = '20261108a';
+      window.__APP_BUILD_ID__ = BUILD_ID;
+      try { document.documentElement.setAttribute('data-app-build', BUILD_ID); } catch (e) {}
+      var label = document.getElementById('app-loading-build');
+      if (label) label.textContent = '构建 ' + BUILD_ID;
+
+      // Service Worker：每次打开都主动检查更新，并催 waiting 版本尽快接管，
+      // 避免旧 SW 长期返回上一版 main.dart.js（微信 PC / Chromium 有效）。
+      try {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations) {
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            regs.forEach(function (reg) {
+              try { reg.update(); } catch (e) {}
+              try {
+                var w = reg.waiting;
+                if (w) {
+                  w.postMessage({ type: 'SKIP_WAITING' });
+                  w.postMessage({ cmd: 'skipWaiting' });
+                }
+              } catch (e) {}
+            });
+          }).catch(function () {});
+        }
+      } catch (e) {}
+
+      // 微信 X5 缓存极顽固且不支持 Service Worker：把入口换成带当前构建号的
+      // URL 打开一次，强制重新拉取 index.html（main.dart.js 本身仍不带查询串，
+      // 保持已验证的资源定位方式不变）。sessionStorage 保证每标签页只重载一次。
+      try {
+        var ua = navigator.userAgent || '';
+        var isWeChat = /MicroMessenger|MQQBrowser|TBS\/|QQBrowser|WeChat/i.test(ua);
+        var hasVersion = /[?&]v=/.test(location.search);
+        if (isWeChat && !hasVersion && !sessionStorage.getItem('app_build_reload')) {
+          sessionStorage.setItem('app_build_reload', BUILD_ID);
+          var sep = location.search ? location.search + '&' : '?';
+          location.replace(location.pathname + sep + 'v=' + encodeURIComponent(BUILD_ID) + (location.hash || ''));
+        }
+      } catch (e) {}
+    })();
+  </script>
   <script src="main.dart.js" type="application/javascript"></script>
   <script>
     // 揭幕时机（关键：消除「首屏无字空白期」）：

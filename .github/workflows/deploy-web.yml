@@ -145,19 +145,16 @@ jobs:
           cat analyze.log
           exit $code
 
-      - name: Test — text input regressions
+      - name: Test — text input regressions (hard gate)
         # 覆盖：中文正常输入回显、连续逐段输入顺序、修改后重新提交、
-        # 输入法组合态回车不提交、组合结束后完整提交。
-        # 本仓库此前从未在 CI 运行 flutter test（本机亦无 Flutter SDK 预跑），
-        # 故两个测试步骤先以「记录结果但不阻断发布」接入；编译正确性由上面
-        # 的 flutter analyze 与下面的 flutter build web 两个硬闸门保证。
-        # 确认全绿后可去掉 continue-on-error 提升为硬闸门。
-        continue-on-error: true
+        # 组合态回车不提交、组合结束后完整提交；
+        # 以及结构性不变量：Web 实现不得按 UA 回退到 TextField、不得随文本
+        # 重建平台视图、入口页必须带构建标识与组合态守卫。
+        # 上轮 CI 已实测全绿，现升级为硬闸门，防止中文 IME 修复被回退。
         run: flutter test test/native_text_field_test.dart
 
-      - name: Test — existing QA widget tests
-        # 既有测试同样首次接入 CI，作为回归观察项，不阻断发布。
-        continue-on-error: true
+      - name: Test — existing QA widget tests (hard gate)
+        # 既有测试上轮 CI 亦全绿，一并升级为硬闸门。
         run: flutter test test/qa_page_test.dart
 
       - name: Upload analyze log (on failure)
