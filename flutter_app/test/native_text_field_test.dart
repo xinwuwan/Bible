@@ -64,6 +64,8 @@ void main() {
     final html = File('web/index.html').readAsStringSync();
     expect(html.contains('data-app-build'), isTrue);
     expect(html.contains('__APP_BUILD_ID__'), isTrue);
+    expect(html.contains('build-badge'), isTrue,
+        reason: '带 ?v= 的验证链接必须能显示持久构建号，便于确认是否拿到新包');
     expect(html.contains('serviceWorker'), isTrue);
     expect(html.contains('data-native-composer'), isTrue);
     expect(html.contains('keyCode !== 13'), isTrue);

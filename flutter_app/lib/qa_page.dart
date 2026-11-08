@@ -493,8 +493,8 @@ class _Composer extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              // 桌面 Web 走浏览器原生输入框：绕开 Flutter Web 的 IME 组合态桥接，
-              // 保证中文逐词上屏时文字可见且顺序与输入一致（详见 native_text_field.dart）。
+              // Web 全平台（含手机/微信 X5）走浏览器原生输入框：绕开 Flutter Web 的
+              // IME 组合态桥接，保证中文逐词上屏时文字可见且顺序一致。
               child: NativeTextField(
                 controller: ctrl,
                 hint: '输入你的问题…',

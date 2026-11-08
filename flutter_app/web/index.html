@@ -191,6 +191,21 @@
       letter-spacing: 0.6px;
       opacity: 0.62;
     }
+    #build-badge {
+      display: none;
+      position: fixed;
+      right: 8px;
+      bottom: 8px;
+      z-index: 9998;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.78);
+      color: #6E6A63;
+      font-size: 10px;
+      line-height: 1.4;
+      letter-spacing: 0.3px;
+      pointer-events: none;
+    }
     @keyframes app-spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -198,8 +213,9 @@
   <div id="app-loading">
     <div class="ring"></div>
     <div class="msg" id="app-loading-msg">真理对照 · 加载中</div>
-    <div class="build" id="app-loading-build"></div>
+    <div class="build" id="app-loading-build">构建 20261108a</div>
   </div>
+  <div id="build-badge"></div>
   <!-- 关键：main.dart.js 在本 Flutter 版本是自举的入口，必须「不带任何查询串」直接加载，
        否则引擎内部相对路径（canvaskit、service worker 等）定位失败 → 黑屏/不渲染。
        之前给 main.dart.js 加 ?cb= 查询串正是导致微信「完全打不开」的直接原因。 -->
@@ -212,6 +228,11 @@
       try { document.documentElement.setAttribute('data-app-build', BUILD_ID); } catch (e) {}
       var label = document.getElementById('app-loading-build');
       if (label) label.textContent = '构建 ' + BUILD_ID;
+      // 只有「带 ?v= 的验证链接」才显示持久角标，正式访问界面完全不变。
+      if (/[?&]v=/.test(location.search)) {
+        var badge = document.getElementById('build-badge');
+        if (badge) { badge.textContent = '构建 ' + BUILD_ID; badge.style.display = 'block'; }
+      }
 
       // Service Worker：每次打开都主动检查更新，并催 waiting 版本尽快接管，
       // 避免旧 SW 长期返回上一版 main.dart.js（微信 PC / Chromium 有效）。
@@ -238,11 +259,11 @@
       try {
         var ua = navigator.userAgent || '';
         var isWeChat = /MicroMessenger|MQQBrowser|TBS\/|QQBrowser|WeChat/i.test(ua);
-        var hasVersion = /[?&]v=/.test(location.search);
+        var hasVersion = /[?&][vb]=/.test(location.search);
         if (isWeChat && !hasVersion && !sessionStorage.getItem('app_build_reload')) {
           sessionStorage.setItem('app_build_reload', BUILD_ID);
           var sep = location.search ? location.search + '&' : '?';
-          location.replace(location.pathname + sep + 'v=' + encodeURIComponent(BUILD_ID) + (location.hash || ''));
+          location.replace(location.pathname + sep + 'b=' + encodeURIComponent(BUILD_ID) + (location.hash || ''));
         }
       } catch (e) {}
     })();
